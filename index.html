@@ -21,8 +21,9 @@
   <link rel="stylesheet" href="v8.css?v=12" />
   <link rel="stylesheet" href="v11.css?v=2" />
   <link rel="stylesheet" href="v12.css?v=1" />
-  <link rel="stylesheet" href="v13.css?v=3" />
+  <link rel="stylesheet" href="v16.css?v=1" />
   <script src="v12.js?v=1" defer></script>
+  <script src="v16.js?v=1" defer></script>
 </head>
 <body>
   <canvas id="neural-bg" aria-hidden="true"></canvas>
@@ -34,16 +35,6 @@
 
   <header class="site-header" id="site-header">
     <div class="container nav-wrap">
-      <div class="brand">
-        <button class="brand-mark brand-portrait" id="portrait-trigger" type="button" aria-haspopup="dialog" aria-controls="portrait-modal" aria-label="Open Mohammed Muayad portrait" title="View portrait">
-          <img src="https://avatars.githubusercontent.com/u/302812532?v=4&s=256" alt="Mohammed Muayad" width="256" height="256" decoding="async" fetchpriority="high" />
-        </button>
-        <a class="brand-copy" href="#home" aria-label="Mohammed Muayad home">
-          <strong>Mohammed Muayad</strong>
-          <small>AI Engineering Student</small>
-        </a>
-      </div>
-
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
         <span></span><span></span><span></span>
       </button>
@@ -65,8 +56,21 @@
       <div class="hero-maroon-wash" aria-hidden="true"></div>
       <div class="container hero-grid hero-grid-v4">
         <div class="hero-copy reveal">
-          <div class="eyebrow"><span class="status-dot"></span> Baghdad, Iraq · Learning in public</div>
+          <div class="eyebrow"><span class="status-dot"></span> BAGHDAD, IRAQ <span aria-hidden="true">•</span> LEARNING IN PUBLIC</div>
           <p class="section-index">PORTFOLIO / 2026</p>
+          <button class="hero-portrait" id="portrait-trigger" type="button" aria-haspopup="dialog" aria-controls="portrait-modal" aria-label="Open high-resolution portrait of Mohammed Muayad" title="View portrait">
+            <img
+              src="https://avatars.githubusercontent.com/u/302812532?v=4&s=1024"
+              srcset="https://avatars.githubusercontent.com/u/302812532?v=4&s=512 512w, https://avatars.githubusercontent.com/u/302812532?v=4&s=1024 1024w, https://avatars.githubusercontent.com/u/302812532?v=4&s=2048 2048w"
+              sizes="(max-width: 390px) 74vw, (max-width: 580px) 72vw, (max-width: 860px) 68vw, 248px"
+              alt="Mohammed Muayad"
+              width="2048"
+              height="2048"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
+          </button>
           <h1>
             Mohammed Muayad
             <span>AI Engineering Student</span>
