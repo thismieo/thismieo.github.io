@@ -1,0 +1,29 @@
+name: Validate portfolio
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - dev-portfolio-v12-code-consolidation
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate JavaScript syntax
+        run: node --check v12.js
+
+      - name: Validate site structure and assets
+        run: python3 scripts/validate_site.py
