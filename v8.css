@@ -1,0 +1,59 @@
+/* Portfolio V8 — mobile start position and high-density portrait rendering */
+
+@media (max-width: 860px) {
+  /* Mobile Safari/Chromium may keep a transformed image as a low-resolution
+     composited layer. Removing transforms and backdrop blur preserves the
+     decoded portrait pixels at their native sharpness. */
+  .portrait-modal {
+    padding: 10px;
+    transition: opacity 120ms linear !important;
+  }
+
+  .portrait-modal-backdrop {
+    background: rgba(1, 4, 12, 0.97) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .portrait-dialog-v6,
+  .portrait-modal.is-open .portrait-dialog-v6 {
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100svh - 20px) !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    box-shadow: none !important;
+  }
+
+  .portrait-full-image {
+    width: auto !important;
+    height: auto !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100svh - 20px) !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: none !important;
+    transition: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    mix-blend-mode: normal !important;
+    image-rendering: auto !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+  }
+
+  .portrait-close {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@media (max-width: 580px) {
+  .portrait-dialog-v6,
+  .portrait-full-image {
+    max-width: calc(100vw - 14px) !important;
+    max-height: calc(100svh - 14px) !important;
+    border-radius: 12px !important;
+  }
+}
