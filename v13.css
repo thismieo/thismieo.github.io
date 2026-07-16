@@ -1,0 +1,80 @@
+/* Portfolio V13 — fast-scroll and mobile compositing stability */
+
+/*
+  Safari and other mobile browsers can expose the root canvas for a frame
+  during rapid or elastic scrolling. Keep every root layer permanently dark.
+*/
+html {
+  min-height: 100%;
+  background-color: #030712;
+  color-scheme: dark;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100%;
+  background-color: #030712;
+  overscroll-behavior-y: none;
+}
+
+/* Prevent transparent root gaps around the document edges and fixed header. */
+body,
+.site-header,
+.site-footer {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.site-header {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+@media (max-width: 860px) {
+  /*
+    The full-document grid becomes a very tall paint layer on phones.
+    Removing it preserves the design while reducing rapid-scroll repaints.
+  */
+  .page-grid {
+    display: none !important;
+  }
+
+  /* Avoid an oversized animated layer extending beyond the mobile viewport. */
+  .hero-maroon-wash {
+    contain: paint;
+  }
+
+  /* Keep lightweight motion, but remove expensive glow rasterization. */
+  .hero-maroon-wash::after,
+  .core-spark,
+  .orbit,
+  .project-visual svg *,
+  .neural-svg * {
+    filter: none !important;
+  }
+
+  /* Stabilize large visual surfaces without promoting every card separately. */
+  .hero,
+  #projects,
+  .neural-section,
+  .goals-section,
+  .contact-section,
+  .thank-you-section {
+    background-color: #030712;
+  }
+
+  /* Keep fixed navigation on one compositor layer during fast swipes. */
+  .site-header,
+  .site-header.scrolled {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+}
