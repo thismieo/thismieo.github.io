@@ -2,10 +2,35 @@
   "use strict";
 
   const header = document.querySelector("#site-header");
+  const navWrap = document.querySelector("#site-header .nav-wrap");
   const menuButton = document.querySelector(".menu-toggle");
   const navLinks = [...document.querySelectorAll(".main-nav a")];
 
-  if (!header) return;
+  if (!header || !navWrap) return;
+
+  if (!document.querySelector('link[data-v17-navigation]')) {
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = "v17.css?v=1";
+    stylesheet.dataset.v17Navigation = "true";
+    document.head.append(stylesheet);
+  }
+
+  let identity = navWrap.querySelector(".nav-identity");
+  if (!identity) {
+    identity = document.createElement("a");
+    identity.className = "nav-identity";
+    identity.href = "#home";
+    identity.setAttribute("aria-label", "Mohammed Muayad portfolio home");
+    identity.innerHTML = `
+      <span class="nav-monogram" aria-hidden="true">MM</span>
+      <span class="nav-identity-copy">
+        <strong>PORTFOLIO</strong>
+        <small>2026 / AI JOURNEY</small>
+      </span>
+    `;
+    navWrap.insertBefore(identity, menuButton || navWrap.firstChild);
+  }
 
   let previousY = Math.max(0, window.scrollY);
   let direction = 0;
@@ -75,6 +100,10 @@
 
   menuButton?.addEventListener("click", () => requestAnimationFrame(showHeader));
   navLinks.forEach((link) => link.addEventListener("click", showHeader));
+  identity.addEventListener("click", () => {
+    showHeader();
+    if (menuIsOpen()) menuButton?.click();
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") showHeader();
