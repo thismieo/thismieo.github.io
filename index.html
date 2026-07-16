@@ -11,9 +11,14 @@
   <meta property="og:url" content="https://thismieo.github.io" />
   <title>Mohammed Muayad | AI Engineering Student</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="enhancements.css" />
   <script src="script.js" defer></script>
+  <script src="neural-network.js" defer></script>
 </head>
 <body>
+  <canvas id="neural-bg" aria-hidden="true"></canvas>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="cursor-aura" aria-hidden="true"></div>
   <div class="page-grid" aria-hidden="true"></div>
   <div class="ambient ambient-one" aria-hidden="true"></div>
   <div class="ambient ambient-two" aria-hidden="true"></div>
@@ -37,6 +42,7 @@
         <a href="#about">About</a>
         <a href="#journey">Journey</a>
         <a href="#stack">Stack</a>
+        <a href="#neural">Neural</a>
         <a href="#projects">Projects</a>
         <a class="nav-cta" href="#contact">Contact</a>
       </nav>
@@ -54,6 +60,10 @@
             <span>AI Engineering Student</span>
           </h1>
           <p class="hero-line">Building the Future with Code &amp; Intelligence.</p>
+          <div class="live-signal" aria-live="polite">
+            <span id="typed-signal">Python foundations active</span>
+            <i class="typing-caret" aria-hidden="true"></i>
+          </div>
           <p class="hero-description">
             I am building a strong foundation in Python and artificial intelligence through consistent study,
             practical exercises, documented progress, and real projects.
@@ -74,6 +84,7 @@
 
         <div class="hero-visual reveal" aria-label="Animated AI engineering visual">
           <div class="core-stage">
+            <div class="neural-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
             <div class="orbit orbit-one"><span></span><span></span><span></span></div>
             <div class="orbit orbit-two"><span></span><span></span><span></span><span></span></div>
             <div class="core">
@@ -105,6 +116,13 @@
         <article><span>Approach</span><strong>Learn → Practice → Build</strong></article>
       </div>
     </section>
+
+    <div class="system-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
+        <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
+      </div>
+    </div>
 
     <section class="section" id="about">
       <div class="container">
@@ -191,10 +209,96 @@
       </div>
     </section>
 
+    <section class="section neural-section" id="neural">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><p class="section-index">04 / NEURAL SYSTEM</p><h2>How Intelligence Flows</h2></div>
+          <p>A living visual model of how information travels through input, hidden, and output layers.</p>
+        </div>
+
+        <div class="neural-lab">
+          <div class="network-visual reveal" aria-label="Animated neural network architecture">
+            <svg class="neural-svg" viewBox="0 0 760 500" role="img" aria-labelledby="neural-title neural-desc">
+              <title id="neural-title">Animated neural network</title>
+              <desc id="neural-desc">Input nodes connect through two hidden layers to output nodes, with animated signal paths.</desc>
+              <defs>
+                <linearGradient id="flow-gradient" x1="0" x2="1">
+                  <stop offset="0" stop-color="#67e8f9" />
+                  <stop offset="0.5" stop-color="#a78bfa" />
+                  <stop offset="1" stop-color="#f0a8bf" />
+                </linearGradient>
+                <filter id="node-glow" x="-300%" y="-300%" width="600%" height="600%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+              </defs>
+
+              <g class="connections">
+                <path class="connection hot" d="M100 105 L280 75 M100 105 L280 165 M100 105 L280 255 M100 105 L280 345 M100 105 L280 425" />
+                <path class="connection" d="M100 200 L280 75 M100 200 L280 165 M100 200 L280 255 M100 200 L280 345 M100 200 L280 425" />
+                <path class="connection hot" d="M100 295 L280 75 M100 295 L280 165 M100 295 L280 255 M100 295 L280 345 M100 295 L280 425" />
+                <path class="connection" d="M100 390 L280 75 M100 390 L280 165 M100 390 L280 255 M100 390 L280 345 M100 390 L280 425" />
+
+                <path class="connection" d="M280 75 L475 110 M280 75 L475 205 M280 75 L475 300 M280 75 L475 395" />
+                <path class="connection hot" d="M280 165 L475 110 M280 165 L475 205 M280 165 L475 300 M280 165 L475 395" />
+                <path class="connection" d="M280 255 L475 110 M280 255 L475 205 M280 255 L475 300 M280 255 L475 395" />
+                <path class="connection hot" d="M280 345 L475 110 M280 345 L475 205 M280 345 L475 300 M280 345 L475 395" />
+                <path class="connection" d="M280 425 L475 110 M280 425 L475 205 M280 425 L475 300 M280 425 L475 395" />
+
+                <path class="connection hot" d="M475 110 L655 155 M475 110 L655 250 M475 110 L655 345" />
+                <path class="connection" d="M475 205 L655 155 M475 205 L655 250 M475 205 L655 345" />
+                <path class="connection hot" d="M475 300 L655 155 M475 300 L655 250 M475 300 L655 345" />
+                <path class="connection" d="M475 395 L655 155 M475 395 L655 250 M475 395 L655 345" />
+              </g>
+
+              <g class="input">
+                <text x="66" y="55">INPUT</text>
+                <g class="node" transform="translate(100 105)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(100 200)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(100 295)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(100 390)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+              </g>
+
+              <g class="hidden">
+                <text x="236" y="42">HIDDEN 01</text>
+                <g class="node" transform="translate(280 75)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(280 165)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(280 255)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(280 345)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(280 425)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+              </g>
+
+              <g class="hidden">
+                <text x="430" y="62">HIDDEN 02</text>
+                <g class="node" transform="translate(475 110)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(475 205)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(475 300)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(475 395)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+              </g>
+
+              <g class="output">
+                <text x="625" y="105">OUTPUT</text>
+                <g class="node" transform="translate(655 155)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(655 250)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+                <g class="node" transform="translate(655 345)"><circle class="node-ring" r="17"/><circle class="node-core" r="4"/></g>
+              </g>
+            </svg>
+            <div class="network-readout"><span>SIGNAL STATUS</span><strong>learning → processing → output</strong></div>
+          </div>
+
+          <div class="neural-info">
+            <article class="neural-info-card reveal"><span>INPUT LAYER</span><h3>Receive information</h3><p>Raw values enter the network as the starting signals for processing.</p></article>
+            <article class="neural-info-card hidden-card reveal"><span>HIDDEN LAYERS</span><h3>Discover patterns</h3><p>Connected neurons transform signals and learn useful relationships.</p></article>
+            <article class="neural-info-card output-card reveal"><span>OUTPUT LAYER</span><h3>Produce a result</h3><p>The processed information becomes a prediction, class, or intelligent response.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="focus">
       <div class="container">
         <div class="section-heading reveal">
-          <div><p class="section-index">04 / AI DIRECTION</p><h2>Focus Areas</h2></div>
+          <div><p class="section-index">05 / AI DIRECTION</p><h2>Focus Areas</h2></div>
           <p>Fields I want to explore as my programming and machine-learning foundation becomes stronger.</p>
         </div>
 
@@ -210,7 +314,7 @@
     <section class="section" id="projects">
       <div class="container">
         <div class="section-heading reveal">
-          <div><p class="section-index">05 / BUILD LOG</p><h2>Projects</h2></div>
+          <div><p class="section-index">06 / BUILD LOG</p><h2>Projects</h2></div>
           <p>My project library will grow from small programming exercises into complete AI applications.</p>
         </div>
 
@@ -245,7 +349,7 @@
     <section class="section goals-section" id="goals">
       <div class="container goals-grid">
         <div class="goals-copy reveal">
-          <p class="section-index">06 / MISSION</p>
+          <p class="section-index">07 / MISSION</p>
           <h2>Long-term Goals</h2>
           <p>Every goal is broken into learnable stages, practical evidence, and consistent progress.</p>
           <a class="button button-secondary" href="https://github.com/thismieo?tab=repositories" target="_blank" rel="noreferrer">Follow the build log</a>
@@ -263,7 +367,7 @@
     <section class="section contact-section" id="contact">
       <div class="container contact-card reveal">
         <div>
-          <p class="section-index">07 / CONNECT</p>
+          <p class="section-index">08 / CONNECT</p>
           <h2>Let’s build something meaningful.</h2>
           <p>Follow my learning journey, explore upcoming projects, or contact me through one of the channels below.</p>
         </div>
