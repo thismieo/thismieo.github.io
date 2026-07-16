@@ -8,26 +8,49 @@
   if (!header) return;
 
   let previousY = Math.max(0, window.scrollY);
+  let direction = 0;
+  let distance = 0;
   let frame = 0;
 
   const menuIsOpen = () => menuButton?.getAttribute("aria-expanded") === "true";
-
   const showHeader = () => header.classList.remove("header-hidden");
   const hideHeader = () => header.classList.add("header-hidden");
+  const resetMotion = () => {
+    direction = 0;
+    distance = 0;
+  };
 
   const updateHeader = () => {
     frame = 0;
 
     const currentY = Math.max(0, window.scrollY);
-    const difference = currentY - previousY;
-    const nearTop = currentY < 72;
+    const delta = currentY - previousY;
+    const nearTop = currentY < 84;
 
     if (nearTop || menuIsOpen()) {
       showHeader();
-    } else if (difference > 7 && currentY > 128) {
-      hideHeader();
-    } else if (difference < -7) {
-      showHeader();
+      resetMotion();
+      previousY = currentY;
+      return;
+    }
+
+    if (Math.abs(delta) >= 1) {
+      const nextDirection = delta > 0 ? 1 : -1;
+
+      if (nextDirection !== direction) {
+        direction = nextDirection;
+        distance = 0;
+      }
+
+      distance += Math.abs(delta);
+
+      if (direction > 0 && currentY > 160 && distance >= 44) {
+        hideHeader();
+        distance = 0;
+      } else if (direction < 0 && distance >= 20) {
+        showHeader();
+        distance = 0;
+      }
     }
 
     previousY = currentY;
@@ -39,9 +62,14 @@
   };
 
   window.addEventListener("scroll", requestHeaderUpdate, { passive: true });
-  window.addEventListener("resize", requestHeaderUpdate, { passive: true });
+  window.addEventListener("resize", () => {
+    previousY = Math.max(0, window.scrollY);
+    resetMotion();
+    showHeader();
+  }, { passive: true });
   window.addEventListener("pageshow", () => {
     previousY = Math.max(0, window.scrollY);
+    resetMotion();
     showHeader();
   });
 
