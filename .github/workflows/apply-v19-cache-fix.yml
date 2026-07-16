@@ -1,0 +1,56 @@
+name: Apply V19 cache fix
+
+on:
+  push:
+    branches:
+      - dev-portfolio-v19-cache-fix
+    paths:
+      - .v19-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev-portfolio-v19-cache-fix
+          fetch-depth: 0
+
+      - name: Link V18 directly and bust runtime cache
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+
+          old_css = '  <link rel="stylesheet" href="v16.css?v=1" />\n'
+          new_css = (
+              '  <link rel="stylesheet" href="v16.css?v=1" />\n'
+              '  <link rel="stylesheet" href="v18.css?v=2" data-v18-cyber-rail />\n'
+          )
+          old_js = '  <script src="v16.js?v=1" defer></script>'
+          new_js = '  <script src="v16.js?v=2" defer></script>'
+
+          if text.count(old_css) != 1:
+              raise SystemExit(f"Expected one v16.css link, found {text.count(old_css)}")
+          if text.count(old_js) != 1:
+              raise SystemExit(f"Expected one v16.js?v=1 script, found {text.count(old_js)}")
+          if 'v18.css?' in text:
+              raise SystemExit("A V18 stylesheet link already exists")
+
+          text = text.replace(old_css, new_css, 1)
+          text = text.replace(old_js, new_js, 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit cache fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "fix: load V18 assets with fresh cache keys"
+          git push origin HEAD:dev-portfolio-v19-cache-fix
