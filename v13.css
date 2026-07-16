@@ -1,4 +1,4 @@
-/* Portfolio V13/V14 — fast-scroll stability with reliable mobile navigation */
+/* Portfolio V13/V14/V15 — mobile stability, navigation, and premium header */
 
 /*
   Safari and other mobile browsers can expose the root canvas for a frame
@@ -25,15 +25,11 @@ body,
 }
 
 @media (max-width: 860px) {
-  /*
-    The full-document grid becomes a very tall paint layer on phones.
-    Removing it preserves the design while reducing rapid-scroll repaints.
-  */
+  /* The full-document grid becomes a very tall paint layer on phones. */
   .page-grid {
     display: none !important;
   }
 
-  /* Avoid an oversized animated layer extending beyond the mobile viewport. */
   .hero-maroon-wash {
     contain: paint;
   }
@@ -47,7 +43,6 @@ body,
     filter: none !important;
   }
 
-  /* Stabilize large visual surfaces without promoting every card separately. */
   .hero,
   #projects,
   .neural-section,
@@ -59,11 +54,16 @@ body,
 
   /*
     Keep the header untransformed. A transformed ancestor becomes the
-    containing block for position: fixed descendants in mobile Safari,
-    which caused the menu button to become X while the menu panel vanished.
+    containing block for position: fixed descendants in mobile Safari.
   */
   .site-header,
   .site-header.scrolled {
+    top: 0;
+    padding-top: max(8px, env(safe-area-inset-top));
+    border: 0 !important;
+    background: transparent !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
     -webkit-transform: none !important;
     transform: none !important;
     -webkit-backface-visibility: visible !important;
@@ -72,18 +72,263 @@ body,
     isolation: isolate;
   }
 
+  /* Premium floating identity capsule. No filter/transform is used here so
+     the fixed menu remains reliable on Safari. */
+  .site-header .nav-wrap {
+    position: relative;
+    width: min(calc(100% - 20px), 720px) !important;
+    min-height: 78px;
+    margin-inline: auto;
+    padding: 10px 12px;
+    gap: 12px;
+    border: 1px solid rgba(125, 211, 252, 0.2);
+    border-radius: 25px;
+    background:
+      radial-gradient(circle at 5% 0%, rgba(14, 165, 233, 0.13), transparent 34%),
+      radial-gradient(circle at 98% 100%, rgba(159, 39, 78, 0.16), transparent 38%),
+      linear-gradient(135deg, rgba(8, 20, 40, 0.985), rgba(4, 9, 24, 0.99));
+    box-shadow:
+      0 16px 38px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      inset 0 -1px 0 rgba(159, 39, 78, 0.16);
+  }
+
+  .site-header .nav-wrap::before {
+    content: "";
+    position: absolute;
+    inset: auto 24px -1px;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, #22d3ee 28%, #60a5fa 52%, #9f274e 82%, transparent);
+    opacity: 0.72;
+  }
+
+  .site-header .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 12px;
+  }
+
+  .site-header .brand-portrait {
+    width: 56px !important;
+    height: 56px !important;
+    padding: 3px !important;
+    border: 1px solid rgba(103, 232, 249, 0.7) !important;
+    border-radius: 50% !important;
+    background: linear-gradient(145deg, rgba(34, 211, 238, 0.3), rgba(124, 58, 237, 0.28), rgba(159, 39, 78, 0.3)) !important;
+    box-shadow:
+      0 0 0 3px rgba(3, 7, 18, 0.88),
+      0 0 0 5px rgba(56, 189, 248, 0.2),
+      0 0 22px rgba(56, 189, 248, 0.18) !important;
+  }
+
+  .site-header .brand-portrait img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .site-header .brand-copy {
+    min-width: 0;
+    gap: 2px;
+  }
+
+  .site-header .brand-copy strong {
+    max-width: 100%;
+    color: #f8fbff;
+    font-size: clamp(1.02rem, 4.6vw, 1.26rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .site-header .brand-copy small {
+    display: block;
+    color: #8fcdf8;
+    font-size: clamp(0.52rem, 2.1vw, 0.64rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .menu-toggle {
+    position: relative;
+    z-index: 80;
+    flex: 0 0 52px;
+    width: 52px !important;
+    height: 52px !important;
+    padding: 12px !important;
+    border: 1px solid rgba(148, 163, 184, 0.28) !important;
+    border-radius: 17px !important;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(125, 211, 252, 0.13), transparent 45%),
+      linear-gradient(145deg, rgba(22, 34, 58, 0.96), rgba(8, 14, 31, 0.98)) !important;
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(99, 102, 241, 0.16) !important;
+  }
+
+  .menu-toggle span {
+    width: 25px;
+    height: 2px;
+    margin: 5px auto;
+    background: linear-gradient(90deg, #f8fafc, #bfdbfe);
+    box-shadow: 0 0 8px rgba(125, 211, 252, 0.16);
+  }
+
   .main-nav {
+    top: calc(env(safe-area-inset-top, 0px) + 98px) !important;
+    right: 10px !important;
+    left: 10px !important;
+    bottom: auto !important;
     z-index: 70;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 112px);
+    padding: 14px 14px max(14px, env(safe-area-inset-bottom)) !important;
+    border-color: rgba(103, 232, 249, 0.18) !important;
+    border-radius: 22px !important;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(14, 165, 233, 0.11), transparent 34%),
+      radial-gradient(circle at 100% 100%, rgba(159, 39, 78, 0.14), transparent 38%),
+      linear-gradient(145deg, #09152a, #040919) !important;
+    box-shadow: 0 24px 54px rgba(0, 0, 0, 0.5) !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     visibility: hidden;
+    transform-origin: top right;
   }
 
   .main-nav.open {
     visibility: visible;
   }
 
+  .main-nav a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.025);
+    text-align: center;
+  }
+
+  .main-nav .nav-cta {
+    grid-column: 1 / -1;
+    margin: 4px 0 0 !important;
+  }
+}
+
+@media (max-width: 580px) {
+  html {
+    scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 100px);
+  }
+
+  .site-header .nav-wrap {
+    width: calc(100% - 16px) !important;
+    min-height: 74px;
+    padding: 9px 10px;
+    border-radius: 23px;
+  }
+
+  .site-header .brand {
+    gap: 10px;
+  }
+
+  .site-header .brand-portrait {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .site-header .brand-copy small {
+    display: block;
+  }
+
   .menu-toggle {
-    position: relative;
-    z-index: 80;
+    flex-basis: 50px;
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .main-nav {
+    top: calc(env(safe-area-inset-top, 0px) + 92px) !important;
+    right: 8px !important;
+    left: 8px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .site-header .nav-wrap {
+    min-height: 68px;
+    padding: 8px 9px;
+    gap: 9px;
+  }
+
+  .site-header .brand-portrait {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .site-header .brand-copy strong {
+    font-size: 0.98rem;
+  }
+
+  .site-header .brand-copy small {
+    display: none;
+  }
+
+  .menu-toggle {
+    flex-basis: 46px;
+    width: 46px !important;
+    height: 46px !important;
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .main-nav {
+    top: calc(env(safe-area-inset-top, 0px) + 84px) !important;
+    grid-template-columns: 1fr;
+  }
+
+  .main-nav .nav-cta {
+    grid-column: auto;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 860px) {
+  .site-header {
+    padding-top: 5px;
+  }
+
+  .site-header .nav-wrap {
+    min-height: 62px;
+    padding-block: 6px;
+  }
+
+  .site-header .brand-portrait {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .site-header .brand-copy small {
+    display: none;
+  }
+
+  .menu-toggle {
+    flex-basis: 44px;
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .main-nav {
+    top: 74px !important;
+    max-height: calc(100dvh - 82px);
   }
 }
 
