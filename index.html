@@ -10,12 +10,18 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://thismieo.github.io" />
   <title>Mohammed Muayad | AI Engineering Student</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="enhancements.css" />
   <link rel="stylesheet" href="v5.css" />
-  <script src="script.js" defer></script>
-  <script src="v5.js" defer></script>
-  <script src="neural-network.js" defer></script>
+  <link rel="stylesheet" href="v8.css?v=12" />
+  <link rel="stylesheet" href="v11.css?v=2" />
+  <link rel="stylesheet" href="v12.css?v=1" />
+  <script src="v12.js?v=1" defer></script>
 </head>
 <body>
   <canvas id="neural-bg" aria-hidden="true"></canvas>
@@ -27,13 +33,15 @@
 
   <header class="site-header" id="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="#home" aria-label="Mohammed Muayad home">
-        <span class="brand-mark">MM</span>
-        <span class="brand-copy">
+      <div class="brand">
+        <button class="brand-mark brand-portrait" id="portrait-trigger" type="button" aria-haspopup="dialog" aria-controls="portrait-modal" aria-label="Open Mohammed Muayad portrait" title="View portrait">
+          <img src="https://avatars.githubusercontent.com/u/302812532?v=4&s=256" alt="Mohammed Muayad" width="256" height="256" decoding="async" fetchpriority="high" />
+        </button>
+        <a class="brand-copy" href="#home" aria-label="Mohammed Muayad home">
           <strong>Mohammed Muayad</strong>
           <small>AI Engineering Student</small>
-        </span>
-      </a>
+        </a>
+      </div>
 
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
         <span></span><span></span><span></span>
@@ -53,7 +61,8 @@
 
   <main>
     <section class="hero section" id="home">
-      <div class="container hero-grid">
+      <div class="hero-maroon-wash" aria-hidden="true"></div>
+      <div class="container hero-grid hero-grid-v4">
         <div class="hero-copy reveal">
           <div class="eyebrow"><span class="status-dot"></span> Baghdad, Iraq · Learning in public</div>
           <p class="section-index">PORTFOLIO / 2026</p>
@@ -62,7 +71,7 @@
             <span>AI Engineering Student</span>
           </h1>
           <p class="hero-line">Building the Future with Code &amp; Intelligence.</p>
-          <div class="live-signal" aria-live="polite">
+          <div class="live-signal" aria-hidden="true">
             <span id="typed-signal">Python foundations active</span>
             <i class="typing-caret" aria-hidden="true"></i>
           </div>
@@ -89,10 +98,13 @@
             <div class="neural-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
             <div class="orbit orbit-one"><span></span><span></span><span></span></div>
             <div class="orbit orbit-two"><span></span><span></span><span></span><span></span></div>
-            <div class="core">
-              <small>AI CORE</small>
-              <strong>MM</strong>
-              <span>LEARN · BUILD · IMPROVE</span>
+            <div class="core core-v4">
+              <small>INTELLIGENCE ENGINE</small>
+              <strong>AI</strong>
+              <span>LEARN · TRAIN · BUILD</span>
+              <i class="core-spark core-spark-one" aria-hidden="true"></i>
+              <i class="core-spark core-spark-two" aria-hidden="true"></i>
+              <i class="core-spark core-spark-three" aria-hidden="true"></i>
             </div>
             <div class="signal-card signal-python">
               <span>FOUNDATION</span>
@@ -112,7 +124,7 @@
         </div>
       </div>
 
-      <div class="container metrics-grid reveal" aria-label="Journey overview">
+      <div class="container metrics-grid metrics-v4 reveal" aria-label="Journey overview">
         <article><span>Journey started</span><strong>04 Jun 2026</strong></article>
         <article><span>Current phase</span><strong>Python Foundations</strong></article>
         <article><span>Approach</span><strong>Learn → Practice → Build</strong></article>
@@ -240,13 +252,11 @@
                 <path class="connection" d="M100 200 L280 75 M100 200 L280 165 M100 200 L280 255 M100 200 L280 345 M100 200 L280 425" />
                 <path class="connection hot" d="M100 295 L280 75 M100 295 L280 165 M100 295 L280 255 M100 295 L280 345 M100 295 L280 425" />
                 <path class="connection" d="M100 390 L280 75 M100 390 L280 165 M100 390 L280 255 M100 390 L280 345 M100 390 L280 425" />
-
                 <path class="connection" d="M280 75 L475 110 M280 75 L475 205 M280 75 L475 300 M280 75 L475 395" />
                 <path class="connection hot" d="M280 165 L475 110 M280 165 L475 205 M280 165 L475 300 M280 165 L475 395" />
                 <path class="connection" d="M280 255 L475 110 M280 255 L475 205 M280 255 L475 300 M280 255 L475 395" />
                 <path class="connection hot" d="M280 345 L475 110 M280 345 L475 205 M280 345 L475 300 M280 345 L475 395" />
                 <path class="connection" d="M280 425 L475 110 M280 425 L475 205 M280 425 L475 300 M280 425 L475 395" />
-
                 <path class="connection hot" d="M475 110 L655 155 M475 110 L655 250 M475 110 L655 345" />
                 <path class="connection" d="M475 205 L655 155 M475 205 L655 250 M475 205 L655 345" />
                 <path class="connection hot" d="M475 300 L655 155 M475 300 L655 250 M475 300 L655 345" />
@@ -317,32 +327,50 @@
       <div class="container">
         <div class="section-heading reveal">
           <div><p class="section-index">06 / BUILD LOG</p><h2>Projects</h2></div>
-          <p>My project library will grow from small programming exercises into complete AI applications.</p>
+          <p>Future portfolio systems presented as clear engineering concepts, each designed to become a documented repository when its learning stage begins.</p>
         </div>
 
         <div class="projects-grid">
-          <article class="project-card reveal">
-            <div class="project-top"><span>PYTHON PRACTICE</span><b>01</b></div>
-            <h3>Restaurant Ordering System</h3>
-            <p>A command-line ordering exercise using input, conditions, pricing logic, validation, and a structured receipt.</p>
-            <div class="project-tags"><span>Python</span><span>Conditions</span><span>Logic</span></div>
-            <span class="project-status">DOCUMENTING</span>
+          <article class="project-card project-concept project-health project-v4 reveal">
+            <div class="project-visual project-visual-health" aria-hidden="true">
+              <svg viewBox="0 0 360 120"><path class="grid-line" d="M0 30H360M0 60H360M0 90H360M60 0V120M120 0V120M180 0V120M240 0V120M300 0V120"/><path class="signal-line" d="M0 72 L42 72 L59 58 L77 84 L99 35 L121 73 L154 73 L176 63 L198 77 L225 48 L246 73 L360 73"/></svg>
+              <div class="visual-badge"><span>DATA SIGNAL</span><b>HEALTH / 01</b></div>
+            </div>
+            <div class="project-body">
+              <div class="project-top"><span>HEALTH DATA ANALYSIS</span><b>01</b></div>
+              <h3>Heart Disease Risk Analysis</h3>
+              <p>A planned analysis of patient indicators such as age, blood pressure, cholesterol, heart rate, and chest-pain patterns to discover meaningful health trends.</p>
+              <div class="project-tags"><span>Python</span><span>Pandas</span><span>Healthcare Data</span></div>
+              <span class="project-status status-planned">PLANNED</span>
+            </div>
           </article>
 
-          <article class="project-card reveal">
-            <div class="project-top"><span>ALGORITHM PRACTICE</span><b>02</b></div>
-            <h3>Factorial Calculator</h3>
-            <p>A foundational algorithm exercise focused on variables, repeated multiplication, loops, and final output.</p>
-            <div class="project-tags"><span>Python</span><span>Loops</span><span>Algorithms</span></div>
-            <span class="project-status">PRACTICE</span>
+          <article class="project-card project-concept project-fraud project-v4 reveal">
+            <div class="project-visual project-visual-fraud" aria-hidden="true">
+              <svg viewBox="0 0 360 120"><g class="network-lines"><path d="M30 88L94 34L164 72L226 26L322 68"/><path d="M30 88L164 72L322 68"/><path d="M94 34L226 26"/></g><g class="network-nodes"><circle cx="30" cy="88" r="7"/><circle cx="94" cy="34" r="7"/><circle cx="164" cy="72" r="9"/><circle cx="226" cy="26" r="7"/><circle cx="322" cy="68" r="8"/></g></svg>
+              <div class="visual-badge"><span>ANOMALY MAP</span><b>SECURITY / 02</b></div>
+            </div>
+            <div class="project-body">
+              <div class="project-top"><span>FINANCIAL INTELLIGENCE</span><b>02</b></div>
+              <h3>Fraud Detection System</h3>
+              <p>A future classification system designed to detect unusual transaction patterns and separate normal financial behavior from suspicious activity.</p>
+              <div class="project-tags"><span>Machine Learning</span><span>Classification</span><span>Security</span></div>
+              <span class="project-status status-roadmap">ROADMAP</span>
+            </div>
           </article>
 
-          <article class="project-card project-future reveal">
-            <div class="project-top"><span>PORTFOLIO SYSTEM</span><b>03</b></div>
-            <h3>Python Learning Journey</h3>
-            <p>A structured public repository for exercises, lecture notes, mini-projects, and continuous improvement.</p>
-            <div class="project-tags"><span>Roadmap</span><span>GitHub</span><span>Documentation</span></div>
-            <span class="project-status">UPCOMING</span>
+          <article class="project-card project-concept project-traffic project-v4 reveal">
+            <div class="project-visual project-visual-traffic" aria-hidden="true">
+              <svg viewBox="0 0 360 120"><path class="road road-one" d="M-10 92C70 26 126 25 187 66S287 114 374 30"/><path class="road road-two" d="M-12 111C76 45 127 44 184 82S281 131 374 48"/><g class="traffic-points"><circle cx="57" cy="55" r="5"/><circle cx="135" cy="46" r="5"/><circle cx="210" cy="79" r="5"/><circle cx="302" cy="72" r="5"/></g></svg>
+              <div class="visual-badge"><span>FLOW FORECAST</span><b>SMART CITY / 03</b></div>
+            </div>
+            <div class="project-body">
+              <div class="project-top"><span>SMART CITY AI</span><b>03</b></div>
+              <h3>Smart Traffic Flow Prediction</h3>
+              <p>A future time-series and machine-learning system for forecasting congestion patterns and supporting more efficient urban traffic decisions.</p>
+              <div class="project-tags"><span>Time Series</span><span>Prediction</span><span>Smart Systems</span></div>
+              <span class="project-status status-future">FUTURE</span>
+            </div>
           </article>
         </div>
       </div>
@@ -374,10 +402,36 @@
           <p>Follow my learning journey, explore upcoming projects, or contact me through one of the channels below.</p>
         </div>
         <div class="contact-links">
-          <a href="https://github.com/thismieo" target="_blank" rel="noreferrer"><span>GitHub</span><b>@thismieo ↗</b></a>
-          <a href="mailto:thismieo@gmail.com"><span>Email</span><b>thismieo@gmail.com ↗</b></a>
-          <a href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer"><span>Kaggle</span><b>@thismieo ↗</b></a>
-          <a href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer"><span>Instagram</span><b>@thismieo ↗</b></a>
+          <a class="contact-icon-link" href="https://github.com/thismieo" target="_blank" rel="noreferrer">
+            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg></span>
+            <span class="contact-platform-copy"><small>GitHub</small><strong>@thismieo</strong></span>
+          </a>
+          <a class="contact-icon-link" href="mailto:thismieo@gmail.com">
+            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.75 5.5h16.5A1.75 1.75 0 0 1 22 7.25v9.5a1.75 1.75 0 0 1-1.75 1.75H3.75A1.75 1.75 0 0 1 2 16.75v-9.5A1.75 1.75 0 0 1 3.75 5.5Zm.1 2 8.15 5.34 8.15-5.34H3.85Zm16.15 9v-6.68l-7.45 4.88a1 1 0 0 1-1.1 0L4 9.82v6.68h16Z"/></svg></span>
+            <span class="contact-platform-copy"><small>Email</small><strong>thismieo@gmail.com</strong></span>
+          </a>
+          <a class="contact-icon-link" href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer">
+            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 3.2h2.55v7.61l6.15-7.61h3.03l-6.03 7.2 6.48 10.4h-2.92l-5.3-8.53-1.41 1.68v6.85H6.7V3.2Z"/></svg></span>
+            <span class="contact-platform-copy"><small>Kaggle</small><strong>@thismieo</strong></span>
+          </a>
+          <a class="contact-icon-link" href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">
+            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7Zm0 2A2.7 2.7 0 0 0 4.5 7.2v9.6a2.7 2.7 0 0 0 2.7 2.7h9.6a2.7 2.7 0 0 0 2.7-2.7V7.2a2.7 2.7 0 0 0-2.7-2.7H7.2Zm10.15 1.5a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7.2a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6Zm0 2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"/></svg></span>
+            <span class="contact-platform-copy"><small>Instagram</small><strong>@thismieo</strong></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section thank-you-section" id="thank-you">
+      <div class="container">
+        <div class="thank-you-card reveal">
+          <p class="section-index">09 / THANK YOU</p>
+          <h2>Thank you for visiting.</h2>
+          <p>This portfolio documents a real learning journey—one concept, one project, and one commit at a time. I appreciate your time and hope you return to see what is built next.</p>
+          <a href="#home" class="thank-you-home" aria-label="Return to the top of the page">
+            <span>Return to the beginning</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5 5.5 11.5l1.4 1.4 4.1-4.1V20h2V8.8l4.1 4.1 1.4-1.4L12 5Z"/></svg>
+          </a>
         </div>
       </div>
     </section>
@@ -390,5 +444,13 @@
       <span>© <span id="current-year">2026</span></span>
     </div>
   </footer>
+
+  <div class="portrait-modal portrait-modal-v6" id="portrait-modal" hidden aria-hidden="true">
+    <div class="portrait-modal-backdrop" aria-hidden="true"></div>
+    <figure class="portrait-dialog portrait-dialog-v6" role="dialog" aria-modal="true" aria-label="Portrait of Mohammed Muayad">
+      <button class="portrait-close" id="portrait-close" type="button" aria-label="Close portrait viewer"><span></span><span></span></button>
+      <img class="portrait-full-image" id="portrait-full-image" data-src="https://avatars.githubusercontent.com/u/302812532?v=4&s=2048" alt="Portrait of Mohammed Muayad" width="2048" height="2048" decoding="async" />
+    </figure>
+  </div>
 </body>
 </html>
