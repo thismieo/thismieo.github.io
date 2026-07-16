@@ -7,6 +7,35 @@
   const lowMemoryDevice = Number.isFinite(navigator.deviceMemory) && navigator.deviceMemory <= 4;
   const liteMode = mobileQuery.matches || saveData || lowCoreDevice || lowMemoryDevice;
 
+  const v8Stylesheet = document.createElement("link");
+  v8Stylesheet.rel = "stylesheet";
+  v8Stylesheet.href = "v8.css";
+  v8Stylesheet.dataset.portfolioV8 = "true";
+  document.head.appendChild(v8Stylesheet);
+
+  const shouldStartAtHome = () => !window.location.hash || window.location.hash === "#home";
+  if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+
+  const resetToHome = () => {
+    if (!shouldStartAtHome()) return;
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+
+  resetToHome();
+  window.addEventListener("DOMContentLoaded", resetToHome, { once: true });
+  window.addEventListener("load", () => {
+    resetToHome();
+    window.requestAnimationFrame(resetToHome);
+    window.setTimeout(resetToHome, 120);
+  }, { once: true });
+  window.addEventListener("pageshow", () => {
+    resetToHome();
+    window.requestAnimationFrame(resetToHome);
+    window.setTimeout(resetToHome, 120);
+  });
+
   const portraitThumb = "https://avatars.githubusercontent.com/u/302812532?v=4&s=256";
   const portraitFull = "https://avatars.githubusercontent.com/u/302812532?v=4&s=2048";
   const brandMark = document.querySelector(".brand-mark.brand-portrait");
@@ -17,11 +46,8 @@
     document.querySelector("#neural-bg")?.remove();
   }
 
-  // Prevent the older script from generating the large hero portrait.
   injectedPortrait?.remove();
 
-  // Begin downloading and decoding the large portrait as soon as possible.
-  // This prevents the phone viewer from opening on a soft, partially loaded frame.
   const portraitPreloader = new Image();
   portraitPreloader.decoding = "async";
   portraitPreloader.fetchPriority = "high";
@@ -80,17 +106,11 @@
     const openViewer = async () => {
       window.clearTimeout(closeTimer);
       lastFocusedElement = document.activeElement;
-
-      // Wait briefly for the full frame to decode. The timeout avoids delaying
-      // the viewer on unusually slow connections.
       await Promise.race([
         portraitReady,
-        new Promise((resolve) => window.setTimeout(resolve, 900))
+        new Promise((resolve) => window.setTimeout(resolve, 1200))
       ]);
-
-      if (fullImage && portraitPreloader.complete) {
-        fullImage.src = portraitPreloader.src;
-      }
+      if (fullImage && portraitPreloader.complete) fullImage.src = portraitPreloader.src;
       showModal();
     };
 
@@ -115,7 +135,6 @@
       if (event.key !== "Enter" && event.key !== " ") return;
       activatePortrait(event);
     });
-
     modal.addEventListener("click", closeViewer);
     closeButton?.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -127,8 +146,7 @@
   };
 
   const enhanceContactLinks = () => {
-    const contactLinks = [...document.querySelectorAll(".contact-links a")];
-    contactLinks.forEach((link) => {
+    [...document.querySelectorAll(".contact-links a")].forEach((link) => {
       const href = link.getAttribute("href") || "";
       const label = link.querySelector("span")?.textContent?.trim() || "Contact";
       const value = (link.querySelector("b")?.textContent || "").replace(/[↗→]+/g, "").trim();
@@ -136,12 +154,8 @@
       if (href.includes("github.com")) type = "github";
       else if (href.includes("kaggle.com")) type = "kaggle";
       else if (href.includes("instagram.com")) type = "instagram";
-
       link.classList.add("contact-icon-link");
-      link.innerHTML = `
-        <span class="contact-platform-icon">${icons[type]}</span>
-        <span class="contact-platform-copy"><small>${label}</small><strong>${value}</strong></span>
-      `;
+      link.innerHTML = `<span class="contact-platform-icon">${icons[type]}</span><span class="contact-platform-copy"><small>${label}</small><strong>${value}</strong></span>`;
     });
   };
 
@@ -149,23 +163,10 @@
     if (document.querySelector("#thank-you")) return;
     const footer = document.querySelector(".site-footer");
     if (!footer) return;
-
     const section = document.createElement("section");
     section.id = "thank-you";
     section.className = "section thank-you-section";
-    section.innerHTML = `
-      <div class="container">
-        <div class="thank-you-card">
-          <p class="section-index">09 / THANK YOU</p>
-          <h2>Thank you for visiting.</h2>
-          <p>This portfolio documents a real learning journey—one concept, one project, and one commit at a time. I appreciate your time and hope you return to see what is built next.</p>
-          <a href="#home" class="thank-you-home" aria-label="Return to the top of the page">
-            <span>Return to the beginning</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5 5.5 11.5l1.4 1.4 4.1-4.1V20h2V8.8l4.1 4.1 1.4-1.4L12 5Z"/></svg>
-          </a>
-        </div>
-      </div>
-    `;
+    section.innerHTML = `<div class="container"><div class="thank-you-card"><p class="section-index">09 / THANK YOU</p><h2>Thank you for visiting.</h2><p>This portfolio documents a real learning journey—one concept, one project, and one commit at a time. I appreciate your time and hope you return to see what is built next.</p><a href="#home" class="thank-you-home" aria-label="Return to the top of the page"><span>Return to the beginning</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5 5.5 11.5l1.4 1.4 4.1-4.1V20h2V8.8l4.1 4.1 1.4-1.4L12 5Z"/></svg></a></div></div>`;
     footer.before(section);
   };
 
@@ -178,41 +179,31 @@
     ];
     const elements = [...document.querySelectorAll(selectors.join(","))];
     if (!elements.length) return;
-
     elements.forEach((element, index) => {
       element.classList.add("v6-reveal");
       element.style.setProperty("--v6-delay", `${Math.min((index % 4) * 70, 210)}ms`);
     });
     document.documentElement.classList.add("v6-motion-ready");
-
     if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
       elements.forEach((element) => element.classList.add("v6-visible"));
       return;
     }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("v6-visible");
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -7%" }
-    );
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("v6-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -7%" });
     elements.forEach((element) => observer.observe(element));
   };
 
   const pauseOffscreenAnimations = () => {
-    const sections = ["#home", "#neural", "#projects"]
-      .map((selector) => document.querySelector(selector))
-      .filter(Boolean);
-
+    const sections = ["#home", "#neural", "#projects"].map((selector) => document.querySelector(selector)).filter(Boolean);
     if (!("IntersectionObserver" in window)) {
       sections.forEach((section) => section.classList.add("v6-active"));
       return;
     }
-
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => entry.target.classList.toggle("v6-active", entry.isIntersecting)),
       { threshold: 0.04, rootMargin: "15% 0px 15%" }
@@ -226,7 +217,7 @@
     addThankYouSection();
     setupSectionMotion();
     pauseOffscreenAnimations();
-    document.documentElement.classList.add("v6-ready");
+    document.documentElement.classList.add("v6-ready", "v8-ready");
   };
 
   if (document.readyState === "loading") {
