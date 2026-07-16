@@ -8,20 +8,27 @@
   const liteMode = mobileQuery.matches || saveData || lowCoreDevice || lowMemoryDevice;
 
   const portraitThumb = "https://avatars.githubusercontent.com/u/302812532?v=4&s=256";
-  const portraitFull = "https://avatars.githubusercontent.com/u/302812532?v=4&s=1024";
+  const portraitFull = "https://avatars.githubusercontent.com/u/302812532?v=4&s=2048";
   const brandMark = document.querySelector(".brand-mark.brand-portrait");
   const injectedPortrait = brandMark?.querySelector("img");
 
   if (liteMode) {
     document.documentElement.classList.add("v6-lite");
-    // The canvas is the most expensive continuous animation on phones.
-    // Removing it before neural-network.js runs prevents the render loop entirely.
     document.querySelector("#neural-bg")?.remove();
   }
 
-  // Portfolio V4 uses this image to create a large hero portrait. Remove it
-  // before neural-network.js executes, then restore only the compact header image.
+  // Prevent the older script from generating the large hero portrait.
   injectedPortrait?.remove();
+
+  // Begin downloading and decoding the large portrait as soon as possible.
+  // This prevents the phone viewer from opening on a soft, partially loaded frame.
+  const portraitPreloader = new Image();
+  portraitPreloader.decoding = "async";
+  portraitPreloader.fetchPriority = "high";
+  portraitPreloader.src = portraitFull;
+  const portraitReady = typeof portraitPreloader.decode === "function"
+    ? portraitPreloader.decode().catch(() => undefined)
+    : Promise.resolve();
 
   const icons = {
     github: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>`,
@@ -50,7 +57,7 @@
       <div class="portrait-modal-backdrop" aria-hidden="true"></div>
       <figure class="portrait-dialog portrait-dialog-v6" role="dialog" aria-modal="true" aria-label="Portrait of Mohammed Muayad">
         <button class="portrait-close" type="button" aria-label="Close portrait viewer"><span></span><span></span></button>
-        <img class="portrait-full-image" alt="Portrait of Mohammed Muayad" width="1024" height="1024" decoding="async" />
+        <img class="portrait-full-image" src="${portraitFull}" alt="Portrait of Mohammed Muayad" width="2048" height="2048" decoding="async" fetchpriority="high" />
       </figure>
     `;
     document.body.appendChild(modal);
@@ -60,10 +67,7 @@
     let lastFocusedElement = null;
     let closeTimer = 0;
 
-    const openViewer = () => {
-      window.clearTimeout(closeTimer);
-      lastFocusedElement = document.activeElement;
-      if (fullImage && !fullImage.src) fullImage.src = portraitFull;
+    const showModal = () => {
       modal.hidden = false;
       modal.setAttribute("aria-hidden", "false");
       document.body.classList.add("portrait-viewer-open");
@@ -71,6 +75,23 @@
         modal.classList.add("is-open");
         closeButton?.focus({ preventScroll: true });
       });
+    };
+
+    const openViewer = async () => {
+      window.clearTimeout(closeTimer);
+      lastFocusedElement = document.activeElement;
+
+      // Wait briefly for the full frame to decode. The timeout avoids delaying
+      // the viewer on unusually slow connections.
+      await Promise.race([
+        portraitReady,
+        new Promise((resolve) => window.setTimeout(resolve, 900))
+      ]);
+
+      if (fullImage && portraitPreloader.complete) {
+        fullImage.src = portraitPreloader.src;
+      }
+      showModal();
     };
 
     const closeViewer = () => {
@@ -95,7 +116,6 @@
       activatePortrait(event);
     });
 
-    // The user can close with X, Escape, the backdrop, or the image itself.
     modal.addEventListener("click", closeViewer);
     closeButton?.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -111,9 +131,7 @@
     contactLinks.forEach((link) => {
       const href = link.getAttribute("href") || "";
       const label = link.querySelector("span")?.textContent?.trim() || "Contact";
-      const value = (link.querySelector("b")?.textContent || "")
-        .replace(/[↗→]+/g, "")
-        .trim();
+      const value = (link.querySelector("b")?.textContent || "").replace(/[↗→]+/g, "").trim();
       let type = "email";
       if (href.includes("github.com")) type = "github";
       else if (href.includes("kaggle.com")) type = "kaggle";
@@ -153,21 +171,10 @@
 
   const setupSectionMotion = () => {
     const selectors = [
-      ".section-heading",
-      ".metrics-grid article",
-      ".about-grid > *",
-      ".roadmap-step",
-      ".stack-core",
-      ".stack-card",
-      ".network-visual",
-      ".neural-info-card",
-      ".focus-card",
-      ".project-card",
-      ".goals-copy",
-      ".goal-list > div",
-      ".contact-card",
-      ".contact-links a",
-      ".thank-you-card"
+      ".section-heading", ".metrics-grid article", ".about-grid > *", ".roadmap-step",
+      ".stack-core", ".stack-card", ".network-visual", ".neural-info-card",
+      ".focus-card", ".project-card", ".goals-copy", ".goal-list > div",
+      ".contact-card", ".contact-links a", ".thank-you-card"
     ];
     const elements = [...document.querySelectorAll(selectors.join(","))];
     if (!elements.length) return;
@@ -197,7 +204,10 @@
   };
 
   const pauseOffscreenAnimations = () => {
-    const sections = ["#home", "#neural", "#projects"].map((selector) => document.querySelector(selector)).filter(Boolean);
+    const sections = ["#home", "#neural", "#projects"]
+      .map((selector) => document.querySelector(selector))
+      .filter(Boolean);
+
     if (!("IntersectionObserver" in window)) {
       sections.forEach((section) => section.classList.add("v6-active"));
       return;
