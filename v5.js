@@ -9,9 +9,15 @@
 
   const v8Stylesheet = document.createElement("link");
   v8Stylesheet.rel = "stylesheet";
-  v8Stylesheet.href = "v8.css";
+  v8Stylesheet.href = "v8.css?v=10";
   v8Stylesheet.dataset.portfolioV8 = "true";
   document.head.appendChild(v8Stylesheet);
+
+  const v11Stylesheet = document.createElement("link");
+  v11Stylesheet.rel = "stylesheet";
+  v11Stylesheet.href = "v11.css?v=1";
+  v11Stylesheet.dataset.portfolioV11 = "true";
+  document.head.appendChild(v11Stylesheet);
 
   const shouldStartAtHome = () => !window.location.hash || window.location.hash === "#home";
   if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
@@ -174,9 +180,11 @@
     const selectors = [
       ".section-heading", ".metrics-grid article", ".about-grid > *", ".roadmap-step",
       ".stack-core", ".stack-card", ".network-visual", ".neural-info-card",
-      ".focus-card", ".project-card", ".goals-copy", ".goal-list > div",
-      ".contact-card", ".contact-links a", ".thank-you-card"
+      ".focus-card", ".project-card", ".contact-card", ".contact-links a", ".thank-you-card"
     ];
+
+    if (!mobileQuery.matches) selectors.push(".goals-copy", ".goal-list > div");
+
     const elements = [...document.querySelectorAll(selectors.join(","))];
     if (!elements.length) return;
     elements.forEach((element, index) => {
@@ -217,7 +225,7 @@
     addThankYouSection();
     setupSectionMotion();
     pauseOffscreenAnimations();
-    document.documentElement.classList.add("v6-ready", "v8-ready");
+    document.documentElement.classList.add("v6-ready", "v8-ready", "v11-ready");
   };
 
   if (document.readyState === "loading") {
