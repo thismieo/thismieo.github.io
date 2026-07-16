@@ -1,4 +1,4 @@
-/* Portfolio V13 — fast-scroll and mobile compositing stability */
+/* Portfolio V13/V14 — fast-scroll stability with reliable mobile navigation */
 
 /*
   Safari and other mobile browsers can expose the root canvas for a frame
@@ -17,17 +17,11 @@ body {
   overscroll-behavior-y: none;
 }
 
-/* Prevent transparent root gaps around the document edges and fixed header. */
+/* Prevent transparent root gaps around the document edges. */
 body,
-.site-header,
 .site-footer {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-}
-
-.site-header {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 @media (max-width: 860px) {
@@ -63,12 +57,33 @@ body,
     background-color: #030712;
   }
 
-  /* Keep fixed navigation on one compositor layer during fast swipes. */
+  /*
+    Keep the header untransformed. A transformed ancestor becomes the
+    containing block for position: fixed descendants in mobile Safari,
+    which caused the menu button to become X while the menu panel vanished.
+  */
   .site-header,
   .site-header.scrolled {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    will-change: auto;
+    -webkit-transform: none !important;
+    transform: none !important;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    overflow: visible !important;
+    isolation: isolate;
+  }
+
+  .main-nav {
+    z-index: 70;
+    visibility: hidden;
+  }
+
+  .main-nav.open {
+    visibility: visible;
+  }
+
+  .menu-toggle {
+    position: relative;
+    z-index: 80;
   }
 }
 
