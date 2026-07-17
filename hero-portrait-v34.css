@@ -1,16 +1,12 @@
-@import url("hero-polish-v36.css?v=20260717.36");
-
 /* Portfolio V34 — targeted portrait and identity refinement for the approved V33 Hero */
 
 @media (min-width: 861px) {
-  /* Keep the approved composition; only rebalance the personal side. */
   #home .hero-v33-story {
     grid-template-columns: clamp(164px, 12vw, 204px) minmax(0, 1fr);
     column-gap: clamp(24px, 2.2vw, 36px);
     align-items: center;
   }
 
-  /* Full, centered portrait: no organic crop, no oversized frame. */
   #home .hero-v33-portrait {
     width: min(100%, 204px);
     max-width: 204px;
@@ -30,9 +26,7 @@
     opacity: 0.8;
   }
 
-  #home .hero-v33-portrait::after {
-    content: none;
-  }
+  #home .hero-v33-portrait::after { content: none; }
 
   #home .hero-v33-portrait img {
     width: 100%;
@@ -59,14 +53,8 @@
       0 0 58px rgba(217, 70, 239, 0.06);
   }
 
-  /* The identity now lives beside the portrait, not in a small floating label. */
-  #home .hero-v33-portrait figcaption {
-    display: none;
-  }
-
-  #home .hero-v33-copy {
-    align-self: center;
-  }
+  #home .hero-v33-portrait figcaption { display: none; }
+  #home .hero-v33-copy { align-self: center; }
 
   #home .hero-v34-name {
     position: relative;
@@ -98,14 +86,8 @@
     color: #aebdd0;
   }
 
-  #home .hero-v33-index {
-    margin-bottom: 9px;
-  }
-
-  /* Keep headline readable after strengthening the name hierarchy. */
-  #home .hero-v33-copy h1 {
-    font-size: clamp(3.1rem, 4vw, 5rem);
-  }
+  #home .hero-v33-index { margin-bottom: 9px; }
+  #home .hero-v33-copy h1 { font-size: clamp(3.1rem, 4vw, 5rem); }
 }
 
 @media (min-width: 861px) and (max-width: 1180px) {
@@ -113,27 +95,15 @@
     grid-template-columns: 148px minmax(0, 1fr);
     column-gap: 22px;
   }
-
   #home .hero-v33-portrait {
     width: 148px;
     max-width: 148px;
   }
-
-  #home .hero-v34-name {
-    font-size: clamp(1.45rem, 2.3vw, 1.9rem);
-  }
-
-  #home .hero-v33-copy h1 {
-    font-size: clamp(2.65rem, 4.15vw, 4rem);
-  }
+  #home .hero-v34-name { font-size: clamp(1.45rem, 2.3vw, 1.9rem); }
+  #home .hero-v33-copy h1 { font-size: clamp(2.65rem, 4.15vw, 4rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #home .hero-v33-portrait img {
-    transition: none !important;
-  }
-
-  #home .hero-v33-portrait:hover img {
-    transform: none !important;
-  }
+  #home .hero-v33-portrait img { transition: none !important; }
+  #home .hero-v33-portrait:hover img { transform: none !important; }
 }
