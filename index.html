@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-release="2026.07.17.31">
+<html lang="en" data-release="2026.07.17.32">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -16,21 +16,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Release cache key: increment this value whenever a local CSS or JS asset changes. -->
-  <link rel="stylesheet" href="styles.css?v=20260717.31" />
-  <link rel="stylesheet" href="effects.css?v=20260717.31" />
-  <link rel="stylesheet" href="interface-polish.css?v=20260717.31" />
-  <link rel="stylesheet" href="portrait-mobile.css?v=20260717.31" />
-  <link rel="stylesheet" href="goals-mobile.css?v=20260717.31" />
-  <link rel="stylesheet" href="stability.css?v=20260717.31" />
-  <link rel="stylesheet" href="hero-portrait.css?v=20260717.31" />
-  <link rel="stylesheet" href="cyber-header.css?v=20260717.31" data-cyber-rail />
-  <link rel="stylesheet" href="goals-desktop.css?v=20260717.31" />
-  <link rel="stylesheet" href="neural-layout.css?v=20260717.31" />
-  <link rel="stylesheet" href="desktop-rhythm.css?v=20260717.31" />
-  <link rel="stylesheet" href="mobile.css?v=20260717.31" />
-  <script src="interactions.js?v=20260717.31" defer></script>
-  <script src="portrait.js?v=20260717.31" defer></script>
-  <script src="mobile-nav.js?v=20260717.31" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260717.32" />
+  <link rel="stylesheet" href="effects.css?v=20260717.32" />
+  <link rel="stylesheet" href="interface-polish.css?v=20260717.32" />
+  <link rel="stylesheet" href="portrait-mobile.css?v=20260717.32" />
+  <link rel="stylesheet" href="goals-mobile.css?v=20260717.32" />
+  <link rel="stylesheet" href="stability.css?v=20260717.32" />
+  <link rel="stylesheet" href="hero-portrait.css?v=20260717.32" />
+  <link rel="stylesheet" href="cyber-header.css?v=20260717.32" data-cyber-rail />
+  <link rel="stylesheet" href="goals-desktop.css?v=20260717.32" />
+  <link rel="stylesheet" href="neural-layout.css?v=20260717.32" />
+  <link rel="stylesheet" href="desktop-rhythm.css?v=20260717.32" />
+  <link rel="stylesheet" href="hero-premium-v32.css?v=20260717.32" />
+  <link rel="stylesheet" href="mobile.css?v=20260717.32" />
+  <script src="interactions.js?v=20260717.32" defer></script>
+  <script src="portrait.js?v=20260717.32" defer></script>
+  <script src="mobile-nav.js?v=20260717.32" defer></script>
 </head>
 <body>
   <canvas id="neural-bg" aria-hidden="true"></canvas>
@@ -62,83 +63,147 @@
     <section class="hero section" id="home">
       <div class="hero-maroon-wash" aria-hidden="true"></div>
 
-      <div class="container hero-desktop-v31">
-        <div class="hero-story reveal">
-          <div class="hero-kicker"><span class="status-dot"></span> AI Engineering Student · Baghdad, Iraq</div>
-          <p class="hero-nameplate">Mohammed Muayad / Learning in Public</p>
-          <h1>Engineering <span>Intelligent Systems</span> for Real-World Impact.</h1>
-          <p class="hero-caption">Building the Future with Code &amp; Intelligence.</p>
-          <p class="hero-summary">
-            I am building a real path from Python foundations to machine learning, neural systems,
-            and generative AI—turning every learning stage into practical work and documented progress.
+      <div class="container hero-premium-v32">
+        <div class="hero-personal reveal">
+          <div class="hero-v32-eyebrow">
+            <span class="hero-v32-live" aria-hidden="true"></span>
+            <span>Mohammed Muayad</span>
+            <i aria-hidden="true"></i>
+            <span>AI Engineering Student</span>
+          </div>
+
+          <p class="hero-v32-index">PORTFOLIO / 2026 · BAGHDAD, IRAQ</p>
+          <h1>Building <span>Intelligent Systems</span> for the Future.</h1>
+          <p class="hero-v32-caption">Building the Future with <span>Code &amp; Intelligence.</span></p>
+          <p class="hero-v32-summary">
+            I am building a disciplined path from Python foundations to artificial intelligence through clear study,
+            consistent practice, documented progress, and projects that turn learning into real technical evidence.
           </p>
-          <div class="hero-runtime">Python foundations active · System learning continuously</div>
 
-          <div class="hero-desktop-actions">
-            <a class="button button-primary" href="#journey">Explore My Journey</a>
-            <a class="button button-secondary" href="#projects">View My Work</a>
+          <div class="hero-v32-actions">
+            <a class="button button-primary" href="#journey">
+              <span>Explore the Journey</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="button button-secondary" href="#projects">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.4 7.7 7.6 4.4 7.6-4.4M12 12.1V21"/></svg>
+              <span>View Projects</span>
+            </a>
           </div>
 
-          <div class="hero-desktop-social" aria-label="Social links">
-            <a href="https://github.com/thismieo" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer">Kaggle</a>
-            <a href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">Instagram</a>
-            <a href="mailto:thismieo@gmail.com">Email</a>
-          </div>
+          <nav class="hero-v32-links" aria-label="Profile links">
+            <a href="https://github.com/thismieo" target="_blank" rel="noreferrer">
+              <svg class="solid-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+              <span>GitHub</span>
+            </a>
+            <a href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer">
+              <svg class="solid-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 3.2h2.55v7.61l6.15-7.61h3.03l-6.03 7.2 6.48 10.4h-2.92l-5.3-8.53-1.41 1.68v6.85H6.7V3.2Z"/></svg>
+              <span>Kaggle</span>
+            </a>
+            <a href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <span>Instagram</span>
+            </a>
+            <a href="mailto:thismieo@gmail.com">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="m4 7 8 6 8-6"/></svg>
+              <span>Email</span>
+            </a>
+          </nav>
+
+          <pre class="hero-v32-code" aria-hidden="true"><code><span class="code-key">const</span> journey = {
+  current: <span class="code-string">"Python Foundations"</span>,
+  method: [<span class="code-string">"learn"</span>, <span class="code-string">"practice"</span>, <span class="code-string">"build"</span>],
+  direction: <span class="code-accent">"AI Engineering"</span>
+};</code></pre>
         </div>
 
-        <div class="hero-system-panel reveal" aria-label="Cyberpunk neural learning architecture">
-          <div class="neural-system-map">
-            <svg class="system-connections" viewBox="0 0 760 620" preserveAspectRatio="none" aria-hidden="true">
-              <path d="M380 305 C380 245 380 190 380 125" />
-              <path d="M380 305 C320 285 250 270 150 270" />
-              <path d="M380 305 C440 285 510 270 610 270" />
-              <path d="M380 305 C330 365 280 430 205 505" />
-              <path d="M380 305 C430 365 480 430 555 505" />
-              <circle cx="380" cy="125" r="4" />
-              <circle cx="150" cy="270" r="4" />
-              <circle cx="610" cy="270" r="4" />
-              <circle cx="205" cy="505" r="4" />
-              <circle cx="555" cy="505" r="4" />
-            </svg>
+        <div class="hero-neural-minimal reveal" role="img" aria-label="Minimal neural network representing a path from programming foundations to intelligent systems">
+          <div class="neural-v32-label">NEURAL PATH / ACTIVE</div>
 
-            <div class="neural-core-v31">
-              <small>INTELLIGENCE CORE</small>
-              <strong>AI</strong>
-              <span>LEARN · BUILD · IMPROVE</span>
-            </div>
+          <svg class="neural-v32-lines" viewBox="0 0 620 620" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="hero-v32-flow" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#67e8f9" />
+                <stop offset="0.5" stop-color="#818cf8" />
+                <stop offset="1" stop-color="#f472b6" />
+              </linearGradient>
+            </defs>
+            <path d="M310 304 C250 245 185 190 112 140" />
+            <path d="M310 304 C375 245 445 190 510 145" />
+            <path d="M310 304 C375 370 443 430 505 485" />
+            <path d="M310 304 C247 370 182 430 112 482" />
+            <circle cx="112" cy="140" r="4" />
+            <circle cx="510" cy="145" r="4" />
+            <circle cx="505" cy="485" r="4" />
+            <circle cx="112" cy="482" r="4" />
+          </svg>
 
-            <article class="neural-node node-python" data-code="PY" data-index="01">
-              <h2>Python Foundations</h2>
-              <p>Core programming, logic, algorithms, and problem solving.</p>
-              <span>Active</span>
-            </article>
+          <div class="neural-v32-core" aria-hidden="true">
+            <small>INTELLIGENCE</small>
+            <strong>AI</strong>
+            <span>learn · reason · build</span>
+          </div>
 
-            <article class="neural-node node-data" data-code="DA" data-index="02">
-              <h2>Data Analysis</h2>
-              <p>Cleaning, exploring, visualizing, and understanding data.</p>
-              <span>Next</span>
-            </article>
+          <div class="neural-v32-node node-v32-code" aria-hidden="true">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+            </span>
+            <span><strong>Code</strong><small>Active foundation</small></span>
+          </div>
 
-            <article class="neural-node node-ml" data-code="ML" data-index="03">
-              <h2>Machine Learning</h2>
-              <p>Training, evaluation, optimization, and intelligent prediction.</p>
-              <span>Roadmap</span>
-            </article>
+          <div class="neural-v32-node node-v32-data" aria-hidden="true">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7M3 20h18"/></svg>
+            </span>
+            <span><strong>Data</strong><small>Next layer</small></span>
+          </div>
 
-            <article class="neural-node node-neural" data-code="NN" data-index="04">
-              <h2>Neural Systems</h2>
-              <p>Deep learning, neural networks, and model architectures.</p>
-              <span>Planned</span>
-            </article>
+          <div class="neural-v32-node node-v32-models" aria-hidden="true">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="17" r="2.5"/><circle cx="19" cy="17" r="2.5"/><path d="M10.6 7.1 6.4 14.9M13.4 7.1l4.2 7.8M7.5 17h9"/></svg>
+            </span>
+            <span><strong>Models</strong><small>Roadmap</small></span>
+          </div>
 
-            <article class="neural-node node-gen" data-code="GA" data-index="05">
-              <h2>Generative AI</h2>
-              <p>LLMs, intelligent applications, and useful generated content.</p>
-              <span>Vision</span>
-            </article>
+          <div class="neural-v32-node node-v32-gen" aria-hidden="true">
+            <span class="node-icon">
+              <svg viewBox="0 0 24 24"><path d="m12 3 1.4 4.1L17.5 8.5l-4.1 1.4L12 14l-1.4-4.1-4.1-1.4 4.1-1.4L12 3ZM18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></svg>
+            </span>
+            <span><strong>Generative AI</strong><small>Long-term vision</small></span>
+          </div>
+
+          <div class="neural-v32-status">
+            <span>Current focus</span>
+            <strong>Python Foundations</strong>
           </div>
         </div>
+      </div>
+
+      <div class="container hero-v32-rail reveal" aria-label="Learning journey overview">
+        <article>
+          <span class="rail-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+          </span>
+          <div><span>Journey started</span><strong>04 Jun 2026</strong></div>
+        </article>
+        <article>
+          <span class="rail-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+          </span>
+          <div><span>Current focus</span><strong>Python Foundations</strong></div>
+        </article>
+        <article>
+          <span class="rail-icon purple">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v5H4zM13 13h7v5h-7zM11 8.5h2a3 3 0 0 1 3 3v1.5"/></svg>
+          </span>
+          <div><span>Learning method</span><strong>Understand → Practice → Build</strong></div>
+        </article>
+        <article>
+          <span class="rail-icon pink">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/><path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15Z"/></svg>
+          </span>
+          <div><span>Direction</span><strong>AI Engineering</strong></div>
+        </article>
       </div>
 
       <div class="container hero-grid hero-grid-v4 hero-mobile-legacy">
@@ -216,12 +281,13 @@
         </div>
       </div>
 
-      <div class="container metrics-grid metrics-v4 reveal" aria-label="Journey overview">
+      <div class="container metrics-grid metrics-v4 hero-mobile-metrics reveal" aria-label="Journey overview">
         <article><span>Journey started</span><strong>04 Jun 2026</strong></article>
         <article><span>Current phase</span><strong>Python Foundations</strong></article>
         <article><span>Approach</span><strong>Learn → Practice → Build</strong></article>
       </div>
     </section>
+
     <div class="system-ticker" aria-hidden="true">
       <div class="ticker-track">
         <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
@@ -506,7 +572,7 @@
             <span class="contact-platform-copy"><small>Kaggle</small><strong>@thismieo</strong></span>
           </a>
           <a class="contact-icon-link" href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">
-            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7Zm0 2A2.7 2.7 0 0 0 4.5 7.2v9.6a2.7 2.7 0 0 0 2.7 2.7h9.6a2.7 2.7 0 0 0 2.7-2.7V7.2a2.7 2.7 0 0 0-2.7-2.7H7.2Zm10.15 1.5a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7.2a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6Zm0 2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"/></svg></span>
+            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7Zm0 2A2.7 2.7 0 0 0 4.5 7.2v9.6a2.7 2.7 0 0 0 2.7 2.7h9.6a2.7 2.7 0 0 0 2.7-2.7V7.2a2.7 2.7 0 0 0-2.7-2.7H7.2Zm10.15 1.5a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7.2a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1-4.8-4.8Zm0 2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"/></svg></span>
             <span class="contact-platform-copy"><small>Instagram</small><strong>@thismieo</strong></span>
           </a>
         </div>
