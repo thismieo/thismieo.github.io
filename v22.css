@@ -1,0 +1,12 @@
+/* Portfolio V22 — desktop neural section spacing and boundary fix */
+
+@media (min-width: 861px) {
+  #neural.neural-section {
+    padding-top: 96px;
+    padding-bottom: 72px;
+  }
+
+  #neural.neural-section::before {
+    inset: 0 !important;
+  }
+}
