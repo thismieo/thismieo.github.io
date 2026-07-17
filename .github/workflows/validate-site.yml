@@ -3,9 +3,7 @@ name: Validate portfolio
 on:
   pull_request:
     branches: [main]
-  push:
-    branches:
-      - dev-portfolio-v12-code-consolidation
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -23,7 +21,12 @@ jobs:
           node-version: "22"
 
       - name: Validate JavaScript syntax
-        run: node --check v12.js
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in interactions.js portrait.js mobile-nav.js; do
+            node --check "$file"
+          done
 
       - name: Validate site structure and assets
         run: python3 scripts/validate_site.py
