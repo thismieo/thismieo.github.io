@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.44";
+  document.documentElement.dataset.release = "2026.07.18.46";
 
   const ticker = document.querySelector(".system-ticker");
   if (!ticker || ticker.dataset.tickerV44Ready === "true") return;
