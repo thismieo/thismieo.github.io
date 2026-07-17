@@ -1,0 +1,200 @@
+/* Portfolio V44 — seamless night Hero surface and a measured live world ticker. */
+
+@media (min-width: 861px) {
+  /* The section itself no longer paints a hard rectangular slab. */
+  html body #home.hero.section {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* A calm navy surface carries the accent colors, then dissolves into the page. */
+  html body #home.hero::before {
+    inset: 0 !important;
+    opacity: 1 !important;
+    background:
+      radial-gradient(ellipse 58% 72% at 18% 38%, rgba(54, 112, 158, 0.064), transparent 74%),
+      radial-gradient(ellipse 62% 74% at 84% 43%, rgba(102, 75, 137, 0.068), transparent 76%),
+      linear-gradient(180deg, rgba(3, 8, 18, 0.98) 0%, rgba(5, 11, 24, 0.955) 58%, rgba(4, 9, 20, 0.78) 79%, rgba(3, 7, 18, 0) 100%) !important;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 69%, rgba(0, 0, 0, 0.78) 84%, transparent 100%) !important;
+    mask-image: linear-gradient(180deg, #000 0%, #000 69%, rgba(0, 0, 0, 0.78) 84%, transparent 100%) !important;
+  }
+
+  /* Keep the technical grid, but let it disappear before it exposes a box edge. */
+  html body #home.hero::after {
+    inset: 74px 0 0 !important;
+    opacity: 0.19 !important;
+    background:
+      linear-gradient(rgba(119, 174, 207, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(119, 174, 207, 0.018) 1px, transparent 1px) !important;
+    background-size: 58px 58px !important;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 17%, rgba(0, 0, 0, 0.72) 68%, transparent 100%) !important;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 17%, rgba(0, 0, 0, 0.72) 68%, transparent 100%) !important;
+  }
+
+  html body #home .hero-maroon-wash {
+    opacity: 0.1 !important;
+    background:
+      radial-gradient(ellipse at 20% 43%, rgba(47, 107, 151, 0.055), transparent 58%),
+      radial-gradient(ellipse at 84% 43%, rgba(105, 65, 119, 0.06), transparent 57%) !important;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.76) 72%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.76) 72%, transparent 100%);
+  }
+
+  html body #home .hero-maroon-wash::after {
+    opacity: 0.14 !important;
+  }
+
+  html body #home .hero-premium-v33,
+  html body #home .hero-v33-capsules {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  html body #home .hero-premium-v33::before,
+  html body #home .hero-premium-v33::after {
+    opacity: 0.54;
+  }
+
+  /* The capsule colors remain useful accents rather than separate bright panels. */
+  html body #home .hero-v33-capsules article {
+    border-color: rgba(var(--capsule-accent), 0.095) !important;
+    background:
+      radial-gradient(190px circle at var(--capsule-x) var(--capsule-y), rgba(var(--capsule-accent), 0.052), transparent 64%),
+      radial-gradient(circle at 0% 50%, rgba(var(--capsule-accent), 0.04), transparent 48%),
+      rgba(5, 12, 27, 0.52) !important;
+    box-shadow:
+      0 14px 38px rgba(0, 0, 0, 0.19),
+      inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
+  }
+
+  html body #home .hero-v33-capsules article:hover,
+  html body #home .hero-v33-capsules article:focus-visible {
+    border-color: rgba(var(--capsule-accent), 0.22) !important;
+    background:
+      radial-gradient(210px circle at var(--capsule-x) var(--capsule-y), rgba(var(--capsule-accent), 0.085), transparent 66%),
+      radial-gradient(circle at 0% 50%, rgba(var(--capsule-accent), 0.065), transparent 52%),
+      rgba(6, 15, 31, 0.66) !important;
+  }
+
+  /* Decorative arrows stay removed while the four capsules remain real links. */
+  html body #home .capsule-v40-link-mark {
+    display: none !important;
+  }
+}
+
+/* Live world-time ribbon. The JavaScript measures one complete group in pixels. */
+.system-ticker {
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  border-block: 1px solid rgba(139, 177, 210, 0.055) !important;
+  background:
+    linear-gradient(90deg, rgba(3, 8, 19, 0.96), rgba(5, 12, 25, 0.9) 48%, rgba(11, 9, 23, 0.93)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.014),
+    0 16px 46px rgba(0, 0, 0, 0.12);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3.5%, #000 96.5%, transparent) !important;
+  mask-image: linear-gradient(90deg, transparent, #000 3.5%, #000 96.5%, transparent) !important;
+}
+
+.ticker-v44-track {
+  width: max-content;
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.ticker-v44-track.is-ready {
+  animation: tickerV44 var(--ticker-v44-duration, 72s) linear infinite;
+}
+
+.ticker-v44-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0;
+}
+
+.ticker-v44-item {
+  position: relative;
+  min-height: 35px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  padding: 0 30px 0 15px;
+  color: #8294aa;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.61rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticker-v44-item::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(112, 221, 235, 0.76);
+  box-shadow: 0 0 8px rgba(103, 232, 249, 0.28);
+}
+
+.ticker-v44-city {
+  color: #a7b8ca;
+}
+
+.ticker-v44-time {
+  color: #78cbd8;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.system-ticker:hover .ticker-v44-track,
+.system-ticker:focus-within .ticker-v44-track {
+  animation-play-state: paused;
+}
+
+@keyframes tickerV44 {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--ticker-v44-shift, -1200px), 0, 0); }
+}
+
+@media (max-width: 860px) {
+  .ticker-v44-item {
+    min-height: 33px;
+    padding-right: 24px;
+    font-size: 0.57rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-ticker {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .system-ticker::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ticker-v44-track,
+  .ticker-v44-track.is-ready {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .ticker-v44-group[aria-hidden="true"] {
+    display: none !important;
+  }
+}
