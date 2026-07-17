@@ -1,22 +1,31 @@
-/* Portfolio V18 — cyber rail navigation and clean portrait framing */
+/* Portfolio V46 — measured cyber rail, calm night surface, and phone-safe navigation. */
 
-/* The rail belongs to normal document flow: no sticky hide/show behavior. */
 .site-header,
 .site-header.scrolled,
 .site-header.header-hidden {
   position: relative !important;
   inset: auto !important;
   top: auto !important;
+  z-index: 100 !important;
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
   transform: none !important;
   transition: none !important;
-  padding: max(10px, env(safe-area-inset-top)) 0 0 !important;
+  padding-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+  padding-right: env(safe-area-inset-right, 0px) !important;
+  padding-left: env(safe-area-inset-left, 0px) !important;
   border: 0 !important;
   background: transparent !important;
+  box-shadow: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
+  overflow: visible !important;
+}
+
+.site-header::before {
+  content: none !important;
+  display: none !important;
 }
 
 .site-header .nav-wrap {
@@ -28,15 +37,16 @@
   gap: 10px;
   margin-inline: auto;
   padding: 7px 8px !important;
-  border: 1px solid rgba(91, 205, 255, 0.24) !important;
+  border: 1px solid rgba(116, 174, 213, 0.18) !important;
   border-radius: 17px !important;
   background:
-    linear-gradient(90deg, rgba(4, 12, 27, 0.98), rgba(7, 20, 39, 0.98) 46%, rgba(18, 8, 25, 0.98)),
-    #050b18 !important;
+    radial-gradient(circle at 10% 20%, rgba(57, 129, 172, 0.055), transparent 35%),
+    radial-gradient(circle at 88% 80%, rgba(108, 72, 128, 0.06), transparent 38%),
+    linear-gradient(100deg, rgba(3, 10, 23, 0.985), rgba(6, 15, 31, 0.98) 48%, rgba(13, 9, 24, 0.985)) !important;
   box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    inset 0 -1px 0 rgba(159, 39, 78, 0.16) !important;
+    0 16px 42px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    inset 0 -1px 0 rgba(139, 82, 132, 0.08) !important;
   overflow: visible !important;
 }
 
@@ -50,18 +60,18 @@
 
 .site-header .nav-wrap::before {
   left: 18px;
-  right: 44%;
+  right: 49%;
   top: -1px;
-  background: linear-gradient(90deg, transparent, #67e8f9 32%, #60a5fa 72%, transparent);
-  box-shadow: 0 0 12px rgba(103, 232, 249, 0.38);
+  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.72) 34%, rgba(96, 165, 250, 0.42) 74%, transparent);
+  box-shadow: 0 0 10px rgba(103, 232, 249, 0.18);
 }
 
 .site-header .nav-wrap::after {
-  left: 54%;
+  left: 56%;
   right: 18px;
   bottom: -1px;
-  background: linear-gradient(90deg, transparent, #9f274e 38%, #f0a8bf 74%, transparent);
-  box-shadow: 0 0 12px rgba(159, 39, 78, 0.34);
+  background: linear-gradient(90deg, transparent, rgba(134, 90, 158, 0.38) 36%, rgba(240, 168, 191, 0.48) 76%, transparent);
+  box-shadow: 0 0 10px rgba(159, 39, 78, 0.16);
 }
 
 .cyber-rail {
@@ -69,33 +79,32 @@
   flex: 1 1 auto;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   min-height: 48px;
-  padding: 0 6px 0 4px;
+  padding: 0 5px 0 4px;
 }
 
 .cyber-rail-title {
   flex: 0 0 auto;
-  min-width: 154px;
+  min-width: 148px;
   display: grid;
-  gap: 1px;
+  gap: 2px;
   padding: 5px 12px 5px 10px;
-  border-left: 2px solid #67e8f9;
-  color: #f7fbff;
-  text-decoration: none;
+  border-left: 2px solid rgba(103, 232, 249, 0.78);
+  color: #f5f9ff;
   line-height: 1;
 }
 
 .cyber-rail-title span {
-  color: #72c9f4;
-  font-size: 0.52rem;
-  font-weight: 700;
+  color: #6eb8d8;
+  font-size: 0.5rem;
+  font-weight: 750;
   letter-spacing: 0.2em;
 }
 
 .cyber-rail-title strong {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   letter-spacing: 0.14em;
 }
 
@@ -107,34 +116,71 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  border-inline: 1px solid rgba(103, 232, 249, 0.12);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  border-inline: 1px solid rgba(116, 174, 213, 0.08);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
 
-.cyber-track {
+.cyber-track-v46 {
   width: max-content;
+  min-width: max-content;
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding-inline: 18px;
-  white-space: nowrap;
-  animation: cyber-rail-flow 30s linear infinite;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
-.cyber-track span {
-  position: relative;
-  color: #9edafa;
-  font-size: 0.58rem;
-  font-weight: 650;
-  letter-spacing: 0.16em;
+.cyber-track-v46.is-ready {
+  animation: cyberV46Flow var(--cyber-v46-duration, 44s) linear infinite;
+}
+
+.cyber-group-v46 {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.cyber-item-v46 {
+  min-height: 32px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 0 22px 0 13px;
+  color: #8296ad;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.cyber-track span::after {
-  content: "//";
-  margin-left: 18px;
-  color: rgba(240, 168, 191, 0.62);
+.cyber-item-v46::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(105, 214, 230, 0.8);
+  box-shadow: 0 0 7px rgba(103, 232, 249, 0.3);
+}
+
+.cyber-city-v46 {
+  color: #a8b8c9;
+}
+
+.cyber-time-v46 {
+  color: #72c7d5;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.cyber-stream:hover .cyber-track-v46,
+.cyber-stream:focus-within .cyber-track-v46 {
+  animation-play-state: paused;
 }
 
 .cyber-status {
@@ -143,22 +189,22 @@
   align-items: center;
   gap: 7px;
   padding: 7px 9px;
-  border: 1px solid rgba(52, 211, 153, 0.18);
+  border: 1px solid rgba(52, 211, 153, 0.14);
   border-radius: 10px;
-  background: rgba(4, 18, 24, 0.64);
-  color: #9ae6c6;
-  font-size: 0.52rem;
-  font-weight: 700;
+  background: rgba(4, 18, 24, 0.5);
+  color: #8ddab8;
+  font-size: 0.5rem;
+  font-weight: 750;
   letter-spacing: 0.14em;
 }
 
 .cyber-status i {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #34d399;
-  box-shadow: 0 0 10px rgba(52, 211, 153, 0.72);
-  animation: cyber-status-pulse 2.8s ease-in-out infinite;
+  box-shadow: 0 0 9px rgba(52, 211, 153, 0.55);
+  animation: cyberV46Status 3s ease-in-out infinite;
 }
 
 .site-header .main-nav {
@@ -178,47 +224,18 @@
   width: 48px !important;
   height: 48px !important;
   border-radius: 12px !important;
-  border-color: rgba(103, 232, 249, 0.24) !important;
-  background:
-    linear-gradient(145deg, rgba(17, 34, 58, 0.98), rgba(7, 14, 30, 0.99)) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(159, 39, 78, 0.08) !important;
+  border-color: rgba(103, 232, 249, 0.18) !important;
+  background: linear-gradient(145deg, rgba(14, 29, 50, 0.98), rgba(6, 13, 28, 0.99)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
 }
 
-/* Remove only the black letterbox bands by using a slightly wider crop. */
-.hero-portrait {
-  width: clamp(270px, 32vw, 420px) !important;
-  aspect-ratio: 1.22 / 1 !important;
-  overflow: hidden !important;
-  border-radius: 26px !important;
+@keyframes cyberV46Flow {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--cyber-v46-shift, -900px), 0, 0); }
 }
 
-.hero-portrait::before,
-.hero-portrait::after {
-  display: none !important;
-}
-
-.hero-portrait img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  border-radius: 21px !important;
-  background: transparent !important;
-}
-
-.hero {
-  padding-top: clamp(48px, 6vw, 86px) !important;
-}
-
-@keyframes cyber-rail-flow {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@keyframes cyber-status-pulse {
-  0%, 100% { opacity: 0.72; }
+@keyframes cyberV46Status {
+  0%, 100% { opacity: 0.66; }
   50% { opacity: 1; }
 }
 
@@ -240,25 +257,29 @@
   .site-header,
   .site-header.scrolled,
   .site-header.header-hidden {
-    padding-top: max(8px, env(safe-area-inset-top)) !important;
+    padding-top: max(8px, env(safe-area-inset-top, 0px)) !important;
+    padding-right: max(6px, env(safe-area-inset-right, 0px)) !important;
+    padding-left: max(6px, env(safe-area-inset-left, 0px)) !important;
   }
 
   .site-header .nav-wrap {
-    width: calc(100% - 16px) !important;
+    width: min(100%, 720px) !important;
     min-height: 60px !important;
     gap: 7px;
     padding: 6px !important;
+    border-radius: 15px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
   }
 
   .cyber-rail {
-    gap: 8px;
+    gap: 7px;
     min-height: 46px;
-    padding-left: 2px;
+    padding-left: 1px;
   }
 
   .cyber-rail-title {
-    min-width: 103px;
-    padding: 5px 8px;
+    min-width: 96px;
+    padding: 5px 7px;
   }
 
   .cyber-rail-title span {
@@ -266,27 +287,22 @@
   }
 
   .cyber-rail-title strong {
-    font-size: 0.72rem;
-    letter-spacing: 0.11em;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
   }
 
   .cyber-stream {
     height: 30px;
+    border-inline: 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 94%, transparent);
   }
 
-  .cyber-track {
-    gap: 14px;
-    padding-inline: 14px;
-    animation-duration: 24s;
-  }
-
-  .cyber-track span {
-    font-size: 0.5rem;
-    letter-spacing: 0.12em;
-  }
-
-  .cyber-track span::after {
-    margin-left: 14px;
+  .cyber-item-v46 {
+    min-height: 29px;
+    padding: 0 18px 0 10px;
+    font-size: 0.48rem;
+    letter-spacing: 0.11em;
   }
 
   .menu-toggle {
@@ -307,60 +323,93 @@
     bottom: auto !important;
     max-height: min(68dvh, 520px);
     z-index: 90;
-  }
-
-  .hero {
-    padding-top: 42px !important;
-  }
-
-  .hero-portrait {
-    width: min(86vw, 370px) !important;
-    aspect-ratio: 1.18 / 1 !important;
-    margin-top: 18px !important;
-    margin-bottom: 28px !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background: rgba(3, 8, 19, 0.99) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
 
 @media (max-width: 430px) {
+  .site-header .nav-wrap {
+    gap: 5px;
+  }
+
+  .cyber-rail {
+    gap: 5px;
+  }
+
   .cyber-rail-title {
-    min-width: 88px;
+    min-width: 76px;
+    padding-inline: 6px;
   }
 
   .cyber-rail-title strong {
-    font-size: 0.64rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.075em;
   }
 
-  .cyber-track span {
-    font-size: 0.46rem;
+  .cyber-item-v46 {
+    padding-right: 15px;
+    font-size: 0.44rem;
   }
 
-  .hero-portrait {
-    width: min(88vw, 348px) !important;
-    aspect-ratio: 1.16 / 1 !important;
+  .menu-toggle {
+    flex-basis: 44px;
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .cyber-rail-title {
+    min-width: 65px;
+  }
+
+  .cyber-rail-title strong {
+    font-size: 0.54rem;
+  }
+
+  .cyber-item-v46 {
+    font-size: 0.41rem;
   }
 }
 
 @media (orientation: landscape) and (max-height: 500px) and (max-width: 860px) {
-  .cyber-stream {
-    display: none;
+  .site-header .nav-wrap {
+    min-height: 54px !important;
   }
 
   .cyber-rail-title {
-    min-width: auto;
+    min-width: 72px;
   }
 
-  .hero {
-    padding-top: 30px !important;
+  .cyber-stream {
+    height: 27px;
   }
+}
 
-  .hero-portrait {
-    width: 260px !important;
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 860px) {
+    .site-header .nav-wrap,
+    .main-nav {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cyber-track,
+  .cyber-track-v46,
+  .cyber-track-v46.is-ready,
   .cyber-status i {
     animation: none !important;
+    transform: none !important;
+  }
+
+  .cyber-group-v46[aria-hidden="true"] {
+    display: none !important;
   }
 }
