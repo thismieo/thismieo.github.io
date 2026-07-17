@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.45";
+  document.documentElement.dataset.release = "2026.07.18.46";
 
   const heroCopy = document.querySelector("#home .hero-v33-copy");
   if (heroCopy && !heroCopy.querySelector(".hero-v34-name")) {
