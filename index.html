@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-release="2026.07.17.32">
+<html lang="en" data-release="2026.07.17.33">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -16,22 +16,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Release cache key: increment this value whenever a local CSS or JS asset changes. -->
-  <link rel="stylesheet" href="styles.css?v=20260717.32" />
-  <link rel="stylesheet" href="effects.css?v=20260717.32" />
-  <link rel="stylesheet" href="interface-polish.css?v=20260717.32" />
-  <link rel="stylesheet" href="portrait-mobile.css?v=20260717.32" />
-  <link rel="stylesheet" href="goals-mobile.css?v=20260717.32" />
-  <link rel="stylesheet" href="stability.css?v=20260717.32" />
-  <link rel="stylesheet" href="hero-portrait.css?v=20260717.32" />
-  <link rel="stylesheet" href="cyber-header.css?v=20260717.32" data-cyber-rail />
-  <link rel="stylesheet" href="goals-desktop.css?v=20260717.32" />
-  <link rel="stylesheet" href="neural-layout.css?v=20260717.32" />
-  <link rel="stylesheet" href="desktop-rhythm.css?v=20260717.32" />
-  <link rel="stylesheet" href="hero-premium-v32.css?v=20260717.32" />
-  <link rel="stylesheet" href="mobile.css?v=20260717.32" />
-  <script src="interactions.js?v=20260717.32" defer></script>
-  <script src="portrait.js?v=20260717.32" defer></script>
-  <script src="mobile-nav.js?v=20260717.32" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260717.33" />
+  <link rel="stylesheet" href="effects.css?v=20260717.33" />
+  <link rel="stylesheet" href="interface-polish.css?v=20260717.33" />
+  <link rel="stylesheet" href="portrait-mobile.css?v=20260717.33" />
+  <link rel="stylesheet" href="goals-mobile.css?v=20260717.33" />
+  <link rel="stylesheet" href="stability.css?v=20260717.33" />
+  <link rel="stylesheet" href="hero-portrait.css?v=20260717.33" />
+  <link rel="stylesheet" href="cyber-header.css?v=20260717.33" data-cyber-rail />
+  <link rel="stylesheet" href="goals-desktop.css?v=20260717.33" />
+  <link rel="stylesheet" href="neural-layout.css?v=20260717.33" />
+  <link rel="stylesheet" href="desktop-rhythm.css?v=20260717.33" />
+  <link rel="stylesheet" href="hero-premium-v32.css?v=20260717.33" />
+  <link rel="stylesheet" href="hero-premium-v33.css?v=20260717.33" />
+  <link rel="stylesheet" href="mobile.css?v=20260717.33" />
+  <script src="interactions.js?v=20260717.33" defer></script>
+  <script src="hero-v33.js?v=20260717.33" defer></script>
+  <script src="portrait.js?v=20260717.33" defer></script>
+  <script src="mobile-nav.js?v=20260717.33" defer></script>
 </head>
 <body>
   <canvas id="neural-bg" aria-hidden="true"></canvas>
@@ -63,146 +65,159 @@
     <section class="hero section" id="home">
       <div class="hero-maroon-wash" aria-hidden="true"></div>
 
-      <div class="container hero-premium-v32">
-        <div class="hero-personal reveal">
-          <div class="hero-v32-eyebrow">
-            <span class="hero-v32-live" aria-hidden="true"></span>
-            <span>Mohammed Muayad</span>
-            <i aria-hidden="true"></i>
-            <span>AI Engineering Student</span>
+      <div class="container hero-premium-v33">
+        <div class="hero-v33-story reveal">
+          <figure class="hero-v33-portrait">
+            <img
+              src="https://avatars.githubusercontent.com/u/302812532?v=4&s=1024"
+              srcset="https://avatars.githubusercontent.com/u/302812532?v=4&s=512 512w, https://avatars.githubusercontent.com/u/302812532?v=4&s=1024 1024w, https://avatars.githubusercontent.com/u/302812532?v=4&s=2048 2048w"
+              sizes="(min-width: 1181px) 230px, 175px"
+              alt="Mohammed Muayad"
+              width="1024"
+              height="1024"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
+            <figcaption><span>Learning in public</span><strong>Mohammed Muayad</strong></figcaption>
+          </figure>
+
+          <div class="hero-v33-copy">
+            <div class="hero-v33-eyebrow"><i aria-hidden="true"></i> AI Engineering Student · Baghdad, Iraq</div>
+            <p class="hero-v33-index">PERSONAL PORTFOLIO / 2026</p>
+            <h1>Building <span>Intelligent Systems</span> for the Future.</h1>
+            <p class="hero-v33-caption">Building the Future with <span>Code &amp; Intelligence.</span></p>
+            <p class="hero-v33-summary">
+              I am building a disciplined path from Python foundations to artificial intelligence through clear study,
+              consistent practice, documented progress, and projects that turn learning into real technical evidence.
+            </p>
+
+            <div class="hero-v33-actions">
+              <a class="button button-primary" href="#journey">
+                <span>Explore the Journey</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="button button-secondary" href="#projects">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.4 7.7 7.6 4.4 7.6-4.4M12 12.1V21"/></svg>
+                <span>View Projects</span>
+              </a>
+            </div>
+
+            <nav class="hero-v33-links" aria-label="Profile links">
+              <a href="https://github.com/thismieo" target="_blank" rel="noreferrer">
+                <svg class="solid-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+                <span>GitHub</span>
+              </a>
+              <a href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer">
+                <svg class="solid-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 3.2h2.55v7.61l6.15-7.61h3.03l-6.03 7.2 6.48 10.4h-2.92l-5.3-8.53-1.41 1.68v6.85H6.7V3.2Z"/></svg>
+                <span>Kaggle</span>
+              </a>
+              <a href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+                <span>Instagram</span>
+              </a>
+              <a href="mailto:thismieo@gmail.com">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="m4 7 8 6 8-6"/></svg>
+                <span>Email</span>
+              </a>
+            </nav>
           </div>
 
-          <p class="hero-v32-index">PORTFOLIO / 2026 · BAGHDAD, IRAQ</p>
-          <h1>Building <span>Intelligent Systems</span> for the Future.</h1>
-          <p class="hero-v32-caption">Building the Future with <span>Code &amp; Intelligence.</span></p>
-          <p class="hero-v32-summary">
-            I am building a disciplined path from Python foundations to artificial intelligence through clear study,
-            consistent practice, documented progress, and projects that turn learning into real technical evidence.
-          </p>
-
-          <div class="hero-v32-actions">
-            <a class="button button-primary" href="#journey">
-              <span>Explore the Journey</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-            <a class="button button-secondary" href="#projects">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.4 7.7 7.6 4.4 7.6-4.4M12 12.1V21"/></svg>
-              <span>View Projects</span>
-            </a>
+          <div class="hero-v33-terminal" aria-label="Animated learning status">
+            <span class="terminal-v33-controls" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="terminal-v33-body">
+              <small>journey.py / live learning log</small>
+              <span class="terminal-v33-line" aria-hidden="true"><b class="terminal-v33-prompt">›</b><code id="hero-v33-terminal-text">current_focus = "Python Foundations"</code><i class="terminal-v33-caret"></i></span>
+            </span>
+            <span class="terminal-v33-live">Active</span>
           </div>
-
-          <nav class="hero-v32-links" aria-label="Profile links">
-            <a href="https://github.com/thismieo" target="_blank" rel="noreferrer">
-              <svg class="solid-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-              <span>GitHub</span>
-            </a>
-            <a href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer">
-              <svg class="solid-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 3.2h2.55v7.61l6.15-7.61h3.03l-6.03 7.2 6.48 10.4h-2.92l-5.3-8.53-1.41 1.68v6.85H6.7V3.2Z"/></svg>
-              <span>Kaggle</span>
-            </a>
-            <a href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-              <span>Instagram</span>
-            </a>
-            <a href="mailto:thismieo@gmail.com">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="m4 7 8 6 8-6"/></svg>
-              <span>Email</span>
-            </a>
-          </nav>
-
-          <pre class="hero-v32-code" aria-hidden="true"><code><span class="code-key">const</span> journey = {
-  current: <span class="code-string">"Python Foundations"</span>,
-  method: [<span class="code-string">"learn"</span>, <span class="code-string">"practice"</span>, <span class="code-string">"build"</span>],
-  direction: <span class="code-accent">"AI Engineering"</span>
-};</code></pre>
         </div>
 
-        <div class="hero-neural-minimal reveal" role="img" aria-label="Minimal neural network representing a path from programming foundations to intelligent systems">
-          <div class="neural-v32-label">NEURAL PATH / ACTIVE</div>
+        <div class="hero-v33-planetary reveal" role="img" aria-label="A calm planetary learning system connecting code, data, models, and generative AI">
+          <div class="hero-v33-stars" aria-hidden="true"></div>
 
-          <svg class="neural-v32-lines" viewBox="0 0 620 620" preserveAspectRatio="none" aria-hidden="true">
+          <svg class="hero-v33-orbit-svg" viewBox="0 0 680 620" preserveAspectRatio="none" aria-hidden="true">
             <defs>
-              <linearGradient id="hero-v32-flow" x1="0" x2="1" y1="0" y2="1">
+              <linearGradient id="hero-v33-orbit-gradient" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#67e8f9" />
                 <stop offset="0.5" stop-color="#818cf8" />
                 <stop offset="1" stop-color="#f472b6" />
               </linearGradient>
+              <radialGradient id="hero-v33-planet-fill" cx="35%" cy="28%" r="74%">
+                <stop offset="0" stop-color="#1e87b8" stop-opacity="0.72" />
+                <stop offset="0.42" stop-color="#0d315b" stop-opacity="0.96" />
+                <stop offset="0.76" stop-color="#121c45" stop-opacity="0.98" />
+                <stop offset="1" stop-color="#1b1237" />
+              </radialGradient>
+              <linearGradient id="hero-v33-planet-stroke" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#8bf4ff" />
+                <stop offset="0.55" stop-color="#818cf8" />
+                <stop offset="1" stop-color="#f472b6" />
+              </linearGradient>
+              <filter id="hero-v33-planet-glow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
             </defs>
-            <path d="M310 304 C250 245 185 190 112 140" />
-            <path d="M310 304 C375 245 445 190 510 145" />
-            <path d="M310 304 C375 370 443 430 505 485" />
-            <path d="M310 304 C247 370 182 430 112 482" />
-            <circle cx="112" cy="140" r="4" />
-            <circle cx="510" cy="145" r="4" />
-            <circle cx="505" cy="485" r="4" />
-            <circle cx="112" cy="482" r="4" />
+            <ellipse class="orbit-axis" cx="340" cy="310" rx="260" ry="116" transform="rotate(18 340 310)" />
+            <ellipse class="orbit-axis" cx="340" cy="310" rx="190" ry="245" transform="rotate(-32 340 310)" />
+            <ellipse class="orbit-line" cx="340" cy="310" rx="285" ry="132" transform="rotate(18 340 310)" />
+            <ellipse class="orbit-line secondary" cx="340" cy="310" rx="208" ry="270" transform="rotate(-32 340 310)" />
           </svg>
 
-          <div class="neural-v32-core" aria-hidden="true">
-            <small>INTELLIGENCE</small>
-            <strong>AI</strong>
-            <span>learn · reason · build</span>
+          <div class="hero-v33-rotator rotator-v33-one" aria-hidden="true"><i></i></div>
+          <div class="hero-v33-rotator rotator-v33-two" aria-hidden="true"><i></i></div>
+
+          <div class="hero-v33-planet" aria-hidden="true">
+            <svg viewBox="0 0 240 240">
+              <circle class="planet-v33-shell" cx="120" cy="120" r="92" />
+              <ellipse class="planet-v33-grid" cx="120" cy="120" rx="92" ry="34" />
+              <ellipse class="planet-v33-grid" cx="120" cy="120" rx="92" ry="62" />
+              <ellipse class="planet-v33-grid" cx="120" cy="120" rx="38" ry="92" />
+              <ellipse class="planet-v33-grid" cx="120" cy="120" rx="68" ry="92" />
+              <path class="planet-v33-land" d="M72 82c12-16 30-20 44-14 9 4 13 14 25 13 13-1 19 8 19 18 0 12-12 17-19 25-7 8-8 20-19 27-13 8-27-1-31-13-4-12-15-14-19-25-4-11-7-20 0-31Z" />
+              <path class="planet-v33-land" d="M151 146c8-6 23-2 27 7 4 9-3 18-11 24-8 6-22 3-27-5-6-10 3-20 11-26Z" />
+            </svg>
+            <span class="planet-v33-label"><small>LEARNING WORLD</small><strong>AI PATH</strong></span>
           </div>
 
-          <div class="neural-v32-node node-v32-code" aria-hidden="true">
-            <span class="node-icon">
-              <svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
-            </span>
+          <div class="hero-v33-orbit-node orbit-node-v33-code" aria-hidden="true">
+            <span class="orbit-icon"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span>
             <span><strong>Code</strong><small>Active foundation</small></span>
           </div>
-
-          <div class="neural-v32-node node-v32-data" aria-hidden="true">
-            <span class="node-icon">
-              <svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7M3 20h18"/></svg>
-            </span>
+          <div class="hero-v33-orbit-node orbit-node-v33-data" aria-hidden="true">
+            <span class="orbit-icon"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7M3 20h18"/></svg></span>
             <span><strong>Data</strong><small>Next layer</small></span>
           </div>
-
-          <div class="neural-v32-node node-v32-models" aria-hidden="true">
-            <span class="node-icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="17" r="2.5"/><circle cx="19" cy="17" r="2.5"/><path d="M10.6 7.1 6.4 14.9M13.4 7.1l4.2 7.8M7.5 17h9"/></svg>
-            </span>
+          <div class="hero-v33-orbit-node orbit-node-v33-models" aria-hidden="true">
+            <span class="orbit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="17" r="2.5"/><circle cx="19" cy="17" r="2.5"/><path d="M10.6 7.1 6.4 14.9M13.4 7.1l4.2 7.8M7.5 17h9"/></svg></span>
             <span><strong>Models</strong><small>Roadmap</small></span>
           </div>
-
-          <div class="neural-v32-node node-v32-gen" aria-hidden="true">
-            <span class="node-icon">
-              <svg viewBox="0 0 24 24"><path d="m12 3 1.4 4.1L17.5 8.5l-4.1 1.4L12 14l-1.4-4.1-4.1-1.4 4.1-1.4L12 3ZM18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></svg>
-            </span>
+          <div class="hero-v33-orbit-node orbit-node-v33-gen" aria-hidden="true">
+            <span class="orbit-icon"><svg viewBox="0 0 24 24"><path d="m12 3 1.4 4.1L17.5 8.5l-4.1 1.4L12 14l-1.4-4.1-4.1-1.4 4.1-1.4L12 3ZM18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></svg></span>
             <span><strong>Generative AI</strong><small>Long-term vision</small></span>
           </div>
 
-          <div class="neural-v32-status">
-            <span>Current focus</span>
-            <strong>Python Foundations</strong>
-          </div>
+          <div class="hero-v33-orbit-status" aria-hidden="true">Current orbit · Python Foundations</div>
         </div>
       </div>
 
-      <div class="container hero-v32-rail reveal" aria-label="Learning journey overview">
+      <div class="container hero-v33-capsules reveal" aria-label="Learning journey overview">
         <article>
-          <span class="rail-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
-          </span>
+          <span class="capsule-v33-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></span>
           <div><span>Journey started</span><strong>04 Jun 2026</strong></div>
         </article>
         <article>
-          <span class="rail-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
-          </span>
-          <div><span>Current focus</span><strong>Python Foundations</strong></div>
+          <span class="capsule-v33-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span>
+          <div><span>Current study</span><strong>Python Foundations</strong></div>
         </article>
         <article>
-          <span class="rail-icon purple">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7v5H4zM13 13h7v5h-7zM11 8.5h2a3 3 0 0 1 3 3v1.5"/></svg>
-          </span>
-          <div><span>Learning method</span><strong>Understand → Practice → Build</strong></div>
+          <span class="capsule-v33-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h6v5H4zM14 12h6v5h-6zM10 9.5h2a3 3 0 0 1 3 3"/></svg></span>
+          <div><span>Working rhythm</span><strong>Learn → Practice → Build</strong></div>
         </article>
         <article>
-          <span class="rail-icon pink">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/><path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15Z"/></svg>
-          </span>
-          <div><span>Direction</span><strong>AI Engineering</strong></div>
+          <span class="capsule-v33-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/><path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15Z"/></svg></span>
+          <div><span>Long-term direction</span><strong>AI Engineering</strong></div>
         </article>
       </div>
 
@@ -289,9 +304,13 @@
     </section>
 
     <div class="system-ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
-        <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
+      <div class="ticker-track ticker-track-v33">
+        <div class="ticker-group">
+          <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
+        </div>
+        <div class="ticker-group" aria-hidden="true">
+          <span>Python Foundations</span><span>Problem Solving</span><span>Artificial Intelligence</span><span>Neural Networks</span><span>Machine Learning Roadmap</span><span>Build in Public</span>
+        </div>
       </div>
     </div>
 
@@ -572,7 +591,7 @@
             <span class="contact-platform-copy"><small>Kaggle</small><strong>@thismieo</strong></span>
           </a>
           <a class="contact-icon-link" href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer">
-            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7Zm0 2A2.7 2.7 0 0 0 4.5 7.2v9.6a2.7 2.7 0 0 0 2.7 2.7h9.6a2.7 2.7 0 0 0 2.7-2.7V7.2a2.7 2.7 0 0 0-2.7-2.7H7.2Zm10.15 1.5a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7.2a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1-4.8-4.8Zm0 2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"/></svg></span>
+            <span class="contact-platform-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7Zm0 2A2.7 2.7 0 0 0 4.5 7.2v9.6a2.7 2.7 0 0 0 2.7 2.7h9.6a2.7 2.7 0 0 0 2.7-2.7V7.2a2.7 2.7 0 0 0-2.7-2.7H7.2Zm10.15 1.5a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7.2a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6Zm0 2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z"/></svg></span>
             <span class="contact-platform-copy"><small>Instagram</small><strong>@thismieo</strong></span>
           </a>
         </div>
