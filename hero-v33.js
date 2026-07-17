@@ -1,6 +1,29 @@
 (() => {
   "use strict";
 
+  /* V34 is a targeted portrait/identity refinement layered over the approved V33 Hero. */
+  const portraitRelease = "20260717.34";
+  const portraitStylesheetId = "hero-portrait-v34-styles";
+
+  if (!document.getElementById(portraitStylesheetId)) {
+    const stylesheet = document.createElement("link");
+    stylesheet.id = portraitStylesheetId;
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `hero-portrait-v34.css?v=${portraitRelease}`;
+    document.head.append(stylesheet);
+  }
+
+  document.documentElement.dataset.release = "2026.07.17.34";
+
+  const heroCopy = document.querySelector("#home .hero-v33-copy");
+  if (heroCopy && !heroCopy.querySelector(".hero-v34-name")) {
+    const name = document.createElement("p");
+    name.className = "hero-v34-name";
+    name.textContent = "Mohammed Muayad";
+    const eyebrow = heroCopy.querySelector(".hero-v33-eyebrow");
+    heroCopy.insertBefore(name, eyebrow || heroCopy.firstChild);
+  }
+
   const output = document.querySelector("#hero-v33-terminal-text");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
