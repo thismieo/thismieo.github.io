@@ -1,0 +1,21 @@
+/* Portfolio V23 — balanced desktop vertical rhythm between early sections */
+
+@media (min-width: 861px) {
+  #about {
+    padding-bottom: 56px;
+  }
+
+  #journey {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  #stack {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  #neural.neural-section {
+    padding-top: 56px;
+  }
+}
