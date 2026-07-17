@@ -1,31 +1,8 @@
 (() => {
   "use strict";
 
-  /* V34 is a targeted portrait/identity refinement layered over the approved V33 Hero. */
-  const portraitRelease = "20260717.34";
-  const portraitStylesheetId = "hero-portrait-v34-styles";
-
-  if (!document.getElementById(portraitStylesheetId)) {
-    const stylesheet = document.createElement("link");
-    stylesheet.id = portraitStylesheetId;
-    stylesheet.rel = "stylesheet";
-    stylesheet.href = `hero-portrait-v34.css?v=${portraitRelease}`;
-    document.head.append(stylesheet);
-  }
-
-  /* V36 final polish is requested through a unique asset URL to avoid stale styling. */
-  const polishRelease = "20260717.36";
-  const polishStylesheetId = "hero-polish-v36-styles";
-
-  if (!document.getElementById(polishStylesheetId)) {
-    const stylesheet = document.createElement("link");
-    stylesheet.id = polishStylesheetId;
-    stylesheet.rel = "stylesheet";
-    stylesheet.href = `hero-polish-v36.css?v=${polishRelease}`;
-    document.head.append(stylesheet);
-  }
-
-  document.documentElement.dataset.release = "2026.07.17.36";
+  /* V37 assets are loaded directly by index.html. Runtime only owns behavior. */
+  document.documentElement.dataset.release = "2026.07.17.37";
 
   const heroCopy = document.querySelector("#home .hero-v33-copy");
   if (heroCopy && !heroCopy.querySelector(".hero-v34-name")) {
@@ -106,18 +83,11 @@
   }
 
   /* Reuse the existing accessible portrait modal for the desktop portrait. */
-  const desktopPortrait = document.querySelector("#home .hero-v33-portrait");
-  const portraitTrigger = document.querySelector("#portrait-trigger");
+  const desktopPortrait = document.querySelector("[data-desktop-portrait-trigger]");
+  const mobilePortraitTrigger = document.querySelector("#portrait-trigger");
 
-  if (desktopPortrait && portraitTrigger) {
-    desktopPortrait.setAttribute("role", "button");
-    desktopPortrait.setAttribute("tabindex", "0");
-    desktopPortrait.setAttribute("aria-haspopup", "dialog");
-    desktopPortrait.setAttribute("aria-controls", "portrait-modal");
-    desktopPortrait.setAttribute("aria-label", "Open high-resolution portrait of Mohammed Muayad");
-    desktopPortrait.setAttribute("title", "View portrait");
-
-    const openPortrait = () => portraitTrigger.click();
+  if (desktopPortrait && mobilePortraitTrigger) {
+    const openPortrait = () => mobilePortraitTrigger.click();
 
     desktopPortrait.addEventListener("click", openPortrait);
     desktopPortrait.addEventListener("keydown", (event) => {
