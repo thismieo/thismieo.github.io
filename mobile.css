@@ -1,5 +1,27 @@
 /* Portfolio V27 — mobile technical audit and stability layer */
 
+/* Keep the Instagram contact glyph stable across SVG path/rendering variations. */
+.contact-icon-link[href*="instagram.com"] .contact-platform-icon {
+  position: relative;
+}
+
+.contact-icon-link[href*="instagram.com"] .contact-platform-icon svg {
+  grid-area: 1 / 1;
+  opacity: 0;
+}
+
+.contact-icon-link[href*="instagram.com"] .contact-platform-icon::before {
+  content: "";
+  grid-area: 1 / 1;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 73% 27%, currentColor 0 1.15px, transparent 1.4px),
+    radial-gradient(circle at center, transparent 0 3.1px, currentColor 3.35px 4.5px, transparent 4.75px);
+}
+
 @media (max-width: 860px) {
   html,
   body {
