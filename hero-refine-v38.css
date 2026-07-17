@@ -73,6 +73,62 @@
   .portrait-close span:last-child {
     transform: translate(-50%, -50%) rotate(-45deg) !important;
   }
+
+  /* Portfolio V42 — calm night surface, no hard panel, and a fading technical grid. */
+  html body #home.hero.section {
+    background:
+      radial-gradient(ellipse 56% 72% at 18% 40%, rgba(47, 111, 163, 0.075), transparent 74%),
+      radial-gradient(ellipse 64% 76% at 86% 46%, rgba(104, 72, 145, 0.075), transparent 76%),
+      linear-gradient(104deg, #030a15 0%, #07101f 34%, #0b1123 63%, #151022 100%) !important;
+  }
+
+  html body #home.hero::before {
+    background:
+      radial-gradient(ellipse at 17% 39%, rgba(57, 125, 178, 0.07), transparent 43rem),
+      radial-gradient(ellipse at 54% 50%, rgba(70, 102, 160, 0.03), transparent 46rem),
+      radial-gradient(ellipse at 84% 45%, rgba(110, 76, 151, 0.07), transparent 41rem),
+      linear-gradient(104deg, #030a15 0%, #07101f 34%, #0b1123 63%, #151022 100%) !important;
+  }
+
+  html body #home .hero-maroon-wash {
+    opacity: 0.16 !important;
+    background:
+      radial-gradient(ellipse at 20% 46%, rgba(45, 113, 165, 0.065), transparent 54%),
+      radial-gradient(ellipse at 84% 43%, rgba(118, 67, 131, 0.075), transparent 52%),
+      linear-gradient(104deg, rgba(4, 14, 29, 0.08), rgba(8, 13, 28, 0.035) 52%, rgba(24, 12, 34, 0.07)) !important;
+  }
+
+  /* Remove the visible left-side panel/rectangle completely. */
+  html body #home .hero-premium-v33 {
+    background: transparent !important;
+  }
+
+  html body #home .hero-v33-story::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Keep only a very light grid that fades into the night gradient. */
+  html body #home.hero::after {
+    opacity: 0.28 !important;
+    background:
+      linear-gradient(rgba(111, 181, 220, 0.021) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(111, 181, 220, 0.021) 1px, transparent 1px) !important;
+    background-size: 54px 54px !important;
+    -webkit-mask-image:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.72) 38%, rgba(0, 0, 0, 0.34) 68%, transparent 94%),
+      linear-gradient(180deg, transparent 2%, #000 18%, #000 78%, transparent 100%) !important;
+    mask-image:
+      linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.72) 38%, rgba(0, 0, 0, 0.34) 68%, transparent 94%),
+      linear-gradient(180deg, transparent 2%, #000 18%, #000 78%, transparent 100%) !important;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* Capsules remain functional; only the decorative arrows are removed. */
+  html body #home .capsule-v40-link-mark {
+    display: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
