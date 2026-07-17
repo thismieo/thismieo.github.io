@@ -181,7 +181,8 @@
   }
 }
 
-@media (hover: none), (pointer: coarse) {
+@media (max-width: 860px) and (hover: none),
+       (max-width: 860px) and (pointer: coarse) {
   .button:hover,
   .signal-card:hover,
   .terminal-card:hover,
