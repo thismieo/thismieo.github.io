@@ -1,4 +1,4 @@
-/* Portfolio V27 — mobile technical audit and stability layer */
+/* Portfolio V46 — mobile technical audit and stability layer */
 
 /* Keep the Instagram contact glyph stable across SVG path/rendering variations. */
 .contact-icon-link[href*="instagram.com"] .contact-platform-icon {
@@ -136,8 +136,8 @@
     padding-inline: 4px;
   }
 
-  .v12-lite .cyber-track {
-    animation-duration: 40s;
+  .v12-lite .cyber-track-v46 {
+    animation-duration: 46s;
   }
 }
 
@@ -195,12 +195,13 @@
 
 @media (max-width: 390px) {
   .cyber-stream {
-    display: none;
+    display: flex !important;
+    min-width: 0;
   }
 
   .cyber-rail-title {
     min-width: 0;
-    flex: 1 1 auto;
+    flex: 0 0 66px;
   }
 
   .site-header .nav-wrap {
@@ -245,8 +246,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cyber-track,
-  .ticker-track {
+  .cyber-track-v46,
+  .ticker-v44-track {
     animation: none !important;
     transform: none !important;
   }
