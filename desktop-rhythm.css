@@ -689,7 +689,7 @@
 
   #home .hero-desktop-v31 {
     min-height: 630px;
-    grid-template-columns: minmax(360px, 0.84fr) minmax(500px, 1.16fr);
+    grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
   }
 
   #home .hero-story {
@@ -763,9 +763,12 @@
     animation: none !important;
   }
 
-  #home .neural-node:hover,
-  #home .node-python:hover {
+  #home .neural-node:not(.node-python):hover {
     transform: none;
+  }
+
+  #home .node-python:hover {
+    transform: translateX(-50%);
   }
 }
 
