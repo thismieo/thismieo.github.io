@@ -63,8 +63,9 @@ def main() -> int:
     if not INDEX.exists():
         fail("index.html is missing")
 
+    index_text = INDEX.read_text(encoding="utf-8")
     parser = SiteParser()
-    parser.feed(INDEX.read_text(encoding="utf-8"))
+    parser.feed(index_text)
     parser.close()
 
     duplicates = [item for item, count in Counter(parser.ids).items() if count > 1]
@@ -88,17 +89,52 @@ def main() -> int:
     if missing_required:
         fail(f"Required sections/components are missing: {', '.join(missing_required)}")
 
-    for css_file in ("styles.css", "enhancements.css", "v5.css", "v8.css", "v11.css", "v12.css"):
+    css_files = (
+        "styles.css",
+        "effects.css",
+        "interface-polish.css",
+        "portrait-mobile.css",
+        "goals-mobile.css",
+        "stability.css",
+        "hero-portrait.css",
+        "cyber-header.css",
+        "goals-desktop.css",
+        "neural-layout.css",
+        "desktop-rhythm.css",
+        "mobile.css",
+    )
+    for css_file in css_files:
         check_balanced_css(ROOT / css_file)
 
-    old_runtime_files = {"script.js", "v5.js", "neural-network.js"}
     loaded = {asset.split("?", 1)[0] for asset in parser.local_assets}
-    accidentally_loaded = sorted(old_runtime_files & loaded)
+    required_runtime_files = {"interactions.js", "portrait.js", "mobile-nav.js"}
+    missing_runtime = sorted(required_runtime_files - loaded)
+    if missing_runtime:
+        fail(f"Current runtime files are not loaded: {', '.join(missing_runtime)}")
+
+    legacy_runtime_files = {"script.js", "v5.js", "neural-network.js"}
+    accidentally_loaded = sorted(legacy_runtime_files & loaded)
     if accidentally_loaded:
         fail(f"Legacy runtime files are still loaded: {', '.join(accidentally_loaded)}")
 
-    if "v12.js" not in loaded:
-        fail("The consolidated v12.js runtime is not loaded")
+    numbered_assets = sorted(
+        asset for asset in loaded
+        if re.fullmatch(r"v\d+\.(?:css|js)", asset)
+    )
+    if numbered_assets:
+        fail(f"Numbered release assets are still loaded: {', '.join(numbered_assets)}")
+
+    numbered_files = sorted(
+        path.name
+        for pattern in ("v*.css", "v*.js")
+        for path in ROOT.glob(pattern)
+        if re.fullmatch(r"v\d+\.(?:css|js)", path.name)
+    )
+    if numbered_files:
+        fail(f"Numbered release files remain in repository root: {', '.join(numbered_files)}")
+
+    if "data-v18-cyber-rail" in index_text:
+        fail("Legacy version-specific data attribute remains in index.html")
 
     print("Portfolio validation passed")
     print(f"HTML ids: {len(parser.ids)}")
