@@ -1,0 +1,204 @@
+/* Portfolio V27 — mobile technical audit and stability layer */
+
+@media (max-width: 860px) {
+  html,
+  body {
+    overscroll-behavior-y: auto !important;
+  }
+
+  body,
+  .site-footer {
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+  }
+
+  section[id] {
+    scroll-margin-top: 18px !important;
+  }
+
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .hero.section {
+    padding-bottom: 64px;
+  }
+
+  .eyebrow {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: 1.45;
+  }
+
+  .live-signal {
+    min-width: 0;
+    overflow: hidden;
+    padding-inline: 10px;
+  }
+
+  #typed-signal {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero h1,
+  .section-heading h2,
+  .goals-copy h2,
+  .contact-card h2,
+  .thank-you-card h2 {
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .social-row a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding-block: 8px;
+  }
+
+  a,
+  button {
+    touch-action: manipulation;
+  }
+
+  .portrait-close {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .main-nav {
+    max-height: min(68vh, 520px);
+    max-height: min(68dvh, 520px);
+    scrollbar-width: thin;
+  }
+
+  .network-readout {
+    min-width: 0;
+    max-width: calc(100% - 24px);
+  }
+
+  .network-readout strong,
+  .contact-platform-copy strong {
+    overflow-wrap: anywhere;
+  }
+
+  .footer-wrap {
+    gap: 10px;
+    padding-inline: 4px;
+  }
+
+  .v12-lite .cyber-track {
+    animation-duration: 40s;
+  }
+}
+
+@media (max-width: 580px) {
+  .section {
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+
+  .section-heading {
+    margin-bottom: 30px;
+  }
+
+  .roadmap-step {
+    min-height: 0;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .stack-card {
+    min-height: 0;
+    padding-bottom: 46px;
+  }
+
+  .stack-card h3 {
+    margin-top: 28px;
+  }
+
+  .stack-primary {
+    margin-block: 28px;
+  }
+
+  .focus-card {
+    padding: 22px;
+  }
+
+  .network-visual,
+  .neural-svg {
+    min-height: 350px;
+  }
+
+  .contact-platform-copy strong {
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .footer-wrap p {
+    max-width: 32rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .cyber-stream {
+    display: none;
+  }
+
+  .cyber-rail-title {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .site-header .nav-wrap {
+    min-height: 56px !important;
+  }
+
+  .main-nav {
+    max-height: calc(100svh - 86px);
+  }
+
+  .live-signal {
+    font-size: 0.58rem;
+  }
+
+  .network-visual,
+  .neural-svg {
+    min-height: 330px;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .button:hover,
+  .signal-card:hover,
+  .terminal-card:hover,
+  .roadmap-step:hover,
+  .focus-card:hover,
+  .project-card:hover,
+  .neural-info-card:hover {
+    transform: none !important;
+  }
+
+  .metrics-grid article:hover::after,
+  .glass-card:hover::after,
+  .roadmap-step:hover::after,
+  .stack-card:hover::before,
+  .focus-card:hover::after,
+  .project-card:hover::after,
+  .contact-card:hover::after {
+    opacity: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber-track,
+  .ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
