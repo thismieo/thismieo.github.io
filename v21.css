@@ -1,0 +1,8 @@
+/* Portfolio V21 — desktop Long-term Goals alignment fix */
+
+@media (min-width: 861px) {
+  .goals-section .goals-copy {
+    top: auto !important;
+    inset-block-start: auto !important;
+  }
+}
