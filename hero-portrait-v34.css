@@ -1,0 +1,137 @@
+/* Portfolio V34 — targeted portrait and identity refinement for the approved V33 Hero */
+
+@media (min-width: 861px) {
+  /* Keep the approved composition; only rebalance the personal side. */
+  #home .hero-v33-story {
+    grid-template-columns: clamp(164px, 12vw, 204px) minmax(0, 1fr);
+    column-gap: clamp(24px, 2.2vw, 36px);
+    align-items: center;
+  }
+
+  /* Full, centered portrait: no organic crop, no oversized frame. */
+  #home .hero-v33-portrait {
+    width: min(100%, 204px);
+    max-width: 204px;
+    align-self: center;
+    justify-self: start;
+    transform: translateZ(0);
+  }
+
+  #home .hero-v33-portrait::before {
+    inset: -22px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 42% 34%, rgba(103, 232, 249, 0.15), transparent 34%),
+      radial-gradient(circle at 62% 72%, rgba(244, 114, 182, 0.1), transparent 48%);
+    filter: blur(16px);
+    box-shadow: none;
+    opacity: 0.8;
+  }
+
+  #home .hero-v33-portrait::after {
+    content: none;
+  }
+
+  #home .hero-v33-portrait img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    object-position: center;
+    border: 0;
+    border-radius: 24px;
+    background: transparent;
+    box-shadow:
+      0 24px 58px rgba(0, 0, 0, 0.34),
+      0 0 42px rgba(56, 189, 248, 0.065),
+      0 0 48px rgba(217, 70, 239, 0.045);
+    filter: none;
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 300ms ease;
+  }
+
+  #home .hero-v33-portrait:hover img {
+    transform: translateY(-3px) scale(1.012);
+    box-shadow:
+      0 30px 68px rgba(0, 0, 0, 0.38),
+      0 0 52px rgba(56, 189, 248, 0.09),
+      0 0 58px rgba(217, 70, 239, 0.06);
+  }
+
+  /* The identity now lives beside the portrait, not in a small floating label. */
+  #home .hero-v33-portrait figcaption {
+    display: none;
+  }
+
+  #home .hero-v33-copy {
+    align-self: center;
+  }
+
+  #home .hero-v34-name {
+    position: relative;
+    width: fit-content;
+    margin: 0 0 8px;
+    color: #f8fbff;
+    font-family: "Space Grotesk", "Inter", sans-serif;
+    font-size: clamp(1.75rem, 2vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    text-shadow: 0 0 28px rgba(103, 232, 249, 0.08);
+  }
+
+  #home .hero-v34-name::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 64%;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #67e8f9, #818cf8 58%, rgba(244, 114, 182, 0.18));
+    box-shadow: 0 0 16px rgba(103, 232, 249, 0.28);
+  }
+
+  #home .hero-v33-eyebrow {
+    margin: 18px 0 13px;
+    color: #aebdd0;
+  }
+
+  #home .hero-v33-index {
+    margin-bottom: 9px;
+  }
+
+  /* Keep headline readable after strengthening the name hierarchy. */
+  #home .hero-v33-copy h1 {
+    font-size: clamp(3.1rem, 4vw, 5rem);
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1180px) {
+  #home .hero-v33-story {
+    grid-template-columns: 148px minmax(0, 1fr);
+    column-gap: 22px;
+  }
+
+  #home .hero-v33-portrait {
+    width: 148px;
+    max-width: 148px;
+  }
+
+  #home .hero-v34-name {
+    font-size: clamp(1.45rem, 2.3vw, 1.9rem);
+  }
+
+  #home .hero-v33-copy h1 {
+    font-size: clamp(2.65rem, 4.15vw, 4rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home .hero-v33-portrait img {
+    transition: none !important;
+  }
+
+  #home .hero-v33-portrait:hover img {
+    transform: none !important;
+  }
+}
