@@ -490,6 +490,10 @@
     box-shadow: 0 0 12px rgba(196, 181, 253, 0.24);
   }
 
+  #home .terminal-card:hover {
+    transform: translateX(-50%) translateY(-5px) translateZ(24px);
+  }
+
   #home .terminal-head {
     background: rgba(255, 255, 255, 0.025);
   }
@@ -555,7 +559,7 @@
   }
 
   #home .hero-grid.hero-grid-v4 {
-    grid-template-columns: minmax(390px, 0.92fr) minmax(430px, 1.08fr);
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     gap: 20px;
   }
 
@@ -603,8 +607,11 @@
 
 @media (min-width: 861px) and (prefers-reduced-motion: reduce) {
   #home .core-stage,
-  #home .signal-card,
-  #home .terminal-card {
+  #home .signal-card {
     transform: none !important;
+  }
+
+  #home .terminal-card {
+    transform: translateX(-50%) !important;
   }
 }
