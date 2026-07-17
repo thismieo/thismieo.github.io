@@ -131,11 +131,95 @@
   }
 }
 
+/* Portfolio V43 — a long, seamless global learning-status ribbon. */
+.system-ticker {
+  background:
+    linear-gradient(90deg, rgba(3, 8, 20, 0.92), rgba(6, 13, 27, 0.78) 48%, rgba(12, 10, 27, 0.88)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+.system-ticker .ticker-track-v33 {
+  gap: 0 !important;
+  animation: tickerV43 68s linear infinite !important;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.system-ticker .ticker-group {
+  gap: 0 !important;
+  padding-right: 0 !important;
+}
+
+.system-ticker .ticker-group > span {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 30px !important;
+  padding-right: 30px;
+  color: transparent !important;
+  font-size: 0 !important;
+  white-space: nowrap;
+}
+
+.system-ticker .ticker-group > span::before,
+.system-ticker .ticker-group > span::after {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding-left: 15px;
+  color: #7f91aa;
+  background: radial-gradient(circle at 3px 50%, rgba(103, 232, 249, 0.78) 0 2px, transparent 2.6px) no-repeat;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.system-ticker .ticker-group > span:nth-child(1)::before { content: "BAGHDAD · UTC+3"; }
+.system-ticker .ticker-group > span:nth-child(1)::after { content: "CURRENT FOCUS · PYTHON FOUNDATIONS"; }
+.system-ticker .ticker-group > span:nth-child(2)::before { content: "DUBAI · UTC+4"; }
+.system-ticker .ticker-group > span:nth-child(2)::after { content: "NEXT LAYER · DATA ANALYSIS"; }
+.system-ticker .ticker-group > span:nth-child(3)::before { content: "NEW YORK · EASTERN TIME"; }
+.system-ticker .ticker-group > span:nth-child(3)::after { content: "METHOD · LEARN · PRACTICE · BUILD"; }
+.system-ticker .ticker-group > span:nth-child(4)::before { content: "AI ENGINEERING ROADMAP"; }
+.system-ticker .ticker-group > span:nth-child(4)::after { content: "PROBLEM SOLVING · DAILY PROGRESS"; }
+.system-ticker .ticker-group > span:nth-child(5)::before { content: "BUILDING IN PUBLIC"; }
+.system-ticker .ticker-group > span:nth-child(5)::after { content: "PROJECTS · IN PROGRESS"; }
+.system-ticker .ticker-group > span:nth-child(6)::before { content: "PORTFOLIO · 2026"; }
+.system-ticker .ticker-group > span:nth-child(6)::after { content: "CONSISTENCY OVER SPEED"; }
+
+.system-ticker:hover .ticker-track-v33 {
+  animation-play-state: paused !important;
+}
+
+@keyframes tickerV43 {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #home .hero-v33-orbit-node,
   #home .hero-v33-orbit-node .orbit-icon {
     animation: none !important;
     translate: none !important;
+  }
+
+  .system-ticker {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .system-ticker::-webkit-scrollbar {
+    display: none;
+  }
+
+  .system-ticker .ticker-track-v33 {
+    animation: none !important;
+  }
+
+  .system-ticker .ticker-group[aria-hidden="true"] {
+    display: none !important;
   }
 }
 
