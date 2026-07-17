@@ -25,6 +25,10 @@
     padding-bottom: 64px;
   }
 
+  .thank-you-section {
+    padding-top: 32px;
+  }
+
   .eyebrow {
     max-width: 100%;
     flex-wrap: wrap;
@@ -101,6 +105,10 @@
   .section {
     padding-top: 58px;
     padding-bottom: 58px;
+  }
+
+  .thank-you-section {
+    padding-top: 28px;
   }
 
   .section-heading {
