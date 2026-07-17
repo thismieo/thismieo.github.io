@@ -1,4 +1,4 @@
-/* Portfolio V23 — balanced desktop vertical rhythm between early sections */
+/* Portfolio V23/V24 — balanced desktop rhythm and clear stack cursor feedback */
 
 @media (min-width: 861px) {
   #about {
@@ -17,5 +17,26 @@
 
   #neural.neural-section {
     padding-top: 56px;
+  }
+}
+
+@media (min-width: 861px) and (hover: hover) and (pointer: fine) {
+  #stack .stack-core,
+  #stack .stack-card {
+    cursor: default;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  #stack .stack-core:hover,
+  #stack .stack-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(103, 232, 249, 0.22);
+    box-shadow:
+      0 22px 60px rgba(0, 0, 0, 0.32),
+      0 0 28px rgba(6, 182, 212, 0.055);
   }
 }
