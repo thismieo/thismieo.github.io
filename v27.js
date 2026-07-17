@@ -8,21 +8,34 @@
 
   if (!header || !navigation || !menuButton) return;
 
-  const menuIsOpen = () => menuButton.getAttribute("aria-expanded") === "true";
+  const menuHasOpenState = () => (
+    menuButton.getAttribute("aria-expanded") === "true"
+    || navigation.classList.contains("open")
+    || document.body.classList.contains("menu-open")
+  );
 
   const closeMenu = (restoreFocus = false) => {
-    if (!menuIsOpen()) return;
-    menuButton.click();
-    if (restoreFocus) menuButton.focus({ preventScroll: true });
+    const wasOpen = menuHasOpenState();
+
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Open navigation");
+    navigation.classList.remove("open");
+    document.body.classList.remove("menu-open");
+
+    if (restoreFocus && wasOpen) menuButton.focus({ preventScroll: true });
   };
 
-  document.addEventListener("pointerdown", (event) => {
-    if (!mobileQuery.matches || !menuIsOpen()) return;
-    if (!header.contains(event.target)) closeMenu(false);
-  }, { passive: true });
+  document.addEventListener("click", (event) => {
+    if (!mobileQuery.matches || !menuHasOpenState()) return;
+    if (header.contains(event.target)) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    closeMenu(false);
+  }, true);
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && mobileQuery.matches && menuIsOpen()) {
+    if (event.key === "Escape" && mobileQuery.matches && menuHasOpenState()) {
       event.preventDefault();
       closeMenu(true);
     }
