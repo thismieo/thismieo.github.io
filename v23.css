@@ -1,4 +1,4 @@
-/* Portfolio V23/V24 — balanced desktop rhythm and clear stack cursor feedback */
+/* Portfolio V23/V25 — balanced desktop rhythm and clear card cursor feedback */
 
 @media (min-width: 861px) {
   #about {
@@ -21,6 +21,8 @@
 }
 
 @media (min-width: 861px) and (hover: hover) and (pointer: fine) {
+  #about .about-card,
+  #about .philosophy-card,
   #stack .stack-core,
   #stack .stack-card {
     cursor: default;
@@ -31,6 +33,8 @@
       box-shadow 180ms ease;
   }
 
+  #about .about-card:hover,
+  #about .philosophy-card:hover,
   #stack .stack-core:hover,
   #stack .stack-card:hover {
     transform: translateY(-3px);
