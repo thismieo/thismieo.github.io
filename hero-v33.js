@@ -13,7 +13,19 @@
     document.head.append(stylesheet);
   }
 
-  document.documentElement.dataset.release = "2026.07.17.34";
+  /* V36 final polish is requested through a unique asset URL to avoid stale styling. */
+  const polishRelease = "20260717.36";
+  const polishStylesheetId = "hero-polish-v36-styles";
+
+  if (!document.getElementById(polishStylesheetId)) {
+    const stylesheet = document.createElement("link");
+    stylesheet.id = polishStylesheetId;
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `hero-polish-v36.css?v=${polishRelease}`;
+    document.head.append(stylesheet);
+  }
+
+  document.documentElement.dataset.release = "2026.07.17.36";
 
   const heroCopy = document.querySelector("#home .hero-v33-copy");
   if (heroCopy && !heroCopy.querySelector(".hero-v34-name")) {
@@ -91,6 +103,28 @@
         }
       });
     }
+  }
+
+  /* Reuse the existing accessible portrait modal for the desktop portrait. */
+  const desktopPortrait = document.querySelector("#home .hero-v33-portrait");
+  const portraitTrigger = document.querySelector("#portrait-trigger");
+
+  if (desktopPortrait && portraitTrigger) {
+    desktopPortrait.setAttribute("role", "button");
+    desktopPortrait.setAttribute("tabindex", "0");
+    desktopPortrait.setAttribute("aria-haspopup", "dialog");
+    desktopPortrait.setAttribute("aria-controls", "portrait-modal");
+    desktopPortrait.setAttribute("aria-label", "Open high-resolution portrait of Mohammed Muayad");
+    desktopPortrait.setAttribute("title", "View portrait");
+
+    const openPortrait = () => portraitTrigger.click();
+
+    desktopPortrait.addEventListener("click", openPortrait);
+    desktopPortrait.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openPortrait();
+    });
   }
 
   if (!finePointer.matches || reducedMotion.matches) return;
