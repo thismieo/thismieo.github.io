@@ -133,7 +133,10 @@
 
   updateTime();
   window.requestAnimationFrame(() => syncLoop(true));
-  document.fonts?.ready?.then(() => syncLoop(true)).catch(() => {});
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => syncLoop(true)).catch(() => {});
+  }
 
   let resizeTimer = 0;
   const queueSync = () => {
