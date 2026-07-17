@@ -1,0 +1,42 @@
+name: Apply V23 vertical rhythm fix
+
+on:
+  push:
+    branches:
+      - dev-portfolio-v23-desktop-vertical-rhythm
+    paths:
+      - .v23-spacing-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev-portfolio-v23-desktop-vertical-rhythm
+      - name: Link V23 stylesheet
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          old = '  <link rel="stylesheet" href="v22.css?v=1" />'
+          new = old + '\n  <link rel="stylesheet" href="v23.css?v=1" />'
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f"Expected exactly one V22 stylesheet link, found {count}")
+          if 'v23.css' in text:
+              raise SystemExit("V23 stylesheet is already linked")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
+      - name: Commit index update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "fix: load desktop vertical rhythm correction"
+          git push
