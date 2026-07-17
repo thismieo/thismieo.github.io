@@ -1,0 +1,53 @@
+name: Apply V37 asset loading fix
+
+on:
+  push:
+    branches:
+      - fix/hero-v37-direct-loading
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/hero-v37-direct-loading
+          fetch-depth: 0
+
+      - name: Patch index and remove one-time workflow
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          text = text.replace('data-release="2026.07.17.35"', 'data-release="2026.07.17.37"')
+          text = text.replace('20260717.35', '20260717.37')
+
+          portrait_link = '  <link rel="stylesheet" href="hero-portrait-v34.css?v=20260717.37" data-hero-portrait-v34 />'
+          direct_link = '  <link id="hero-polish-v37-styles" rel="stylesheet" href="hero-polish-v37.css?v=20260717.37" data-hero-polish-v37 />'
+          if direct_link not in text:
+              text = text.replace(portrait_link, portrait_link + '\n' + direct_link)
+
+          old_figure = '          <figure class="hero-v33-portrait">'
+          new_figure = ('          <figure class="hero-v33-portrait" role="button" tabindex="0" '
+                        'aria-haspopup="dialog" aria-controls="portrait-modal" '
+                        'aria-label="Open high-resolution portrait of Mohammed Muayad" '
+                        'title="View portrait" data-desktop-portrait-trigger>')
+          text = text.replace(old_figure, new_figure, 1)
+
+          path.write_text(text, encoding='utf-8')
+          Path('.github/workflows/v37-fix.yml').unlink()
+
+      - name: Commit patched index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/v37-fix.yml
+          git commit -m "Load V37 Hero assets directly and bust stale cache"
+          git push origin HEAD:fix/hero-v37-direct-loading
