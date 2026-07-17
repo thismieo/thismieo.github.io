@@ -44,3 +44,574 @@
       0 0 28px rgba(6, 182, 212, 0.055);
   }
 }
+
+/* Portfolio V28 — desktop-only Cyberpunk Neural Network hero prototype */
+@media (min-width: 861px) {
+  #home.hero.section {
+    min-height: 100svh;
+    display: block;
+    padding: 118px 0 42px;
+    isolation: isolate;
+  }
+
+  #home.hero::before {
+    inset: 0;
+    height: 100%;
+    opacity: 1;
+    background:
+      linear-gradient(90deg, rgba(3, 7, 18, 0.98) 0%, rgba(3, 7, 18, 0.74) 46%, rgba(3, 7, 18, 0.28) 100%),
+      radial-gradient(circle at 73% 48%, rgba(6, 182, 212, 0.14), transparent 29%),
+      radial-gradient(circle at 87% 36%, rgba(159, 39, 78, 0.13), transparent 31%);
+    animation: none;
+  }
+
+  #home.hero::after {
+    right: -9vw;
+    bottom: -21vw;
+    width: 62vw;
+    height: 62vw;
+    border-color: rgba(103, 232, 249, 0.055);
+    box-shadow:
+      0 0 0 54px rgba(103, 232, 249, 0.018),
+      0 0 0 108px rgba(124, 58, 237, 0.014),
+      0 0 120px rgba(6, 182, 212, 0.055);
+  }
+
+  #home .hero-maroon-wash {
+    opacity: 0.72;
+  }
+
+  #home .hero-grid.hero-grid-v4,
+  #home .metrics-grid.metrics-v4 {
+    width: min(1420px, calc(100% - 64px));
+  }
+
+  #home .hero-grid.hero-grid-v4 {
+    grid-template-columns: minmax(470px, 0.88fr) minmax(520px, 1.12fr);
+    align-items: stretch;
+    gap: clamp(24px, 2.8vw, 44px);
+  }
+
+  #home .hero-copy,
+  #home .hero-visual {
+    min-height: 610px;
+    border: 1px solid rgba(103, 232, 249, 0.14);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(6, 182, 212, 0.09), transparent 34%),
+      radial-gradient(circle at 100% 100%, rgba(159, 39, 78, 0.1), transparent 38%),
+      linear-gradient(145deg, rgba(7, 15, 31, 0.88), rgba(3, 8, 21, 0.94));
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      inset 0 0 70px rgba(6, 182, 212, 0.025);
+    backdrop-filter: blur(12px);
+  }
+
+  #home .hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(38px, 4vw, 58px);
+    overflow: hidden;
+  }
+
+  #home .hero-copy::before,
+  #home .hero-copy::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  #home .hero-copy::before {
+    top: 28px;
+    right: 28px;
+    width: 92px;
+    height: 92px;
+    border-top: 1px solid rgba(103, 232, 249, 0.24);
+    border-right: 1px solid rgba(103, 232, 249, 0.24);
+    border-radius: 0 18px 0 0;
+  }
+
+  #home .hero-copy::after {
+    left: 34px;
+    bottom: 32px;
+    width: 72px;
+    height: 1px;
+    background: linear-gradient(90deg, #f0a8bf, transparent);
+    box-shadow: 0 0 16px rgba(240, 168, 191, 0.34);
+  }
+
+  #home .hero-portrait {
+    display: none;
+  }
+
+  #home .eyebrow {
+    margin-bottom: 20px;
+    border-color: rgba(52, 211, 153, 0.24);
+    background: rgba(52, 211, 153, 0.04);
+    box-shadow: inset 0 0 22px rgba(52, 211, 153, 0.025);
+  }
+
+  #home .section-index {
+    margin-bottom: 18px;
+    color: #81f3ff;
+    letter-spacing: 0.24em;
+  }
+
+  #home .hero-copy h1 {
+    max-width: 760px;
+    margin-bottom: 22px;
+    font-size: clamp(3.6rem, 5vw, 6.25rem);
+    line-height: 0.88;
+    letter-spacing: -0.07em;
+    text-wrap: balance;
+  }
+
+  #home .hero-copy h1 span {
+    margin-top: 22px;
+    font-size: clamp(1.05rem, 1.65vw, 1.55rem);
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  #home .hero-line {
+    max-width: 680px;
+    margin-bottom: 18px;
+    background: linear-gradient(90deg, #f8fafc 0%, #e2f7ff 38%, #67e8f9 63%, #c4b5fd 82%, #f0a8bf 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: clamp(1.45rem, 2vw, 2rem);
+    font-weight: 700;
+    line-height: 1.24;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  #home .live-signal {
+    margin: 0 0 22px;
+    border-color: rgba(103, 232, 249, 0.22);
+    background: rgba(6, 182, 212, 0.045);
+  }
+
+  #home .hero-description {
+    max-width: 620px;
+    margin-bottom: 30px;
+    color: #9fadc2;
+    font-size: 0.98rem;
+    line-height: 1.78;
+  }
+
+  #home .hero-actions {
+    gap: 14px;
+  }
+
+  #home .button {
+    min-height: 52px;
+    padding-inline: 22px;
+    border-radius: 14px;
+  }
+
+  #home .button-primary {
+    background: linear-gradient(110deg, #0b65ff, #7047ef 56%, #df49b2);
+    border-color: rgba(167, 243, 255, 0.48);
+    box-shadow:
+      0 16px 36px rgba(37, 99, 235, 0.22),
+      0 0 30px rgba(217, 70, 239, 0.1);
+  }
+
+  #home .button-secondary {
+    border-color: rgba(103, 232, 249, 0.28);
+    background: rgba(7, 16, 34, 0.66);
+  }
+
+  #home .social-row {
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  #home .hero-visual {
+    position: relative;
+    display: grid;
+    padding: 0;
+    overflow: hidden;
+    perspective: 1200px;
+  }
+
+  #home .hero-visual::before {
+    content: "NEURAL SYSTEM / LIVE ARCHITECTURE";
+    position: absolute;
+    top: 24px;
+    left: 28px;
+    z-index: 8;
+    color: #73e9f6;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.19em;
+  }
+
+  #home .hero-visual::after {
+    content: "BUILD  •  TRAIN  •  DEPLOY  •  IMPACT";
+    position: absolute;
+    right: 28px;
+    bottom: 22px;
+    z-index: 8;
+    padding: 7px 11px;
+    border: 1px solid rgba(240, 168, 191, 0.18);
+    border-radius: 9px;
+    background: rgba(4, 9, 23, 0.72);
+    color: #b7c8de;
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+  }
+
+  #home .core-stage {
+    width: 100%;
+    min-height: 610px;
+    aspect-ratio: auto;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background:
+      linear-gradient(rgba(103, 232, 249, 0.027) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(103, 232, 249, 0.027) 1px, transparent 1px),
+      radial-gradient(circle at 52% 51%, rgba(6, 182, 212, 0.16), transparent 25%),
+      radial-gradient(circle at 52% 51%, rgba(124, 58, 237, 0.1), transparent 44%),
+      linear-gradient(145deg, rgba(3, 8, 21, 0.2), rgba(2, 6, 17, 0.72));
+    background-size: 32px 32px, 32px 32px, auto, auto, auto;
+    box-shadow: inset 0 0 100px rgba(6, 182, 212, 0.04);
+  }
+
+  #home .core-stage::before {
+    inset: 20% 24%;
+    z-index: 1;
+    border: 1px solid rgba(103, 232, 249, 0.15);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, transparent 36%, rgba(103, 232, 249, 0.055) 37%, transparent 39%),
+      radial-gradient(circle, transparent 54%, rgba(196, 181, 253, 0.05) 55%, transparent 57%);
+    box-shadow:
+      0 0 0 34px rgba(103, 232, 249, 0.018),
+      0 0 0 68px rgba(196, 181, 253, 0.014),
+      0 0 90px rgba(6, 182, 212, 0.11);
+    animation: ringPulse 5.8s ease-in-out infinite;
+  }
+
+  #home .core-stage::after {
+    inset: 10% 8%;
+    z-index: 0;
+    border: 0;
+    border-radius: 0;
+    background:
+      linear-gradient(28deg, transparent 49.7%, rgba(103, 232, 249, 0.16) 49.9%, rgba(103, 232, 249, 0.16) 50.1%, transparent 50.3%),
+      linear-gradient(151deg, transparent 49.7%, rgba(240, 168, 191, 0.15) 49.9%, rgba(240, 168, 191, 0.15) 50.1%, transparent 50.3%),
+      linear-gradient(90deg, transparent 49.8%, rgba(103, 232, 249, 0.1) 50%, transparent 50.2%);
+    opacity: 0.7;
+    animation: none;
+  }
+
+  #home .core {
+    top: 51%;
+    left: 52%;
+    width: 188px;
+    height: 188px;
+    border: 1px solid rgba(103, 232, 249, 0.58);
+    background:
+      radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.22), transparent 18%),
+      radial-gradient(circle at center, rgba(20, 184, 224, 0.28), rgba(5, 11, 27, 0.96) 64%);
+    box-shadow:
+      inset 0 0 58px rgba(6, 182, 212, 0.19),
+      0 0 0 12px rgba(6, 182, 212, 0.035),
+      0 0 0 24px rgba(124, 58, 237, 0.025),
+      0 0 78px rgba(6, 182, 212, 0.23),
+      0 0 110px rgba(217, 70, 239, 0.08);
+  }
+
+  #home .core::before,
+  #home .core::after {
+    inset: -22px;
+    border-color: rgba(103, 232, 249, 0.23);
+    animation: coreWave 4.2s ease-out infinite;
+  }
+
+  #home .core::after {
+    inset: -39px;
+    border-style: dashed;
+    border-color: rgba(240, 168, 191, 0.18);
+    animation-delay: 1.7s;
+  }
+
+  #home .core strong {
+    font-size: 4.25rem;
+    text-shadow: 0 0 28px rgba(103, 232, 249, 0.45);
+  }
+
+  #home .core small,
+  #home .core span {
+    color: #99a9c1;
+    font-size: 0.55rem;
+  }
+
+  #home .orbit-one {
+    inset: 24%;
+    border-color: rgba(103, 232, 249, 0.22);
+    animation-duration: 19s;
+  }
+
+  #home .orbit-two {
+    inset: 14%;
+    border-color: rgba(240, 168, 191, 0.15);
+    animation-duration: 27s;
+  }
+
+  #home .orbit span {
+    width: 7px;
+    height: 7px;
+  }
+
+  #home .neural-dots i {
+    width: 4px;
+    height: 4px;
+    background: #c7f8ff;
+    box-shadow: 0 0 14px rgba(103, 232, 249, 0.95);
+  }
+
+  #home .signal-card,
+  #home .terminal-card {
+    border-color: rgba(103, 232, 249, 0.22);
+    background:
+      radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.1), transparent 42%),
+      linear-gradient(145deg, rgba(8, 19, 40, 0.94), rgba(4, 10, 25, 0.92));
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 0 26px rgba(6, 182, 212, 0.055);
+  }
+
+  #home .signal-card {
+    width: 190px;
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 18px 20px;
+    border-radius: 17px;
+  }
+
+  #home .signal-card::before,
+  #home .terminal-card::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  #home .signal-card::after {
+    position: absolute;
+    top: 11px;
+    right: 13px;
+    color: rgba(255, 255, 255, 0.28);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  #home .signal-card span {
+    color: #6eddea;
+  }
+
+  #home .signal-card strong {
+    margin: 6px 0 4px;
+    font-size: 1.08rem;
+  }
+
+  #home .signal-python {
+    top: 14%;
+    left: 6%;
+    border-color: rgba(103, 232, 249, 0.34);
+  }
+
+  #home .signal-python::after {
+    content: "01";
+  }
+
+  #home .signal-python::before {
+    top: 62%;
+    left: 100%;
+    width: clamp(100px, 10vw, 154px);
+    height: 2px;
+    transform: rotate(18deg);
+    transform-origin: left center;
+    background: linear-gradient(90deg, rgba(103, 232, 249, 0.85), rgba(103, 232, 249, 0.06));
+    box-shadow: 0 0 12px rgba(103, 232, 249, 0.26);
+  }
+
+  #home .signal-path {
+    top: 17%;
+    right: 5%;
+    border-color: rgba(240, 168, 191, 0.3);
+  }
+
+  #home .signal-path::after {
+    content: "03";
+  }
+
+  #home .signal-path::before {
+    top: 64%;
+    right: 100%;
+    width: clamp(90px, 9vw, 142px);
+    height: 2px;
+    transform: rotate(-17deg);
+    transform-origin: right center;
+    background: linear-gradient(90deg, rgba(240, 168, 191, 0.06), rgba(240, 168, 191, 0.82));
+    box-shadow: 0 0 12px rgba(240, 168, 191, 0.22);
+  }
+
+  #home .terminal-card {
+    right: auto;
+    left: 52%;
+    bottom: 7.5%;
+    width: min(330px, 48%);
+    transform: translateX(-50%);
+    border-color: rgba(196, 181, 253, 0.28);
+    border-radius: 16px;
+  }
+
+  #home .terminal-card::before {
+    left: 50%;
+    bottom: 100%;
+    width: 2px;
+    height: 92px;
+    background: linear-gradient(0deg, rgba(196, 181, 253, 0.82), rgba(103, 232, 249, 0.05));
+    box-shadow: 0 0 12px rgba(196, 181, 253, 0.24);
+  }
+
+  #home .terminal-card:hover {
+    transform: translateX(-50%) translateY(-5px) translateZ(24px);
+  }
+
+  #home .terminal-head {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  #home .terminal-card code {
+    padding: 15px 17px 17px;
+    font-size: 0.68rem;
+  }
+
+  #home .metrics-grid.metrics-v4 {
+    margin-top: 18px;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid rgba(103, 232, 249, 0.14);
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 0% 50%, rgba(6, 182, 212, 0.08), transparent 28%),
+      radial-gradient(circle at 100% 50%, rgba(159, 39, 78, 0.08), transparent 30%),
+      rgba(5, 12, 27, 0.78);
+    box-shadow: 0 20px 52px rgba(0, 0, 0, 0.28);
+  }
+
+  #home .metrics-grid.metrics-v4 article {
+    min-height: 92px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 28px;
+    border: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  #home .metrics-grid.metrics-v4 article:last-child {
+    border-right: 0;
+  }
+
+  #home .metrics-grid.metrics-v4 article::before {
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple), var(--maroon));
+    opacity: 0.76;
+  }
+
+  #home .metrics-grid.metrics-v4 span {
+    color: #7688a2;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+  }
+
+  #home .metrics-grid.metrics-v4 strong {
+    color: #edf7ff;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1120px) {
+  #home .hero-grid.hero-grid-v4,
+  #home .metrics-grid.metrics-v4 {
+    width: min(1040px, calc(100% - 40px));
+  }
+
+  #home .hero-grid.hero-grid-v4 {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 20px;
+  }
+
+  #home .hero-copy,
+  #home .hero-visual,
+  #home .core-stage {
+    min-height: 560px;
+  }
+
+  #home .hero-copy {
+    padding: 34px;
+  }
+
+  #home .hero-copy h1 {
+    font-size: clamp(3.15rem, 5.4vw, 4.7rem);
+  }
+
+  #home .hero-line {
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+  }
+
+  #home .signal-card {
+    width: 158px;
+    min-height: 100px;
+    padding: 15px;
+  }
+
+  #home .signal-card strong {
+    font-size: 0.9rem;
+  }
+
+  #home .core {
+    width: 160px;
+    height: 160px;
+  }
+
+  #home .core strong {
+    font-size: 3.55rem;
+  }
+
+  #home .terminal-card {
+    width: min(280px, 54%);
+  }
+}
+
+@media (min-width: 861px) and (prefers-reduced-motion: reduce) {
+  #home .core-stage,
+  #home .signal-card {
+    transform: none !important;
+  }
+
+  #home .terminal-card {
+    transform: translateX(-50%) !important;
+  }
+}
