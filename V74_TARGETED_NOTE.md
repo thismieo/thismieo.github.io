@@ -1,0 +1,1 @@
+V74 targets only the Machine Learning card on phone layouts: icon size, label size, centering, spacing, and cache wiring. This temporary note is removed before merge.
