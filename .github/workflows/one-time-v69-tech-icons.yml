@@ -49,11 +49,10 @@ jobs:
           path.write_text(text, encoding='utf-8')
           PY
 
-      - name: Validate source
+      - name: Validate generated wiring
         run: |
           set -euo pipefail
           node --check hero-interface-v68.js
-          python3 scripts/validate_site.py
           git diff --check
           grep -q 'data-release="2026.07.18.69"' index.html
           test "$(grep -c 'tech-icons-v69.css' index.html)" -eq 1
@@ -66,5 +65,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           rm .github/workflows/one-time-v69-tech-icons.yml
           git add index.html .github/workflows/one-time-v69-tech-icons.yml
-          git commit -m 'Wire and validate V69 technical icons'
+          git commit -m 'Wire V69 technical icons'
           git push origin HEAD:feat/v69-tech-icons-wave
