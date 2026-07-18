@@ -1,0 +1,25 @@
+name: One-time V74 cleanup note
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/v74-machine-learning-mobile-balance
+      - run: |
+          rm -f V74_TARGETED_NOTE.md .github/workflows/one-time-v74-clean-note.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add V74_TARGETED_NOTE.md .github/workflows/one-time-v74-clean-note.yml
+          git commit -m 'Remove temporary V74 note and cleanup workflow'
+          git push origin HEAD:feat/v74-machine-learning-mobile-balance
