@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.19.70";
+  document.documentElement.dataset.release = "2026.07.19.71";
 
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
@@ -13,7 +13,7 @@
   if (home.dataset.heroV68Ready === "true") return;
 
   home.dataset.heroV68Ready = "true";
-  home.classList.add("is-hero-v68", "is-tech-icons-v70");
+  home.classList.add("is-hero-v68", "is-tech-icons-v71");
 
   const firstLine = document.createElement("span");
   firstLine.className = "hero-v68-line hero-v68-line-one";
@@ -45,10 +45,10 @@
   summary.replaceChildren(fullSummary, mobileSummary);
 
   const iconPaths = {
-    Python: '<rect x="3.5" y="4.5" width="17" height="15" rx="3.2"/><path d="m8.5 9-2.5 3 2.5 3M15.5 9l2.5 3-2.5 3M10.6 16h2.8"/>',
-    Data: '<ellipse cx="12" cy="5.8" rx="7.4" ry="2.8"/><path d="M4.6 5.8v6.1c0 1.55 3.3 2.8 7.4 2.8s7.4-1.25 7.4-2.8V5.8M4.6 11.9V18c0 1.55 3.3 2.8 7.4 2.8s7.4-1.25 7.4-2.8v-6.1"/>',
-    "Machine Learning": '<circle cx="6" cy="7" r="2.15"/><circle cx="18" cy="6" r="2.15"/><circle cx="12" cy="18" r="2.15"/><path d="m8.1 6.9 7.7-.7M7.2 8.8l3.6 7.2M16.8 7.8l-3.6 8.2"/>',
-    "AI Systems": '<rect x="6.5" y="6.5" width="11" height="11" rx="2.7"/><circle cx="12" cy="12" r="2.35"/><path d="M9 2.5v4M15 2.5v4M9 17.5v4M15 17.5v4M2.5 9h4M2.5 15h4M17.5 9h4M17.5 15h4"/>'
+    Python: '<rect x="3.5" y="4.5" width="17" height="15" rx="3.2"/><path d="M6.8 8.2h10.4M8.8 11l-2.2 2 2.2 2M15.2 11l2.2 2-2.2 2M11 16.9h2"/>',
+    Data: '<ellipse cx="12" cy="5.8" rx="7.3" ry="2.7"/><path d="M4.7 5.8v6.1c0 1.5 3.27 2.7 7.3 2.7s7.3-1.2 7.3-2.7V5.8M4.7 11.9V18c0 1.5 3.27 2.7 7.3 2.7s7.3-1.2 7.3-2.7v-6.1"/>',
+    "Machine Learning": '<circle cx="6" cy="7" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="m8 6.9 8-.7M7.1 8.8l3.7 7.2M16.9 7.8l-3.7 8.2"/>',
+    "AI Systems": '<rect x="6.4" y="6.4" width="11.2" height="11.2" rx="2.8"/><circle cx="12" cy="12" r="2.25"/><path d="M9 2.7v3.7M15 2.7v3.7M9 17.6v3.7M15 17.6v3.7M2.7 9h3.7M2.7 15h3.7M17.6 9h3.7M17.6 15h3.7"/>'
   };
   const technicalStages = Object.keys(iconPaths);
 
@@ -56,28 +56,33 @@
   if (existingStrip) existingStrip.remove();
 
   const strip = document.createElement("div");
-  strip.className = "hero-v68-tech-strip hero-v70-tech-strip";
+  strip.className = "hero-v68-tech-strip hero-v71-tech-strip";
   strip.setAttribute("aria-label", "Current technical learning path");
   strip.setAttribute("role", "list");
 
   technicalStages.forEach((label, index) => {
     const item = document.createElement("span");
-    item.className = "hero-v70-tech-item";
+    item.className = "hero-v71-tech-item";
     item.setAttribute("role", "listitem");
     item.style.setProperty("--hero-v68-order", String(index));
-    item.style.setProperty("--hero-v70-order", String(index));
+    item.style.setProperty("--hero-v71-order", String(index));
+
+    const iconFrame = document.createElement("span");
+    iconFrame.className = "hero-v71-icon-frame";
+    iconFrame.setAttribute("aria-hidden", "true");
 
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
     icon.setAttribute("aria-hidden", "true");
     icon.setAttribute("focusable", "false");
-    icon.classList.add("hero-v70-tech-icon");
+    icon.classList.add("hero-v71-tech-icon");
     icon.innerHTML = iconPaths[label];
 
     const text = document.createElement("b");
     text.textContent = label;
 
-    item.append(icon, text);
+    iconFrame.append(icon);
+    item.append(iconFrame, text);
     strip.append(item);
   });
 
