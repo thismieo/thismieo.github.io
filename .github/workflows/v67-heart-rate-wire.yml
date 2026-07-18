@@ -1,0 +1,57 @@
+name: Wire V67 heart-rate fix
+
+on:
+  push:
+    branches:
+      - feat/v67-heart-rate-readout
+
+permissions:
+  contents: write
+
+jobs:
+  wire-v67:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/v67-heart-rate-readout
+          fetch-depth: 0
+
+      - name: Wire V67 assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+
+          text = text.replace(
+              'data-release="2026.07.18.63"',
+              'data-release="2026.07.18.67"',
+              1,
+          )
+
+          core_link = '  <link rel="stylesheet" href="core-contact-v63.css?v=20260718.63" data-core-contact-v63 />'
+          readout_link = '  <link rel="stylesheet" href="project-readouts-v66.css?v=20260718.67" data-project-readouts-v66 />'
+          assert core_link in text, "core contact stylesheet link not found"
+          if readout_link not in text:
+              text = text.replace(core_link, f"{core_link}\n{readout_link}", 1)
+
+          old_script = '  <script src="core-contact-v63.js?v=20260718.63" defer></script>'
+          new_script = '  <script src="core-contact-v63.js?v=20260718.67" defer></script>'
+          assert old_script in text, "core contact script link not found"
+          text = text.replace(old_script, new_script, 1)
+
+          assert text.count(readout_link) == 1
+          assert text.count(new_script) == 1
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Remove one-time workflow and commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm --ignore-unmatch .github/workflows/v67-heart-rate-wire.yml
+          git add index.html
+          git commit -m "Wire V67 heart-rate assets"
+          git push origin HEAD:feat/v67-heart-rate-readout
