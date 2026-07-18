@@ -1,4 +1,4 @@
-/* Portfolio V64 — restore the globe, remove the personal portrait, and preserve the calm five-channel contact motion. */
+/* Portfolio V65 — restored globe, portraitless hero, calm contact motion, and clear stacked phone projects. */
 
 /* --------------------------------------------------------------------------
    RESTORED PLANET CORE
@@ -239,6 +239,253 @@
     width: calc(50% - 5px);
     grid-column: 1 / -1;
     justify-self: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   V65 PHONE PROJECT STACK
+   Replace the compressed three-column phone presentation with three full-width
+   cards. Restore complete copy, technology tags, badges and readable scenes.
+   Desktop and tablet project layouts remain untouched.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  #projects .project-switcher-v61 {
+    display: none !important;
+  }
+
+  #projects.is-project-stack-v65 .projects-grid,
+  #projects.is-project-grid-v62 .projects-grid,
+  #projects.is-project-tabs-v61.is-project-grid-v62 .projects-grid {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto !important;
+    grid-auto-flow: row !important;
+    grid-auto-columns: auto !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    scrollbar-width: auto !important;
+    overscroll-behavior-inline: auto !important;
+  }
+
+  #projects.is-project-stack-v65 .projects-grid > .project-card,
+  #projects.is-project-grid-v62 .projects-grid > .project-card,
+  #projects.is-project-tabs-v61.is-project-grid-v62 .projects-grid > .project-card,
+  #projects.is-project-tabs-v61.is-project-grid-v62 .projects-grid > .project-card.is-project-v61-active {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border-radius: 21px !important;
+    scroll-snap-align: none !important;
+    box-shadow:
+      0 18px 42px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  }
+
+  #projects.is-project-stack-v65 .project-visual-v54,
+  #projects.is-project-grid-v62 .project-visual-v54 {
+    flex: 0 0 auto !important;
+    height: clamp(208px, 58vw, 238px) !important;
+    min-height: clamp(208px, 58vw, 238px) !important;
+    overflow: hidden !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  #projects.is-project-stack-v65 .project-v54-svg,
+  #projects.is-project-stack-v65 .project-v54-svg.project-v54-traffic,
+  #projects.is-project-grid-v62 .project-v54-svg,
+  #projects.is-project-grid-v62 .project-v54-svg.project-v54-traffic {
+    inset: 4px auto auto 50% !important;
+    width: 108% !important;
+    height: auto !important;
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+
+  #projects.is-project-stack-v65 .project-v54-label,
+  #projects.is-project-grid-v62 .project-v54-label {
+    font-size: 7.2px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  #projects.is-project-stack-v65 .project-v54-value,
+  #projects.is-project-grid-v62 .project-v54-value {
+    font-size: 11.2px !important;
+    letter-spacing: 0.035em !important;
+  }
+
+  #projects.is-project-stack-v65 .visual-badge.project-v54-badge,
+  #projects.is-project-grid-v62 .visual-badge.project-v54-badge {
+    left: auto !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    width: auto !important;
+    max-width: calc(100% - 24px) !important;
+    min-height: 0 !important;
+    padding: 7px 9px !important;
+    border-radius: 10px !important;
+  }
+
+  #projects.is-project-stack-v65 .visual-badge.project-v54-badge span,
+  #projects.is-project-grid-v62 .visual-badge.project-v54-badge span {
+    display: block !important;
+    font-size: 0.43rem !important;
+    letter-spacing: 0.11em !important;
+  }
+
+  #projects.is-project-stack-v65 .visual-badge.project-v54-badge b,
+  #projects.is-project-grid-v62 .visual-badge.project-v54-badge b {
+    display: block !important;
+    overflow: visible !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.07em !important;
+    line-height: 1.15 !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body,
+  #projects.is-project-grid-v62 .project-body {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    padding: 20px 18px 19px !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body .project-top,
+  #projects.is-project-grid-v62 .project-body .project-top {
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body .project-top span,
+  #projects.is-project-grid-v62 .project-body .project-top span {
+    min-width: 0 !important;
+    overflow: visible !important;
+    color: #8da4bc !important;
+    font-family: "Space Grotesk", "Inter", sans-serif !important;
+    font-size: 0.62rem !important;
+    font-weight: 760 !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1.3 !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body .project-top span::after,
+  #projects.is-project-grid-v62 .project-body .project-top span::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body .project-top b,
+  #projects.is-project-grid-v62 .project-body .project-top b {
+    width: 32px !important;
+    height: 32px !important;
+    flex: 0 0 32px !important;
+    border-radius: 10px !important;
+    font-size: 0.68rem !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body h3,
+  #projects.is-project-grid-v62 .project-body h3 {
+    min-height: 0 !important;
+    margin: 0 0 10px !important;
+    display: block !important;
+    overflow: visible !important;
+    font-size: clamp(1.45rem, 6.4vw, 1.72rem) !important;
+    line-height: 1.16 !important;
+    letter-spacing: -0.032em !important;
+    -webkit-line-clamp: unset !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body p,
+  #projects.is-project-grid-v62 .project-body p {
+    min-height: 0 !important;
+    margin: 0 0 15px !important;
+    display: block !important;
+    overflow: visible !important;
+    color: #8fa2b7 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.68 !important;
+    -webkit-line-clamp: unset !important;
+  }
+
+  #projects.is-project-stack-v65 .project-tags,
+  #projects.is-project-grid-v62 .project-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    grid-template-columns: none !important;
+    gap: 7px !important;
+    margin: 0 0 15px !important;
+  }
+
+  #projects.is-project-stack-v65 .project-tags span,
+  #projects.is-project-grid-v62 .project-tags span,
+  #projects.is-project-stack-v65 .project-tags span:nth-child(n + 3),
+  #projects.is-project-grid-v62 .project-tags span:nth-child(n + 3) {
+    width: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 7px 10px !important;
+    overflow: visible !important;
+    border-radius: 9px !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.025em !important;
+    line-height: 1 !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body .project-status,
+  #projects.is-project-grid-v62 .project-body .project-status {
+    width: fit-content !important;
+    min-width: 92px !important;
+    margin-top: 0 !important;
+    padding: 8px 12px !important;
+    overflow: visible !important;
+    border-radius: 9px !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1 !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #projects.is-project-stack-v65 .projects-grid,
+  #projects.is-project-grid-v62 .projects-grid {
+    gap: 15px !important;
+  }
+
+  #projects.is-project-stack-v65 .project-visual-v54,
+  #projects.is-project-grid-v62 .project-visual-v54 {
+    height: 198px !important;
+    min-height: 198px !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body,
+  #projects.is-project-grid-v62 .project-body {
+    padding: 18px 16px 17px !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body h3,
+  #projects.is-project-grid-v62 .project-body h3 {
+    font-size: 1.36rem !important;
+  }
+
+  #projects.is-project-stack-v65 .project-body p,
+  #projects.is-project-grid-v62 .project-body p {
+    font-size: 0.87rem !important;
   }
 }
 
