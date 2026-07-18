@@ -1,0 +1,63 @@
+name: One-time V58 refinement wiring
+
+on:
+  push:
+    branches:
+      - feat/v58-contact-projects-refine
+
+permissions:
+  contents: write
+
+jobs:
+  wire-v58:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v58-contact-projects-refine
+          fetch-depth: 0
+
+      - name: Wire V58 and validate CSS
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('contact-projects-v58.css')
+          css = css_path.read_text(encoding='utf-8')
+          if css.count('{') != css.count('}'):
+              raise SystemExit('V58 CSS braces are unbalanced')
+
+          index_path = Path('index.html')
+          html = index_path.read_text(encoding='utf-8')
+          html = html.replace('data-release="2026.07.18.57"', 'data-release="2026.07.18.58"', 1)
+
+          marker = '  <link rel="stylesheet" href="contact-icons-v57.css?v=20260718.57" data-contact-icons-v57 />\n'
+          addition = marker + '  <link rel="stylesheet" href="contact-projects-v58.css?v=20260718.58" data-contact-projects-v58 />\n'
+          if 'contact-projects-v58.css?v=20260718.58' not in html:
+              if marker not in html:
+                  raise SystemExit('Could not find V57 contact stylesheet marker')
+              html = html.replace(marker, addition, 1)
+
+          required = [
+              'data-release="2026.07.18.58"',
+              'contact-projects-v58.css?v=20260718.58',
+          ]
+          for item in required:
+              if html.count(item) != 1:
+                  raise SystemExit(f'Expected exactly one V58 marker: {item}')
+
+          index_path.write_text(html, encoding='utf-8')
+          Path('.github/workflows/one-time-wire-v58.yml').unlink()
+          PY
+
+      - name: Commit V58 wiring and cleanup
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/one-time-wire-v58.yml
+          git commit -m "Complete V58 contact and project refinement"
+          git push origin HEAD:feat/v58-contact-projects-refine
