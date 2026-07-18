@@ -1,4 +1,4 @@
-/* Portfolio V66 — phone project readout safe areas and unobstructed project cards. */
+/* Portfolio V67 — phone project readout safe areas with an expanded heart-rate panel. */
 
 @media (max-width: 720px) {
   /* Keep the SVG viewBox fully inside the card. V65's 108% scale cropped the
@@ -17,7 +17,7 @@
   /* Geometry is also written as SVG attributes by core-contact-v63.js so the
      fix remains dependable on iOS Safari. These rules are a visual fallback. */
   #projects .project-v54-health .project-v54-chip {
-    width: 78px;
+    width: 96px;
   }
 
   #projects .project-v54-fraud .project-v54-chip {
