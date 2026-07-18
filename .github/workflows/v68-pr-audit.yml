@@ -28,7 +28,23 @@ jobs:
         run: python3 tools/v68_cleanup.py
 
       - name: Run complete source audit
-        run: python3 tools/v68_audit.py
+        id: source-audit
+        shell: bash
+        run: |
+          set +e
+          python3 tools/v68_audit.py 2>&1 | tee v68-audit-report.txt
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v68-audit-report
+          path: v68-audit-report.txt
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Check whitespace and diff
         run: |
@@ -36,8 +52,10 @@ jobs:
           git status --short
 
       - name: Commit audited source
+        if: steps.source-audit.outputs.status == '0'
         run: |
           set -euo pipefail
+          rm -f v68-audit-report.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
@@ -47,3 +65,9 @@ jobs:
           fi
           git commit -m "Polish the hero and remove obsolete project layers"
           git push origin HEAD:${{ github.head_ref }}
+
+      - name: Fail when audit reports errors
+        if: steps.source-audit.outputs.status != '0'
+        run: |
+          cat v68-audit-report.txt
+          exit 1
