@@ -57,6 +57,7 @@
   const strip = document.createElement("div");
   strip.className = "hero-v68-tech-strip hero-v72-tech-strip";
   strip.dataset.techIcons = "v72";
+  strip.dataset.presentation = "clean-social-cards";
   strip.setAttribute("aria-label", "Current technical learning path");
   strip.setAttribute("role", "list");
 
