@@ -1,0 +1,229 @@
+/* Portfolio V55 — phone-specific presentation for the three V54 project displays. */
+
+@media (max-width: 860px) {
+  #projects .project-visual-v54 {
+    height: clamp(176px, 46vw, 198px);
+    min-height: 176px;
+    touch-action: pan-y;
+    background-size: auto, auto, auto;
+  }
+
+  #projects .project-visual-v54::before {
+    opacity: 0.62;
+    background-size: 20px 20px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.78) 70%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.78) 70%, transparent 100%);
+  }
+
+  #projects .project-v54-svg {
+    inset: 10px auto auto 50% !important;
+    width: 104% !important;
+    height: auto !important;
+    max-width: none !important;
+    aspect-ratio: 3 / 1;
+    overflow: visible;
+    transform: translate3d(-50%, 0, 0);
+    transform-origin: center top;
+  }
+
+  #projects .project-v54-label {
+    font-size: 6.8px;
+    letter-spacing: 0.11em;
+  }
+
+  #projects .project-v54-value {
+    font-size: 10.2px;
+    letter-spacing: 0.045em;
+  }
+
+  #projects .project-v54-chip {
+    fill: rgba(3, 11, 25, 0.9);
+    stroke-width: 1.15;
+  }
+
+  #projects .visual-badge.project-v54-badge {
+    left: 14px;
+    right: auto;
+    bottom: 12px;
+    min-width: 126px;
+    padding: 8px 11px;
+    border-radius: 10px;
+    background:
+      linear-gradient(135deg, rgba(7, 22, 40, 0.96), rgba(6, 11, 27, 0.965)) padding-box,
+      linear-gradient(110deg, rgba(103, 232, 249, 0.42), rgba(96, 165, 250, 0.16), rgba(240, 168, 191, 0.32)) border-box;
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  }
+
+  #projects .visual-badge.project-v54-badge span {
+    font-size: 0.46rem;
+    letter-spacing: 0.115em;
+  }
+
+  #projects .visual-badge.project-v54-badge b {
+    margin-top: 2px;
+    font-size: 0.61rem;
+    letter-spacing: 0.065em;
+  }
+
+  #projects .project-v54-health-line {
+    stroke-width: 2.55;
+  }
+
+  #projects .project-v54-health-glow {
+    stroke-width: 6;
+    opacity: 0.24;
+  }
+
+  #projects .project-v54-health-dot {
+    stroke-width: 1.65;
+  }
+
+  #projects.v6-active .project-v54-health-line,
+  #projects.v6-active .project-v54-health-scan {
+    animation-duration: 3.65s;
+  }
+
+  #projects.v6-active .project-v54-health-ring,
+  #projects.v6-active .project-v54-heart-icon {
+    animation-duration: 0.96s;
+  }
+
+  #projects .project-v54-fraud-link {
+    stroke-width: 1.35;
+    stroke-dasharray: 4 6;
+  }
+
+  #projects .project-v54-radar-ring {
+    stroke: rgba(147, 197, 253, 0.135);
+  }
+
+  #projects.v6-active .project-v54-fraud-link {
+    animation-duration: 3.55s;
+  }
+
+  #projects.v6-active .project-v54-fraud-node {
+    animation-duration: 2.1s;
+  }
+
+  #projects.v6-active .project-v54-fraud-node.is-alert {
+    animation-duration: 0.92s;
+  }
+
+  #projects.v6-active .project-v54-fraud-halo {
+    animation-duration: 1.7s;
+  }
+
+  #projects.v6-active .project-v54-radar-sweep {
+    animation-duration: 4.8s;
+  }
+
+  #projects .project-v54-traffic-road-shadow {
+    stroke-width: 9;
+  }
+
+  #projects .project-v54-traffic-road {
+    stroke-width: 2.65;
+    stroke-dasharray: 11 8;
+  }
+
+  #projects.v6-active .project-v54-traffic-road.is-cyan {
+    animation-duration: 2.75s;
+  }
+
+  #projects.v6-active .project-v54-traffic-road.is-pink {
+    animation-duration: 3.25s;
+  }
+
+  #projects.v6-active .project-v54-traffic-zone {
+    animation-duration: 1.14s;
+  }
+
+  #projects.v6-active .project-v54-flow-bar {
+    animation-duration: 1.52s;
+  }
+
+  #projects .project-v54-car {
+    stroke-width: 1.35;
+  }
+
+  #projects.v6-active .project-visual-health.project-visual-v54 {
+    box-shadow: inset 0 0 36px rgba(52, 211, 153, 0.035);
+  }
+
+  #projects.v6-active .project-visual-fraud.project-visual-v54 {
+    box-shadow: inset 0 0 38px rgba(240, 168, 191, 0.035);
+  }
+
+  #projects.v6-active .project-visual-traffic.project-visual-v54 {
+    box-shadow: inset 0 0 38px rgba(167, 139, 250, 0.04);
+  }
+}
+
+@media (max-width: 580px) {
+  #projects .project-visual-v54 {
+    height: clamp(174px, 49vw, 188px);
+    min-height: 174px;
+  }
+
+  #projects .project-v54-svg {
+    top: 11px !important;
+    width: 102.5% !important;
+  }
+
+  #projects .visual-badge.project-v54-badge {
+    left: 12px;
+    bottom: 11px;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 390px) {
+  #projects .project-visual-v54 {
+    height: 170px;
+    min-height: 170px;
+  }
+
+  #projects .project-v54-svg {
+    top: 12px !important;
+    width: 101.5% !important;
+  }
+
+  #projects .project-v54-label {
+    font-size: 6.5px;
+  }
+
+  #projects .project-v54-value {
+    font-size: 9.7px;
+  }
+
+  #projects .visual-badge.project-v54-badge {
+    left: 10px;
+    bottom: 10px;
+    min-width: 114px;
+    padding: 7px 9px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 860px) {
+  #projects .project-visual-v54 {
+    height: 164px;
+    min-height: 164px;
+  }
+
+  #projects .project-v54-svg {
+    top: 8px !important;
+    width: 96% !important;
+  }
+}
+
+.v12-lite #projects .project-visual-v54 {
+  box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #projects .project-v54-svg {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
