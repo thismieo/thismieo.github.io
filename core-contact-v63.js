@@ -1,13 +1,57 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.65";
+  document.documentElement.dataset.release = "2026.07.18.66";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
-  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.65";
+  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.66";
+
+  let readoutStylesheet = document.querySelector("link[data-project-readouts-v66]");
+  if (!readoutStylesheet) {
+    readoutStylesheet = document.createElement("link");
+    readoutStylesheet.rel = "stylesheet";
+    readoutStylesheet.dataset.projectReadoutsV66 = "true";
+    document.head.append(readoutStylesheet);
+  }
+  readoutStylesheet.href = "project-readouts-v66.css?v=20260718.66";
 
   const projects = document.querySelector("#projects");
-  projects?.classList.add("is-project-stack-v65");
+  projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
+
+  /* Keep every top-right SVG readout inside its 360-unit viewBox. V65 scaled
+     phone scenes to 108%, so Safari cropped the far-right text. */
+  const readoutSpecs = [
+    [".project-v54-health", "78", "translate(274 12)"],
+    [".project-v54-fraud", "84", "translate(266 12)"],
+    [".project-v54-traffic", "82", "translate(268 12)"]
+  ];
+
+  const applyProjectReadoutSafeArea = () => {
+    if (!projects) return true;
+
+    let fixed = 0;
+    readoutSpecs.forEach(([sceneSelector, width, transform]) => {
+      const chip = projects.querySelector(`${sceneSelector} .project-v54-chip`);
+      const group = chip?.parentElement;
+      if (!chip || !group) return;
+
+      chip.setAttribute("width", width);
+      group.setAttribute("transform", transform);
+      fixed += 1;
+    });
+
+    return fixed === readoutSpecs.length;
+  };
+
+  if (!applyProjectReadoutSafeArea() && projects) {
+    const readoutObserver = new MutationObserver(() => {
+      if (!applyProjectReadoutSafeArea()) return;
+      readoutObserver.disconnect();
+    });
+
+    readoutObserver.observe(projects, { childList: true, subtree: true });
+    window.setTimeout(() => readoutObserver.disconnect(), 5000);
+  }
 
   /* Remove the personal portrait and its now-unused viewer. The globe, copy,
      terminal, buttons and planetary motion remain untouched. */
