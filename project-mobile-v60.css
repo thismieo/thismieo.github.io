@@ -1,0 +1,208 @@
+/* Portfolio V60 — three-project phone row, visible scroll affordance, and compact navigation. */
+
+/* The widened health readout is applied by project-mobile-v60.js. */
+#projects .project-v60-health-readout .project-v54-label {
+  font-size: 5.55px;
+  letter-spacing: 0.1em;
+}
+
+#projects .project-v60-health-readout .project-v54-value {
+  font-size: 9.15px;
+  letter-spacing: 0.045em;
+}
+
+#projects .project-v60-health-readout .project-v54-heart-icon {
+  filter: drop-shadow(0 0 5px rgba(110, 231, 183, 0.28));
+}
+
+@media (max-width: 720px) {
+  /* Keep all three project cards in one explicit horizontal row. */
+  #projects .projects-grid {
+    grid-template-columns: none !important;
+    grid-template-rows: minmax(0, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: min(82vw, 410px);
+    align-items: stretch;
+    gap: 13px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 24px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 165, 250, 0.88) rgba(10, 23, 43, 0.72);
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #projects .projects-grid > .project-card {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    align-self: stretch;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Restore and refine the horizontal scroll affordance. */
+  #projects .projects-grid::-webkit-scrollbar {
+    display: block;
+    width: auto;
+    height: 6px;
+  }
+
+  #projects .projects-grid::-webkit-scrollbar-track {
+    margin-inline: 20px;
+    border-radius: 999px;
+    background: rgba(9, 21, 40, 0.74);
+    box-shadow: inset 0 0 0 1px rgba(139, 177, 210, 0.08);
+  }
+
+  #projects .projects-grid::-webkit-scrollbar-thumb {
+    border: 1px solid rgba(4, 12, 27, 0.9);
+    border-radius: 999px;
+    background: linear-gradient(90deg, #67e8f9 0%, #60a5fa 38%, #a78bfa 70%, #f0a8bf 100%);
+    box-shadow: 0 0 9px rgba(96, 165, 250, 0.2);
+  }
+
+  /* Compact the floating section navigator instead of hiding it over Projects. */
+  .section-nav-v53 {
+    right: max(6px, env(safe-area-inset-right, 0px));
+    bottom: max(92px, calc(env(safe-area-inset-bottom, 0px) + 72px));
+    transform: translate3d(10px, 0, 0) scale(0.86);
+    transform-origin: right bottom;
+  }
+
+  .section-nav-v53.is-visible,
+  .section-nav-v53[data-current-section="projects"] {
+    opacity: 0.94 !important;
+    pointer-events: auto !important;
+    transform: translate3d(0, 0, 0) scale(0.86) !important;
+  }
+
+  .section-nav-v53-shell {
+    gap: 4px;
+    padding: 4px;
+    border-radius: 15px;
+    box-shadow:
+      0 14px 36px rgba(0, 0, 0, 0.38),
+      0 0 18px rgba(96, 165, 250, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .section-nav-v53-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .section-nav-v53-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .section-nav-v53-current {
+    width: 42px;
+    min-height: 42px;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 5px;
+    border-radius: 11px;
+    text-align: center;
+  }
+
+  .section-nav-v53-index {
+    width: 30px;
+    height: 30px;
+    margin-inline: auto;
+    border-radius: 9px;
+    font-size: 0.56rem;
+  }
+
+  .section-nav-v53-copy {
+    display: none;
+  }
+
+  .section-nav-v53-menu {
+    right: calc(100% + 7px);
+    width: min(222px, calc(100vw - 64px));
+    max-height: min(56vh, 410px);
+  }
+}
+
+@media (max-width: 430px) {
+  #projects .projects-grid {
+    grid-auto-columns: min(84vw, 380px);
+    gap: 11px;
+    padding-bottom: 22px;
+  }
+
+  #projects .projects-grid::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  .section-nav-v53,
+  .section-nav-v53.is-visible,
+  .section-nav-v53[data-current-section="projects"] {
+    right: max(5px, env(safe-area-inset-right, 0px));
+    transform: translate3d(0, 0, 0) scale(0.82) !important;
+  }
+
+  .section-nav-v53-button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .section-nav-v53-current {
+    width: 40px;
+    min-height: 40px;
+  }
+
+  .section-nav-v53-index {
+    width: 29px;
+    height: 29px;
+  }
+
+  #projects .project-v60-health-readout .project-v54-label {
+    font-size: 5.35px;
+  }
+
+  #projects .project-v60-health-readout .project-v54-value {
+    font-size: 8.9px;
+  }
+}
+
+@media (max-width: 350px) {
+  #projects .projects-grid {
+    grid-auto-columns: 87vw;
+  }
+
+  .section-nav-v53,
+  .section-nav-v53.is-visible,
+  .section-nav-v53[data-current-section="projects"] {
+    transform: translate3d(0, 0, 0) scale(0.78) !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 860px) {
+  .section-nav-v53,
+  .section-nav-v53.is-visible,
+  .section-nav-v53[data-current-section="projects"] {
+    right: max(5px, env(safe-area-inset-right, 0px));
+    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    transform: translate3d(0, 0, 0) scale(0.78) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #projects .projects-grid {
+    scroll-behavior: auto;
+  }
+
+  .section-nav-v53,
+  .section-nav-v53-shell,
+  .section-nav-v53-button,
+  .section-nav-v53-current {
+    transition: none !important;
+  }
+}
