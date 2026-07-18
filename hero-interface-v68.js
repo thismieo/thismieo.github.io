@@ -50,6 +50,7 @@
     "Machine Learning": '<circle cx="6" cy="7" r="2.15"/><circle cx="18" cy="6" r="2.15"/><circle cx="12" cy="18" r="2.15"/><path d="m8.1 6.9 7.7-.7M7.2 8.8l3.6 7.2M16.8 7.8l-3.6 8.2"/>',
     "AI Systems": '<rect x="6.5" y="6.5" width="11" height="11" rx="2.7"/><circle cx="12" cy="12" r="2.35"/><path d="M9 2.5v4M15 2.5v4M9 17.5v4M15 17.5v4M2.5 9h4M2.5 15h4M17.5 9h4M17.5 15h4"/>'
   };
+  const technicalStages = Object.keys(iconPaths);
 
   const existingStrip = copy.querySelector(".hero-v68-tech-strip");
   if (existingStrip) existingStrip.remove();
@@ -59,7 +60,7 @@
   strip.setAttribute("aria-label", "Current technical learning path");
   strip.setAttribute("role", "list");
 
-  ["Python", "Data", "Machine Learning", "AI Systems"].forEach((label, index) => {
+  technicalStages.forEach((label, index) => {
     const item = document.createElement("span");
     item.className = "hero-v70-tech-item";
     item.setAttribute("role", "listitem");
