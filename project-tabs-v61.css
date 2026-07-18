@@ -1,0 +1,235 @@
+/* Portfolio V61 — three visible mobile project selectors with one readable detail card. */
+
+.project-switcher-v61 {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  /* Replace the V59/V60 horizontal track with a fixed three-option selector. */
+  #projects .projects-grid {
+    width: 100%;
+    margin-inline: 0;
+    padding: 0;
+    display: block !important;
+    overflow: visible;
+    scroll-snap-type: none;
+    scroll-padding-inline: 0;
+    scrollbar-width: auto;
+  }
+
+  #projects .projects-grid::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  #projects .projects-grid > .project-card {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    margin: 0;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+
+  #projects.is-project-tabs-v61 .projects-grid > .project-card {
+    display: none !important;
+  }
+
+  #projects.is-project-tabs-v61 .projects-grid > .project-card.is-project-v61-active {
+    display: flex !important;
+    animation: projectV61Reveal 360ms cubic-bezier(.2, .75, .25, 1) both;
+  }
+
+  .project-switcher-v61 {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin: 0 0 14px;
+    padding: 5px;
+    border: 1px solid rgba(139, 177, 210, 0.11);
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(103, 232, 249, 0.055), transparent 34%),
+      radial-gradient(circle at 88% 100%, rgba(240, 168, 191, 0.05), transparent 36%),
+      rgba(5, 12, 27, 0.76);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 14px 34px rgba(0, 0, 0, 0.18);
+    isolation: isolate;
+  }
+
+  .project-tab-v61 {
+    position: relative;
+    min-width: 0;
+    min-height: 76px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 7px;
+    padding: 10px 5px 9px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.018);
+    color: #8192aa;
+    cursor: pointer;
+    transition:
+      transform 220ms cubic-bezier(.2, .75, .25, 1),
+      border-color 220ms ease,
+      background 220ms ease,
+      color 220ms ease,
+      box-shadow 220ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .project-tab-v61::before {
+    content: "";
+    position: absolute;
+    inset: auto 16% 0;
+    height: 1px;
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, var(--project-tab-accent), transparent);
+    box-shadow: 0 0 8px var(--project-tab-accent);
+    transform: scaleX(0.35);
+    transition: opacity 220ms ease, transform 260ms ease;
+  }
+
+  .project-tab-v61[data-project-kind="health"] {
+    --project-tab-accent: rgba(110, 231, 183, 0.9);
+  }
+
+  .project-tab-v61[data-project-kind="fraud"] {
+    --project-tab-accent: rgba(147, 197, 253, 0.9);
+  }
+
+  .project-tab-v61[data-project-kind="traffic"] {
+    --project-tab-accent: rgba(196, 181, 253, 0.9);
+  }
+
+  .project-tab-v61.is-active {
+    border-color: color-mix(in srgb, var(--project-tab-accent) 34%, transparent);
+    background:
+      radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--project-tab-accent) 13%, transparent), transparent 68%),
+      linear-gradient(155deg, rgba(11, 26, 48, 0.92), rgba(7, 14, 31, 0.94));
+    color: #effbff;
+    box-shadow:
+      0 8px 22px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .project-tab-v61.is-active::before {
+    opacity: 0.82;
+    transform: scaleX(1);
+  }
+
+  .project-tab-v61:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--project-tab-accent) 70%, white);
+    outline-offset: 2px;
+  }
+
+  .project-tab-v61-icon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--project-tab-accent) 10%, rgba(7, 15, 32, 0.92));
+    color: color-mix(in srgb, var(--project-tab-accent) 84%, white);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  }
+
+  .project-tab-v61-icon svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .project-tab-v61-label {
+    min-width: 0;
+    overflow: hidden;
+    font-family: "Space Grotesk", "Inter", sans-serif;
+    font-size: 0.58rem;
+    font-weight: 750;
+    letter-spacing: 0.07em;
+    line-height: 1;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .project-tab-v61-index {
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    color: rgba(190, 211, 232, 0.33);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.46rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-tab-v61:hover {
+      transform: translateY(-1px);
+      color: #eaf8ff;
+      background: rgba(255, 255, 255, 0.035);
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  .project-switcher-v61 {
+    gap: 6px;
+    padding: 4px;
+    border-radius: 16px;
+  }
+
+  .project-tab-v61 {
+    min-height: 70px;
+    gap: 6px;
+    padding-inline: 3px;
+    border-radius: 12px;
+  }
+
+  .project-tab-v61-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+  }
+
+  .project-tab-v61-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .project-tab-v61-label {
+    font-size: 0.52rem;
+    letter-spacing: 0.055em;
+  }
+}
+
+@keyframes projectV61Reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #projects.is-project-tabs-v61 .projects-grid > .project-card.is-project-v61-active,
+  .project-tab-v61 {
+    animation: none !important;
+    transition: none !important;
+  }
+}
