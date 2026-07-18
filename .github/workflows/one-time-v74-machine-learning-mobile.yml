@@ -1,0 +1,79 @@
+name: One-time V74 Machine Learning mobile balance
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  wire-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/v74-machine-learning-mobile-balance
+
+      - name: Wire V74 cache keys
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
+          replacements = {
+              'data-release="2026.07.19.73"': 'data-release="2026.07.19.74"',
+              'tech-icons-v69.css?v=20260719.73': 'tech-icons-v69.css?v=20260719.74',
+              'hero-interface-v68.js?v=20260719.73': 'hero-interface-v68.js?v=20260719.74',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'Expected one match for {old!r}, found {text.count(old)}')
+              text = text.replace(old, new, 1)
+          index.write_text(text, encoding='utf-8')
+
+          js = Path('hero-interface-v68.js')
+          js_text = js.read_text(encoding='utf-8')
+          old = 'document.documentElement.dataset.release = "2026.07.19.73";'
+          new = 'document.documentElement.dataset.release = "2026.07.19.74";'
+          if js_text.count(old) != 1:
+              raise SystemExit('V73 JS release marker was not found exactly once')
+          js.write_text(js_text.replace(old, new, 1), encoding='utf-8')
+
+          validator = Path('scripts/validate_site.py')
+          validation_text = validator.read_text(encoding='utf-8')
+          replacements = {
+              'data-release="2026.07.19.73"': 'data-release="2026.07.19.74"',
+              'V73 release marker is missing': 'V74 release marker is missing',
+          }
+          for old, new in replacements.items():
+              if validation_text.count(old) != 1:
+                  raise SystemExit(f'Expected one validator match for {old!r}, found {validation_text.count(old)}')
+              validation_text = validation_text.replace(old, new, 1)
+          validator.write_text(validation_text, encoding='utf-8')
+          PY
+
+      - name: Validate targeted V74 change
+        run: |
+          set -euo pipefail
+          node --check hero-interface-v68.js
+          python3 scripts/validate_site.py
+          git diff --check
+          grep -q 'Portfolio V74' tech-icons-v69.css
+          grep -q 'nth-child(3).*Machine Learning' tech-icons-v69.css || true
+          grep -q 'width: 19px' tech-icons-v69.css
+          grep -q 'font-size: clamp(0.48rem, 1.98vw, 0.54rem)' tech-icons-v69.css
+          grep -q 'text-align: center' tech-icons-v69.css
+          grep -q 'data-release="2026.07.19.74"' index.html
+
+      - name: Commit wiring and remove temporary workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/one-time-v74-machine-learning-mobile.yml
+          git add index.html hero-interface-v68.js scripts/validate_site.py .github/workflows/one-time-v74-machine-learning-mobile.yml
+          git commit -m 'Wire V74 Machine Learning mobile balance'
+          git push origin HEAD:feat/v74-machine-learning-mobile-balance
