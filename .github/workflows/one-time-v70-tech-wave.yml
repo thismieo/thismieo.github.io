@@ -1,0 +1,99 @@
+name: One-time V70 technical wave wiring
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: write
+
+jobs:
+  wire-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out V70 branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v70-tech-wave-refinement
+
+      - name: Wire V70 cache keys and validator
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
+          replacements = {
+              'data-release="2026.07.18.69"': 'data-release="2026.07.19.70"',
+              'tech-icons-v69.css?v=20260718.69': 'tech-icons-v69.css?v=20260719.70',
+              'hero-interface-v68.js?v=20260718.69': 'hero-interface-v68.js?v=20260719.70',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'Expected one index match for {old!r}, found {text.count(old)}')
+              text = text.replace(old, new, 1)
+          index.write_text(text, encoding='utf-8')
+
+          validator = Path('scripts/validate_site.py')
+          validation_text = validator.read_text(encoding='utf-8')
+          validator_replacements = {
+              'data-release="2026.07.18.69"': 'data-release="2026.07.19.70"',
+              'V69 release marker is missing': 'V70 release marker is missing',
+          }
+          for old, new in validator_replacements.items():
+              if validation_text.count(old) != 1:
+                  raise SystemExit(f'Expected one validator match for {old!r}, found {validation_text.count(old)}')
+              validation_text = validation_text.replace(old, new, 1)
+          validator.write_text(validation_text, encoding='utf-8')
+          PY
+
+      - name: Validate V70 implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check hero-interface-v68.js
+          python3 scripts/validate_site.py
+          git diff --check
+          grep -q 'data-release="2026.07.19.70"' index.html
+          test "$(grep -c 'tech-icons-v69.css?v=20260719.70' index.html)" -eq 1
+          test "$(grep -c 'hero-interface-v68.js?v=20260719.70' index.html)" -eq 1
+          grep -q 'is-tech-icons-v70' hero-interface-v68.js
+          grep -q 'white-space: normal' tech-icons-v69.css
+          ! grep -q 'text-overflow: ellipsis' tech-icons-v69.css
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          css = Path('tech-icons-v69.css').read_text(encoding='utf-8')
+          card_block = re.search(r'#home\.is-tech-icons-v70 \.hero-v70-tech-item \{(.*?)\n\}', css, re.S)
+          icon_block = re.search(r'#home\.is-tech-icons-v70 \.hero-v70-tech-icon \{(.*?)\n\}', css, re.S)
+          label_block = re.search(r'#home\.is-tech-icons-v70 \.hero-v70-tech-item b \{(.*?)\n\}', css, re.S)
+          for name, block in [('card', card_block), ('icon', icon_block), ('label', label_block)]:
+              if not block:
+                  raise SystemExit(f'Missing {name} rule')
+              body = block.group(1)
+              if re.search(r'transform\s*:\s*(?!none)', body):
+                  raise SystemExit(f'Unexpected transform in {name} rule')
+          if 'heroV69' in css:
+              raise SystemExit('Legacy V69 animation names remain')
+          PY
+
+      - name: Commit V70 wiring and remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/one-time-v70-tech-wave.yml
+          git add index.html scripts/validate_site.py .github/workflows/one-time-v70-tech-wave.yml
+          git commit -m 'Wire and validate V70 technical wave'
+          git push origin HEAD:feat/v70-tech-wave-refinement
