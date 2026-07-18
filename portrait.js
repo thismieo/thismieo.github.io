@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.46";
+  document.documentElement.dataset.release = "2026.07.18.47";
 
   const header = document.querySelector("#site-header");
   const navWrap = document.querySelector("#site-header .nav-wrap");
@@ -10,7 +10,22 @@
 
   if (!header || !navWrap) return;
 
-  /* Retire the old injected V18 stylesheet and identity dock. */
+  let mobileStylesheet = document.querySelector('link[data-mobile-v47]');
+  if (!mobileStylesheet) {
+    mobileStylesheet = document.createElement("link");
+    mobileStylesheet.rel = "stylesheet";
+    mobileStylesheet.href = "mobile-v47.css?v=20260718.47";
+    mobileStylesheet.dataset.mobileV47 = "true";
+    document.head.append(mobileStylesheet);
+  }
+
+  const portraitImage = document.querySelector("#home .hero-v33-portrait img");
+  if (portraitImage) {
+    portraitImage.sizes = "(max-width: 350px) 176px, (max-width: 620px) 190px, (max-width: 860px) 210px, (min-width: 1181px) 204px, 148px";
+    portraitImage.decoding = "async";
+    portraitImage.fetchPriority = "high";
+  }
+
   document.querySelector('link[data-v17-navigation]')?.remove();
   document.querySelector('link[data-v18-cyber-rail]')?.remove();
   navWrap.querySelector(".nav-identity")?.remove();
@@ -110,51 +125,77 @@
     });
   };
 
-  const syncLoop = (restart = false) => {
+  let lastGroupWidth = 0;
+  let lastViewportWidth = Math.round(window.visualViewport?.width || document.documentElement.clientWidth || window.innerWidth);
+
+  const restartTrack = () => {
+    track.classList.remove("is-ready");
+    void track.offsetWidth;
+    track.classList.add("is-ready");
+  };
+
+  const syncLoop = ({ force = false, restart = false } = {}) => {
     const width = primaryGroup.getBoundingClientRect().width;
     if (!Number.isFinite(width) || width <= 0) return;
 
     const roundedWidth = Math.ceil(width);
-    const duration = Math.max(34, Math.min(64, roundedWidth / 23));
-    track.style.setProperty("--cyber-v46-shift", `${-roundedWidth}px`);
-    track.style.setProperty("--cyber-v46-duration", `${duration.toFixed(2)}s`);
+    const widthChanged = Math.abs(roundedWidth - lastGroupWidth) > 1;
+
+    if (force || widthChanged) {
+      lastGroupWidth = roundedWidth;
+      const duration = Math.max(34, Math.min(64, roundedWidth / 23));
+      track.style.setProperty("--cyber-v46-shift", `${-roundedWidth}px`);
+      track.style.setProperty("--cyber-v46-duration", `${duration.toFixed(2)}s`);
+    }
 
     if (reducedMotion.matches) {
       track.classList.remove("is-ready");
       return;
     }
 
-    if (restart || !track.classList.contains("is-ready")) {
-      track.classList.remove("is-ready");
-      void track.offsetWidth;
+    if (!track.classList.contains("is-ready")) {
       track.classList.add("is-ready");
+    } else if (restart && (force || widthChanged)) {
+      restartTrack();
     }
   };
 
   updateTime();
-  window.requestAnimationFrame(() => syncLoop(true));
+  window.requestAnimationFrame(() => syncLoop({ force: true }));
 
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => syncLoop(true)).catch(() => {});
+    document.fonts.ready.then(() => syncLoop({ force: true, restart: true })).catch(() => {});
   }
 
   let resizeTimer = 0;
-  const queueSync = () => {
+  const queueWidthSync = (force = false) => {
     window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(() => syncLoop(true), 160);
+    resizeTimer = window.setTimeout(() => {
+      const nextWidth = Math.round(window.visualViewport?.width || document.documentElement.clientWidth || window.innerWidth);
+      const viewportChanged = Math.abs(nextWidth - lastViewportWidth) > 2;
+      if (!force && !viewportChanged) return;
+      lastViewportWidth = nextWidth;
+      syncLoop({ force: true, restart: true });
+    }, 180);
   };
 
-  window.addEventListener("resize", queueSync, { passive: true });
-  window.visualViewport?.addEventListener("resize", queueSync, { passive: true });
-  window.setInterval(updateTime, 30000);
+  window.addEventListener("resize", () => queueWidthSync(false), { passive: true });
+  window.visualViewport?.addEventListener("resize", () => queueWidthSync(false), { passive: true });
+  window.addEventListener("orientationchange", () => queueWidthSync(true), { passive: true });
+
+  const clockTimer = window.setInterval(() => {
+    if (!document.hidden) updateTime();
+  }, 30000);
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) return;
     updateTime();
-    syncLoop(false);
+    syncLoop();
   });
 
-  const handleMotionPreference = () => syncLoop(true);
+  window.addEventListener("pagehide", () => window.clearInterval(clockTimer), { once: true });
+
+  const handleMotionPreference = () => syncLoop({ force: true, restart: true });
   if (typeof reducedMotion.addEventListener === "function") {
     reducedMotion.addEventListener("change", handleMotionPreference);
   } else if (typeof reducedMotion.addListener === "function") {
