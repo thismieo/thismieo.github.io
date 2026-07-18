@@ -1,0 +1,69 @@
+/* Portfolio V66 — phone project readout safe areas and unobstructed project cards. */
+
+@media (max-width: 720px) {
+  /* Keep the SVG viewBox fully inside the card. V65's 108% scale cropped the
+     right-most telemetry chips on narrow Safari viewports. */
+  #projects.is-project-stack-v65 .project-v54-svg,
+  #projects.is-project-stack-v65 .project-v54-svg.project-v54-traffic,
+  #projects.is-project-grid-v62 .project-v54-svg,
+  #projects.is-project-grid-v62 .project-v54-svg.project-v54-traffic {
+    inset: 4px auto auto 50% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+
+  /* Geometry is also written as SVG attributes by core-contact-v63.js so the
+     fix remains dependable on iOS Safari. These rules are a visual fallback. */
+  #projects .project-v54-health .project-v54-chip {
+    width: 78px;
+  }
+
+  #projects .project-v54-fraud .project-v54-chip {
+    width: 84px;
+  }
+
+  #projects .project-v54-traffic .project-v54-chip {
+    width: 82px;
+  }
+
+  #projects .project-v54-label {
+    paint-order: stroke fill;
+    stroke: rgba(3, 9, 22, 0.58);
+    stroke-width: 0.35px;
+  }
+
+  #projects .project-v54-value {
+    paint-order: stroke fill;
+    stroke: rgba(3, 9, 22, 0.7);
+    stroke-width: 0.42px;
+  }
+
+  /* The floating section navigator was covering project copy and telemetry.
+     Hide it only while Projects is the active section; it returns everywhere else. */
+  .section-nav-v53[data-current-section="projects"] {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translate3d(14px, 8px, 0) scale(0.92) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #projects .project-v54-label {
+    font-size: 6.8px !important;
+    letter-spacing: 0.065em !important;
+  }
+
+  #projects .project-v54-value {
+    font-size: 10.4px !important;
+    letter-spacing: 0.025em !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-nav-v53[data-current-section="projects"] {
+    transition: none !important;
+  }
+}
