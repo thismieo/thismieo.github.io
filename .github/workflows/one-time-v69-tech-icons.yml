@@ -1,9 +1,13 @@
 name: One-time V69 tech icons wiring
 
 on:
-  push:
+  pull_request:
     branches:
-      - feat/v69-tech-icons-wave
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 permissions:
   contents: write
