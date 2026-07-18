@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.19.73";
+  document.documentElement.dataset.release = "2026.07.19.74";
 
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
@@ -59,6 +59,7 @@
   strip.dataset.techIcons = "v73";
   strip.dataset.presentation = "clean-social-cards";
   strip.dataset.wave = "continuous";
+  strip.dataset.mobileBalance = "v74";
   strip.setAttribute("aria-label", "Current technical learning path");
   strip.setAttribute("role", "list");
 
