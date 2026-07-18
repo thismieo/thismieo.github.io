@@ -36,18 +36,6 @@ jobs:
                   raise SystemExit(f'Expected one match for {old!r}, found {text.count(old)}')
               text = text.replace(old, new, 1)
 
-          runtime_anchor = '        "hero-interface-v68.js",\n        "projects-runtime-v68.js",'
-          runtime_new = '        "hero-interface-v68.js",\n        "tech-icons-v69.css",\n        "projects-runtime-v68.js",'
-          if text.count(runtime_anchor) != 1:
-              raise SystemExit(f'Runtime anchor count: {text.count(runtime_anchor)}')
-          text = text.replace(runtime_anchor, runtime_new, 1)
-
-          exact_anchor = '        "hero-interface-v68.js",\n        "projects-runtime-v68.js",\n    )'
-          exact_new = '        "hero-interface-v68.js",\n        "tech-icons-v69.css",\n        "projects-runtime-v68.js",\n    )'
-          if text.count(exact_anchor) != 1:
-              raise SystemExit(f'Exact-once anchor count: {text.count(exact_anchor)}')
-          text = text.replace(exact_anchor, exact_new, 1)
-
           path.write_text(text, encoding='utf-8')
           PY
 
@@ -58,5 +46,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           rm .github/workflows/one-time-v69-validator.yml
           git add scripts/validate_site.py .github/workflows/one-time-v69-validator.yml
-          git commit -m 'Validate V69 technical icon assets'
+          git commit -m 'Validate V69 release assets'
           git push origin HEAD:feat/v69-tech-icons-wave
