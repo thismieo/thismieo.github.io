@@ -80,9 +80,14 @@ jobs:
           for name, block in [('card', card_block), ('icon', icon_block), ('label', label_block)]:
               if not block:
                   raise SystemExit(f'Missing {name} rule')
-              body = block.group(1)
-              if re.search(r'transform\s*:\s*(?!none)', body):
-                  raise SystemExit(f'Unexpected transform in {name} rule')
+              transform_lines = [
+                  line.strip()
+                  for line in block.group(1).splitlines()
+                  if 'transform:' in line
+              ]
+              unexpected = [line for line in transform_lines if line != 'transform: none;']
+              if unexpected:
+                  raise SystemExit(f'Unexpected transform in {name} rule: {unexpected}')
           if 'heroV69' in css:
               raise SystemExit('Legacy V69 animation names remain')
           PY
