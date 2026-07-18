@@ -1,0 +1,73 @@
+name: One-time V69 validator update
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - synchronize
+
+permissions:
+  contents: write
+
+jobs:
+  update-validator:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/v69-tech-icons-wave
+
+      - name: Update permanent validation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/validate_site.py')
+          text = path.read_text(encoding='utf-8')
+
+          old_release = '''    if 'data-release="2026.07.18.68"' not in index_text:
+              errors.append("V68 release marker is missing")
+          '''
+          new_release = '''    if 'data-release="2026.07.18.69"' not in index_text:
+              errors.append("V69 release marker is missing")
+          '''
+          if text.count(old_release) != 1:
+              raise SystemExit('Expected one V68 release validation block')
+          text = text.replace(old_release, new_release, 1)
+
+          required_anchor = '''        "hero-interface-v68.js",
+              "projects-runtime-v68.js",
+          '''
+          required_replacement = '''        "hero-interface-v68.js",
+              "tech-icons-v69.css",
+              "projects-runtime-v68.js",
+          '''
+          if text.count(required_anchor) != 1:
+              raise SystemExit('Required runtime anchor missing')
+          text = text.replace(required_anchor, required_replacement, 1)
+
+          exact_anchor = '''        "hero-interface-v68.js",
+              "projects-runtime-v68.js",
+          )'''
+          exact_replacement = '''        "hero-interface-v68.js",
+              "tech-icons-v69.css",
+              "projects-runtime-v68.js",
+          )'''
+          if text.count(exact_anchor) != 1:
+              raise SystemExit('Exact-once asset anchor missing')
+          text = text.replace(exact_anchor, exact_replacement, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit validator and remove workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/one-time-v69-validator.yml
+          git add scripts/validate_site.py .github/workflows/one-time-v69-validator.yml
+          git commit -m 'Validate V69 technical icon assets'
+          git push origin HEAD:feat/v69-tech-icons-wave
