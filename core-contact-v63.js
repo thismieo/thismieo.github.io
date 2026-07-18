@@ -130,7 +130,7 @@
   if (typeof reducedMotion.addEventListener === "function") {
     reducedMotion.addEventListener("change", handleMotionPreference);
   } else if (typeof reducedMotion.addListener === "function") {
-    reducedMotion.addListener("change", handleMotionPreference);
+    reducedMotion.addListener(handleMotionPreference);
   }
 
   window.requestAnimationFrame(syncMotion);
