@@ -58,6 +58,7 @@
   strip.className = "hero-v68-tech-strip hero-v73-tech-strip";
   strip.dataset.techIcons = "v73";
   strip.dataset.presentation = "clean-social-cards";
+  strip.dataset.wave = "continuous";
   strip.setAttribute("aria-label", "Current technical learning path");
   strip.setAttribute("role", "list");
 
