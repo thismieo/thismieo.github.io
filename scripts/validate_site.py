@@ -18,6 +18,7 @@ class SiteParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.ids: list[str] = []
+        self.classes: list[str] = []
         self.local_assets: list[tuple[str, str]] = []
         self.section_ids: list[str] = []
         self.nav_targets: list[str] = []
@@ -30,6 +31,10 @@ class SiteParser(HTMLParser):
             self.ids.append(element_id)
             if tag == "section":
                 self.section_ids.append(element_id)
+
+        class_value = values.get("class")
+        if class_value:
+            self.classes.extend(class_value.split())
 
         if tag == "a":
             href = values.get("href")
@@ -238,7 +243,7 @@ def main() -> int:
         if paused_rule.search(ribbon_file.read_text(encoding="utf-8", errors="replace")):
             errors.append(f"A ribbon pause rule remains in {ribbon_file.name}")
 
-    if "hero-v33-portrait" in index_text or "portrait-modal" in index_text:
+    if "hero-v33-portrait" in parser.classes or "portrait-modal" in parser.ids:
         errors.append("Removed portrait markup remains in index.html")
 
     if 'data-release="2026.07.18.68"' not in index_text:
