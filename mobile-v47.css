@@ -1,4 +1,4 @@
-/* Portfolio V47 — square mobile portrait, lightweight orbit motion, and scroll-stable ribbon compositing. */
+/* Portfolio V48 — balanced square portrait, living orbit motion, and scroll-stable ribbon compositing. */
 
 @media (max-width: 860px) {
   html body #home .hero-v33-portrait {
@@ -9,15 +9,15 @@
   }
 
   html body #home .hero-v33-portrait::before {
-    inset: -12px !important;
-    border-radius: 28px !important;
-    opacity: 0.72 !important;
+    inset: -10px !important;
+    border-radius: 27px !important;
+    opacity: 0.68 !important;
   }
 
   html body #home .hero-v33-portrait::after {
-    inset: -6px !important;
-    border-radius: 25px !important;
-    transform: rotate(-1.25deg) !important;
+    inset: -5px !important;
+    border-radius: 24px !important;
+    transform: rotate(-1deg) !important;
   }
 
   html body #home .hero-v33-portrait img {
@@ -27,15 +27,15 @@
     aspect-ratio: 1 / 1 !important;
     object-fit: cover !important;
     object-position: 50% 31% !important;
-    border-radius: 22px !important;
+    border-radius: 21px !important;
     image-rendering: auto !important;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
 
+  /* The separate name badge duplicated the real identity heading below the portrait. */
   html body #home .hero-v33-portrait figcaption {
-    max-width: calc(100% + 18px) !important;
-    margin: -10px auto 0 !important;
+    display: none !important;
   }
 
   .cyber-stream,
@@ -95,87 +95,148 @@
 @media (max-width: 620px) {
   html body #home .hero-v33-portrait {
     width: min(48vw, 190px) !important;
+    margin-top: clamp(11px, 3.5vw, 16px) !important;
+    margin-bottom: 2px !important;
   }
 }
 
 @media (max-width: 350px) {
   html body #home .hero-v33-portrait {
     width: min(54vw, 176px) !important;
+    margin-top: 10px !important;
   }
 }
 
 @media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
-  .v12-lite #home .hero-v33-orbit-node,
-  html body #home .hero-v33-orbit-node {
-    --v47-float-x: 0px;
-    --v47-float-y: -4px;
-    animation: heroV47NodeFloat 7.6s cubic-bezier(0.45, 0, 0.55, 1) infinite !important;
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-orbit-node {
+    --v48-float-x: 0px;
+    --v48-float-y: -6px;
+    animation: heroV48NodeFloat 5.6s cubic-bezier(0.45, 0, 0.55, 1) infinite !important;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     will-change: transform;
   }
 
-  html body #home .orbit-node-v33-code {
-    --v47-float-x: 2px;
-    animation-delay: -1.1s !important;
+  html body #home .hero-v33-planetary.is-orbit-live .orbit-node-v33-code {
+    --v48-float-x: 3px;
+    --v48-float-y: -6px;
+    animation-delay: -0.9s !important;
   }
 
-  html body #home .orbit-node-v33-data {
-    --v47-float-x: -2px;
-    --v47-float-y: -5px;
-    animation-delay: -3.2s !important;
+  html body #home .hero-v33-planetary.is-orbit-live .orbit-node-v33-data {
+    --v48-float-x: -3px;
+    --v48-float-y: -5px;
+    animation-delay: -2.4s !important;
   }
 
-  html body #home .orbit-node-v33-gen {
-    --v47-float-x: -1px;
-    --v47-float-y: 4px;
-    animation-delay: -5.1s !important;
+  html body #home .hero-v33-planetary.is-orbit-live .orbit-node-v33-gen {
+    --v48-float-x: -2px;
+    --v48-float-y: 6px;
+    animation-delay: -3.8s !important;
   }
 
-  html body #home .orbit-node-v33-models {
-    --v47-float-x: 2px;
-    --v47-float-y: 4px;
-    animation-delay: -6.4s !important;
+  html body #home .hero-v33-planetary.is-orbit-live .orbit-node-v33-models {
+    --v48-float-x: 3px;
+    --v48-float-y: 6px;
+    animation-delay: -4.9s !important;
   }
 
-  .v12-lite #home .hero-v33-planet,
-  html body #home .hero-v33-planet {
-    animation: heroV47PlanetBreath 8.4s ease-in-out infinite !important;
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-planet {
+    animation: heroV48PlanetBreath 5.8s ease-in-out infinite !important;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     will-change: transform;
   }
 
-  .v12-lite #home .hero-v33-rotator i,
-  html body #home .hero-v33-rotator i {
-    animation: heroV47OrbitPulse 3.8s ease-in-out infinite !important;
+  /* Re-enable the two light satellite paths even inside the mobile Lite Mode. */
+  html body #home .hero-v33-planetary.is-orbit-live .rotator-v33-one {
+    animation: heroV48OrbitOne 11.5s linear infinite !important;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  html body #home .hero-v33-planetary.is-orbit-live .rotator-v33-two {
+    animation: heroV48OrbitTwo 15.5s linear infinite !important;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-rotator i {
+    animation: heroV48SatellitePulse 1s ease-in-out infinite !important;
     will-change: opacity, transform;
   }
 
-  html body #home .rotator-v33-two i {
-    animation-delay: -1.9s !important;
+  html body #home .hero-v33-planetary.is-orbit-live .rotator-v33-two i {
+    animation-delay: -0.5s !important;
+  }
+
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-orbit-svg .orbit-line {
+    animation: heroV48OrbitDash 7.5s linear infinite !important;
+  }
+
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-orbit-svg .orbit-line.secondary {
+    animation-duration: 10.5s !important;
+    animation-direction: reverse !important;
+  }
+
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-stars {
+    animation: heroV48StarBreath 4.8s ease-in-out infinite !important;
+    will-change: opacity;
+  }
+
+  html body #home .hero-v33-planetary.is-orbit-live .hero-v33-orbit-status::before {
+    animation: heroV48StatusPulse 1.6s ease-in-out infinite !important;
   }
 }
 
-@keyframes heroV47NodeFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(var(--v47-float-x), var(--v47-float-y), 0); }
+@keyframes heroV48NodeFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(var(--v48-float-x), var(--v48-float-y), 0) scale(1.012); }
 }
 
-@keyframes heroV47PlanetBreath {
+@keyframes heroV48PlanetBreath {
   0%, 100% { transform: translate3d(-50%, -50%, 0) scale(1); }
-  50% { transform: translate3d(-50%, calc(-50% - 3px), 0) scale(1.012); }
+  50% { transform: translate3d(-50%, calc(-50% - 4px), 0) scale(1.018); }
 }
 
-@keyframes heroV47OrbitPulse {
-  0%, 100% { opacity: 0.68; transform: scale(0.94); }
+@keyframes heroV48OrbitOne {
+  from { transform: translate3d(-50%, -50%, 0) rotate(18deg); }
+  to { transform: translate3d(-50%, -50%, 0) rotate(378deg); }
+}
+
+@keyframes heroV48OrbitTwo {
+  from { transform: translate3d(-50%, -50%, 0) rotate(-32deg); }
+  to { transform: translate3d(-50%, -50%, 0) rotate(-392deg); }
+}
+
+@keyframes heroV48SatellitePulse {
+  0%, 100% { opacity: 0.46; transform: scale(0.84); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes heroV48OrbitDash {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -64; }
+}
+
+@keyframes heroV48StarBreath {
+  0%, 100% { opacity: 0.34; }
+  50% { opacity: 0.58; }
+}
+
+@keyframes heroV48StatusPulse {
+  0%, 100% { opacity: 0.58; transform: scale(0.86); }
   50% { opacity: 1; transform: scale(1.08); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   #home .hero-v33-orbit-node,
   #home .hero-v33-planet,
-  #home .hero-v33-rotator i {
+  #home .hero-v33-rotator,
+  #home .hero-v33-rotator i,
+  #home .hero-v33-orbit-svg .orbit-line,
+  #home .hero-v33-stars,
+  #home .hero-v33-orbit-status::before {
     animation: none !important;
   }
 }
