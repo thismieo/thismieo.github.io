@@ -1,10 +1,10 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.66";
+  document.documentElement.dataset.release = "2026.07.18.67";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
-  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.66";
+  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.67";
 
   let readoutStylesheet = document.querySelector("link[data-project-readouts-v66]");
   if (!readoutStylesheet) {
@@ -13,15 +13,15 @@
     readoutStylesheet.dataset.projectReadoutsV66 = "true";
     document.head.append(readoutStylesheet);
   }
-  readoutStylesheet.href = "project-readouts-v66.css?v=20260718.66";
+  readoutStylesheet.href = "project-readouts-v66.css?v=20260718.67";
 
   const projects = document.querySelector("#projects");
   projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
 
-  /* Keep every top-right SVG readout inside its 360-unit viewBox. V65 scaled
-     phone scenes to 108%, so Safari cropped the far-right text. */
+  /* Keep every top-right SVG readout inside its 360-unit viewBox. The Health
+     panel receives extra width because its icon and two text rows need more room. */
   const readoutSpecs = [
-    [".project-v54-health", "78", "translate(274 12)"],
+    [".project-v54-health", "96", "translate(252 12)"],
     [".project-v54-fraud", "84", "translate(266 12)"],
     [".project-v54-traffic", "82", "translate(268 12)"]
   ];
@@ -130,7 +130,7 @@
   if (typeof reducedMotion.addEventListener === "function") {
     reducedMotion.addEventListener("change", handleMotionPreference);
   } else if (typeof reducedMotion.addListener === "function") {
-    reducedMotion.addListener(handleMotionPreference);
+    reducedMotion.addListener("change", handleMotionPreference);
   }
 
   window.requestAnimationFrame(syncMotion);
