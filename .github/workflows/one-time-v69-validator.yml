@@ -27,37 +27,26 @@ jobs:
           path = Path('scripts/validate_site.py')
           text = path.read_text(encoding='utf-8')
 
-          old_release = '''    if 'data-release="2026.07.18.68"' not in index_text:
-              errors.append("V68 release marker is missing")
-          '''
-          new_release = '''    if 'data-release="2026.07.18.69"' not in index_text:
-              errors.append("V69 release marker is missing")
-          '''
-          if text.count(old_release) != 1:
-              raise SystemExit('Expected one V68 release validation block')
-          text = text.replace(old_release, new_release, 1)
+          pairs = [
+              ('data-release="2026.07.18.68"', 'data-release="2026.07.18.69"'),
+              ('V68 release marker is missing', 'V69 release marker is missing'),
+          ]
+          for old, new in pairs:
+              if text.count(old) != 1:
+                  raise SystemExit(f'Expected one match for {old!r}, found {text.count(old)}')
+              text = text.replace(old, new, 1)
 
-          required_anchor = '''        "hero-interface-v68.js",
-              "projects-runtime-v68.js",
-          '''
-          required_replacement = '''        "hero-interface-v68.js",
-              "tech-icons-v69.css",
-              "projects-runtime-v68.js",
-          '''
-          if text.count(required_anchor) != 1:
-              raise SystemExit('Required runtime anchor missing')
-          text = text.replace(required_anchor, required_replacement, 1)
+          runtime_anchor = '        "hero-interface-v68.js",\n        "projects-runtime-v68.js",'
+          runtime_new = '        "hero-interface-v68.js",\n        "tech-icons-v69.css",\n        "projects-runtime-v68.js",'
+          if text.count(runtime_anchor) != 1:
+              raise SystemExit(f'Runtime anchor count: {text.count(runtime_anchor)}')
+          text = text.replace(runtime_anchor, runtime_new, 1)
 
-          exact_anchor = '''        "hero-interface-v68.js",
-              "projects-runtime-v68.js",
-          )'''
-          exact_replacement = '''        "hero-interface-v68.js",
-              "tech-icons-v69.css",
-              "projects-runtime-v68.js",
-          )'''
+          exact_anchor = '        "hero-interface-v68.js",\n        "projects-runtime-v68.js",\n    )'
+          exact_new = '        "hero-interface-v68.js",\n        "tech-icons-v69.css",\n        "projects-runtime-v68.js",\n    )'
           if text.count(exact_anchor) != 1:
-              raise SystemExit('Exact-once asset anchor missing')
-          text = text.replace(exact_anchor, exact_replacement, 1)
+              raise SystemExit(f'Exact-once anchor count: {text.count(exact_anchor)}')
+          text = text.replace(exact_anchor, exact_new, 1)
 
           path.write_text(text, encoding='utf-8')
           PY
