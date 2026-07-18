@@ -246,8 +246,8 @@ def main() -> int:
     if "hero-v33-portrait" in parser.classes or "portrait-modal" in parser.ids:
         errors.append("Removed portrait markup remains in index.html")
 
-    if 'data-release="2026.07.18.68"' not in index_text:
-        errors.append("V68 release marker is missing")
+    if 'data-release="2026.07.18.69"' not in index_text:
+        errors.append("V69 release marker is missing")
 
     exact_once_assets = (
         "hero-interface-v68.css",
