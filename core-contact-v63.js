@@ -1,7 +1,14 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.63";
+  document.documentElement.dataset.release = "2026.07.18.64";
+
+  /* Remove the personal portrait and its now-unused viewer. The globe, copy,
+     terminal, buttons and planetary motion remain untouched. */
+  document.querySelectorAll(
+    "#home .hero-v33-portrait, #home .hero-mobile-legacy .hero-portrait"
+  ).forEach((portrait) => portrait.remove());
+  document.querySelector("#portrait-modal")?.remove();
 
   const contact = document.querySelector("#contact");
   const links = contact?.querySelector(".contact-links");
