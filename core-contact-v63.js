@@ -1,7 +1,13 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.64";
+  document.documentElement.dataset.release = "2026.07.18.65";
+
+  const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
+  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.65";
+
+  const projects = document.querySelector("#projects");
+  projects?.classList.add("is-project-stack-v65");
 
   /* Remove the personal portrait and its now-unused viewer. The globe, copy,
      terminal, buttons and planetary motion remain untouched. */
