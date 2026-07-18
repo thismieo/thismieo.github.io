@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.48";
+  document.documentElement.dataset.release = "2026.07.18.50";
 
   const header = document.querySelector("#site-header");
   const navWrap = document.querySelector("#site-header .nav-wrap");
@@ -11,14 +11,14 @@
   if (!header || !navWrap) return;
 
   /* Stable mobile override hook; the query key guarantees the newest visual layer. */
-  let mobileStylesheet = document.querySelector('link[data-mobile-v47]');
+  let mobileStylesheet = document.querySelector("link[data-mobile-v47]");
   if (!mobileStylesheet) {
     mobileStylesheet = document.createElement("link");
     mobileStylesheet.rel = "stylesheet";
     mobileStylesheet.dataset.mobileV47 = "true";
     document.head.append(mobileStylesheet);
   }
-  mobileStylesheet.href = "mobile-v47.css?v=20260718.48";
+  mobileStylesheet.href = "mobile-v47.css?v=20260718.50";
 
   const portraitImage = document.querySelector("#home .hero-v33-portrait img");
   if (portraitImage) {
@@ -28,15 +28,12 @@
   }
 
   const planetary = document.querySelector("#home .hero-v33-planetary");
-  let orbitObserver = null;
-
   if (planetary) {
     planetary.classList.add("is-orbit-live");
 
     if ("IntersectionObserver" in window) {
-      orbitObserver = new IntersectionObserver((entries) => {
-        const entry = entries[0];
-        planetary.classList.toggle("is-orbit-live", Boolean(entry?.isIntersecting));
+      const orbitObserver = new IntersectionObserver((entries) => {
+        planetary.classList.toggle("is-orbit-live", Boolean(entries[0]?.isIntersecting));
       }, {
         root: null,
         rootMargin: "140px 0px",
@@ -46,52 +43,27 @@
     }
   }
 
-  document.querySelector('link[data-v17-navigation]')?.remove();
-  document.querySelector('link[data-v18-cyber-rail]')?.remove();
+  document.querySelector("link[data-v17-navigation]")?.remove();
+  document.querySelector("link[data-v18-cyber-rail]")?.remove();
   navWrap.querySelector(".nav-identity")?.remove();
   header.classList.remove("header-hidden");
 
+  /* Fresh technical and motivational statements. World times belong to the lower ribbon only. */
   const entries = [
-    { text: "Python Foundations" },
-    { text: "AI Engineering" },
-    { text: "Building in Public" },
-    { text: "Data Analysis Next" },
-    { text: "Projects in Progress" },
-    { city: "Baghdad", timeZone: "Asia/Baghdad" }
+    "Logic Before Complexity",
+    "Every Bug Reveals a Lesson",
+    "Data Becomes Intelligence",
+    "Build Systems · Not Shortcuts",
+    "Patterns Become Predictions",
+    "Think · Test · Refine",
+    "Progress Compounds Quietly",
+    "Code With Purpose"
   ];
 
-  const formatBaghdadTime = (() => {
-    try {
-      return new Intl.DateTimeFormat("en-US", {
-        timeZone: "Asia/Baghdad",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true
-      });
-    } catch {
-      return null;
-    }
-  })();
-
-  const createItem = (entry) => {
+  const createItem = (text) => {
     const item = document.createElement("span");
     item.className = "cyber-item-v46";
-
-    if (!entry.timeZone) {
-      item.textContent = entry.text;
-      return item;
-    }
-
-    const city = document.createElement("span");
-    city.className = "cyber-city-v46";
-    city.textContent = entry.city;
-
-    const time = document.createElement("time");
-    time.className = "cyber-time-v46";
-    time.dataset.timeZone = entry.timeZone;
-    time.textContent = "--:-- --";
-
-    item.append(city, time);
+    item.textContent = text;
     return item;
   };
 
@@ -99,7 +71,7 @@
     const group = document.createElement("div");
     group.className = "cyber-group-v46";
     if (duplicate) group.setAttribute("aria-hidden", "true");
-    entries.forEach((entry) => group.append(createItem(entry)));
+    entries.forEach((text) => group.append(createItem(text)));
     return group;
   };
 
@@ -121,7 +93,7 @@
   const stream = document.createElement("div");
   stream.className = "cyber-stream";
   stream.setAttribute("role", "region");
-  stream.setAttribute("aria-label", "Current learning status");
+  stream.setAttribute("aria-label", "Technical and motivational engineering statements");
 
   const track = document.createElement("div");
   track.className = "cyber-track-v46";
@@ -137,19 +109,35 @@
 
   rail.append(title, stream, status);
 
-  const updateTime = () => {
-    const now = new Date();
-    track.querySelectorAll(".cyber-time-v46").forEach((node) => {
-      node.textContent = formatBaghdadTime ? formatBaghdadTime.format(now) : "UTC+3";
-      node.dateTime = now.toISOString();
-    });
+  /* Both ribbons share one persistent clock, so navigation never visually resets them to zero. */
+  const timelineKey = "thismieo:ribbon-timeline-origin:v50";
+  const getTimelineOrigin = () => {
+    const now = Date.now();
+    try {
+      const stored = Number(window.localStorage.getItem(timelineKey));
+      if (Number.isFinite(stored) && stored > 0 && stored <= now) return stored;
+      window.localStorage.setItem(timelineKey, String(now));
+    } catch {
+      /* Storage can be unavailable in private browsing; the current page still works normally. */
+    }
+    return now;
   };
 
+  const timelineOrigin = getTimelineOrigin();
+  const elapsedSeconds = () => Math.max(0, (Date.now() - timelineOrigin) / 1000);
+
   let lastGroupWidth = 0;
+  let activeDuration = 44;
   let lastViewportWidth = Math.round(window.visualViewport?.width || document.documentElement.clientWidth || window.innerWidth);
 
-  const restartTrack = () => {
+  const alignTimeline = () => {
+    const phase = elapsedSeconds() % activeDuration;
+    track.style.animationDelay = `${-phase.toFixed(3)}s`;
+  };
+
+  const restartTrackAtCurrentTime = () => {
     track.classList.remove("is-ready");
+    alignTimeline();
     void track.offsetWidth;
     track.classList.add("is-ready");
   };
@@ -163,24 +151,25 @@
 
     if (force || widthChanged) {
       lastGroupWidth = roundedWidth;
-      const duration = Math.max(34, Math.min(64, roundedWidth / 23));
+      activeDuration = Math.max(42, Math.min(74, roundedWidth / 22));
       track.style.setProperty("--cyber-v46-shift", `${-roundedWidth}px`);
-      track.style.setProperty("--cyber-v46-duration", `${duration.toFixed(2)}s`);
+      track.style.setProperty("--cyber-v46-duration", `${activeDuration.toFixed(2)}s`);
     }
 
     if (reducedMotion.matches) {
       track.classList.remove("is-ready");
+      track.style.animationDelay = "0s";
       return;
     }
 
     if (!track.classList.contains("is-ready")) {
+      alignTimeline();
       track.classList.add("is-ready");
-    } else if (restart && (force || widthChanged)) {
-      restartTrack();
+    } else if (restart || widthChanged) {
+      restartTrackAtCurrentTime();
     }
   };
 
-  updateTime();
   window.requestAnimationFrame(() => syncLoop({ force: true }));
 
   if (document.fonts && document.fonts.ready) {
@@ -203,20 +192,13 @@
   window.visualViewport?.addEventListener("resize", () => queueWidthSync(false), { passive: true });
   window.addEventListener("orientationchange", () => queueWidthSync(true), { passive: true });
 
-  const clockTimer = window.setInterval(() => {
-    if (!document.hidden) updateTime();
-  }, 30000);
-
-  document.addEventListener("visibilitychange", () => {
+  const realignAfterReturn = () => {
     if (document.hidden) return;
-    updateTime();
-    syncLoop();
-  });
+    syncLoop({ restart: true });
+  };
 
-  window.addEventListener("pagehide", () => {
-    window.clearInterval(clockTimer);
-    orbitObserver?.disconnect();
-  }, { once: true });
+  document.addEventListener("visibilitychange", realignAfterReturn);
+  window.addEventListener("pageshow", realignAfterReturn);
 
   const handleMotionPreference = () => syncLoop({ force: true, restart: true });
   if (typeof reducedMotion.addEventListener === "function") {
