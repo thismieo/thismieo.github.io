@@ -57,10 +57,12 @@
   const strip = document.createElement("div");
   strip.className = "hero-v68-tech-strip hero-v69-tech-strip";
   strip.setAttribute("aria-label", "Current technical learning path");
+  strip.setAttribute("role", "list");
 
   ["Python", "Data", "Machine Learning", "AI Systems"].forEach((label, index) => {
     const item = document.createElement("span");
     item.className = "hero-v69-tech-item";
+    item.setAttribute("role", "listitem");
     item.style.setProperty("--hero-v68-order", String(index));
     item.style.setProperty("--hero-v69-order", String(index));
 
