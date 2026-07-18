@@ -169,7 +169,7 @@
     document.fonts.ready.then(() => syncLoop({ force: true, restart: true })).catch(() => {});
   }
 
-  const clockTimer = window.setInterval(updateTimes, 1000);
+  window.setInterval(updateTimes, 1000);
 
   let resizeTimer = 0;
   const queueWidthSync = (force = false) => {
@@ -202,6 +202,4 @@
   } else if (typeof reducedMotion.addListener === "function") {
     reducedMotion.addListener(handleMotionPreference);
   }
-
-  window.addEventListener("beforeunload", () => window.clearInterval(clockTimer), { once: true });
 })();
