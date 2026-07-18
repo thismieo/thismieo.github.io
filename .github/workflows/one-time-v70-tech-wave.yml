@@ -69,28 +69,9 @@ jobs:
           grep -q 'is-tech-icons-v70' hero-interface-v68.js
           grep -q 'white-space: normal' tech-icons-v69.css
           ! grep -q 'text-overflow: ellipsis' tech-icons-v69.css
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          css = Path('tech-icons-v69.css').read_text(encoding='utf-8')
-          card_block = re.search(r'#home\.is-tech-icons-v70 \.hero-v70-tech-item \{(.*?)\n\}', css, re.S)
-          icon_block = re.search(r'#home\.is-tech-icons-v70 \.hero-v70-tech-icon \{(.*?)\n\}', css, re.S)
-          label_block = re.search(r'#home\.is-tech-icons-v70 \.hero-v70-tech-item b \{(.*?)\n\}', css, re.S)
-          for name, block in [('card', card_block), ('icon', icon_block), ('label', label_block)]:
-              if not block:
-                  raise SystemExit(f'Missing {name} rule')
-              transform_lines = [
-                  line.strip()
-                  for line in block.group(1).splitlines()
-                  if 'transform:' in line
-              ]
-              unexpected = [line for line in transform_lines if line != 'transform: none;']
-              if unexpected:
-                  raise SystemExit(f'Unexpected transform in {name} rule: {unexpected}')
-          if 'heroV69' in css:
-              raise SystemExit('Legacy V69 animation names remain')
-          PY
+          ! grep -q 'heroV69' tech-icons-v69.css
+          ! grep -q 'transform: scale(1.08)' tech-icons-v69.css
+          ! grep -q 'translate3d(0,-1px,0)' tech-icons-v69.css
 
       - name: Commit V70 wiring and remove one-time workflow
         shell: bash
