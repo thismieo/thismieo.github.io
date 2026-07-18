@@ -1,4 +1,4 @@
-/* Portfolio V73 — larger technical icons, clean social-style cards, and one continuous light wave. */
+/* Portfolio V74 — targeted phone balance for the Machine Learning icon and label. */
 
 #home.is-tech-icons-v73 .hero-v73-tech-strip {
   position: relative;
@@ -168,8 +168,26 @@
     word-break: normal;
   }
 
+  /* V74: balance only the Machine Learning icon/label group on phones. */
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+    justify-content: center;
+    gap: 4px;
+    padding-inline: 4px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
+    width: 19px;
+    height: 19px;
+    flex-basis: 19px;
+    stroke-width: 1.92;
+  }
+
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 60px;
+    max-width: 64px;
+    font-size: clamp(0.48rem, 1.98vw, 0.54rem);
+    letter-spacing: 0.006em;
+    line-height: 1;
+    text-align: center;
   }
 }
 
@@ -194,6 +212,17 @@
     font-size: 0.43rem;
     letter-spacing: 0.008em;
   }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+    max-width: 61px;
+    font-size: 0.47rem;
+  }
 }
 
 @media (max-width: 350px) {
@@ -212,6 +241,22 @@
   #home.is-tech-icons-v73 .hero-v73-tech-item b {
     font-size: 0.39rem;
     letter-spacing: 0.003em;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+    gap: 3px;
+    padding-inline: 2px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
+    width: 16px;
+    height: 16px;
+    flex-basis: 16px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+    max-width: 55px;
+    font-size: 0.42rem;
   }
 }
 
