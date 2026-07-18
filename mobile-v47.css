@@ -1,4 +1,9 @@
-/* Portfolio V48 — balanced square portrait, living orbit motion, and scroll-stable ribbon compositing. */
+/* Portfolio V49 — calm cyan identity accent, balanced portrait, living orbit motion, and scroll-stable ribbon compositing. */
+
+html body #home .hero-v33-eyebrow i {
+  background: #6fcfda !important;
+  box-shadow: 0 0 8px rgba(111, 207, 218, 0.34) !important;
+}
 
 @media (max-width: 860px) {
   html body #home .hero-v33-portrait {
