@@ -1,4 +1,5 @@
 name: One-time V74 machine-learning mobile balance
+# Trigger after PR creation so synchronize runs the one-time patch.
 
 on:
   pull_request:
