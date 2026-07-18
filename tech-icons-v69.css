@@ -1,0 +1,200 @@
+/* Portfolio V69 — icon-led technical path with a calm sequential color wave. */
+
+#home.is-tech-icons-v69 .hero-v69-tech-strip {
+  position: relative;
+  isolation: isolate;
+  gap: 8px;
+}
+
+#home.is-tech-icons-v69 .hero-v69-tech-strip::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 50% 3% auto;
+  height: 18px;
+  pointer-events: none;
+  opacity: 0.34;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, rgba(103,232,249,0.16), rgba(96,165,250,0.14), rgba(167,139,250,0.14), rgba(240,168,191,0.16));
+  filter: blur(18px);
+}
+
+#home.is-tech-icons-v69 .hero-v69-tech-item {
+  --hero-v69-accent: 103, 232, 249;
+  position: relative;
+  min-height: 36px;
+  gap: 7px;
+  padding: 7px 11px;
+  overflow: hidden;
+  border: 1px solid rgba(123, 170, 208, 0.14);
+  border-radius: 11px;
+  background:
+    radial-gradient(circle at 24% 20%, rgba(var(--hero-v69-accent), 0.055), transparent 48%),
+    linear-gradient(145deg, rgba(12, 27, 48, 0.68), rgba(7, 14, 30, 0.78));
+  color: #9db2c9;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.025),
+    0 8px 20px rgba(0,0,0,0.12);
+  animation: heroV69CardWave 8.8s ease-in-out infinite;
+  animation-delay: calc(var(--hero-v69-order, 0) * 0.72s);
+}
+
+#home.is-tech-icons-v69 .hero-v69-tech-item:nth-child(2) { --hero-v69-accent: 96, 165, 250; }
+#home.is-tech-icons-v69 .hero-v69-tech-item:nth-child(3) { --hero-v69-accent: 167, 139, 250; }
+#home.is-tech-icons-v69 .hero-v69-tech-item:nth-child(4) { --hero-v69-accent: 240, 168, 191; }
+
+#home.is-tech-icons-v69 .hero-v69-tech-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(112deg, transparent 15%, rgba(var(--hero-v69-accent), 0.16) 48%, transparent 78%);
+  transform: translateX(-72%);
+  animation: heroV69Sweep 8.8s ease-in-out infinite;
+  animation-delay: calc(var(--hero-v69-order, 0) * 0.72s);
+}
+
+#home.is-tech-icons-v69 .hero-v69-tech-item::after {
+  inset: auto 14% 0;
+  opacity: 0.28;
+  background: linear-gradient(90deg, transparent, rgba(var(--hero-v69-accent), 0.9), transparent);
+  box-shadow: 0 0 9px rgba(var(--hero-v69-accent), 0.24);
+  animation: heroV69LineWave 8.8s ease-in-out infinite;
+  animation-delay: calc(var(--hero-v69-order, 0) * 0.72s);
+}
+
+#home.is-tech-icons-v69 .hero-v69-tech-icon {
+  position: relative;
+  z-index: 1;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: rgba(var(--hero-v69-accent), 0.76);
+  filter: drop-shadow(0 0 0 rgba(var(--hero-v69-accent), 0));
+  animation: heroV69IconWave 8.8s ease-in-out infinite;
+  animation-delay: calc(var(--hero-v69-order, 0) * 0.72s);
+}
+
+#home.is-tech-icons-v69 .hero-v69-tech-item b {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+}
+
+@keyframes heroV69CardWave {
+  0%, 18%, 100% {
+    border-color: rgba(123,170,208,0.14);
+    color: #9db2c9;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.025), 0 8px 20px rgba(0,0,0,0.12);
+    transform: translate3d(0,0,0);
+  }
+  28%, 42% {
+    border-color: rgba(var(--hero-v69-accent), 0.42);
+    color: #eef9ff;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.045),
+      0 0 18px rgba(var(--hero-v69-accent), 0.13),
+      0 9px 22px rgba(0,0,0,0.16);
+    transform: translate3d(0,-1px,0);
+  }
+}
+
+@keyframes heroV69IconWave {
+  0%, 18%, 100% {
+    color: rgba(var(--hero-v69-accent), 0.7);
+    filter: drop-shadow(0 0 0 rgba(var(--hero-v69-accent), 0));
+    transform: scale(1);
+  }
+  28%, 42% {
+    color: rgb(var(--hero-v69-accent));
+    filter: drop-shadow(0 0 6px rgba(var(--hero-v69-accent), 0.42));
+    transform: scale(1.08);
+  }
+}
+
+@keyframes heroV69LineWave {
+  0%, 18%, 100% { opacity: 0.2; transform: scaleX(0.36); }
+  28%, 42% { opacity: 0.88; transform: scaleX(1); }
+}
+
+@keyframes heroV69Sweep {
+  0%, 20%, 100% { opacity: 0; transform: translateX(-72%); }
+  28% { opacity: 0.5; }
+  42% { opacity: 0; transform: translateX(72%); }
+}
+
+@media (max-width: 860px) {
+  #home.is-tech-icons-v69 .hero-v69-tech-strip {
+    width: min(100%, 500px);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  #home.is-tech-icons-v69 .hero-v69-tech-item {
+    min-width: 0;
+    min-height: 48px;
+    display: grid;
+    grid-template-rows: 18px auto;
+    gap: 4px;
+    padding: 7px 4px 6px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  #home.is-tech-icons-v69 .hero-v69-tech-icon {
+    width: 16px;
+    height: 16px;
+    margin-inline: auto;
+  }
+
+  #home.is-tech-icons-v69 .hero-v69-tech-item b {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.46rem;
+    letter-spacing: 0.045em;
+    line-height: 1.08;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 390px) {
+  #home.is-tech-icons-v69 .hero-v69-tech-strip {
+    gap: 5px;
+  }
+
+  #home.is-tech-icons-v69 .hero-v69-tech-item {
+    min-height: 46px;
+    padding-inline: 3px;
+  }
+
+  #home.is-tech-icons-v69 .hero-v69-tech-item b {
+    font-size: 0.42rem;
+    letter-spacing: 0.035em;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #home.is-tech-icons-v69 .hero-v69-tech-item:hover {
+    border-color: rgba(var(--hero-v69-accent), 0.46);
+    color: #f3fbff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home.is-tech-icons-v69 .hero-v69-tech-item,
+  #home.is-tech-icons-v69 .hero-v69-tech-item::before,
+  #home.is-tech-icons-v69 .hero-v69-tech-item::after,
+  #home.is-tech-icons-v69 .hero-v69-tech-icon {
+    animation: none !important;
+  }
+}
