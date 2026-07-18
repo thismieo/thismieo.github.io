@@ -1,12 +1,12 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.47";
+  document.documentElement.dataset.release = "2026.07.18.50";
 
   const ticker = document.querySelector(".system-ticker");
-  if (!ticker || ticker.dataset.tickerV47Ready === "true") return;
+  if (!ticker || ticker.dataset.tickerV50Ready === "true") return;
 
-  ticker.dataset.tickerV47Ready = "true";
+  ticker.dataset.tickerV50Ready = "true";
   ticker.removeAttribute("aria-hidden");
   ticker.setAttribute("role", "region");
   ticker.setAttribute("aria-label", "Live world times and learning status");
@@ -102,11 +102,34 @@
     observer.observe(ticker);
   }
 
+  const timelineKey = "thismieo:ribbon-timeline-origin:v50";
+  const getTimelineOrigin = () => {
+    const now = Date.now();
+    try {
+      const stored = Number(window.localStorage.getItem(timelineKey));
+      if (Number.isFinite(stored) && stored > 0 && stored <= now) return stored;
+      window.localStorage.setItem(timelineKey, String(now));
+    } catch {
+      /* Fall back to this page session when persistent storage is unavailable. */
+    }
+    return now;
+  };
+
+  const timelineOrigin = getTimelineOrigin();
+  const elapsedSeconds = () => Math.max(0, (Date.now() - timelineOrigin) / 1000);
+
   let lastGroupWidth = 0;
+  let activeDuration = 72;
   let lastViewportWidth = Math.round(window.visualViewport?.width || document.documentElement.clientWidth || window.innerWidth);
 
-  const restartTrack = () => {
+  const alignTimeline = () => {
+    const phase = elapsedSeconds() % activeDuration;
+    track.style.animationDelay = `${-phase.toFixed(3)}s`;
+  };
+
+  const restartTrackAtCurrentTime = () => {
     track.classList.remove("is-ready");
+    alignTimeline();
     void track.offsetWidth;
     track.classList.add("is-ready");
   };
@@ -120,20 +143,22 @@
 
     if (force || widthChanged) {
       lastGroupWidth = roundedWidth;
-      const duration = Math.max(58, Math.min(96, roundedWidth / 27));
+      activeDuration = Math.max(58, Math.min(96, roundedWidth / 27));
       track.style.setProperty("--ticker-v44-shift", `${-roundedWidth}px`);
-      track.style.setProperty("--ticker-v44-duration", `${duration.toFixed(2)}s`);
+      track.style.setProperty("--ticker-v44-duration", `${activeDuration.toFixed(2)}s`);
     }
 
     if (reducedMotion.matches) {
       track.classList.remove("is-ready");
+      track.style.animationDelay = "0s";
       return;
     }
 
     if (!track.classList.contains("is-ready")) {
+      alignTimeline();
       track.classList.add("is-ready");
-    } else if (restart && (force || widthChanged)) {
-      restartTrack();
+    } else if (restart || widthChanged) {
+      restartTrackAtCurrentTime();
     }
   };
 
@@ -144,7 +169,7 @@
     document.fonts.ready.then(() => syncLoop({ force: true, restart: true })).catch(() => {});
   }
 
-  const clockTimer = window.setInterval(updateTimes, 1000);
+  window.setInterval(updateTimes, 1000);
 
   let resizeTimer = 0;
   const queueWidthSync = (force = false) => {
@@ -162,13 +187,14 @@
   window.visualViewport?.addEventListener("resize", () => queueWidthSync(false), { passive: true });
   window.addEventListener("orientationchange", () => queueWidthSync(true), { passive: true });
 
-  document.addEventListener("visibilitychange", () => {
+  const realignAfterReturn = () => {
     if (document.hidden) return;
     updateTimes();
-    syncLoop();
-  });
+    syncLoop({ restart: true });
+  };
 
-  window.addEventListener("pagehide", () => window.clearInterval(clockTimer), { once: true });
+  document.addEventListener("visibilitychange", realignAfterReturn);
+  window.addEventListener("pageshow", realignAfterReturn);
 
   const handleMotionPreference = () => syncLoop({ force: true, restart: true });
   if (typeof reducedMotion.addEventListener === "function") {
