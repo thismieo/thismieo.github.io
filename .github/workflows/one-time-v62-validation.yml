@@ -1,0 +1,120 @@
+name: One-time V62 globe and project grid wiring
+
+on:
+  push:
+    branches:
+      - feat/v62-globe-project-grid
+
+permissions:
+  contents: write
+
+jobs:
+  wire-and-validate-v62:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v62-globe-project-grid
+          fetch-depth: 0
+
+      - name: Wire V62 assets and update globe text
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = [
+              ('data-release="2026.07.18.61"', 'data-release="2026.07.18.62"'),
+              ('<span class="planet-v33-label"><small>LEARNING WORLD</small><strong>AI PATH</strong></span>',
+               '<span class="planet-v33-label"><small>INTELLIGENCE CORE</small><strong>BUILD &bull; LEARN &bull; EVOLVE</strong></span>'),
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'Expected one occurrence of {old!r}, found {count}')
+              text = text.replace(old, new, 1)
+
+          css_anchor = '  <link rel="stylesheet" href="project-tabs-v61.css?v=20260718.61" data-project-tabs-v61 />'
+          css_link = '  <link rel="stylesheet" href="hero-project-grid-v62.css?v=20260718.62" data-hero-project-grid-v62 />'
+          if text.count(css_link) == 0:
+              if text.count(css_anchor) != 1:
+                  raise SystemExit('V61 CSS anchor missing or duplicated')
+              text = text.replace(css_anchor, css_anchor + '\n' + css_link, 1)
+
+          js_anchor = '  <script src="project-tabs-v61.js?v=20260718.61" defer></script>'
+          js_link = '  <script src="projects-grid-v62.js?v=20260718.62" defer></script>'
+          if text.count(js_link) == 0:
+              if text.count(js_anchor) != 1:
+                  raise SystemExit('V61 JS anchor missing or duplicated')
+              text = text.replace(js_anchor, js_anchor + '\n' + js_link, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate V62 source
+        run: |
+          node --check projects-grid-v62.js
+          python - <<'PY'
+          from pathlib import Path
+
+          css = Path('hero-project-grid-v62.css').read_text(encoding='utf-8')
+          html = Path('index.html').read_text(encoding='utf-8')
+          js = Path('projects-grid-v62.js').read_text(encoding='utf-8')
+
+          if css.count('{') != css.count('}'):
+              raise SystemExit('CSS brace count is not balanced')
+
+          required_css = [
+              'grid-template-columns: repeat(3, minmax(0, 1fr))',
+              '.project-switcher-v61',
+              'is-project-grid-v62',
+              'planetV62InnerBreath',
+              'INTELLIGENCE CORE' if False else '#home .planet-v33-label',
+          ]
+          for token in required_css:
+              if token not in css:
+                  raise SystemExit(f'Missing CSS validation token: {token}')
+
+          required_js = [
+              'is-project-grid-v62',
+              'removeLegacySwitcher',
+              'card.inert = false',
+              'IntersectionObserver',
+          ]
+          for token in required_js:
+              if token not in js:
+                  raise SystemExit(f'Missing JS validation token: {token}')
+
+          checks = {
+              'release': html.count('data-release="2026.07.18.62"'),
+              'css link': html.count('hero-project-grid-v62.css?v=20260718.62'),
+              'js link': html.count('projects-grid-v62.js?v=20260718.62'),
+              'core title': html.count('<small>INTELLIGENCE CORE</small>'),
+              'core motto': html.count('<strong>BUILD &bull; LEARN &bull; EVOLVE</strong>'),
+          }
+          for name, count in checks.items():
+              if count != 1:
+                  raise SystemExit(f'{name} expected once, found {count}')
+
+          if 'LEARNING WORLD</small><strong>AI PATH' in html:
+              raise SystemExit('Old planet label still present')
+          PY
+
+      - name: Commit wired page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Wire V62 globe and phone project grid"
+          git push origin feat/v62-globe-project-grid
+
+      - name: Remove one-time workflow
+        run: |
+          git rm .github/workflows/one-time-v62-validation.yml
+          git commit -m "Remove one-time V62 validation workflow"
+          git push origin feat/v62-globe-project-grid
