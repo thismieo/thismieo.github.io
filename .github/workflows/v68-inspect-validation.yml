@@ -1,0 +1,44 @@
+name: V68 inspect validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - synchronize
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out pull request merge
+        uses: actions/checkout@v4
+
+      - name: Capture validation workflow and source state
+        shell: bash
+        run: |
+          {
+            echo '=== WORKFLOW FILES ==='
+            find .github/workflows -maxdepth 1 -type f -print | sort
+            echo
+            echo '=== WORKFLOW CONTENTS ==='
+            for file in .github/workflows/*; do
+              echo
+              echo "--- $file ---"
+              cat "$file"
+            done
+            echo
+            echo '=== TOP-LEVEL FILES ==='
+            find . -maxdepth 1 -type f -printf '%f\n' | sort
+          } > validation-inspection.txt
+
+      - name: Upload inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: v68-validation-inspection
+          path: validation-inspection.txt
+          retention-days: 1
