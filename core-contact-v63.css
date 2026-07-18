@@ -1,58 +1,84 @@
-/* Portfolio V63 — clean text-only intelligence core and calm five-channel contact motion. */
+/* Portfolio V64 — restore the globe, remove the personal portrait, and preserve the calm five-channel contact motion. */
 
 /* --------------------------------------------------------------------------
-   TEXT-ONLY PLANET CORE
-   Remove the globe artwork while preserving the spherical core, label and glow.
+   RESTORED PLANET CORE
+   Return the original globe shell, latitude/longitude grid and land artwork.
+   The V62 INTELLIGENCE CORE label and its restrained glow remain unchanged.
    -------------------------------------------------------------------------- */
 
 #home .hero-v33-planet {
-  overflow: hidden;
-  border: 1px solid rgba(138, 220, 255, 0.18);
-  background:
-    radial-gradient(circle at 34% 26%, rgba(239, 253, 255, 0.16), transparent 18%),
-    radial-gradient(circle at 48% 43%, rgba(103, 232, 249, 0.13), transparent 38%),
-    radial-gradient(circle at 65% 66%, rgba(167, 139, 250, 0.12), transparent 46%),
-    radial-gradient(circle at 50% 50%, rgba(10, 29, 57, 0.94), rgba(4, 12, 29, 0.98) 68%, rgba(2, 7, 18, 1) 100%);
-  box-shadow:
-    inset 0 0 28px rgba(103, 232, 249, 0.08),
-    inset 0 0 62px rgba(96, 165, 250, 0.08),
-    0 0 38px rgba(14, 165, 233, 0.17),
-    0 0 68px rgba(139, 92, 246, 0.09);
-}
-
-#home .hero-v33-planet > svg {
-  display: none !important;
-}
-
-#home .hero-v33-planet::after {
-  inset: 8%;
-  border: 1px solid rgba(187, 235, 255, 0.08);
-  background:
-    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.14), transparent 18%),
-    linear-gradient(145deg, rgba(103, 232, 249, 0.025), transparent 42%, rgba(240, 168, 191, 0.025));
-  box-shadow: inset 0 0 28px rgba(103, 232, 249, 0.035);
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 #home .hero-v33-planet.is-v62-core-live {
-  animation: coreV63Ambient 10.5s ease-in-out infinite;
+  animation: none !important;
 }
 
-@keyframes coreV63Ambient {
-  0%, 100% {
-    border-color: rgba(103, 232, 249, 0.14);
-    box-shadow:
-      inset 0 0 28px rgba(103, 232, 249, 0.065),
-      inset 0 0 62px rgba(96, 165, 250, 0.07),
-      0 0 34px rgba(14, 165, 233, 0.14),
-      0 0 62px rgba(139, 92, 246, 0.07);
+#home .hero-v33-planet > svg {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#home .hero-v33-planet::after {
+  inset: 14% !important;
+  border: 0 !important;
+  background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.16), transparent 22%) !important;
+  box-shadow: none !important;
+  mix-blend-mode: screen;
+}
+
+/* --------------------------------------------------------------------------
+   PORTRAITLESS HERO
+   Remove Mohammed's portrait only and reclaim its column for the copy and
+   terminal. The planetary visual, content, buttons, links and motion remain.
+   -------------------------------------------------------------------------- */
+
+#home .hero-v33-portrait,
+#home .hero-mobile-legacy .hero-portrait,
+#portrait-modal {
+  display: none !important;
+}
+
+#home .hero-v33-story {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas:
+    "copy"
+    "terminal" !important;
+  align-items: start !important;
+  column-gap: 0 !important;
+}
+
+#home .hero-v33-copy {
+  width: 100%;
+  max-width: 730px;
+  justify-self: start;
+}
+
+#home .hero-v33-terminal {
+  width: min(100%, 650px) !important;
+  margin-left: 0 !important;
+  justify-self: start;
+}
+
+@media (min-width: 861px) {
+  #home .hero-v33-story {
+    align-content: center;
+    row-gap: 24px !important;
   }
-  50% {
-    border-color: rgba(196, 181, 253, 0.2);
-    box-shadow:
-      inset 0 0 34px rgba(103, 232, 249, 0.09),
-      inset 0 0 72px rgba(167, 139, 250, 0.09),
-      0 0 42px rgba(96, 165, 250, 0.17),
-      0 0 72px rgba(240, 168, 191, 0.085);
+}
+
+@media (max-width: 860px) {
+  #home .hero-v33-story {
+    row-gap: 20px !important;
+  }
+
+  #home .hero-v33-copy,
+  #home .hero-v33-terminal {
+    max-width: 100%;
   }
 }
 
@@ -216,7 +242,6 @@
   }
 }
 
-.v12-lite #home .hero-v33-planet,
 .v12-lite #contact.contact-v63-five .contact-channel-v56 {
   animation: none !important;
 }
@@ -227,6 +252,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   #home .hero-v33-planet,
+  #home .hero-v33-planet::before,
+  #home .hero-v33-planet::after,
   #contact.contact-v63-five .contact-channel-v56,
   #contact.contact-v63-five .contact-channel-v56::before,
   #contact.contact-v63-five .contact-channel-v56::after,
