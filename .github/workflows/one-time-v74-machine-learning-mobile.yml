@@ -1,0 +1,170 @@
+name: One-time V74 machine-learning mobile balance
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: write
+
+jobs:
+  wire-and-validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out V74 branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v74-machine-learning-mobile-balance
+
+      - name: Apply targeted V74 mobile balance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css = Path('tech-icons-v69.css')
+          text = css.read_text(encoding='utf-8')
+          replacements = {
+              '/* Portfolio V73 — larger technical icons, clean social-style cards, and one continuous light wave. */':
+              '/* Portfolio V74 — targeted phone balance for the Machine Learning icon and label. */',
+              '''  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+            max-width: 60px;
+          }''': '''  /* V74: balance only the Machine Learning icon/label group on phones. */
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+            justify-content: center;
+            gap: 4px;
+            padding-inline: 4px;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
+            width: 19px;
+            height: 19px;
+            flex-basis: 19px;
+            stroke-width: 1.92;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+            max-width: 64px;
+            font-size: clamp(0.48rem, 1.98vw, 0.54rem);
+            letter-spacing: 0.006em;
+            line-height: 1;
+            text-align: center;
+          }''',
+              '''  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+            font-size: 0.43rem;
+            letter-spacing: 0.008em;
+          }
+        }''': '''  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+            font-size: 0.43rem;
+            letter-spacing: 0.008em;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
+            width: 18px;
+            height: 18px;
+            flex-basis: 18px;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+            max-width: 61px;
+            font-size: 0.47rem;
+          }
+        }''',
+              '''  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+            font-size: 0.39rem;
+            letter-spacing: 0.003em;
+          }
+        }''': '''  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+            font-size: 0.39rem;
+            letter-spacing: 0.003em;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+            gap: 3px;
+            padding-inline: 2px;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
+            width: 16px;
+            height: 16px;
+            flex-basis: 16px;
+          }
+
+          #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+            max-width: 55px;
+            font-size: 0.42rem;
+          }
+        }''',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'Expected one CSS match, found {text.count(old)} for:\n{old}')
+              text = text.replace(old, new, 1)
+          css.write_text(text, encoding='utf-8')
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
+          replacements = {
+              'data-release="2026.07.19.73"': 'data-release="2026.07.19.74"',
+              'tech-icons-v69.css?v=20260719.73': 'tech-icons-v69.css?v=20260719.74',
+              'hero-interface-v68.js?v=20260719.73': 'hero-interface-v68.js?v=20260719.74',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'Expected one index match for {old!r}, found {text.count(old)}')
+              text = text.replace(old, new, 1)
+          index.write_text(text, encoding='utf-8')
+
+          runtime = Path('hero-interface-v68.js')
+          text = runtime.read_text(encoding='utf-8')
+          old = 'document.documentElement.dataset.release = "2026.07.19.73";'
+          new = 'document.documentElement.dataset.release = "2026.07.19.74";'
+          if text.count(old) != 1:
+              raise SystemExit(f'Expected one runtime release match, found {text.count(old)}')
+          runtime.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          validator = Path('scripts/validate_site.py')
+          text = validator.read_text(encoding='utf-8')
+          replacements = {
+              'data-release="2026.07.19.73"': 'data-release="2026.07.19.74"',
+              'V73 release marker is missing': 'V74 release marker is missing',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'Expected one validator match for {old!r}, found {text.count(old)}')
+              text = text.replace(old, new, 1)
+          validator.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate targeted V74 fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check hero-interface-v68.js
+          python3 scripts/validate_site.py
+          git diff --check
+          grep -q 'data-release="2026.07.19.74"' index.html
+          test "$(grep -c 'tech-icons-v69.css?v=20260719.74' index.html)" -eq 1
+          test "$(grep -c 'hero-interface-v68.js?v=20260719.74' index.html)" -eq 1
+          grep -q 'V74: balance only the Machine Learning icon/label group on phones' tech-icons-v69.css
+          grep -q 'nth-child(3) .hero-v73-tech-icon' tech-icons-v69.css
+          grep -q 'font-size: clamp(0.48rem, 1.98vw, 0.54rem)' tech-icons-v69.css
+
+      - name: Commit V74 and remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/one-time-v74-machine-learning-mobile.yml
+          git add tech-icons-v69.css index.html hero-interface-v68.js scripts/validate_site.py .github/workflows/one-time-v74-machine-learning-mobile.yml
+          git commit -m 'Balance Machine Learning icon and label on phones'
+          git push origin HEAD:feat/v74-machine-learning-mobile-balance
