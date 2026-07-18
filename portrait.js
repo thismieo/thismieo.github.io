@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.47";
+  document.documentElement.dataset.release = "2026.07.18.48";
 
   const header = document.querySelector("#site-header");
   const navWrap = document.querySelector("#site-header .nav-wrap");
@@ -10,20 +10,40 @@
 
   if (!header || !navWrap) return;
 
+  /* Stable mobile override hook; the query key guarantees the newest visual layer. */
   let mobileStylesheet = document.querySelector('link[data-mobile-v47]');
   if (!mobileStylesheet) {
     mobileStylesheet = document.createElement("link");
     mobileStylesheet.rel = "stylesheet";
-    mobileStylesheet.href = "mobile-v47.css?v=20260718.47";
     mobileStylesheet.dataset.mobileV47 = "true";
     document.head.append(mobileStylesheet);
   }
+  mobileStylesheet.href = "mobile-v47.css?v=20260718.48";
 
   const portraitImage = document.querySelector("#home .hero-v33-portrait img");
   if (portraitImage) {
     portraitImage.sizes = "(max-width: 350px) 176px, (max-width: 620px) 190px, (max-width: 860px) 210px, (min-width: 1181px) 204px, 148px";
     portraitImage.decoding = "async";
     portraitImage.fetchPriority = "high";
+  }
+
+  const planetary = document.querySelector("#home .hero-v33-planetary");
+  let orbitObserver = null;
+
+  if (planetary) {
+    planetary.classList.add("is-orbit-live");
+
+    if ("IntersectionObserver" in window) {
+      orbitObserver = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        planetary.classList.toggle("is-orbit-live", Boolean(entry?.isIntersecting));
+      }, {
+        root: null,
+        rootMargin: "140px 0px",
+        threshold: 0.03
+      });
+      orbitObserver.observe(planetary);
+    }
   }
 
   document.querySelector('link[data-v17-navigation]')?.remove();
@@ -193,7 +213,10 @@
     syncLoop();
   });
 
-  window.addEventListener("pagehide", () => window.clearInterval(clockTimer), { once: true });
+  window.addEventListener("pagehide", () => {
+    window.clearInterval(clockTimer);
+    orbitObserver?.disconnect();
+  }, { once: true });
 
   const handleMotionPreference = () => syncLoop({ force: true, restart: true });
   if (typeof reducedMotion.addEventListener === "function") {
