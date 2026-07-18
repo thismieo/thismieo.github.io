@@ -154,11 +154,6 @@
   letter-spacing: 0.08em;
 }
 
-.system-ticker:hover .ticker-v44-track,
-.system-ticker:focus-within .ticker-v44-track {
-  animation-play-state: paused;
-}
-
 @keyframes tickerV44 {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(var(--ticker-v44-shift, -1200px), 0, 0); }

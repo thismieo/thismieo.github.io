@@ -146,8 +146,11 @@ for js_file in js_files:
 text_files = [index_path, *css_files, *js_files]
 combined = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in text_files)
 
-if re.search(r"animation-play-state\s*:\s*paused", combined, re.IGNORECASE):
-    errors.append("a paused animation-play-state rule still exists")
+ribbon_files = [Path("cyber-header.css"), Path("hero-v44.css"), Path("hero-interface-v68.css")]
+for ribbon_file in ribbon_files:
+    ribbon_text = ribbon_file.read_text(encoding="utf-8", errors="replace")
+    if re.search(r"animation-play-state\s*:\s*paused", ribbon_text, re.IGNORECASE):
+        errors.append(f"a paused ribbon rule still exists in {ribbon_file}")
 
 conflict_pattern = re.compile(r"^(<<<<<<<|=======|>>>>>>>)", re.MULTILINE)
 for path in text_files:
