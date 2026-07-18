@@ -32,7 +32,12 @@ jobs:
         shell: bash
         run: |
           set +e
-          python3 tools/v68_audit.py 2>&1 | tee v68-audit-report.txt
+          {
+            echo "Paused animation rules:"
+            grep -RInE 'animation-play-state[[:space:]]*:[[:space:]]*paused' --include='*.css' --include='*.js' --include='*.html' . || true
+            echo
+            python3 tools/v68_audit.py
+          } 2>&1 | tee v68-audit-report.txt
           status=${PIPESTATUS[0]}
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0
