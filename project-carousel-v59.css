@@ -1,0 +1,237 @@
+/* Portfolio V59 — safe project readouts and a polished phone carousel. */
+
+/* --------------------------------------------------------------------------
+   DESKTOP + SHARED SAFETY
+   Keep every SVG readout inside the visual viewport while preserving scale.
+   -------------------------------------------------------------------------- */
+
+#projects .project-visual-v54 {
+  overflow: hidden;
+}
+
+#projects .project-v54-svg {
+  inset: 11px auto auto 50%;
+  width: 104%;
+  max-width: none;
+  transform: translate3d(-50%, 0, 0);
+  transform-origin: center top;
+}
+
+/* The traffic scene owns the widest top-right chip, so it receives more room. */
+#projects .project-v54-svg.project-v54-traffic {
+  width: 102%;
+}
+
+#projects .project-v54-label,
+#projects .project-v54-value {
+  paint-order: stroke fill;
+  stroke: rgba(3, 8, 20, 0.22);
+  stroke-width: 0.22px;
+}
+
+#projects .projects-grid .project-v4,
+#projects .project-body,
+#projects .project-body > * {
+  min-width: 0;
+}
+
+#projects .project-body h3 {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   PHONE PROJECT TRACK
+   All three projects stay in one horizontal row with controlled snap points.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  #projects .projects-grid {
+    width: calc(100% + 40px);
+    margin-inline: -20px;
+    padding: 4px 20px 18px;
+    display: grid !important;
+    grid-template-columns: none !important;
+    grid-auto-flow: column;
+    grid-auto-columns: min(86vw, 430px);
+    align-items: stretch;
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 20px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #projects .projects-grid::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  #projects .projects-grid > .project-card {
+    width: 100%;
+    height: auto;
+    min-height: 0 !important;
+    align-self: stretch;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  #projects .project-visual-v54 {
+    height: clamp(190px, 52vw, 220px);
+    min-height: 190px;
+  }
+
+  #projects .project-v54-svg {
+    inset: 10px auto auto 50% !important;
+    width: 102% !important;
+    height: auto !important;
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+
+  #projects .project-v54-svg.project-v54-traffic {
+    width: 100% !important;
+  }
+
+  #projects .visual-badge.project-v54-badge {
+    left: 12px;
+    right: auto;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+  }
+
+  #projects .project-body {
+    padding: 20px 20px 22px;
+  }
+
+  #projects .project-body .project-top {
+    margin-bottom: 18px;
+  }
+
+  #projects .project-body h3 {
+    margin-bottom: 12px;
+    font-size: clamp(1.34rem, 6vw, 1.68rem);
+    line-height: 1.16;
+  }
+
+  #projects .project-body p {
+    margin-bottom: 20px;
+    font-size: 0.83rem;
+    line-height: 1.72;
+  }
+
+  #projects .project-tags {
+    gap: 7px;
+  }
+
+  #projects .project-tags span {
+    padding: 7px 10px;
+    font-size: 0.65rem;
+  }
+
+  #projects .project-body .project-status {
+    margin-top: 18px;
+  }
+
+  /* The navigator is useful between sections, but should never cover a card. */
+  .section-nav-v53[data-current-section="projects"] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translate3d(12px, 8px, 0) scale(0.92) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  #projects .projects-grid {
+    grid-auto-columns: min(88vw, 390px);
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  #projects .project-visual-v54 {
+    height: clamp(184px, 54vw, 208px);
+    min-height: 184px;
+  }
+
+  #projects .project-v54-svg {
+    top: 10px !important;
+    width: 101.5% !important;
+  }
+
+  #projects .project-v54-svg.project-v54-traffic {
+    width: 99.5% !important;
+  }
+
+  #projects .project-v54-label {
+    font-size: 6.35px;
+  }
+
+  #projects .project-v54-value {
+    font-size: 9.45px;
+  }
+
+  #projects .project-body {
+    padding: 19px 18px 21px;
+  }
+
+  #projects .project-body h3 {
+    font-size: clamp(1.28rem, 6.4vw, 1.55rem);
+  }
+}
+
+@media (max-width: 350px) {
+  #projects .projects-grid {
+    grid-auto-columns: 90vw;
+    gap: 10px;
+  }
+
+  #projects .project-visual-v54 {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  #projects .project-body {
+    padding-inline: 16px;
+  }
+
+  #projects .project-tags span {
+    padding-inline: 8px;
+    font-size: 0.61rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 860px) {
+  #projects .projects-grid {
+    grid-auto-columns: min(70vw, 440px);
+  }
+
+  #projects .project-visual-v54 {
+    height: 178px;
+    min-height: 178px;
+  }
+
+  #projects .project-v54-svg,
+  #projects .project-v54-svg.project-v54-traffic {
+    width: 100% !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  #projects .project-card:hover {
+    transform: none;
+  }
+}
+
+.v12-lite #projects .projects-grid {
+  scroll-behavior: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #projects .projects-grid {
+    scroll-behavior: auto;
+  }
+}
