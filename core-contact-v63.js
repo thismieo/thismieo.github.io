@@ -1,10 +1,10 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.67";
+  document.documentElement.dataset.release = "2026.07.18.68";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
-  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.67";
+  if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.68";
 
   let readoutStylesheet = document.querySelector("link[data-project-readouts-v66]");
   if (!readoutStylesheet) {
@@ -13,7 +13,7 @@
     readoutStylesheet.dataset.projectReadoutsV66 = "true";
     document.head.append(readoutStylesheet);
   }
-  readoutStylesheet.href = "project-readouts-v66.css?v=20260718.67";
+  readoutStylesheet.href = "project-readouts-v66.css?v=20260718.68";
 
   const projects = document.querySelector("#projects");
   projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
@@ -52,13 +52,6 @@
     readoutObserver.observe(projects, { childList: true, subtree: true });
     window.setTimeout(() => readoutObserver.disconnect(), 5000);
   }
-
-  /* Remove the personal portrait and its now-unused viewer. The globe, copy,
-     terminal, buttons and planetary motion remain untouched. */
-  document.querySelectorAll(
-    "#home .hero-v33-portrait, #home .hero-mobile-legacy .hero-portrait"
-  ).forEach((portrait) => portrait.remove());
-  document.querySelector("#portrait-modal")?.remove();
 
   const contact = document.querySelector("#contact");
   const links = contact?.querySelector(".contact-links");

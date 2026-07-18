@@ -178,11 +178,6 @@
   letter-spacing: 0.08em;
 }
 
-.cyber-stream:hover .cyber-track-v46,
-.cyber-stream:focus-within .cyber-track-v46 {
-  animation-play-state: paused;
-}
-
 .cyber-status {
   flex: 0 0 auto;
   display: inline-flex;

@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.50";
+  document.documentElement.dataset.release = "2026.07.18.68";
 
   const header = document.querySelector("#site-header");
   const navWrap = document.querySelector("#site-header .nav-wrap");
@@ -18,14 +18,7 @@
     mobileStylesheet.dataset.mobileV47 = "true";
     document.head.append(mobileStylesheet);
   }
-  mobileStylesheet.href = "mobile-v47.css?v=20260718.50";
-
-  const portraitImage = document.querySelector("#home .hero-v33-portrait img");
-  if (portraitImage) {
-    portraitImage.sizes = "(max-width: 350px) 176px, (max-width: 620px) 190px, (max-width: 860px) 210px, (min-width: 1181px) 204px, 148px";
-    portraitImage.decoding = "async";
-    portraitImage.fetchPriority = "high";
-  }
+  mobileStylesheet.href = "mobile-v47.css?v=20260718.68";
 
   const planetary = document.querySelector("#home .hero-v33-planetary");
   if (planetary) {
@@ -50,12 +43,10 @@
 
   /* Fresh technical and motivational statements. World times belong to the lower ribbon only. */
   const entries = [
-    "Logic Before Complexity",
-    "Every Bug Reveals a Lesson",
-    "Data Becomes Intelligence",
     "Build Systems · Not Shortcuts",
-    "Patterns Become Predictions",
+    "Data Becomes Intelligence",
     "Think · Test · Refine",
+    "Patterns Become Predictions",
     "Progress Compounds Quietly",
     "Code With Purpose"
   ];

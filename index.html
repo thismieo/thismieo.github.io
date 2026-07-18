@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-release="2026.07.18.67">
+<html lang="en" data-release="2026.07.18.68">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="goals-mobile.css?v=20260718.44" />
   <link rel="stylesheet" href="stability.css?v=20260718.44" />
   <link rel="stylesheet" href="hero-portrait.css?v=20260718.44" />
-  <link rel="stylesheet" href="cyber-header.css?v=20260718.44" data-cyber-rail />
+  <link rel="stylesheet" href="cyber-header.css?v=20260718.68" data-cyber-rail />
   <link rel="stylesheet" href="goals-desktop.css?v=20260718.44" />
   <link rel="stylesheet" href="neural-layout.css?v=20260718.44" />
   <link rel="stylesheet" href="desktop-rhythm.css?v=20260718.44" />
@@ -33,7 +33,7 @@
   <link id="hero-polish-v37-styles" rel="stylesheet" href="hero-polish-v37.css?v=20260718.44" data-hero-polish-v37 />
   <link id="hero-refine-v38-styles" rel="stylesheet" href="hero-refine-v38.css?v=20260718.44" data-hero-refine-v38 />
   <link id="hero-refine-v39-styles" rel="stylesheet" href="hero-refine-v39.css?v=20260718.44" data-hero-refine-v39 />
-  <link rel="stylesheet" href="hero-v44.css?v=20260718.44" data-hero-v44 />
+  <link rel="stylesheet" href="hero-v44.css?v=20260718.68" data-hero-v44 />
   <link rel="stylesheet" href="mobile.css?v=20260718.44" />
   <link rel="stylesheet" href="polish-v52.css?v=20260718.52" data-polish-v52 />
   <link rel="stylesheet" href="section-nav-v53.css?v=20260718.53" data-section-nav-v53 />
@@ -43,23 +43,21 @@
   <link rel="stylesheet" href="contact-icons-v57.css?v=20260718.57" data-contact-icons-v57 />
   <link rel="stylesheet" href="contact-projects-v58.css?v=20260718.58" data-contact-projects-v58 />
   <link rel="stylesheet" href="project-carousel-v59.css?v=20260718.59" data-project-carousel-v59 />
-  <link rel="stylesheet" href="project-mobile-v60.css?v=20260718.60" data-project-mobile-v60 />
-  <link rel="stylesheet" href="project-tabs-v61.css?v=20260718.61" data-project-tabs-v61 />
   <link rel="stylesheet" href="hero-project-grid-v62.css?v=20260718.62" data-hero-project-grid-v62 />
-  <link rel="stylesheet" href="core-contact-v63.css?v=20260718.63" data-core-contact-v63 />
-  <link rel="stylesheet" href="project-readouts-v66.css?v=20260718.67" data-project-readouts-v66 />
+  <link rel="stylesheet" href="core-contact-v63.css?v=20260718.68" data-core-contact-v63 />
+  <link rel="stylesheet" href="project-readouts-v66.css?v=20260718.68" data-project-readouts-v66 />
+  <link rel="stylesheet" href="hero-interface-v68.css?v=20260718.68" data-hero-interface-v68 />
   <script src="interactions.js?v=20260718.44" defer></script>
   <script src="hero-v33.js?v=20260718.44" defer></script>
   <script src="ticker-v44.js?v=20260718.52" defer></script>
-  <script src="portrait.js?v=20260718.50" defer></script>
+  <script src="portrait.js?v=20260718.68" defer></script>
   <script src="mobile-nav.js?v=20260718.44" defer></script>
   <script src="section-nav-v53.js?v=20260718.53" defer></script>
   <script src="project-visuals-v54.js?v=20260718.54" defer></script>
-  <script src="project-mobile-v60.js?v=20260718.60" defer></script>
-  <script src="project-tabs-v61.js?v=20260718.61" defer></script>
-  <script src="projects-grid-v62.js?v=20260718.62" defer></script>
+  <script src="projects-runtime-v68.js?v=20260718.68" defer></script>
   <script src="contact-hub-v56.js?v=20260718.56" defer></script>
-  <script src="core-contact-v63.js?v=20260718.67" defer></script>
+  <script src="core-contact-v63.js?v=20260718.68" defer></script>
+  <script src="hero-interface-v68.js?v=20260718.68" defer></script>
 </head>
 <body>
   <canvas id="neural-bg" aria-hidden="true"></canvas>
@@ -93,20 +91,6 @@
 
       <div class="container hero-premium-v33">
         <div class="hero-v33-story reveal">
-          <figure class="hero-v33-portrait" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="portrait-modal" aria-label="Open high-resolution portrait of Mohammed Muayad" title="View portrait" data-desktop-portrait-trigger>
-            <img
-              src="https://avatars.githubusercontent.com/u/302812532?v=4&s=1024"
-              srcset="https://avatars.githubusercontent.com/u/302812532?v=4&s=512 512w, https://avatars.githubusercontent.com/u/302812532?v=4&s=1024 1024w, https://avatars.githubusercontent.com/u/302812532?v=4&s=2048 2048w"
-              sizes="(min-width: 1181px) 204px, 148px"
-              alt="Mohammed Muayad"
-              width="1024"
-              height="1024"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-            />
-            <figcaption><span>Learning in public</span><strong>Mohammed Muayad</strong></figcaption>
-          </figure>
 
           <div class="hero-v33-copy">
             <p class="hero-v34-name">Mohammed Muayad</p>
@@ -647,13 +631,5 @@
       <span>© <span id="current-year">2026</span></span>
     </div>
   </footer>
-
-  <div class="portrait-modal portrait-modal-v6" id="portrait-modal" hidden aria-hidden="true">
-    <div class="portrait-modal-backdrop" aria-hidden="true"></div>
-    <figure class="portrait-dialog portrait-dialog-v6" role="dialog" aria-modal="true" aria-label="Portrait of Mohammed Muayad">
-      <button class="portrait-close" id="portrait-close" type="button" aria-label="Close portrait viewer"><span></span><span></span></button>
-      <img class="portrait-full-image" id="portrait-full-image" data-src="https://avatars.githubusercontent.com/u/302812532?v=4&s=2048" alt="Portrait of Mohammed Muayad" width="2048" height="2048" decoding="async" />
-    </figure>
-  </div>
 </body>
 </html>
