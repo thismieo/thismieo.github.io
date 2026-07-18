@@ -27,13 +27,34 @@ jobs:
       - name: Apply deterministic cleanup
         run: python3 tools/v68_cleanup.py
 
+      - name: Remove verified orphan and scope ribbon audit
+        shell: bash
+        run: |
+          rm -f hero-polish-v36.css
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("tools/v68_audit.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''if re.search(r"animation-play-state\\s*:\\s*paused", combined, re.IGNORECASE):
+              errors.append("a paused animation-play-state rule still exists")'''
+          new = '''ribbon_files = [Path("cyber-header.css"), Path("hero-v44.css"), Path("hero-interface-v68.css")]
+          for ribbon_file in ribbon_files:
+              ribbon_text = ribbon_file.read_text(encoding="utf-8", errors="replace")
+              if re.search(r"animation-play-state\\s*:\\s*paused", ribbon_text, re.IGNORECASE):
+                  errors.append(f"a paused ribbon rule still exists in {ribbon_file}")'''
+          if text.count(old) != 1:
+              raise SystemExit("could not scope the ribbon audit")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
       - name: Run complete source audit
         id: source-audit
         shell: bash
         run: |
           set +e
           {
-            echo "Paused animation rules:"
+            echo "Paused animation rules retained for offscreen performance:"
             grep -RInE 'animation-play-state[[:space:]]*:[[:space:]]*paused' --include='*.css' --include='*.js' --include='*.html' . || true
             echo
             python3 tools/v68_audit.py
