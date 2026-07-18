@@ -67,6 +67,7 @@
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
     icon.setAttribute("aria-hidden", "true");
+    icon.setAttribute("focusable", "false");
     icon.classList.add("hero-v69-tech-icon");
     icon.innerHTML = iconPaths[label];
 
