@@ -59,6 +59,7 @@
   strip.dataset.techIcons = "v73";
   strip.dataset.presentation = "clean-social-cards";
   strip.dataset.wave = "continuous";
+  strip.dataset.mobileBalance = "v74";
   strip.setAttribute("aria-label", "Current technical learning path");
   strip.setAttribute("role", "list");
 
