@@ -18,23 +18,21 @@ jobs:
       - name: Check out pull request merge
         uses: actions/checkout@v4
 
-      - name: Capture validation workflow and source state
+      - name: Capture exact validation output
         shell: bash
         run: |
+          set +e
           {
-            echo '=== WORKFLOW FILES ==='
-            find .github/workflows -maxdepth 1 -type f -print | sort
+            echo '=== VALIDATION OUTPUT ==='
+            python3 scripts/validate_site.py
+            status=$?
             echo
-            echo '=== WORKFLOW CONTENTS ==='
-            for file in .github/workflows/*; do
-              echo
-              echo "--- $file ---"
-              cat "$file"
-            done
+            echo "VALIDATION_EXIT_STATUS=$status"
             echo
             echo '=== TOP-LEVEL FILES ==='
             find . -maxdepth 1 -type f -printf '%f\n' | sort
-          } > validation-inspection.txt
+          } > validation-inspection.txt 2>&1
+          exit 0
 
       - name: Upload inspection
         uses: actions/upload-artifact@v4
