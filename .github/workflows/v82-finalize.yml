@@ -24,59 +24,32 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
-          # Remove the obsolete V68 chip styling that was creating nested frames
-          # and animated underline artifacts inside the current rail.
           interface_path = Path("hero-interface-v68.css")
           interface = interface_path.read_text(encoding="utf-8")
 
-          base_start = interface.index("#home.is-hero-v68 .hero-v68-tech-strip {")
-          base_end = interface.index("@media (min-width: 861px) {", base_start)
+          # Remove the original V68 chip component and its underline animation.
+          base_start = interface.find("#home.is-hero-v68 .hero-v68-tech-strip {")
+          base_end = interface.find("@media (min-width: 861px) {", base_start)
+          if base_start < 0 or base_end < 0:
+              raise SystemExit("Could not locate the base V68 technical chip block")
           interface = interface[:base_start] + interface[base_end:]
 
-          obsolete_blocks = (
-              '''  #home.is-hero-v68 .hero-v68-tech-strip {
-              justify-content: center;
-              margin: 16px auto 17px;
-              gap: 6px;
-            }
-
-            #home.is-hero-v68 .hero-v68-tech-strip span {
-              min-height: 27px;
-              padding: 7px 9px;
-              font-size: 0.53rem;
-              letter-spacing: 0.07em;
-            }
-
-          ''',
-              '''  #home.is-hero-v68 .hero-v68-tech-strip {
-              max-width: 350px;
-            }
-
-            #home.is-hero-v68 .hero-v68-tech-strip span {
-              padding-inline: 8px;
-              font-size: 0.49rem;
-            }
-
-          ''',
-              '''  #home.is-hero-v68 .hero-v68-tech-strip span {
-              font-size: 0.46rem;
-              letter-spacing: 0.05em;
-            }
-          ''',
-              '''@media (prefers-reduced-motion: reduce) {
-            #home.is-hero-v68 .hero-v68-tech-strip span::after {
-              animation: none !important;
-            }
-          }
-          ''',
+          # Remove remaining responsive overrides for the obsolete chip component.
+          interface, removed_rules = re.subn(
+              r"\n\s*#home\.is-hero-v68 \.hero-v68-tech-strip(?: span)?(?: span::after)?\s*\{[^{}]*\}\n",
+              "\n",
+              interface,
           )
+          if removed_rules < 4:
+              raise SystemExit(f"Expected at least four responsive V68 chip rules; removed {removed_rules}")
 
-          for block in obsolete_blocks:
-              if interface.count(block) != 1:
-                  raise SystemExit(f"Expected one obsolete interface block, found {interface.count(block)}")
-              interface = interface.replace(block, "", 1)
-
+          interface = re.sub(
+              r"\n@media \(prefers-reduced-motion: reduce\) \{\s*\}\s*\Z",
+              "\n",
+              interface,
+          )
           interface_path.write_text(interface.rstrip() + "\n", encoding="utf-8")
 
           index_path = Path("index.html")
@@ -178,6 +151,11 @@ jobs:
 
           '''
 
+          # The string above is intentionally dedented once after construction.
+          validation_block = "\n".join(
+              line[12:] if line.startswith("            ") else line
+              for line in validation_block.splitlines()
+          ) + "\n\n"
           validator = validator[:start] + validation_block + validator[end:]
           validator_path.write_text(validator, encoding="utf-8")
           PY
@@ -193,19 +171,16 @@ jobs:
           if css.count("{") != css.count("}"):
               raise SystemExit("Unbalanced technical rail CSS braces")
 
-          required = (
-              "Python",
-              "Foundations",
-              "Data",
-              "Machine",
-              "Learning",
-              "AI",
-              "Systems",
+          forbidden = (
+              ".hero-tech-item + .hero-tech-item::before",
+              ".hero-tech-rail::after",
+              "hero-v68-tech-strip",
+              "heroV68TechLine",
           )
-          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
-          missing = [token for token in required if token not in js]
-          if missing:
-              raise SystemExit(f"Missing technical rail content: {missing}")
+          combined = css + Path("hero-interface-v68.css").read_text(encoding="utf-8")
+          found = [token for token in forbidden if token in combined]
+          if found:
+              raise SystemExit(f"Obsolete frame or line styling remains: {found}")
 
           if Path("scripts/__pycache__").exists():
               raise SystemExit("Python cache directory was generated")
