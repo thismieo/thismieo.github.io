@@ -63,6 +63,7 @@ def check_balanced_css(path: Path, errors: list[str]) -> None:
     while index < len(text):
         char = text[index]
         nxt = text[index + 1] if index + 1 < len(text) else ""
+
         if in_comment:
             if char == "*" and nxt == "/":
                 in_comment = False
@@ -70,6 +71,7 @@ def check_balanced_css(path: Path, errors: list[str]) -> None:
                 continue
             index += 1
             continue
+
         if quote:
             if escaped:
                 escaped = False
@@ -79,10 +81,12 @@ def check_balanced_css(path: Path, errors: list[str]) -> None:
                 quote = None
             index += 1
             continue
+
         if char == "/" and nxt == "*":
             in_comment = True
             index += 2
             continue
+
         if char in {'"', "'"}:
             quote = char
         elif char == "{":
@@ -104,6 +108,7 @@ def check_balanced_css(path: Path, errors: list[str]) -> None:
 
 def main() -> int:
     errors: list[str] = []
+
     if not INDEX.is_file():
         raise SystemExit("index.html is missing")
 
@@ -136,6 +141,7 @@ def main() -> int:
     css_files = sorted(ROOT.glob("*.css"))
     js_files = sorted(ROOT.glob("*.js"))
     source_files = [INDEX, *css_files, *js_files]
+
     for css_file in css_files:
         check_balanced_css(css_file, errors)
 
@@ -149,95 +155,78 @@ def main() -> int:
 
     loaded_assets = set(parser.runtime_assets)
     dynamic_source = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in js_files)
-    required_runtime = {"interactions.js", "hero-v33.js", "hero-interface-v68.js", "hero-interface-v68.css", "tech-icons-v69.css", "projects-runtime-v68.js", "core-contact-v63.js"}
+    required_runtime = {
+        "interactions.js",
+        "hero-v33.js",
+        "hero-interface-v68.js",
+        "hero-interface-v68.css",
+        "tech-icons-v69.css",
+        "learning-console-v89.css",
+        "projects-runtime-v68.js",
+        "core-contact-v63.js",
+    }
     missing_runtime = sorted(name for name in required_runtime if name not in loaded_assets and name not in dynamic_source)
     if missing_runtime:
         errors.append(f"Required runtime assets are not loaded: {', '.join(missing_runtime)}")
 
-    if 'data-release="2026.07.19.87"' not in index_text:
-        errors.append("V87 release marker is missing")
-    if 'tech-icons-v69.css?v=20260719.87' not in index_text:
-        errors.append("V87 technical rail stylesheet cache key is missing")
-    if 'hero-interface-v68.js?v=20260719.87' not in index_text:
-        errors.append("V87 visual-only Hero script cache key is missing")
-    if 'hero-v33.js?v=20260719.88' not in index_text:
-        errors.append("V88 lightweight Terminal script cache key is missing")
+    required_index_tokens = (
+        'data-release="2026.07.19.89"',
+        'learning-console-v89.css?v=20260719.89',
+        'hero-v33.js?v=20260719.89',
+        'class="hero-console-v89"',
+        'class="hero-console-v89-lights"',
+        'class="hero-console-v89-copy"',
+        'class="hero-console-v89-messages"',
+        'class="hero-console-v89-state"',
+    )
+    for token in required_index_tokens:
+        if token not in index_text:
+            errors.append(f"V89 learning-console token is missing: {token}")
 
-    hero_js = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
+    if index_text.count('class="hero-console-v89-message"') != 3:
+        errors.append("V89 learning console must contain exactly three messages")
+
+    all_css = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in css_files)
+    console_css = (ROOT / "learning-console-v89.css").read_text(encoding="utf-8", errors="replace")
     terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
-    tech_css = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
-    micro_css = (ROOT / "micro-polish.css").read_text(encoding="utf-8", errors="replace")
 
-    required_hero_tokens = (
-        'document.documentElement.dataset.release = "2026.07.19.87"',
-        'micro-polish.css?v=20260719.87',
-        'dataset.techIcons = "v87"',
-        'CORE LEARNING STACK',
-        'document.createElement("a")',
-        'hero-tech-rail',
-        'hero-tech-item',
+    forbidden_legacy_surface_tokens = (
+        "hero-v33-terminal",
+        "terminal-v33-",
+        "hero-v33-terminal-text",
+        'terminalMode = "line-swap"',
+        "HOLD_DURATION",
+        "FADE_DURATION",
+        "heroV33Caret",
+        '"terminal terminal"',
     )
-    for token in required_hero_tokens:
-        if token not in hero_js:
-            errors.append(f"V87 Hero token is missing: {token}")
+    legacy_surface = "\n".join((index_text, all_css, terminal_js))
+    for token in forbidden_legacy_surface_tokens:
+        if token in legacy_surface:
+            errors.append(f"Superseded Terminal token remains: {token}")
 
-    forbidden_runtime_tokens = (
-        "interaction-v86.css",
-        "requestAnimationFrame",
-        "setPointerCapture",
-        "pointerdown",
-        "pointermove",
-        "is-pressing",
-        "is-releasing",
-        "--press-x",
-        "--press-y",
-        "--terminal-visible-chars",
-        "terminalV86Ready",
-        "is-holding",
-        "is-deleting",
-    )
-    for token in forbidden_runtime_tokens:
-        if token in hero_js or token in tech_css or token in micro_css:
-            errors.append(f"Removed custom interaction runtime remains: {token}")
-
-    if (ROOT / "interaction-v86.css").exists():
-        errors.append("Superseded interaction-v86.css remains")
-
-    lightweight_terminal_tokens = (
-        'const output = document.querySelector("#hero-v33-terminal-text")',
-        'output.dataset.terminalMode = "line-swap"',
-        'const HOLD_DURATION = 3400',
-        'const FADE_DURATION = 240',
-        'output.style.opacity = "0"',
-        'output.textContent = phrases[phraseIndex]',
-    )
-    for token in lightweight_terminal_tokens:
-        if token not in terminal_js:
-            errors.append(f"V88 lightweight Terminal token is missing: {token}")
-
-    forbidden_terminal_tokens = (
+    forbidden_terminal_runtime_tokens = (
         "characterIndex",
-        "deleting ? 24 : 48",
         "phrase.slice",
+        "setTimeout",
         "requestAnimationFrame",
     )
-    for token in forbidden_terminal_tokens:
+    for token in forbidden_terminal_runtime_tokens:
         if token in terminal_js:
-            errors.append(f"Per-character Terminal runtime remains: {token}")
+            errors.append(f"Superseded Terminal runtime remains in hero-v33.js: {token}")
 
-    if "hero-v33-terminal-text" in hero_js:
-        errors.append("Hero visual script must not replace or control the Terminal output")
-
-    required_visual_css = (
-        "@media (hover: hover) and (pointer: fine)",
-        "@media (hover: none), (pointer: coarse)",
+    required_console_css = (
+        "grid-area: console",
+        "@keyframes heroConsoleV89Cycle",
+        ".hero-console-v89-message:nth-child(1)",
+        ".hero-console-v89-message:nth-child(2)",
+        ".hero-console-v89-message:nth-child(3)",
+        "@media (max-width: 860px)",
         "@media (prefers-reduced-motion: reduce)",
-        "@keyframes heroTechRailWave",
-        "#home.has-tech-rail .hero-tech-item:focus-visible",
     )
-    for token in required_visual_css:
-        if token not in tech_css:
-            errors.append(f"V87 visual rail CSS token is missing: {token}")
+    for token in required_console_css:
+        if token not in console_css:
+            errors.append(f"V89 learning-console CSS token is missing: {token}")
 
     if errors:
         print("Portfolio validation failed")

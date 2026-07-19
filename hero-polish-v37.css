@@ -60,12 +60,6 @@
   #home .orbit-node-v33-models .orbit-icon { animation-delay: -2.8s; }
   #home .orbit-node-v33-gen .orbit-icon { animation-delay: -4.2s; }
 
-  #home .hero-v33-terminal {
-    --v37-terminal-offset: clamp(94px, 7.4vw, 128px);
-    width: min(calc(100% - var(--v37-terminal-offset)), 650px);
-    margin-left: var(--v37-terminal-offset);
-  }
-
   #home .hero-v33-portrait[data-desktop-portrait-trigger] {
     cursor: zoom-in;
     outline: none;
@@ -213,10 +207,6 @@
 }
 
 @media (min-width: 861px) and (max-width: 1180px) {
-  #home .hero-v33-terminal {
-    --v37-terminal-offset: 176px;
-    width: min(calc(100% - var(--v37-terminal-offset)), 720px);
-  }
   #home .orbit-node-v33-models { bottom: 20%; }
   #home .orbit-node-v33-gen { bottom: 19%; }
 }

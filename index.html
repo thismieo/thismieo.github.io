@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-release="2026.07.19.87">
+<html lang="en" data-release="2026.07.19.89">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -48,8 +48,9 @@
   <link rel="stylesheet" href="project-readouts-v66.css?v=20260718.68" data-project-readouts-v66 />
   <link rel="stylesheet" href="hero-interface-v68.css?v=20260719.82" data-hero-interface-v68 />
   <link rel="stylesheet" href="tech-icons-v69.css?v=20260719.87" data-tech-icons-v69 />
+  <link rel="stylesheet" href="learning-console-v89.css?v=20260719.89" data-learning-console-v89 />
   <script src="interactions.js?v=20260718.44" defer></script>
-  <script src="hero-v33.js?v=20260719.88" defer></script>
+  <script src="hero-v33.js?v=20260719.89" defer></script>
   <script src="ticker-v44.js?v=20260718.52" defer></script>
   <script src="portrait.js?v=20260718.68" defer></script>
   <script src="mobile-nav.js?v=20260718.44" defer></script>
@@ -135,14 +136,18 @@
             </nav>
           </div>
 
-          <div class="hero-v33-terminal" aria-label="Animated learning status">
-            <span class="terminal-v33-controls" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="terminal-v33-body">
-              <small>journey.py / live learning log</small>
-              <span class="terminal-v33-line" aria-hidden="true"><b class="terminal-v33-prompt">›</b><code id="hero-v33-terminal-text">current_focus = "Python Foundations"</code><i class="terminal-v33-caret"></i></span>
+          <aside class="hero-console-v89" aria-label="Current learning status">
+            <span class="hero-console-v89-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="hero-console-v89-copy">
+              <small>learning.py / current status</small>
+              <span class="hero-console-v89-messages" aria-hidden="true">
+                <code class="hero-console-v89-message">focus = "Python Foundations"</code>
+                <code class="hero-console-v89-message">mode = "Learn · Practice · Build"</code>
+                <code class="hero-console-v89-message">next = "Data Analysis"</code>
+              </span>
             </span>
-            <span class="terminal-v33-live">Active</span>
-          </div>
+            <span class="hero-console-v89-state"><i aria-hidden="true"></i>Active</span>
+          </aside>
         </div>
 
         <div class="hero-v33-planetary reveal" role="img" aria-label="A calm planetary learning system connecting code, data, models, and generative AI">
