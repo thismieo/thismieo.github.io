@@ -1,38 +1,18 @@
 (() => {
   "use strict";
 
-  const PROJECT_VISUAL_VERSION = "102";
-  document.documentElement.dataset.release = "2026.07.19.102";
+  document.documentElement.dataset.release = "2026.07.19.103";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
   if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.68";
 
-  let readoutStylesheet = document.querySelector("link[data-project-readouts-v66]");
-  if (!readoutStylesheet) {
-    readoutStylesheet = document.createElement("link");
-    readoutStylesheet.rel = "stylesheet";
-    readoutStylesheet.dataset.projectReadoutsV66 = "true";
-    document.head.append(readoutStylesheet);
+  const readoutStylesheet = document.querySelector("link[data-project-readouts-v66]");
+  if (readoutStylesheet) {
+    readoutStylesheet.href = "project-readouts-v66.css?v=20260719.103";
   }
-  readoutStylesheet.href = "project-readouts-v66.css?v=20260719.102";
 
   const projects = document.querySelector("#projects");
   projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
-
-  /* A stale cached V101 script can still arrive through the older index cache key.
-     Reload V102 once, then let the version flag prevent duplicate initialization. */
-  if (projects && projects.dataset.projectVisualVersion !== PROJECT_VISUAL_VERSION) {
-    delete projects.dataset.projectVisualsV54Ready;
-
-    const existingRefresh = document.querySelector('script[data-project-visual-refresh="102"]');
-    if (!existingRefresh) {
-      const refreshScript = document.createElement("script");
-      refreshScript.src = "project-visuals-v54.js?v=20260719.102";
-      refreshScript.defer = true;
-      refreshScript.dataset.projectVisualRefresh = PROJECT_VISUAL_VERSION;
-      document.body.append(refreshScript);
-    }
-  }
 
   const contact = document.querySelector("#contact");
   const links = contact?.querySelector(".contact-links");
