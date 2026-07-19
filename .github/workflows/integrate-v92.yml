@@ -1,0 +1,42 @@
+name: Integrate V92 terminal fix
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-v92:
+    if: github.event.pull_request.head.ref == 'fix/v92-terminal-placement-scroll'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out V92 branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/v92-terminal-placement-scroll
+          fetch-depth: 0
+
+      - name: Apply and validate V92 once
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f scripts/apply_v92_terminal_fix.py ]; then
+            echo "V92 integration already applied."
+            exit 0
+          fi
+
+          python3 scripts/apply_v92_terminal_fix.py
+          python3 scripts/validate_site.py
+
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
+
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Fix terminal placement, caret, and mobile scroll stability"
+          git push origin HEAD:fix/v92-terminal-placement-scroll
