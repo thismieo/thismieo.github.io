@@ -1,0 +1,83 @@
+name: Finalize V81 cleanup
+
+on:
+  push:
+    branches:
+      - feat/v81-unified-learning-rail
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v81-unified-learning-rail
+          fetch-depth: 0
+
+      - name: Complete permanent validation coverage
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/validate_site.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''    exact_once_assets = (
+              "hero-interface-v68.css",
+              "hero-interface-v68.js",
+              "projects-runtime-v68.js",
+          )
+          '''
+          new = '''    exact_once_assets = (
+              "hero-interface-v68.css",
+              "hero-interface-v68.js",
+              "tech-icons-v69.css",
+              "projects-runtime-v68.js",
+          )
+          '''
+          if text.count(old) != 1:
+              raise SystemExit("Could not locate the exact asset validation tuple")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Validate final repository state
+        run: |
+          node --check hero-interface-v68.js
+          python scripts/validate_site.py
+          python - <<'PY'
+          from pathlib import Path
+
+          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
+          if css.count("{") != css.count("}"):
+              raise SystemExit("Unbalanced CSS braces")
+
+          forbidden = (
+              ".hero-v73-tech-item",
+              ".hero-v73-tech-strip",
+              "heroV73StripWave",
+          )
+          found = [token for token in forbidden if token in css]
+          if found:
+              raise SystemExit(f"Legacy selectors remain: {found}")
+
+          if Path("scripts/__pycache__").exists():
+              raise SystemExit("Python cache directory should not be committed or generated")
+          PY
+
+      - name: Commit cleanup and remove one-time workflow
+        run: |
+          rm -f .github/workflows/v81-cleanup.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Complete V81 validation coverage"
+          git push origin HEAD:feat/v81-unified-learning-rail
