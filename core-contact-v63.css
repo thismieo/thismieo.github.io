@@ -58,12 +58,6 @@
   justify-self: start;
 }
 
-#home .hero-v33-terminal {
-  width: min(100%, 650px) !important;
-  margin-left: 0 !important;
-  justify-self: start;
-}
-
 @media (min-width: 861px) {
   #home .hero-v33-story {
     align-content: center;
@@ -74,11 +68,6 @@
 @media (max-width: 860px) {
   #home .hero-v33-story {
     row-gap: 20px !important;
-  }
-
-  #home .hero-v33-copy,
-  #home .hero-v33-terminal {
-    max-width: 100%;
   }
 }
 

@@ -10,81 +10,9 @@
     heroCopy.insertBefore(name, eyebrow || heroCopy.firstChild);
   }
 
-  const output = document.querySelector("#hero-v33-terminal-text");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-  if (output) {
-    const phrases = [
-      'current_focus = "Python Foundations"',
-      'method = ["learn", "practice", "build"]',
-      'next_layer = "Data Analysis"',
-      'direction = "AI Engineering"'
-    ];
-
-    const HOLD_DURATION = 3400;
-    const FADE_DURATION = 240;
-    let phraseIndex = 0;
-    let timer = 0;
-    let pausedByVisibility = false;
-
-    output.dataset.terminalMode = "line-swap";
-    output.textContent = phrases[0];
-    output.style.opacity = "1";
-    output.style.transform = "translate3d(0, 0, 0)";
-
-    if (!reducedMotion.matches) {
-      output.style.transition = `opacity ${FADE_DURATION}ms ease, transform ${FADE_DURATION}ms ease`;
-      output.style.willChange = "opacity, transform";
-
-      const clearTimer = () => {
-        window.clearTimeout(timer);
-        timer = 0;
-      };
-
-      const scheduleNext = () => {
-        clearTimer();
-        timer = window.setTimeout(swapLine, HOLD_DURATION);
-      };
-
-      const swapLine = () => {
-        if (document.hidden) {
-          pausedByVisibility = true;
-          return;
-        }
-
-        output.style.opacity = "0";
-        output.style.transform = "translate3d(0, 2px, 0)";
-
-        timer = window.setTimeout(() => {
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          output.textContent = phrases[phraseIndex];
-          output.style.opacity = "1";
-          output.style.transform = "translate3d(0, 0, 0)";
-          scheduleNext();
-        }, FADE_DURATION);
-      };
-
-      scheduleNext();
-
-      document.addEventListener("visibilitychange", () => {
-        clearTimer();
-
-        if (document.hidden) {
-          pausedByVisibility = true;
-          return;
-        }
-
-        output.style.opacity = "1";
-        output.style.transform = "translate3d(0, 0, 0)";
-
-        if (pausedByVisibility) {
-          pausedByVisibility = false;
-          scheduleNext();
-        }
-      });
-    }
-  }
 
   const desktopPortrait = document.querySelector("[data-desktop-portrait-trigger]");
   const mobilePortraitTrigger = document.querySelector("#portrait-trigger");

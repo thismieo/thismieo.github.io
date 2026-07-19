@@ -254,7 +254,7 @@
     grid-template-columns: minmax(148px, 0.42fr) minmax(0, 1fr);
     grid-template-areas:
       "portrait copy"
-      "terminal terminal";
+      "console console";
     align-items: center;
     gap: 20px 22px;
   }
@@ -513,112 +513,6 @@
   html body #home .hero-v33-links svg.solid-icon {
     fill: currentColor;
     stroke: none;
-  }
-
-  html body #home .hero-v33-terminal {
-    grid-area: terminal;
-    position: relative;
-    width: min(100%, 620px);
-    min-height: 68px;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 10px;
-    margin: 0 auto;
-    padding: 11px 12px;
-    overflow: hidden;
-    border: 1px solid rgba(103, 232, 249, 0.09);
-    border-radius: 14px;
-    background:
-      linear-gradient(90deg, rgba(6, 182, 212, 0.025), transparent 34%, rgba(159, 39, 78, 0.02)),
-      rgba(2, 8, 20, 0.76);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  html body #home .hero-v33-terminal::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 2px;
-    background: linear-gradient(180deg, #67d1df, #818cf8 52%, #cf76a6);
-  }
-
-  html body #home .terminal-v33-controls {
-    display: flex;
-    gap: 4px;
-  }
-
-  html body #home .terminal-v33-controls i {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #39536f;
-  }
-
-  html body #home .terminal-v33-controls i:nth-child(1) { background: #67d5e2; }
-  html body #home .terminal-v33-controls i:nth-child(2) { background: #818cf8; }
-  html body #home .terminal-v33-controls i:nth-child(3) { background: #d47da8; }
-
-  html body #home .terminal-v33-body {
-    min-width: 0;
-    display: grid;
-    gap: 4px;
-    padding-inline-start: 0 !important;
-  }
-
-  html body #home .terminal-v33-body small {
-    overflow: hidden;
-    color: #60728a;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.48rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  html body #home .terminal-v33-line {
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #b8c5d5;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: clamp(0.62rem, 1.95vw, 0.75rem);
-  }
-
-  html body #home .terminal-v33-line code {
-    min-width: 0;
-    overflow: hidden;
-    color: #dbe7f3;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  html body #home .terminal-v33-prompt {
-    color: #67d7e3;
-  }
-
-  html body #home .terminal-v33-caret {
-    width: 6px;
-    height: 13px;
-    flex: 0 0 auto;
-    background: #67d7e3;
-  }
-
-  html body #home .terminal-v33-live {
-    padding: 5px 7px;
-    border: 1px solid rgba(52, 211, 153, 0.11);
-    border-radius: 8px;
-    background: rgba(4, 31, 29, 0.2);
-    color: #79d2ad;
-    font-size: 0.46rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   html body #home .hero-v33-planetary {
@@ -1016,16 +910,6 @@
     font-size: 0.57rem;
   }
 
-  .v12-lite #home .hero-v33-stars,
-  .v12-lite #home .hero-v33-orbit-svg .orbit-line,
-  .v12-lite #home .hero-v33-rotator,
-  .v12-lite #home .hero-v33-planet::before,
-  .v12-lite #home .hero-v33-orbit-node,
-  .v12-lite #home .hero-v33-eyebrow i,
-  .v12-lite #home .terminal-v33-caret {
-    animation: none !important;
-  }
-
   .v12-lite #home .hero-v33-planet,
   .v12-lite #home .hero-v33-orbit-node,
   .v12-lite #home .hero-v33-portrait img {
@@ -1110,14 +994,6 @@
     justify-content: center;
   }
 
-  html body #home .hero-v33-terminal {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  html body #home .terminal-v33-live {
-    display: none;
-  }
-
   html body #home .hero-v33-planetary {
     min-height: 390px;
   }
@@ -1191,7 +1067,7 @@
     grid-template-columns: minmax(130px, 0.36fr) minmax(0, 1fr);
     grid-template-areas:
       "portrait copy"
-      "terminal terminal";
+      "console console";
   }
 
   html body #home .hero-v33-portrait {
@@ -1207,13 +1083,6 @@
   @media (max-width: 860px) {
     html body #home.hero.section {
       padding-bottom: max(28px, env(safe-area-inset-bottom, 0px)) !important;
-    }
-
-    html body #home .hero-v33-portrait img,
-    html body #home .hero-v33-terminal,
-    html body #home .hero-v33-planetary {
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
     }
   }
 }
@@ -1236,15 +1105,5 @@
 
   .ticker-v44-group[aria-hidden="true"] {
     display: none !important;
-  }
-
-  #home .hero-v33-stars,
-  #home .hero-v33-orbit-svg .orbit-line,
-  #home .hero-v33-rotator,
-  #home .hero-v33-planet::before,
-  #home .hero-v33-orbit-node,
-  #home .hero-v33-eyebrow i,
-  #home .terminal-v33-caret {
-    animation: none !important;
   }
 }
