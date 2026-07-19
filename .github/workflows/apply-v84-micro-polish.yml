@@ -1,9 +1,9 @@
 name: Apply V84 micro polish
 
 on:
-  push:
+  pull_request:
     branches:
-      - feat/v84-micro-polish
+      - main
 
 permissions:
   contents: write
@@ -37,19 +37,19 @@ jobs:
               index,
               '<html lang="en" data-release="2026.07.19.83">',
               '<html lang="en" data-release="2026.07.19.84">',
-              "V83 release marker",
+              "release marker",
           )
           index = replace_once(
               index,
               '  <link rel="stylesheet" href="tech-icons-v69.css?v=20260719.83" data-tech-icons-v69 />',
               '  <link rel="stylesheet" href="tech-icons-v69.css?v=20260719.83" data-tech-icons-v69 />\n  <link rel="stylesheet" href="micro-polish.css?v=20260719.84" data-micro-polish />',
-              "technical rail stylesheet link",
+              "technical rail stylesheet",
           )
           index = replace_once(
               index,
               '  <script src="hero-interface-v68.js?v=20260719.83" defer></script>',
               '  <script src="hero-interface-v68.js?v=20260719.83" defer></script>\n  <script src="micro-polish.js?v=20260719.84" defer></script>',
-              "technical rail script link",
+              "technical rail script",
           )
           index_path.write_text(index, encoding="utf-8")
 
@@ -59,66 +59,62 @@ jobs:
               validator,
               '    if \'data-release="2026.07.19.83"\' not in index_text:\n        errors.append("V83 release marker is missing")',
               '    if \'data-release="2026.07.19.84"\' not in index_text:\n        errors.append("V84 release marker is missing")',
-              "V83 validator release check",
+              "validator release check",
           )
-          cache_marker = '''    if 'hero-interface-v68.js?v=20260719.83' not in index_text:
-              errors.append("V83 technical rail script cache key is missing")
-          '''
-          cache_insert = cache_marker + '''
-              if 'micro-polish.css?v=20260719.84' not in index_text:
-                  errors.append("V84 micro-polish stylesheet cache key is missing")
+          validator = replace_once(
+              validator,
+              '    if \'hero-interface-v68.js?v=20260719.83\' not in index_text:\n        errors.append("V83 technical rail script cache key is missing")\n',
+              '    if \'hero-interface-v68.js?v=20260719.83\' not in index_text:\n        errors.append("V83 technical rail script cache key is missing")\n\n    if \'micro-polish.css?v=20260719.84\' not in index_text:\n        errors.append("V84 micro-polish stylesheet cache key is missing")\n\n    if \'micro-polish.js?v=20260719.84\' not in index_text:\n        errors.append("V84 micro-polish script cache key is missing")\n',
+              "validator cache block",
+          )
+          validator = replace_once(
+              validator,
+              '    hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")\n',
+              '    hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")\n    micro_polish_js = (ROOT / "micro-polish.js").read_text(encoding="utf-8", errors="replace")\n    micro_polish_css = (ROOT / "micro-polish.css").read_text(encoding="utf-8", errors="replace")\n',
+              "validator source reads",
+          )
+          validator = replace_once(
+              validator,
+              '        "tech-icons-v69.css",\n        "projects-runtime-v68.js",',
+              '        "tech-icons-v69.css",\n        "micro-polish.css",\n        "micro-polish.js",\n        "projects-runtime-v68.js",',
+              "required runtime files",
+          )
+          validator = replace_once(
+              validator,
+              '        "tech-icons-v69.css",\n        "projects-runtime-v68.js",\n    )\n    for asset in exact_once_assets:',
+              '        "tech-icons-v69.css",\n        "micro-polish.css",\n        "micro-polish.js",\n        "projects-runtime-v68.js",\n    )\n    for asset in exact_once_assets:',
+              "exact-once assets",
+          )
+          micro_checks = '''
+    required_micro_js_tokens = (
+        'dataset.release = "2026.07.19.84"',
+        'hero-tech-kicker',
+        'practice_mode = True',
+        'projects_built += 1',
+        'microPressReady',
+    )
+    for token in required_micro_js_tokens:
+        if token not in micro_polish_js:
+            errors.append(f"V84 micro-polish JavaScript token is missing: {token}")
 
-              if 'micro-polish.js?v=20260719.84' not in index_text:
-                  errors.append("V84 micro-polish script cache key is missing")
-          '''
-          validator = replace_once(validator, cache_marker, cache_insert, "V83 script cache check")
+    required_micro_css_tokens = (
+        '.hero-tech-kicker',
+        '.button.is-pressing',
+        '@keyframes heroV84TerminalPulse',
+        '@keyframes heroV84TerminalSweep',
+        '@media (max-width: 860px)',
+    )
+    for token in required_micro_css_tokens:
+        if token not in micro_polish_css:
+            errors.append(f"V84 micro-polish CSS token is missing: {token}")
 
-          read_marker = '''    hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")
-          '''
-          read_insert = read_marker + '''    micro_polish_js = (ROOT / "micro-polish.js").read_text(encoding="utf-8", errors="replace")
-              micro_polish_css = (ROOT / "micro-polish.css").read_text(encoding="utf-8", errors="replace")
-          '''
-          validator = replace_once(validator, read_marker, read_insert, "hero interface validator read")
-
-          exact_marker = '''        "tech-icons-v69.css",
-                  "projects-runtime-v68.js",
-          '''
-          exact_insert = '''        "tech-icons-v69.css",
-                  "micro-polish.css",
-                  "micro-polish.js",
-                  "projects-runtime-v68.js",
-          '''
-          validator = replace_once(validator, exact_marker, exact_insert, "exact-once asset tuple")
-
-          final_marker = '''    if errors:
-                  fail(errors)
-          '''
-          final_insert = '''    required_micro_js_tokens = (
-                  'dataset.release = "2026.07.19.84"',
-                  'hero-tech-kicker',
-                  'practice_mode = True',
-                  'projects_built += 1',
-                  'microPressReady',
-              )
-              for token in required_micro_js_tokens:
-                  if token not in micro_polish_js:
-                      errors.append(f"V84 micro-polish JavaScript token is missing: {token}")
-
-              required_micro_css_tokens = (
-                  '.hero-tech-kicker',
-                  '.button.is-pressing',
-                  '@keyframes heroV84TerminalPulse',
-                  '@keyframes heroV84TerminalSweep',
-                  '@media (max-width: 860px)',
-              )
-              for token in required_micro_css_tokens:
-                  if token not in micro_polish_css:
-                      errors.append(f"V84 micro-polish CSS token is missing: {token}")
-
-              if errors:
-                  fail(errors)
-          '''
-          validator = replace_once(validator, final_marker, final_insert, "validator final error block")
+'''
+          validator = replace_once(
+              validator,
+              '    exact_once_assets = (\n',
+              micro_checks + '    exact_once_assets = (\n',
+              "micro-polish validation insertion",
+          )
           validator_path.write_text(validator, encoding="utf-8")
           PY
 
