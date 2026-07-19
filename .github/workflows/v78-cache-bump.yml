@@ -1,0 +1,54 @@
+name: V78 Cache Bump
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  bump-cache:
+    if: github.event.head_commit.message == 'Trigger V78 cache bump'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Update release and asset cache keys
+        shell: python
+        run: |
+          from pathlib import Path
+
+          index_path = Path("index.html")
+          index_text = index_path.read_text(encoding="utf-8")
+          replacements = {
+              'data-release="2026.07.19.74"': 'data-release="2026.07.19.78"',
+              'tech-icons-v69.css?v=20260719.74': 'tech-icons-v69.css?v=20260719.78',
+              'hero-interface-v68.js?v=20260719.74': 'hero-interface-v68.js?v=20260719.78',
+          }
+          for old, new in replacements.items():
+              if old not in index_text:
+                  raise SystemExit(f"Missing expected index marker: {old}")
+              index_text = index_text.replace(old, new)
+          index_path.write_text(index_text, encoding="utf-8")
+
+          validation_path = Path("scripts/validate_site.py")
+          if validation_path.exists():
+              validation_text = validation_path.read_text(encoding="utf-8")
+              validation_text = validation_text.replace(
+                  'data-release="2026.07.19.74"',
+                  'data-release="2026.07.19.78"',
+              ).replace("V74 release marker is missing", "V78 release marker is missing")
+              validation_path.write_text(validation_text, encoding="utf-8")
+
+          Path(".github/workflows/v78-cache-bump.yml").unlink()
+
+      - name: Commit cache-key update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Bump V78 asset cache keys"
+          git push
