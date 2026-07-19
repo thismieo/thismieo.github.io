@@ -57,7 +57,7 @@
     },
     {
       label: "Machine Learning",
-      href: "https://developers.google.com/machine-learning/intro-to-ml/what-is-ml?hl=ar",
+      href: "https://developers.google.com/machine-learning/",
       paths: '<circle cx="5.7" cy="7" r="2.05"/><circle cx="18.3" cy="6" r="2.05"/><circle cx="12" cy="18.1" r="2.05"/><path d="m7.72 6.84 8.53-.67M6.84 8.84l3.93 7.38M17.12 7.88l-3.9 8.34"/>'
     },
     {
