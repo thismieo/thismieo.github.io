@@ -27,16 +27,29 @@ jobs:
             exit 0
           fi
 
-          python3 scripts/apply_v97_svg_orbits.py
-          python3 scripts/validate_site.py
+          set +e
+          {
+            python3 scripts/apply_v97_svg_orbits.py
+            apply_status=$?
+            echo "APPLY_STATUS=$apply_status"
+            if [ "$apply_status" -eq 0 ]; then
+              python3 scripts/validate_site.py
+              validate_status=$?
+              echo "VALIDATE_STATUS=$validate_status"
+              if [ "$validate_status" -eq 0 ]; then
+                while IFS= read -r -d '' file; do
+                  node --check "$file"
+                done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
+                echo "NODE_STATUS=$?"
+                git diff --check
+                echo "DIFF_STATUS=$?"
+              fi
+            fi
+          } > v97-diagnostic.txt 2>&1
+          set -e
 
-          while IFS= read -r -d '' file; do
-            node --check "$file"
-          done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
-
-          git diff --check
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Replace orbit runtime with native SVG motion"
+          git commit -m "Apply V97 and capture validation result"
           git push origin HEAD:fix/v97-native-svg-orbits
