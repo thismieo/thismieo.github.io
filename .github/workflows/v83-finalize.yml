@@ -1,0 +1,130 @@
+name: Finalize V83 touch behavior
+
+on:
+  push:
+    branches:
+      - fix/v83-touch-state-desktop-scale
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out V83 branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/v83-touch-state-desktop-scale
+          fetch-depth: 0
+
+      - name: Wire release keys and validator
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index_path = Path("index.html")
+          index = index_path.read_text(encoding="utf-8")
+          replacements = {
+              '<html lang="en" data-release="2026.07.19.82">': '<html lang="en" data-release="2026.07.19.83">',
+              'tech-icons-v69.css?v=20260719.82': 'tech-icons-v69.css?v=20260719.83',
+              'hero-interface-v68.js?v=20260719.82': 'hero-interface-v68.js?v=20260719.83',
+          }
+          for old, new in replacements.items():
+              if index.count(old) != 1:
+                  raise SystemExit(f"Expected one index occurrence of {old!r}; found {index.count(old)}")
+              index = index.replace(old, new, 1)
+          index_path.write_text(index, encoding="utf-8")
+
+          validator_path = Path("scripts/validate_site.py")
+          validator = validator_path.read_text(encoding="utf-8")
+          validator = validator.replace('data-release="2026.07.19.82"', 'data-release="2026.07.19.83"')
+          validator = validator.replace('tech-icons-v69.css?v=20260719.82', 'tech-icons-v69.css?v=20260719.83')
+          validator = validator.replace('hero-interface-v68.js?v=20260719.82', 'hero-interface-v68.js?v=20260719.83')
+          validator = validator.replace('dataset.techIcons = "v82"', 'dataset.techIcons = "v83"')
+          validator = validator.replace('V82 release marker', 'V83 release marker')
+          validator = validator.replace('V82 technical rail stylesheet', 'V83 technical rail stylesheet')
+          validator = validator.replace('V82 technical rail script', 'V83 technical rail script')
+          validator = validator.replace('V82 technical rail JavaScript', 'V83 technical rail JavaScript')
+          validator = validator.replace('V82 technical rail CSS', 'V83 technical rail CSS')
+
+          anchor = '    exact_once_assets = ('
+          if validator.count(anchor) != 1:
+              raise SystemExit("Could not locate exact-once asset validation anchor")
+
+          touch_validation = '''    touch_js_tokens = (
+              'is-pressing',
+              'pointerdown',
+              'pointerup',
+              'pointercancel',
+              'lostpointercapture',
+          )
+          for token in touch_js_tokens:
+              if token not in tech_js_text:
+                  errors.append(f"V83 touch interaction token is missing: {token}")
+
+          touch_css_tokens = (
+              '.hero-tech-item.is-pressing',
+              '@media (hover: hover) and (pointer: fine)',
+              '@media (min-width: 861px)',
+          )
+          for token in touch_css_tokens:
+              if token not in tech_css_text:
+                  errors.append(f"V83 interaction or desktop-scale CSS token is missing: {token}")
+
+          obsolete_touch_tokens = (
+              'is-activating',
+              'showTapGlow',
+          )
+          for token in obsolete_touch_tokens:
+              if token in tech_js_text or token in tech_css_text:
+                  errors.append(f"Obsolete timed touch state remains: {token}")
+
+          '''
+          validator = validator.replace(anchor, touch_validation + anchor, 1)
+          validator_path.write_text(validator, encoding="utf-8")
+          PY
+
+      - name: Validate JavaScript CSS and repository
+        run: |
+          node --check hero-interface-v68.js
+          python scripts/validate_site.py
+          python - <<'PY'
+          from pathlib import Path
+
+          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
+          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
+
+          if css.count("{") != css.count("}"):
+              raise SystemExit("Unbalanced technical rail CSS braces")
+
+          required_js = ("is-pressing", "pointerup", "pointercancel", "lostpointercapture")
+          missing_js = [token for token in required_js if token not in js]
+          if missing_js:
+              raise SystemExit(f"Missing touch lifecycle tokens: {missing_js}")
+
+          required_css = (
+              "@media (hover: hover) and (pointer: fine)",
+              "@media (min-width: 861px)",
+              ".hero-tech-item.is-pressing",
+          )
+          missing_css = [token for token in required_css if token not in css]
+          if missing_css:
+              raise SystemExit(f"Missing touch or desktop CSS tokens: {missing_css}")
+
+          forbidden = ("is-activating", "showTapGlow")
+          found = [token for token in forbidden if token in js or token in css]
+          if found:
+              raise SystemExit(f"Obsolete timed touch behavior remains: {found}")
+          PY
+
+      - name: Commit finalized V83 release
+        run: |
+          rm -f .github/workflows/v83-finalize.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize V83 touch interaction and desktop scale"
+          git push origin HEAD:fix/v83-touch-state-desktop-scale
