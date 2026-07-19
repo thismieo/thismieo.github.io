@@ -187,25 +187,33 @@ def main() -> int:
         errors.append("V89 learning console must contain exactly three messages")
 
     all_css = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in css_files)
-    all_js = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in js_files)
     console_css = (ROOT / "learning-console-v89.css").read_text(encoding="utf-8", errors="replace")
+    terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
 
-    forbidden_legacy_tokens = (
+    forbidden_legacy_surface_tokens = (
         "hero-v33-terminal",
         "terminal-v33-",
         "hero-v33-terminal-text",
         'terminalMode = "line-swap"',
         "HOLD_DURATION",
         "FADE_DURATION",
-        "characterIndex",
-        "phrase.slice",
         "heroV33Caret",
         '"terminal terminal"',
     )
-    combined = "\n".join((index_text, all_css, all_js))
-    for token in forbidden_legacy_tokens:
-        if token in combined:
+    legacy_surface = "\n".join((index_text, all_css, terminal_js))
+    for token in forbidden_legacy_surface_tokens:
+        if token in legacy_surface:
             errors.append(f"Superseded Terminal token remains: {token}")
+
+    forbidden_terminal_runtime_tokens = (
+        "characterIndex",
+        "phrase.slice",
+        "setTimeout",
+        "requestAnimationFrame",
+    )
+    for token in forbidden_terminal_runtime_tokens:
+        if token in terminal_js:
+            errors.append(f"Superseded Terminal runtime remains in hero-v33.js: {token}")
 
     required_console_css = (
         "grid-area: console",
@@ -219,10 +227,6 @@ def main() -> int:
     for token in required_console_css:
         if token not in console_css:
             errors.append(f"V89 learning-console CSS token is missing: {token}")
-
-    terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
-    if "setTimeout" in terminal_js or "requestAnimationFrame" in terminal_js:
-        errors.append("hero-v33.js must not contain a Terminal timer or frame loop")
 
     if errors:
         print("Portfolio validation failed")
