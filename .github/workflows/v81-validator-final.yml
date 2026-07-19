@@ -1,0 +1,64 @@
+name: Complete V81 validator wiring
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  wire-validator:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v81-unified-learning-rail
+          fetch-depth: 0
+
+      - name: Add technical stylesheet to exact-once validation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/validate_site.py")
+          text = path.read_text(encoding="utf-8")
+          old = (
+              '    exact_once_assets = (\n'
+              '        "hero-interface-v68.css",\n'
+              '        "hero-interface-v68.js",\n'
+              '        "projects-runtime-v68.js",\n'
+              '    )\n'
+          )
+          new = (
+              '    exact_once_assets = (\n'
+              '        "hero-interface-v68.css",\n'
+              '        "hero-interface-v68.js",\n'
+              '        "tech-icons-v69.css",\n'
+              '        "projects-runtime-v68.js",\n'
+              '    )\n'
+          )
+          if text.count(old) != 1:
+              raise SystemExit("Expected exactly one exact-once asset tuple")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Run final validation
+        run: |
+          node --check hero-interface-v68.js
+          python scripts/validate_site.py
+          test ! -d scripts/__pycache__
+
+      - name: Commit validator update and remove workflow
+        run: |
+          rm -f .github/workflows/v81-validator-final.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize V81 asset validation"
+          git push origin HEAD:feat/v81-unified-learning-rail
