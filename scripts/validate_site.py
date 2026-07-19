@@ -247,17 +247,17 @@ def main() -> int:
     if "hero-v33-portrait" in parser.classes or "portrait-modal" in parser.ids:
         errors.append("Removed portrait markup remains in index.html")
 
-    if 'data-release="2026.07.19.82"' not in index_text:
-        errors.append("V82 release marker is missing")
+    if 'data-release="2026.07.19.83"' not in index_text:
+        errors.append("V83 release marker is missing")
 
     if 'hero-interface-v68.css?v=20260719.82' not in index_text:
         errors.append("V82 hero interface stylesheet cache key is missing")
 
-    if 'tech-icons-v69.css?v=20260719.82' not in index_text:
-        errors.append("V82 technical rail stylesheet cache key is missing")
+    if 'tech-icons-v69.css?v=20260719.83' not in index_text:
+        errors.append("V83 technical rail stylesheet cache key is missing")
 
-    if 'hero-interface-v68.js?v=20260719.82' not in index_text:
-        errors.append("V82 technical rail script cache key is missing")
+    if 'hero-interface-v68.js?v=20260719.83' not in index_text:
+        errors.append("V83 technical rail script cache key is missing")
 
     tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
     tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
@@ -271,11 +271,11 @@ def main() -> int:
         'hero-tech-icon',
         'hero-tech-copy',
         'document.createElement("a")',
-        'dataset.techIcons = "v82"',
+        'dataset.techIcons = "v83"',
     )
     for token in required_js_tokens:
         if token not in tech_js_text:
-            errors.append(f"V82 technical rail JavaScript token is missing: {token}")
+            errors.append(f"V83 technical rail JavaScript token is missing: {token}")
 
     required_css_tokens = (
         '#home.has-tech-rail .hero-tech-rail',
@@ -285,7 +285,7 @@ def main() -> int:
     )
     for token in required_css_tokens:
         if token not in tech_css_text:
-            errors.append(f"V82 technical rail CSS token is missing: {token}")
+            errors.append(f"V83 technical rail CSS token is missing: {token}")
 
     forbidden_js_tokens = (
         'window.open(',
@@ -323,6 +323,34 @@ def main() -> int:
         if token in hero_interface_text:
             errors.append(f"Legacy hero chip styling remains in hero-interface-v68.css: {token}")
 
+
+    touch_js_tokens = (
+        'is-pressing',
+        'pointerdown',
+        'pointerup',
+        'pointercancel',
+        'lostpointercapture',
+    )
+    for token in touch_js_tokens:
+        if token not in tech_js_text:
+            errors.append(f"V83 touch interaction token is missing: {token}")
+
+    touch_css_tokens = (
+        '.hero-tech-item.is-pressing',
+        '@media (hover: hover) and (pointer: fine)',
+        '@media (min-width: 861px)',
+    )
+    for token in touch_css_tokens:
+        if token not in tech_css_text:
+            errors.append(f"V83 interaction or desktop-scale CSS token is missing: {token}")
+
+    obsolete_touch_tokens = (
+        'is-activating',
+        'showTapGlow',
+    )
+    for token in obsolete_touch_tokens:
+        if token in tech_js_text or token in tech_css_text:
+            errors.append(f"Obsolete timed touch state remains: {token}")
 
     exact_once_assets = (
         "hero-interface-v68.css",
