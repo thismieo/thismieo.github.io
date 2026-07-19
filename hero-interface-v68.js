@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.19.81";
+  document.documentElement.dataset.release = "2026.07.19.82";
 
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
@@ -13,7 +13,7 @@
   if (home.dataset.heroV68Ready === "true") return;
 
   home.dataset.heroV68Ready = "true";
-  home.classList.add("is-hero-v68", "is-tech-icons-v81");
+  home.classList.add("is-hero-v68", "has-tech-rail");
 
   const firstLine = document.createElement("span");
   firstLine.className = "hero-v68-line hero-v68-line-one";
@@ -71,51 +71,50 @@
     }
   ];
 
-  const existingStrip = copy.querySelector(".hero-v68-tech-strip");
-  if (existingStrip) existingStrip.remove();
+  const existingRail = copy.querySelector(".hero-tech-rail");
+  if (existingRail) existingRail.remove();
 
-  const strip = document.createElement("div");
-  strip.className = "hero-v68-tech-strip hero-v81-tech-rail";
-  strip.dataset.techIcons = "v81";
-  strip.dataset.presentation = "unified-learning-rail";
-  strip.dataset.wave = "continuous";
-  strip.setAttribute("aria-label", "Official learning resources for the current technical path");
-  strip.setAttribute("role", "list");
+  const rail = document.createElement("div");
+  rail.className = "hero-tech-rail";
+  rail.dataset.techIcons = "v82";
+  rail.dataset.presentation = "compact-terminal-rail";
+  rail.dataset.wave = "continuous";
+  rail.setAttribute("aria-label", "Official learning resources for the current technical path");
+  rail.setAttribute("role", "list");
 
-  techResources.forEach(({ title, subtitle, href, paths }, index) => {
+  techResources.forEach(({ title, subtitle, href, paths }) => {
     const item = document.createElement("a");
-    item.className = "hero-v81-tech-item";
+    item.className = "hero-tech-item";
     item.href = href;
     item.target = "_blank";
     item.rel = "noopener noreferrer";
     item.setAttribute("role", "listitem");
     item.setAttribute("aria-label", `Open the official ${title} ${subtitle} resource in a new tab`);
     item.title = `${title} ${subtitle}`;
-    item.style.setProperty("--tech-index", String(index));
 
     const showTapGlow = () => {
       item.classList.remove("is-activating");
       void item.offsetWidth;
       item.classList.add("is-activating");
-      window.setTimeout(() => item.classList.remove("is-activating"), 420);
+      window.setTimeout(() => item.classList.remove("is-activating"), 380);
     };
 
     item.addEventListener("pointerdown", showTapGlow, { passive: true });
 
-    const badge = document.createElement("span");
-    badge.className = "hero-v81-tech-badge";
-    badge.setAttribute("aria-hidden", "true");
+    const iconShell = document.createElement("span");
+    iconShell.className = "hero-tech-icon-shell";
+    iconShell.setAttribute("aria-hidden", "true");
 
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
     icon.setAttribute("aria-hidden", "true");
     icon.setAttribute("focusable", "false");
-    icon.classList.add("hero-v81-tech-icon");
+    icon.classList.add("hero-tech-icon");
     icon.innerHTML = paths;
-    badge.append(icon);
+    iconShell.append(icon);
 
     const textWrap = document.createElement("span");
-    textWrap.className = "hero-v81-tech-copy";
+    textWrap.className = "hero-tech-copy";
 
     const mainText = document.createElement("strong");
     mainText.textContent = title;
@@ -124,9 +123,9 @@
     subText.textContent = subtitle;
 
     textWrap.append(mainText, subText);
-    item.append(badge, textWrap);
-    strip.append(item);
+    item.append(iconShell, textWrap);
+    rail.append(item);
   });
 
-  actions.before(strip);
+  actions.before(rail);
 })();
