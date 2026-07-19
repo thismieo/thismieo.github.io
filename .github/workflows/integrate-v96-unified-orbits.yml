@@ -1,0 +1,42 @@
+name: Integrate V96 unified orbit motion
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-v96:
+    if: github.event.pull_request.head.ref == 'fix/v96-unified-orbit-motion'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out V96 branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/v96-unified-orbit-motion
+          fetch-depth: 0
+
+      - name: Apply and validate V96 once
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f scripts/apply_v96_unified_orbits.py ]; then
+            echo "V96 integration already applied."
+            exit 0
+          fi
+
+          python3 scripts/apply_v96_unified_orbits.py
+          python3 scripts/validate_site.py
+
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
+
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Unify mobile and desktop orbit motion"
+          git push origin HEAD:fix/v96-unified-orbit-motion
