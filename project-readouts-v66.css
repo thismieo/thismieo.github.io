@@ -1,341 +1,357 @@
-/* Portfolio V101 — centered project telemetry, modern fraud intelligence, and seamless traffic motion. */
+/* Portfolio V102 — professional project telemetry and continuous visual motion. */
 
-/* --------------------------------------------------------------------------
-   TELEMETRY READOUTS
-   Keep the three top-right measurements readable without boxed icon frames.
-   The transparent rect remains only as dependable SVG geometry for Safari.
-   -------------------------------------------------------------------------- */
+/* ========================================================================== 
+   TELEMETRY
+   ========================================================================== */
 
-#projects .project-v54-readout {
+#projects .project-v102-readout {
   pointer-events: none;
 }
 
-#projects .project-v54-readout .project-v54-chip {
-  fill: transparent !important;
+#projects .project-v102-readout .project-v54-chip {
+  fill: rgba(3, 10, 24, 0.24) !important;
   stroke: none !important;
 }
 
-#projects .project-v101-readout-glow {
-  fill: rgba(103, 232, 249, 0.055);
+#projects .project-v102-readout-glow {
+  fill: rgba(103, 232, 249, 0.07);
   stroke: none;
-  filter: blur(0.2px);
 }
 
-#projects .project-v54-readout-health .project-v101-readout-glow {
-  fill: rgba(110, 231, 183, 0.08);
+#projects .project-v102-readout-health .project-v102-readout-glow {
+  fill: rgba(110, 231, 183, 0.11);
 }
 
-#projects .project-v54-readout-fraud .project-v101-readout-glow {
-  fill: rgba(240, 168, 191, 0.08);
+#projects .project-v102-readout-fraud .project-v102-readout-glow {
+  fill: rgba(240, 168, 191, 0.105);
 }
 
-#projects .project-v54-readout-traffic .project-v101-readout-glow {
-  fill: rgba(167, 139, 250, 0.075);
+#projects .project-v102-readout-traffic .project-v102-readout-glow {
+  fill: rgba(167, 139, 250, 0.11);
 }
 
-#projects .project-v101-readout-icon {
+#projects .project-v102-readout-divider {
+  stroke: rgba(188, 218, 242, 0.17);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+
+#projects .project-v102-readout-icon {
   fill: rgba(103, 232, 249, 0.08);
-  stroke: #8be7f1;
-  stroke-width: 1.15;
+  stroke: #a8eff7;
+  stroke-width: 1.35;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 4px rgba(103, 232, 249, 0.28));
+  filter: drop-shadow(0 0 5px rgba(103, 232, 249, 0.3));
 }
 
-#projects .project-v101-heart-icon {
-  fill: rgba(110, 231, 183, 0.1);
-  stroke: #6ee7b7;
-  filter: drop-shadow(0 0 4px rgba(110, 231, 183, 0.28));
+#projects .project-v102-readout-icon-health {
+  fill: rgba(110, 231, 183, 0.12);
+  stroke: #7ce8ba;
+  filter: drop-shadow(0 0 5px rgba(110, 231, 183, 0.32));
 }
 
-#projects .project-v101-shield-icon,
-#projects .project-v101-readout-icon-mark {
+#projects .project-v102-readout-icon-fraud {
+  fill: rgba(240, 168, 191, 0.06);
+  stroke: #f5b7c9;
+  filter: drop-shadow(0 0 5px rgba(240, 168, 191, 0.3));
+}
+
+#projects .project-v102-readout-icon-traffic {
   fill: none;
-  stroke: #f0a8bf;
-  filter: drop-shadow(0 0 4px rgba(240, 168, 191, 0.25));
+  stroke: #b9adff;
+  filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.32));
 }
 
-#projects .project-v101-readout-icon-mark {
-  stroke-width: 1.15;
+#projects .project-v102-icon-mark {
+  fill: none;
+  stroke: #ffe7ef;
+  stroke-width: 1.25;
   stroke-linecap: round;
 }
 
-#projects .project-v101-flow-icon {
-  fill: none;
-  stroke: #b7a8ff;
-  filter: drop-shadow(0 0 4px rgba(167, 139, 250, 0.28));
-}
-
-#projects .project-v101-readout-label,
-#projects .project-v101-readout-value {
+#projects .project-v102-readout-label,
+#projects .project-v102-readout-value,
+#projects .project-v102-readout-state {
   text-anchor: middle;
-  dominant-baseline: auto;
   paint-order: stroke fill;
-  stroke: rgba(3, 9, 22, 0.7);
+  stroke: rgba(3, 9, 22, 0.74);
 }
 
-#projects .project-v101-readout-label {
-  fill: rgba(198, 218, 237, 0.74);
-  font-size: 5.2px;
-  letter-spacing: 0.105em;
-  stroke-width: 0.32px;
+#projects .project-v102-readout-label {
+  fill: rgba(217, 232, 247, 0.82);
+  font-size: 7.1px;
+  font-weight: 700;
+  letter-spacing: 0.115em;
+  stroke-width: 0.3px;
 }
 
-#projects .project-v101-readout-value {
-  fill: #effcff;
-  font-size: 7.9px;
+#projects .project-v102-readout-value {
+  fill: #f5fdff;
+  font-size: 11.2px;
+  font-weight: 800;
   letter-spacing: 0.025em;
-  stroke-width: 0.4px;
+  stroke-width: 0.38px;
 }
 
-#projects .project-v101-readout-value.is-alert {
-  fill: #ffd7e3;
+#projects .project-v102-readout-state {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 6.4px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  stroke-width: 0.28px;
 }
 
-#projects .project-v101-readout-value.is-clear {
-  fill: #dcd8ff;
+#projects .project-v102-readout-state.is-health {
+  fill: #88ebbf;
 }
 
-/* --------------------------------------------------------------------------
-   FRAUD DETECTION — RISK INTELLIGENCE SCANNER
-   A restrained shield core, orbital signal map, anomaly pulse, and flowing
-   transaction packets replace the older generic node diagram.
-   -------------------------------------------------------------------------- */
+#projects .project-v102-readout-state.is-fraud {
+  fill: #ffb9cd;
+}
 
-#projects .project-v101-fraud .project-v101-fraud-orbits circle {
+#projects .project-v102-readout-state.is-traffic {
+  fill: #bcb3ff;
+}
+
+/* ========================================================================== 
+   FRAUD DETECTION — RISK INTELLIGENCE
+   ========================================================================== */
+
+#projects .project-v102-fraud-orbits circle {
   fill: none;
-  stroke: rgba(147, 197, 253, 0.115);
+  stroke: rgba(147, 197, 253, 0.12);
   stroke-width: 1;
   stroke-dasharray: 3 7;
 }
 
-#projects .project-v101-fraud-links path {
+#projects .project-v102-fraud-links path {
   fill: none;
-  stroke: rgba(147, 197, 253, 0.28);
-  stroke-width: 1.15;
+  stroke: rgba(147, 197, 253, 0.3);
+  stroke-width: 1.2;
   stroke-dasharray: 4 7;
   stroke-linecap: round;
 }
 
-#projects .project-v101-fraud-links path.is-alert {
-  stroke: rgba(240, 168, 191, 0.54);
+#projects .project-v102-fraud-links path.is-alert {
+  stroke: rgba(240, 168, 191, 0.58);
 }
 
-#projects.v6-active .project-v101-fraud-links path {
-  animation: projectV101FraudSignal 7.2s linear infinite;
+#projects.v6-active .project-v102-fraud-links path {
+  animation: projectV102FraudSignal 8.2s linear infinite;
 }
 
-#projects .project-v101-fraud-scan {
+#projects .project-v102-fraud-scan {
   transform-box: view-box;
-  transform-origin: 170px 60px;
+  transform-origin: 164px 60px;
 }
 
-#projects .project-v101-fraud-scan path {
-  fill: url(#project-v101-fraud-scan-gradient);
+#projects .project-v102-fraud-scan path {
+  fill: url(#project-v102-fraud-scan-gradient);
   opacity: 0.78;
 }
 
-#projects .project-v101-fraud-scan line {
-  stroke: rgba(164, 214, 255, 0.42);
-  stroke-width: 1;
+#projects .project-v102-fraud-scan line {
+  stroke: rgba(174, 221, 255, 0.46);
+  stroke-width: 1.1;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 4px rgba(147, 197, 253, 0.34));
+  filter: drop-shadow(0 0 4px rgba(147, 197, 253, 0.36));
 }
 
-#projects.v6-active .project-v101-fraud-scan {
-  animation: projectV101FraudScan 8.4s linear infinite;
+#projects.v6-active .project-v102-fraud-scan {
+  animation: projectV102FraudScan 9.6s linear infinite;
 }
 
-#projects .project-v101-fraud-core-halo {
+#projects .project-v102-fraud-core-halo {
   fill: none;
-  stroke: rgba(167, 139, 250, 0.18);
+  stroke: rgba(167, 139, 250, 0.22);
   stroke-width: 1;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-#projects.v6-active .project-v101-fraud-core-halo {
-  animation: projectV101FraudCoreHalo 3.8s ease-out infinite;
+#projects.v6-active .project-v102-fraud-core-halo {
+  animation: projectV102FraudCoreHalo 4.4s ease-out infinite;
 }
 
-#projects .project-v101-fraud-core {
-  fill: url(#project-v101-fraud-core-gradient);
-  stroke: rgba(203, 220, 255, 0.3);
+#projects .project-v102-fraud-core {
+  fill: url(#project-v102-fraud-core-gradient);
+  stroke: rgba(219, 231, 255, 0.34);
   stroke-width: 1;
   filter: url(#project-v54-fraud-glow-filter);
 }
 
-#projects .project-v101-fraud-shield,
-#projects .project-v101-fraud-shield-mark {
-  fill: rgba(7, 16, 36, 0.48);
-  stroke: #e7eeff;
-  stroke-width: 1.2;
+#projects .project-v102-fraud-shield {
+  fill: rgba(7, 16, 36, 0.5);
+  stroke: #eef4ff;
+  stroke-width: 1.25;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-#projects .project-v101-fraud-shield-mark {
+#projects .project-v102-fraud-shield-mark {
   fill: none;
-  stroke: #ffd2df;
+  stroke: #ffd5e2;
+  stroke-width: 1.25;
+  stroke-linecap: round;
 }
 
-#projects .project-v101-fraud-node {
-  fill: #a9d4ff;
-  stroke: rgba(233, 247, 255, 0.62);
+#projects .project-v102-fraud-node {
+  fill: #b2d9ff;
+  stroke: rgba(240, 249, 255, 0.68);
   stroke-width: 1;
   filter: url(#project-v54-fraud-glow-filter);
   transform-box: fill-box;
   transform-origin: center;
 }
 
-#projects.v6-active .project-v101-fraud-node {
-  animation: projectV101FraudNode 3.4s ease-in-out infinite;
+#projects.v6-active .project-v102-fraud-node {
+  animation: projectV102FraudNode 3.8s ease-in-out infinite;
 }
 
-#projects .project-v101-fraud-node.is-alert {
+#projects .project-v102-fraud-node.is-alert {
   fill: #f0a8bf;
-  stroke: #fff0f5;
+  stroke: #fff2f6;
 }
 
-#projects.v6-active .project-v101-fraud-node.is-alert {
-  animation: projectV101FraudAlert 1.9s ease-in-out infinite;
+#projects.v6-active .project-v102-fraud-node.is-alert {
+  animation: projectV102FraudAlert 2.2s ease-in-out infinite;
 }
 
-#projects .project-v101-fraud-alert-halo {
+#projects .project-v102-fraud-alert-halo {
   fill: none;
-  stroke: rgba(240, 168, 191, 0.52);
+  stroke: rgba(240, 168, 191, 0.56);
   stroke-width: 1;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-#projects.v6-active .project-v101-fraud-alert-halo {
-  animation: projectV101FraudAlertHalo 2.7s ease-out infinite;
+#projects.v6-active .project-v102-fraud-alert-halo {
+  animation: projectV102FraudAlertHalo 3.1s ease-out infinite;
 }
 
-#projects .project-v101-fraud-packet {
-  fill: #eefaff;
+#projects .project-v102-fraud-packet {
+  fill: #f2fbff;
   stroke: #93c5fd;
-  stroke-width: 1.2;
+  stroke-width: 1.3;
   filter: url(#project-v54-fraud-glow-filter);
 }
 
-#projects .project-v101-fraud-packet.is-alert {
+#projects .project-v102-fraud-packet.is-alert {
   fill: #fff1f5;
   stroke: #f0a8bf;
 }
 
-/* --------------------------------------------------------------------------
-   TRAFFIC — CLOSED OFFSCREEN ROUTES
-   Vehicles now travel around closed paths whose return segments remain below
-   the viewBox. The loop never teleports from the road end back to the start.
-   -------------------------------------------------------------------------- */
+/* ========================================================================== 
+   TRAFFIC — OPEN OFFSCREEN ROUTES
+   The motion paths end beyond both sides of the viewBox. The repeat jump happens
+   while each vehicle is invisible, so no return segment can appear below the road.
+   ========================================================================== */
 
-#projects .project-v101-motion-path {
+#projects .project-v102-motion-path {
   fill: none;
   stroke: none;
 }
 
-#projects .project-v101-vehicle {
+#projects .project-v102-vehicle {
   filter: url(#project-v54-traffic-glow-filter);
 }
 
-#projects .project-v101-vehicle-body {
-  fill: rgba(225, 251, 255, 0.96);
+#projects .project-v102-vehicle-body {
+  fill: rgba(235, 253, 255, 0.98);
   stroke: #67e8f9;
-  stroke-width: 1;
+  stroke-width: 0.95;
 }
 
-#projects .project-v101-vehicle-roof {
-  fill: rgba(103, 232, 249, 0.3);
-  stroke: #a5f3fc;
-  stroke-width: 0.8;
+#projects .project-v102-vehicle-roof {
+  fill: rgba(103, 232, 249, 0.42);
+  stroke: #b8f6fb;
+  stroke-width: 0.75;
   stroke-linejoin: round;
 }
 
-#projects .project-v101-vehicle-wheel {
-  fill: #07101f;
-  stroke: rgba(231, 251, 255, 0.72);
-  stroke-width: 0.6;
+#projects .project-v102-vehicle-window {
+  fill: rgba(6, 22, 38, 0.82);
+  stroke: rgba(220, 251, 255, 0.4);
+  stroke-width: 0.45;
 }
 
-#projects .project-v101-vehicle.is-pink .project-v101-vehicle-body {
-  fill: rgba(255, 238, 246, 0.96);
+#projects .project-v102-vehicle-wheel {
+  fill: #050c18;
+  stroke: rgba(239, 253, 255, 0.78);
+  stroke-width: 0.55;
+}
+
+#projects .project-v102-vehicle-light {
+  fill: #f9ffff;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
+}
+
+#projects .project-v102-vehicle.is-pink .project-v102-vehicle-body {
+  fill: rgba(255, 240, 247, 0.98);
   stroke: #f0a8bf;
 }
 
-#projects .project-v101-vehicle.is-pink .project-v101-vehicle-roof {
-  fill: rgba(240, 168, 191, 0.3);
-  stroke: #ffd4e1;
+#projects .project-v102-vehicle.is-pink .project-v102-vehicle-roof {
+  fill: rgba(240, 168, 191, 0.42);
+  stroke: #ffd7e3;
 }
 
-#projects .project-v101-vehicle.is-secondary {
-  opacity: 0.76;
+#projects .project-v102-vehicle.is-secondary {
+  opacity: 0.74;
 }
 
 #projects.v6-active .project-v54-traffic-road.is-cyan {
-  animation: projectV101TrafficFlow 7.6s linear infinite;
+  animation: projectV102TrafficFlow 9.8s linear infinite;
 }
 
 #projects.v6-active .project-v54-traffic-road.is-pink {
-  animation: projectV101TrafficFlowReverse 8.8s linear infinite;
+  animation: projectV102TrafficFlowReverse 11.4s linear infinite;
 }
 
 #projects.v6-active .project-v54-traffic-zone {
-  animation-duration: 2.6s;
+  animation-duration: 3.2s;
 }
 
 #projects.v6-active .project-v54-flow-bar {
-  animation-duration: 2.7s;
+  animation-duration: 3s;
 }
 
-/* --------------------------------------------------------------------------
-   PHONE SAFE AREAS
-   -------------------------------------------------------------------------- */
+/* ========================================================================== 
+   RESPONSIVE
+   ========================================================================== */
 
-@media (max-width: 720px) {
-  #projects.is-project-stack-v65 .project-v54-svg,
-  #projects.is-project-stack-v65 .project-v54-svg.project-v54-traffic,
-  #projects.is-project-grid-v62 .project-v54-svg,
-  #projects.is-project-grid-v62 .project-v54-svg.project-v54-traffic {
-    inset: 4px auto auto 50% !important;
+@media (max-width: 860px) {
+  #projects .project-visual-v54 {
+    min-height: 184px;
+  }
+
+  #projects .project-v54-svg,
+  #projects .project-v54-svg.project-v54-traffic {
+    inset: 6px auto auto 50% !important;
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
     transform: translate3d(-50%, 0, 0) !important;
   }
 
-  #projects .project-v54-health .project-v54-chip {
-    width: 96px;
+  #projects .project-v102-readout-label {
+    font-size: 7.1px !important;
   }
 
-  #projects .project-v54-fraud .project-v54-chip {
-    width: 84px;
+  #projects .project-v102-readout-value {
+    font-size: 11.2px !important;
   }
 
-  #projects .project-v54-traffic .project-v54-chip {
-    width: 82px;
+  #projects .project-v102-readout-state {
+    font-size: 6.4px !important;
   }
 
-  #projects .project-v101-readout-label {
-    font-size: 5.65px !important;
-    letter-spacing: 0.085em !important;
-  }
-
-  #projects .project-v101-readout-value {
-    font-size: 8.35px !important;
-    letter-spacing: 0.018em !important;
-  }
-
-  #projects .project-v101-fraud-links path {
+  #projects .project-v102-fraud-links path {
     stroke-width: 1.3;
   }
 
-  #projects .project-v101-fraud-scan line {
-    stroke-width: 1.15;
-  }
-
-  #projects .project-v101-vehicle {
+  #projects .project-v102-vehicle {
     filter: none;
   }
 
@@ -348,58 +364,62 @@
 }
 
 @media (max-width: 390px) {
-  #projects .project-v101-readout-label {
-    font-size: 5.35px !important;
+  #projects .project-v102-readout-label {
+    font-size: 6.8px !important;
   }
 
-  #projects .project-v101-readout-value {
-    font-size: 7.75px !important;
+  #projects .project-v102-readout-value {
+    font-size: 10.8px !important;
+  }
+
+  #projects .project-v102-readout-state {
+    font-size: 6.1px !important;
   }
 }
 
-/* --------------------------------------------------------------------------
+/* ========================================================================== 
    MOTION
-   -------------------------------------------------------------------------- */
+   ========================================================================== */
 
-@keyframes projectV101FraudSignal {
-  to { stroke-dashoffset: -66; }
+@keyframes projectV102FraudSignal {
+  to { stroke-dashoffset: -76; }
 }
 
-@keyframes projectV101FraudScan {
+@keyframes projectV102FraudScan {
   to { transform: rotate(360deg); }
 }
 
-@keyframes projectV101FraudCoreHalo {
-  0% { transform: scale(0.78); opacity: 0.62; }
-  76%, 100% { transform: scale(1.75); opacity: 0; }
+@keyframes projectV102FraudCoreHalo {
+  0% { transform: scale(0.78); opacity: 0.66; }
+  78%, 100% { transform: scale(1.8); opacity: 0; }
 }
 
-@keyframes projectV101FraudNode {
-  0%, 100% { opacity: 0.62; transform: scale(0.9); }
+@keyframes projectV102FraudNode {
+  0%, 100% { opacity: 0.66; transform: scale(0.92); }
   50% { opacity: 1; transform: scale(1.08); }
 }
 
-@keyframes projectV101FraudAlert {
-  0%, 100% { opacity: 0.82; transform: scale(0.94); }
+@keyframes projectV102FraudAlert {
+  0%, 100% { opacity: 0.84; transform: scale(0.95); }
   50% { opacity: 1; transform: scale(1.18); }
 }
 
-@keyframes projectV101FraudAlertHalo {
-  0% { transform: scale(0.55); opacity: 0.72; }
-  78%, 100% { transform: scale(2.2); opacity: 0; }
+@keyframes projectV102FraudAlertHalo {
+  0% { transform: scale(0.55); opacity: 0.74; }
+  80%, 100% { transform: scale(2.3); opacity: 0; }
 }
 
-@keyframes projectV101TrafficFlow {
-  to { stroke-dashoffset: -84; }
+@keyframes projectV102TrafficFlow {
+  to { stroke-dashoffset: -96; }
 }
 
-@keyframes projectV101TrafficFlowReverse {
-  to { stroke-dashoffset: 84; }
+@keyframes projectV102TrafficFlowReverse {
+  to { stroke-dashoffset: 96; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #projects .project-v101-fraud *,
-  #projects .project-v101-traffic * {
+  #projects .project-v102-fraud *,
+  #projects .project-v102-traffic * {
     animation: none !important;
   }
 
