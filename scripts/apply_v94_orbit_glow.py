@@ -5,31 +5,31 @@ index_path = ROOT / "index.html"
 validator_path = ROOT / "scripts" / "validate_site.py"
 
 index_text = index_path.read_text(encoding="utf-8")
-replacements = {
-    'data-release="2026.07.19.93"': 'data-release="2026.07.19.94"',
-    'planetary-motion-v93.css?v=20260719.93" data-planetary-motion-v93': 'planetary-motion-v94.css?v=20260719.94" data-planetary-motion-v94',
-    'planetary-motion-v93.js?v=20260719.93" defer': 'planetary-motion-v94.js?v=20260719.94" defer',
-}
-for old, new in replacements.items():
+index_replacements = (
+    ('data-release="2026.07.19.93"', 'data-release="2026.07.19.94"'),
+    ('planetary-motion-v93.css?v=20260719.93" data-planetary-motion-v93', 'planetary-motion-v94.css?v=20260719.94" data-planetary-motion-v94'),
+    ('planetary-motion-v93.js?v=20260719.93" defer', 'planetary-motion-v94.js?v=20260719.94" defer'),
+)
+for old, new in index_replacements:
     if old not in index_text:
         raise SystemExit(f"Missing index token: {old}")
     index_text = index_text.replace(old, new, 1)
 index_path.write_text(index_text, encoding="utf-8")
 
 validator_text = validator_path.read_text(encoding="utf-8")
-validator_replacements = {
-    'planetary-motion-v93.css': 'planetary-motion-v94.css',
-    'planetary-motion-v93.js': 'planetary-motion-v94.js',
-    'data-release="2026.07.19.93"': 'data-release="2026.07.19.94"',
-    'planetary-motion-v93.css?v=20260719.93': 'planetary-motion-v94.css?v=20260719.94',
-    'planetary-motion-v93.js?v=20260719.93': 'planetary-motion-v94.js?v=20260719.94',
-    'heroV93Stars': 'heroV94Stars',
-    'heroV93OrbitDash': 'heroV94OrbitDash',
-    'heroV93PlanetSpin': 'heroV94PlanetSpin',
-    'heroV93PlanetBreath': 'heroV94PlanetBreath',
-    'V93 planetary-motion': 'V94 planetary-motion',
-}
-for old, new in validator_replacements.items():
+validator_replacements = (
+    ('data-release="2026.07.19.93"', 'data-release="2026.07.19.94"'),
+    ('planetary-motion-v93.css?v=20260719.93', 'planetary-motion-v94.css?v=20260719.94'),
+    ('planetary-motion-v93.js?v=20260719.93', 'planetary-motion-v94.js?v=20260719.94'),
+    ('planetary-motion-v93.css', 'planetary-motion-v94.css'),
+    ('planetary-motion-v93.js', 'planetary-motion-v94.js'),
+    ('heroV93Stars', 'heroV94Stars'),
+    ('heroV93OrbitDash', 'heroV94OrbitDash'),
+    ('heroV93PlanetSpin', 'heroV94PlanetSpin'),
+    ('heroV93PlanetBreath', 'heroV94PlanetBreath'),
+    ('V93 planetary-motion', 'V94 planetary-motion'),
+)
+for old, new in validator_replacements:
     if old not in validator_text:
         raise SystemExit(f"Missing validator token: {old}")
     validator_text = validator_text.replace(old, new)
