@@ -304,6 +304,7 @@ def main() -> int:
     exact_once_assets = (
         "hero-interface-v68.css",
         "hero-interface-v68.js",
+        "tech-icons-v69.css",
         "projects-runtime-v68.js",
     )
     for asset in exact_once_assets:
