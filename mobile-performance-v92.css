@@ -1,9 +1,49 @@
-/* Portfolio V98 — mobile Hero width containment and scroll stability. */
+/* Portfolio V99 — definitive Hero alignment, viewport containment, and mobile scroll stability. */
 
-/* The console lives inside the copy column, so the obsolete second grid row must not exist. */
-#home .hero-v33-story {
-  grid-template-areas: "portrait copy" !important;
+/*
+  The portrait was removed from the current Hero markup, but an old two-column
+  grid still reserved a portrait column. That empty column shifted the desktop
+  copy and created an implicit overflow column on phones. The current Hero has
+  one real story area: copy.
+*/
+html,
+body {
+  max-inline-size: 100%;
+  overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+
+html body #home .hero-v33-story {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas: "copy" !important;
   row-gap: 0 !important;
+}
+
+html body #home .hero-v33-copy {
+  grid-area: copy !important;
+  min-width: 0 !important;
+}
+
+/* Desktop: the main Hero and the Journey Started capsules share one shell. */
+@media (min-width: 861px) {
+  html body #home .hero-premium-v33,
+  html body #home .hero-v33-capsules {
+    width: min(1500px, calc(100% - 64px)) !important;
+    max-width: calc(100% - 64px) !important;
+    margin-inline: auto !important;
+  }
+
+  html body #home .hero-v33-story,
+  html body #home .hero-v33-copy {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 @media (max-width: 860px) {
@@ -38,7 +78,7 @@
     transition-property: background-color, border-color !important;
   }
 
-  /* Keep the whole Hero inside the iOS layout viewport. */
+  /* Keep the whole Hero inside the actual phone layout viewport. */
   html body #home.hero.section {
     inline-size: 100%;
     max-inline-size: 100%;
@@ -51,11 +91,21 @@
     }
   }
 
-  html body #home .hero-premium-v33 {
+  html body #home .hero-premium-v33,
+  html body #home .hero-v33-capsules {
+    box-sizing: border-box;
     width: min(calc(100vw - 24px), 720px) !important;
     max-width: calc(100vw - 24px) !important;
     min-width: 0 !important;
     margin-inline: auto !important;
+  }
+
+  html body #home .hero-v33-story {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "copy" !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
 
   html body #home .hero-v33-story,
@@ -71,7 +121,7 @@
     min-width: 0 !important;
   }
 
-  /* The decorative wash was 104% wide and contributed to Safari's horizontal scroll area. */
+  /* Decorative wash must never contribute to Safari's horizontal scroll area. */
   html body #home.is-hero-v68 .hero-v33-copy::before {
     width: 100% !important;
     max-width: 100% !important;
@@ -80,6 +130,7 @@
   html body #home .hero-v33-copy h1,
   html body #home .hero-v33-caption,
   html body #home .hero-v33-summary {
+    box-sizing: border-box;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -94,11 +145,12 @@
   html body #home .hero-v33-actions .button,
   html body #home .hero-v33-links a,
   html body #home .hero-tech-item {
+    box-sizing: border-box;
     min-width: 0 !important;
     max-width: 100%;
   }
 
-  /* V97 SVG motion remains untouched; only its horizontal paint area is clipped. */
+  /* Keep V97 motion, but confine its paint to the visible phone shell. */
   html body #home .hero-v33-planetary {
     contain: layout paint !important;
     overflow: hidden !important;
@@ -107,13 +159,6 @@
 
   html body #home .hero-v33-orbit-svg {
     max-width: 100% !important;
-  }
-
-  html body #home .hero-v33-capsules {
-    width: min(calc(100vw - 24px), 720px) !important;
-    max-width: calc(100vw - 24px) !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
   }
 
   html body #home .hero-v33-capsules article {
