@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.19.77";
+  document.documentElement.dataset.release = "2026.07.19.78";
 
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
@@ -72,7 +72,7 @@
 
   const strip = document.createElement("div");
   strip.className = "hero-v68-tech-strip hero-v73-tech-strip";
-  strip.dataset.techIcons = "v77";
+  strip.dataset.techIcons = "v78";
   strip.dataset.presentation = "official-learning-links";
   strip.dataset.wave = "continuous";
   strip.dataset.mobileBalance = "v76";
@@ -89,11 +89,29 @@
     item.setAttribute("aria-label", `Open the official ${label} learning resource in a new tab`);
     item.title = `Official ${label} learning resource`;
     item.style.setProperty("--hero-v73-order", String(index));
-    item.style.textDecoration = "none";
-    item.style.color = "inherit";
-    item.style.cursor = "pointer";
-    item.style.touchAction = "manipulation";
-    item.style.webkitTapHighlightColor = "transparent";
+
+    const showTapGlow = () => {
+      item.classList.remove("is-activating");
+      void item.offsetWidth;
+      item.classList.add("is-activating");
+      window.setTimeout(() => item.classList.remove("is-activating"), 420);
+    };
+
+    item.addEventListener("pointerdown", showTapGlow, { passive: true });
+
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      showTapGlow();
+
+      const openedWindow = window.open("", "_blank");
+      if (openedWindow) {
+        openedWindow.opener = null;
+        openedWindow.location.href = href;
+      } else {
+        window.location.assign(href);
+      }
+    }, true);
 
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.setAttribute("viewBox", "0 0 24 24");
