@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.68";
+  document.documentElement.dataset.release = "2026.07.19.101";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
   if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.68";
@@ -13,7 +13,7 @@
     readoutStylesheet.dataset.projectReadoutsV66 = "true";
     document.head.append(readoutStylesheet);
   }
-  readoutStylesheet.href = "project-readouts-v66.css?v=20260718.68";
+  readoutStylesheet.href = "project-readouts-v66.css?v=20260719.101";
 
   const projects = document.querySelector("#projects");
   projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
@@ -21,9 +21,9 @@
   /* Keep every top-right SVG readout inside its 360-unit viewBox. The Health
      panel receives extra width because its icon and two text rows need more room. */
   const readoutSpecs = [
-    [".project-v54-health", "96", "translate(252 12)"],
-    [".project-v54-fraud", "84", "translate(266 12)"],
-    [".project-v54-traffic", "82", "translate(268 12)"]
+    [".project-v54-health", "96", "translate(252 8)"],
+    [".project-v54-fraud", "84", "translate(266 8)"],
+    [".project-v54-traffic", "82", "translate(268 8)"]
   ];
 
   const applyProjectReadoutSafeArea = () => {
@@ -48,7 +48,6 @@
       if (!applyProjectReadoutSafeArea()) return;
       readoutObserver.disconnect();
     });
-
     readoutObserver.observe(projects, { childList: true, subtree: true });
     window.setTimeout(() => readoutObserver.disconnect(), 5000);
   }

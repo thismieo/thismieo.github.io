@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.54";
+  document.documentElement.dataset.release = "2026.07.19.101";
 
   const projectSection = document.querySelector("#projects");
   if (!projectSection || projectSection.dataset.projectVisualsV54Ready === "true") return;
@@ -39,11 +39,12 @@
       <circle class="project-v54-health-dot" r="3.4">
         <animateMotion dur="4.1s" repeatCount="indefinite" path="M10 69H42L55 61L69 78L87 42L101 22L113 79L129 69H163L177 63L191 74L210 51L224 69H350" />
       </circle>
-      <g transform="translate(282 12)">
-        <rect class="project-v54-chip" width="65" height="31" rx="8" />
-        <path class="project-v54-heart-icon" d="M13 10C8 5 2 9 4 15c2 5 9 9 9 9s7-4 9-9c2-6-4-10-9-5Z" transform="translate(4 -1) scale(.62)" />
-        <text class="project-v54-label" x="28" y="12">HEART RATE</text>
-        <text class="project-v54-value" x="28" y="23">72 BPM</text>
+      <g class="project-v54-readout project-v54-readout-health" transform="translate(252 8)">
+        <rect class="project-v54-chip" width="96" height="44" rx="10" />
+        <circle class="project-v101-readout-glow" cx="48" cy="12" r="10" />
+        <path class="project-v101-readout-icon project-v101-heart-icon" d="M48 6C44.7 2.9 39.9 5.5 41.2 9.5c1.5 3.9 6.8 7 6.8 7s5.3-3.1 6.8-7C56.1 5.5 51.3 2.9 48 6Z" />
+        <text class="project-v54-label project-v101-readout-label" x="48" y="29">HEART RATE</text>
+        <text class="project-v54-value project-v101-readout-value" x="48" y="40">72 BPM · NORMAL</text>
       </g>
       <text class="project-v54-label" x="235" y="103">SIGNAL QUALITY</text>
       <text class="project-v54-value" x="307" y="103">98%</text>
@@ -52,13 +53,19 @@
   `;
 
   const fraudMarkup = `
-    <svg class="project-v54-svg project-v54-fraud" viewBox="0 0 360 120" role="img" aria-label="Animated financial anomaly network">
+    <svg class="project-v54-svg project-v54-fraud project-v101-fraud" viewBox="0 0 360 120" role="img" aria-label="Animated financial risk intelligence scanner">
       <defs>
-        <linearGradient id="project-v54-radar-gradient" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="rgba(147,197,253,0.26)" />
-          <stop offset="1" stop-color="rgba(147,197,253,0)" />
+        <linearGradient id="project-v101-fraud-core-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#93c5fd" stop-opacity=".34" />
+          <stop offset=".56" stop-color="#8b5cf6" stop-opacity=".18" />
+          <stop offset="1" stop-color="#f0a8bf" stop-opacity=".24" />
         </linearGradient>
-        <filter id="project-v54-fraud-glow-filter" x="-140%" y="-140%" width="380%" height="380%">
+        <linearGradient id="project-v101-fraud-scan-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#93c5fd" stop-opacity=".24" />
+          <stop offset=".62" stop-color="#a78bfa" stop-opacity=".08" />
+          <stop offset="1" stop-color="#f0a8bf" stop-opacity="0" />
+        </linearGradient>
+        <filter id="project-v54-fraud-glow-filter" x="-180%" y="-180%" width="460%" height="460%">
           <feGaussianBlur stdDeviation="2.7" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
@@ -66,47 +73,64 @@
       <g class="project-v54-grid">
         <path d="M0 24H360M0 48H360M0 72H360M0 96H360M45 0V120M90 0V120M135 0V120M180 0V120M225 0V120M270 0V120M315 0V120" />
       </g>
-      <circle class="project-v54-radar-ring" cx="176" cy="60" r="50" />
-      <circle class="project-v54-radar-ring" cx="176" cy="60" r="33" />
-      <circle class="project-v54-radar-ring" cx="176" cy="60" r="17" />
-      <path class="project-v54-radar-sweep" d="M176 60V10A50 50 0 0 1 226 60Z" />
-      <g>
-        <path id="project-v54-fraud-route-a" class="project-v54-fraud-link" d="M30 91L88 31L176 60L242 25L330 68" />
-        <path id="project-v54-fraud-route-b" class="project-v54-fraud-link is-alert" d="M30 91L176 60L330 68" />
-        <path id="project-v54-fraud-route-c" class="project-v54-fraud-link" d="M88 31L242 25" />
-        <path id="project-v54-fraud-route-d" class="project-v54-fraud-link" d="M88 31L129 94L176 60" />
+
+      <g class="project-v101-fraud-orbits">
+        <circle cx="170" cy="60" r="47" />
+        <circle cx="170" cy="60" r="31" />
+        <circle cx="170" cy="60" r="18" />
       </g>
-      <circle class="project-v54-fraud-halo" cx="176" cy="60" r="8" />
-      <circle class="project-v54-fraud-node" cx="30" cy="91" r="5.4" />
-      <circle class="project-v54-fraud-node" cx="88" cy="31" r="5.7" />
-      <circle class="project-v54-fraud-node" cx="129" cy="94" r="5" />
-      <circle class="project-v54-fraud-node is-alert" cx="176" cy="60" r="8" />
-      <circle class="project-v54-fraud-node" cx="242" cy="25" r="5.8" />
-      <circle class="project-v54-fraud-node" cx="330" cy="68" r="6" />
-      <circle class="project-v54-packet" r="2.8">
-        <animateMotion dur="3.8s" repeatCount="indefinite"><mpath href="#project-v54-fraud-route-a" /></animateMotion>
-      </circle>
-      <circle class="project-v54-packet is-alert" r="3">
-        <animateMotion dur="2.9s" begin="-1.1s" repeatCount="indefinite"><mpath href="#project-v54-fraud-route-b" /></animateMotion>
-      </circle>
-      <circle class="project-v54-packet" r="2.5">
-        <animateMotion dur="4.6s" begin="-2.2s" repeatCount="indefinite"><mpath href="#project-v54-fraud-route-c" /></animateMotion>
-      </circle>
-      <g transform="translate(274 12)">
-        <rect class="project-v54-chip" width="73" height="31" rx="8" />
-        <text class="project-v54-label" x="10" y="12">RISK SCORE</text>
-        <text class="project-v54-value" x="10" y="24">0.84 ALERT</text>
+
+      <g class="project-v101-fraud-links">
+        <path id="project-v101-fraud-route-a" d="M39 83L94 29L170 60L232 27L318 70" />
+        <path id="project-v101-fraud-route-b" class="is-alert" d="M39 83L116 94L170 60L232 27" />
+        <path id="project-v101-fraud-route-c" d="M94 29L170 60L318 70" />
       </g>
-      <text class="project-v54-label" x="232" y="104">TRANSACTIONS</text>
-      <text class="project-v54-value" x="310" y="104">2.4K</text>
+
+      <g class="project-v101-fraud-scan">
+        <path d="M170 60V13A47 47 0 0 1 213 41Z" />
+        <line x1="170" y1="60" x2="170" y2="13" />
+      </g>
+
+      <circle class="project-v101-fraud-core-halo" cx="170" cy="60" r="19" />
+      <circle class="project-v101-fraud-core" cx="170" cy="60" r="15" />
+      <path class="project-v101-fraud-shield" d="M170 47l10 4v7.5c0 6.4-4.1 10.8-10 14-5.9-3.2-10-7.6-10-14V51l10-4Z" />
+      <path class="project-v101-fraud-shield-mark" d="M170 53.5v7.4M170 65.1h.01" />
+
+      <circle class="project-v101-fraud-node" cx="39" cy="83" r="4.6" />
+      <circle class="project-v101-fraud-node" cx="94" cy="29" r="5.2" />
+      <circle class="project-v101-fraud-node" cx="116" cy="94" r="4.4" />
+      <circle class="project-v101-fraud-node is-alert" cx="232" cy="27" r="6.2" />
+      <circle class="project-v101-fraud-node" cx="318" cy="70" r="5.2" />
+      <circle class="project-v101-fraud-alert-halo" cx="232" cy="27" r="8" />
+
+      <circle class="project-v101-fraud-packet" r="2.7">
+        <animateMotion dur="5.8s" calcMode="linear" repeatCount="indefinite"><mpath href="#project-v101-fraud-route-a" /></animateMotion>
+      </circle>
+      <circle class="project-v101-fraud-packet is-alert" r="3">
+        <animateMotion dur="4.7s" calcMode="linear" begin="-1.7s" repeatCount="indefinite"><mpath href="#project-v101-fraud-route-b" /></animateMotion>
+      </circle>
+      <circle class="project-v101-fraud-packet" r="2.5">
+        <animateMotion dur="6.6s" calcMode="linear" begin="-3.2s" repeatCount="indefinite"><mpath href="#project-v101-fraud-route-c" /></animateMotion>
+      </circle>
+
+      <g class="project-v54-readout project-v54-readout-fraud" transform="translate(266 8)">
+        <rect class="project-v54-chip" width="84" height="44" rx="10" />
+        <circle class="project-v101-readout-glow" cx="42" cy="12" r="10" />
+        <path class="project-v101-readout-icon project-v101-shield-icon" d="M42 4.4l7 3v5.2c0 4.8-2.9 8.1-7 10.5-4.1-2.4-7-5.7-7-10.5V7.4l7-3Z" />
+        <path class="project-v101-readout-icon-mark" d="M42 8.4v5.3M42 17h.01" />
+        <text class="project-v54-label project-v101-readout-label" x="42" y="29">RISK SCORE</text>
+        <text class="project-v54-value project-v101-readout-value is-alert" x="42" y="40">0.84 · ALERT</text>
+      </g>
+      <text class="project-v54-label" x="230" y="104">TRANSACTIONS</text>
+      <text class="project-v54-value" x="309" y="104">2.4K</text>
     </svg>
-    <div class="visual-badge project-v54-badge"><span>ANOMALY RADAR</span><b>SECURITY / 02</b></div>
+    <div class="visual-badge project-v54-badge"><span>RISK INTELLIGENCE</span><b>SECURITY / 02</b></div>
   `;
 
   const trafficMarkup = `
-    <svg class="project-v54-svg project-v54-traffic" viewBox="0 0 360 120" role="img" aria-label="Animated smart traffic flow forecast">
+    <svg class="project-v54-svg project-v54-traffic project-v101-traffic" viewBox="0 0 360 120" role="img" aria-label="Animated smart traffic flow forecast">
       <defs>
-        <filter id="project-v54-traffic-glow-filter" x="-140%" y="-140%" width="380%" height="380%">
+        <filter id="project-v54-traffic-glow-filter" x="-160%" y="-160%" width="420%" height="420%">
           <feGaussianBlur stdDeviation="2.2" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
@@ -118,23 +142,50 @@
       <path d="M10 102L70 72L126 102L184 76L247 108L346 80" fill="none" stroke="rgba(103,232,249,.07)" />
       <path class="project-v54-traffic-road-shadow" d="M-12 88C63 26 124 25 184 62S282 111 374 27" />
       <path class="project-v54-traffic-road-shadow" d="M-12 108C70 47 126 43 185 80S282 128 374 47" />
-      <path id="project-v54-traffic-route-a" class="project-v54-traffic-road is-cyan" d="M-12 88C63 26 124 25 184 62S282 111 374 27" />
-      <path id="project-v54-traffic-route-b" class="project-v54-traffic-road is-pink" d="M-12 108C70 47 126 43 185 80S282 128 374 47" />
+      <path class="project-v54-traffic-road is-cyan" d="M-12 88C63 26 124 25 184 62S282 111 374 27" />
+      <path class="project-v54-traffic-road is-pink" d="M-12 108C70 47 126 43 185 80S282 128 374 47" />
+
+      <path id="project-v101-traffic-loop-a" class="project-v101-motion-path" d="M-28 88C58 22 124 23 184 62S286 114 390 24L420 148H-70Z" />
+      <path id="project-v101-traffic-loop-b" class="project-v101-motion-path" d="M-28 108C66 42 128 42 185 80S286 132 390 44L420 150H-70Z" />
+
       <circle class="project-v54-traffic-zone" cx="126" cy="38" r="9" />
       <circle class="project-v54-traffic-zone" cx="280" cy="82" r="8" style="animation-delay:-.65s" />
-      <circle class="project-v54-car" r="3.2">
-        <animateMotion dur="4.3s" repeatCount="indefinite"><mpath href="#project-v54-traffic-route-a" /></animateMotion>
-      </circle>
-      <circle class="project-v54-car" r="2.8">
-        <animateMotion dur="5.1s" begin="-2.4s" repeatCount="indefinite"><mpath href="#project-v54-traffic-route-a" /></animateMotion>
-      </circle>
-      <circle class="project-v54-car is-pink" r="3.1">
-        <animateMotion dur="4.8s" begin="-1.2s" repeatCount="indefinite"><mpath href="#project-v54-traffic-route-b" /></animateMotion>
-      </circle>
-      <g transform="translate(280 12)">
-        <rect class="project-v54-chip" width="67" height="31" rx="8" />
-        <text class="project-v54-label" x="10" y="12">FLOW INDEX</text>
-        <text class="project-v54-value" x="10" y="24">78% CLEAR</text>
+
+      <g class="project-v101-vehicle is-cyan">
+        <rect class="project-v101-vehicle-body" x="-7" y="-3.5" width="14" height="7" rx="2.3" />
+        <path class="project-v101-vehicle-roof" d="M -3.8 -3.5 L -1.7 -6 H 3.3 L 5.6 -3.5 Z" />
+        <circle class="project-v101-vehicle-wheel" cx="-4.1" cy="4" r="1.35" />
+        <circle class="project-v101-vehicle-wheel" cx="4.1" cy="4" r="1.35" />
+        <animateMotion dur="11.2s" calcMode="linear" repeatCount="indefinite" rotate="auto"><mpath href="#project-v101-traffic-loop-a" /></animateMotion>
+      </g>
+      <g class="project-v101-vehicle is-cyan is-secondary">
+        <rect class="project-v101-vehicle-body" x="-6" y="-3" width="12" height="6" rx="2" />
+        <path class="project-v101-vehicle-roof" d="M -3.2 -3 L -1.3 -5.1 H 2.9 L 4.8 -3 Z" />
+        <circle class="project-v101-vehicle-wheel" cx="-3.5" cy="3.4" r="1.15" />
+        <circle class="project-v101-vehicle-wheel" cx="3.5" cy="3.4" r="1.15" />
+        <animateMotion dur="11.2s" calcMode="linear" begin="-5.6s" repeatCount="indefinite" rotate="auto"><mpath href="#project-v101-traffic-loop-a" /></animateMotion>
+      </g>
+      <g class="project-v101-vehicle is-pink">
+        <rect class="project-v101-vehicle-body" x="-7" y="-3.5" width="14" height="7" rx="2.3" />
+        <path class="project-v101-vehicle-roof" d="M -3.8 -3.5 L -1.7 -6 H 3.3 L 5.6 -3.5 Z" />
+        <circle class="project-v101-vehicle-wheel" cx="-4.1" cy="4" r="1.35" />
+        <circle class="project-v101-vehicle-wheel" cx="4.1" cy="4" r="1.35" />
+        <animateMotion dur="12.6s" calcMode="linear" begin="-2.1s" repeatCount="indefinite" rotate="auto"><mpath href="#project-v101-traffic-loop-b" /></animateMotion>
+      </g>
+      <g class="project-v101-vehicle is-pink is-secondary">
+        <rect class="project-v101-vehicle-body" x="-6" y="-3" width="12" height="6" rx="2" />
+        <path class="project-v101-vehicle-roof" d="M -3.2 -3 L -1.3 -5.1 H 2.9 L 4.8 -3 Z" />
+        <circle class="project-v101-vehicle-wheel" cx="-3.5" cy="3.4" r="1.15" />
+        <circle class="project-v101-vehicle-wheel" cx="3.5" cy="3.4" r="1.15" />
+        <animateMotion dur="12.6s" calcMode="linear" begin="-8.4s" repeatCount="indefinite" rotate="auto"><mpath href="#project-v101-traffic-loop-b" /></animateMotion>
+      </g>
+
+      <g class="project-v54-readout project-v54-readout-traffic" transform="translate(268 8)">
+        <rect class="project-v54-chip" width="82" height="44" rx="10" />
+        <circle class="project-v101-readout-glow" cx="41" cy="12" r="10" />
+        <path class="project-v101-readout-icon project-v101-flow-icon" d="M33 8h8c3.2 0 5.2-1.4 8-4M33 16h8c3.2 0 5.2 1.4 8 4M46 2l3 2-3 2M46 18l3 2-3 2" />
+        <text class="project-v54-label project-v101-readout-label" x="41" y="29">FLOW INDEX</text>
+        <text class="project-v54-value project-v101-readout-value is-clear" x="41" y="40">78% · CLEAR</text>
       </g>
       <g transform="translate(231 91)">
         <rect class="project-v54-flow-bar" x="0" y="7" width="7" height="13" rx="2" />
@@ -143,7 +194,7 @@
         <rect class="project-v54-flow-bar" x="33" y="0" width="7" height="20" rx="2" />
       </g>
     </svg>
-    <div class="visual-badge project-v54-badge"><span>LIVE FLOW MODEL</span><b>SMART CITY / 03</b></div>
+    <div class="visual-badge project-v54-badge"><span>CONTINUOUS FLOW</span><b>SMART CITY / 03</b></div>
   `;
 
   const scenes = [

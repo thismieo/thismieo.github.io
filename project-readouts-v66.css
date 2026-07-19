@@ -1,8 +1,299 @@
-/* Portfolio V67 — phone project readout safe areas with an expanded heart-rate panel. */
+/* Portfolio V101 — centered project telemetry, modern fraud intelligence, and seamless traffic motion. */
+
+/* --------------------------------------------------------------------------
+   TELEMETRY READOUTS
+   Keep the three top-right measurements readable without boxed icon frames.
+   The transparent rect remains only as dependable SVG geometry for Safari.
+   -------------------------------------------------------------------------- */
+
+#projects .project-v54-readout {
+  pointer-events: none;
+}
+
+#projects .project-v54-readout .project-v54-chip {
+  fill: transparent !important;
+  stroke: none !important;
+}
+
+#projects .project-v101-readout-glow {
+  fill: rgba(103, 232, 249, 0.055);
+  stroke: none;
+  filter: blur(0.2px);
+}
+
+#projects .project-v54-readout-health .project-v101-readout-glow {
+  fill: rgba(110, 231, 183, 0.08);
+}
+
+#projects .project-v54-readout-fraud .project-v101-readout-glow {
+  fill: rgba(240, 168, 191, 0.08);
+}
+
+#projects .project-v54-readout-traffic .project-v101-readout-glow {
+  fill: rgba(167, 139, 250, 0.075);
+}
+
+#projects .project-v101-readout-icon {
+  fill: rgba(103, 232, 249, 0.08);
+  stroke: #8be7f1;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(103, 232, 249, 0.28));
+}
+
+#projects .project-v101-heart-icon {
+  fill: rgba(110, 231, 183, 0.1);
+  stroke: #6ee7b7;
+  filter: drop-shadow(0 0 4px rgba(110, 231, 183, 0.28));
+}
+
+#projects .project-v101-shield-icon,
+#projects .project-v101-readout-icon-mark {
+  fill: none;
+  stroke: #f0a8bf;
+  filter: drop-shadow(0 0 4px rgba(240, 168, 191, 0.25));
+}
+
+#projects .project-v101-readout-icon-mark {
+  stroke-width: 1.15;
+  stroke-linecap: round;
+}
+
+#projects .project-v101-flow-icon {
+  fill: none;
+  stroke: #b7a8ff;
+  filter: drop-shadow(0 0 4px rgba(167, 139, 250, 0.28));
+}
+
+#projects .project-v101-readout-label,
+#projects .project-v101-readout-value {
+  text-anchor: middle;
+  dominant-baseline: auto;
+  paint-order: stroke fill;
+  stroke: rgba(3, 9, 22, 0.7);
+}
+
+#projects .project-v101-readout-label {
+  fill: rgba(198, 218, 237, 0.74);
+  font-size: 5.2px;
+  letter-spacing: 0.105em;
+  stroke-width: 0.32px;
+}
+
+#projects .project-v101-readout-value {
+  fill: #effcff;
+  font-size: 7.9px;
+  letter-spacing: 0.025em;
+  stroke-width: 0.4px;
+}
+
+#projects .project-v101-readout-value.is-alert {
+  fill: #ffd7e3;
+}
+
+#projects .project-v101-readout-value.is-clear {
+  fill: #dcd8ff;
+}
+
+/* --------------------------------------------------------------------------
+   FRAUD DETECTION — RISK INTELLIGENCE SCANNER
+   A restrained shield core, orbital signal map, anomaly pulse, and flowing
+   transaction packets replace the older generic node diagram.
+   -------------------------------------------------------------------------- */
+
+#projects .project-v101-fraud .project-v101-fraud-orbits circle {
+  fill: none;
+  stroke: rgba(147, 197, 253, 0.115);
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
+}
+
+#projects .project-v101-fraud-links path {
+  fill: none;
+  stroke: rgba(147, 197, 253, 0.28);
+  stroke-width: 1.15;
+  stroke-dasharray: 4 7;
+  stroke-linecap: round;
+}
+
+#projects .project-v101-fraud-links path.is-alert {
+  stroke: rgba(240, 168, 191, 0.54);
+}
+
+#projects.v6-active .project-v101-fraud-links path {
+  animation: projectV101FraudSignal 7.2s linear infinite;
+}
+
+#projects .project-v101-fraud-scan {
+  transform-box: view-box;
+  transform-origin: 170px 60px;
+}
+
+#projects .project-v101-fraud-scan path {
+  fill: url(#project-v101-fraud-scan-gradient);
+  opacity: 0.78;
+}
+
+#projects .project-v101-fraud-scan line {
+  stroke: rgba(164, 214, 255, 0.42);
+  stroke-width: 1;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(147, 197, 253, 0.34));
+}
+
+#projects.v6-active .project-v101-fraud-scan {
+  animation: projectV101FraudScan 8.4s linear infinite;
+}
+
+#projects .project-v101-fraud-core-halo {
+  fill: none;
+  stroke: rgba(167, 139, 250, 0.18);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#projects.v6-active .project-v101-fraud-core-halo {
+  animation: projectV101FraudCoreHalo 3.8s ease-out infinite;
+}
+
+#projects .project-v101-fraud-core {
+  fill: url(#project-v101-fraud-core-gradient);
+  stroke: rgba(203, 220, 255, 0.3);
+  stroke-width: 1;
+  filter: url(#project-v54-fraud-glow-filter);
+}
+
+#projects .project-v101-fraud-shield,
+#projects .project-v101-fraud-shield-mark {
+  fill: rgba(7, 16, 36, 0.48);
+  stroke: #e7eeff;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#projects .project-v101-fraud-shield-mark {
+  fill: none;
+  stroke: #ffd2df;
+}
+
+#projects .project-v101-fraud-node {
+  fill: #a9d4ff;
+  stroke: rgba(233, 247, 255, 0.62);
+  stroke-width: 1;
+  filter: url(#project-v54-fraud-glow-filter);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#projects.v6-active .project-v101-fraud-node {
+  animation: projectV101FraudNode 3.4s ease-in-out infinite;
+}
+
+#projects .project-v101-fraud-node.is-alert {
+  fill: #f0a8bf;
+  stroke: #fff0f5;
+}
+
+#projects.v6-active .project-v101-fraud-node.is-alert {
+  animation: projectV101FraudAlert 1.9s ease-in-out infinite;
+}
+
+#projects .project-v101-fraud-alert-halo {
+  fill: none;
+  stroke: rgba(240, 168, 191, 0.52);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#projects.v6-active .project-v101-fraud-alert-halo {
+  animation: projectV101FraudAlertHalo 2.7s ease-out infinite;
+}
+
+#projects .project-v101-fraud-packet {
+  fill: #eefaff;
+  stroke: #93c5fd;
+  stroke-width: 1.2;
+  filter: url(#project-v54-fraud-glow-filter);
+}
+
+#projects .project-v101-fraud-packet.is-alert {
+  fill: #fff1f5;
+  stroke: #f0a8bf;
+}
+
+/* --------------------------------------------------------------------------
+   TRAFFIC — CLOSED OFFSCREEN ROUTES
+   Vehicles now travel around closed paths whose return segments remain below
+   the viewBox. The loop never teleports from the road end back to the start.
+   -------------------------------------------------------------------------- */
+
+#projects .project-v101-motion-path {
+  fill: none;
+  stroke: none;
+}
+
+#projects .project-v101-vehicle {
+  filter: url(#project-v54-traffic-glow-filter);
+}
+
+#projects .project-v101-vehicle-body {
+  fill: rgba(225, 251, 255, 0.96);
+  stroke: #67e8f9;
+  stroke-width: 1;
+}
+
+#projects .project-v101-vehicle-roof {
+  fill: rgba(103, 232, 249, 0.3);
+  stroke: #a5f3fc;
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+}
+
+#projects .project-v101-vehicle-wheel {
+  fill: #07101f;
+  stroke: rgba(231, 251, 255, 0.72);
+  stroke-width: 0.6;
+}
+
+#projects .project-v101-vehicle.is-pink .project-v101-vehicle-body {
+  fill: rgba(255, 238, 246, 0.96);
+  stroke: #f0a8bf;
+}
+
+#projects .project-v101-vehicle.is-pink .project-v101-vehicle-roof {
+  fill: rgba(240, 168, 191, 0.3);
+  stroke: #ffd4e1;
+}
+
+#projects .project-v101-vehicle.is-secondary {
+  opacity: 0.76;
+}
+
+#projects.v6-active .project-v54-traffic-road.is-cyan {
+  animation: projectV101TrafficFlow 7.6s linear infinite;
+}
+
+#projects.v6-active .project-v54-traffic-road.is-pink {
+  animation: projectV101TrafficFlowReverse 8.8s linear infinite;
+}
+
+#projects.v6-active .project-v54-traffic-zone {
+  animation-duration: 2.6s;
+}
+
+#projects.v6-active .project-v54-flow-bar {
+  animation-duration: 2.7s;
+}
+
+/* --------------------------------------------------------------------------
+   PHONE SAFE AREAS
+   -------------------------------------------------------------------------- */
 
 @media (max-width: 720px) {
-  /* Keep the SVG viewBox fully inside the card. V65's 108% scale cropped the
-     right-most telemetry chips on narrow Safari viewports. */
   #projects.is-project-stack-v65 .project-v54-svg,
   #projects.is-project-stack-v65 .project-v54-svg.project-v54-traffic,
   #projects.is-project-grid-v62 .project-v54-svg,
@@ -14,8 +305,6 @@
     transform: translate3d(-50%, 0, 0) !important;
   }
 
-  /* Geometry is also written as SVG attributes by core-contact-v63.js so the
-     fix remains dependable on iOS Safari. These rules are a visual fallback. */
   #projects .project-v54-health .project-v54-chip {
     width: 96px;
   }
@@ -28,20 +317,28 @@
     width: 82px;
   }
 
-  #projects .project-v54-label {
-    paint-order: stroke fill;
-    stroke: rgba(3, 9, 22, 0.58);
-    stroke-width: 0.35px;
+  #projects .project-v101-readout-label {
+    font-size: 5.65px !important;
+    letter-spacing: 0.085em !important;
   }
 
-  #projects .project-v54-value {
-    paint-order: stroke fill;
-    stroke: rgba(3, 9, 22, 0.7);
-    stroke-width: 0.42px;
+  #projects .project-v101-readout-value {
+    font-size: 8.35px !important;
+    letter-spacing: 0.018em !important;
   }
 
-  /* The floating section navigator was covering project copy and telemetry.
-     Hide it only while Projects is the active section; it returns everywhere else. */
+  #projects .project-v101-fraud-links path {
+    stroke-width: 1.3;
+  }
+
+  #projects .project-v101-fraud-scan line {
+    stroke-width: 1.15;
+  }
+
+  #projects .project-v101-vehicle {
+    filter: none;
+  }
+
   .section-nav-v53[data-current-section="projects"] {
     opacity: 0 !important;
     visibility: hidden !important;
@@ -51,18 +348,61 @@
 }
 
 @media (max-width: 390px) {
-  #projects .project-v54-label {
-    font-size: 6.8px !important;
-    letter-spacing: 0.065em !important;
+  #projects .project-v101-readout-label {
+    font-size: 5.35px !important;
   }
 
-  #projects .project-v54-value {
-    font-size: 10.4px !important;
-    letter-spacing: 0.025em !important;
+  #projects .project-v101-readout-value {
+    font-size: 7.75px !important;
   }
 }
 
+/* --------------------------------------------------------------------------
+   MOTION
+   -------------------------------------------------------------------------- */
+
+@keyframes projectV101FraudSignal {
+  to { stroke-dashoffset: -66; }
+}
+
+@keyframes projectV101FraudScan {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes projectV101FraudCoreHalo {
+  0% { transform: scale(0.78); opacity: 0.62; }
+  76%, 100% { transform: scale(1.75); opacity: 0; }
+}
+
+@keyframes projectV101FraudNode {
+  0%, 100% { opacity: 0.62; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes projectV101FraudAlert {
+  0%, 100% { opacity: 0.82; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+
+@keyframes projectV101FraudAlertHalo {
+  0% { transform: scale(0.55); opacity: 0.72; }
+  78%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes projectV101TrafficFlow {
+  to { stroke-dashoffset: -84; }
+}
+
+@keyframes projectV101TrafficFlowReverse {
+  to { stroke-dashoffset: 84; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  #projects .project-v101-fraud *,
+  #projects .project-v101-traffic * {
+    animation: none !important;
+  }
+
   .section-nav-v53[data-current-section="projects"] {
     transition: none !important;
   }
