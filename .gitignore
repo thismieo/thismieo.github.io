@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 .pytest_cache/
 .mypy_cache/
+coverage/
 
 # Local environments
 .venv/
@@ -20,3 +21,4 @@ Thumbs.db
 *.log
 *.tmp
 *.swp
+*.bak
