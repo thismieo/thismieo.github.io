@@ -1,0 +1,126 @@
+name: Apply V84 branch integration
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out V84 branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v84-micro-polish
+          fetch-depth: 0
+
+      - name: Wire V84 assets and validation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected exactly one {label}; found {count}")
+              return text.replace(old, new, 1)
+
+          index_path = Path("index.html")
+          index = index_path.read_text(encoding="utf-8")
+          index = replace_once(index, '<html lang="en" data-release="2026.07.19.83">', '<html lang="en" data-release="2026.07.19.84">', "release marker")
+          index = replace_once(
+              index,
+              '  <link rel="stylesheet" href="tech-icons-v69.css?v=20260719.83" data-tech-icons-v69 />',
+              '  <link rel="stylesheet" href="tech-icons-v69.css?v=20260719.83" data-tech-icons-v69 />\n  <link rel="stylesheet" href="micro-polish.css?v=20260719.84" data-micro-polish />',
+              "technical rail stylesheet",
+          )
+          index = replace_once(
+              index,
+              '  <script src="hero-interface-v68.js?v=20260719.83" defer></script>',
+              '  <script src="hero-interface-v68.js?v=20260719.83" defer></script>\n  <script src="micro-polish.js?v=20260719.84" defer></script>',
+              "technical rail script",
+          )
+          index_path.write_text(index, encoding="utf-8")
+
+          validator_path = Path("scripts/validate_site.py")
+          validator = validator_path.read_text(encoding="utf-8")
+          validator = replace_once(
+              validator,
+              '    if \'data-release="2026.07.19.83"\' not in index_text:\n        errors.append("V83 release marker is missing")',
+              '    if \'data-release="2026.07.19.84"\' not in index_text:\n        errors.append("V84 release marker is missing")',
+              "validator release check",
+          )
+          validator = replace_once(
+              validator,
+              '    if \'hero-interface-v68.js?v=20260719.83\' not in index_text:\n        errors.append("V83 technical rail script cache key is missing")\n',
+              '    if \'hero-interface-v68.js?v=20260719.83\' not in index_text:\n        errors.append("V83 technical rail script cache key is missing")\n\n    if \'micro-polish.css?v=20260719.84\' not in index_text:\n        errors.append("V84 micro-polish stylesheet cache key is missing")\n\n    if \'micro-polish.js?v=20260719.84\' not in index_text:\n        errors.append("V84 micro-polish script cache key is missing")\n',
+              "validator cache block",
+          )
+          validator = replace_once(
+              validator,
+              '    hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")\n',
+              '    hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")\n    micro_polish_js = (ROOT / "micro-polish.js").read_text(encoding="utf-8", errors="replace")\n    micro_polish_css = (ROOT / "micro-polish.css").read_text(encoding="utf-8", errors="replace")\n',
+              "validator source reads",
+          )
+          validator = replace_once(
+              validator,
+              '        "tech-icons-v69.css",\n        "projects-runtime-v68.js",',
+              '        "tech-icons-v69.css",\n        "micro-polish.css",\n        "micro-polish.js",\n        "projects-runtime-v68.js",',
+              "required runtime files",
+          )
+          validator = replace_once(
+              validator,
+              '        "tech-icons-v69.css",\n        "projects-runtime-v68.js",\n    )\n    for asset in exact_once_assets:',
+              '        "tech-icons-v69.css",\n        "micro-polish.css",\n        "micro-polish.js",\n        "projects-runtime-v68.js",\n    )\n    for asset in exact_once_assets:',
+              "exact-once assets",
+          )
+          micro_checks = '''
+    required_micro_js_tokens = (
+        'dataset.release = "2026.07.19.84"',
+        'hero-tech-kicker',
+        'practice_mode = True',
+        'projects_built += 1',
+        'microPressReady',
+    )
+    for token in required_micro_js_tokens:
+        if token not in micro_polish_js:
+            errors.append(f"V84 micro-polish JavaScript token is missing: {token}")
+
+    required_micro_css_tokens = (
+        '.hero-tech-kicker',
+        '.button.is-pressing',
+        '@keyframes heroV84TerminalPulse',
+        '@keyframes heroV84TerminalSweep',
+        '@media (max-width: 860px)',
+    )
+    for token in required_micro_css_tokens:
+        if token not in micro_polish_css:
+            errors.append(f"V84 micro-polish CSS token is missing: {token}")
+
+'''
+          validator = replace_once(validator, '    exact_once_assets = (\n', micro_checks + '    exact_once_assets = (\n', "micro-polish validation insertion")
+          validator_path.write_text(validator, encoding="utf-8")
+          PY
+
+      - name: Remove branch-only workflow
+        run: rm -f .github/workflows/apply-v84-micro-polish.yml
+
+      - name: Validate V84 branch
+        run: |
+          find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          python scripts/validate_site.py
+          git diff --check
+
+      - name: Commit V84 integration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html scripts/validate_site.py .github/workflows/apply-v84-micro-polish.yml
+          git commit -m "Integrate V84 micro-polish assets and validation"
+          git push origin HEAD:feat/v84-micro-polish
