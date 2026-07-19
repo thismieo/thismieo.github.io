@@ -15,26 +15,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Capture site validation output
-        id: structure
-        shell: bash
-        run: |
-          set +e
-          python3 scripts/validate_site.py > validation-output.txt 2>&1
-          status=$?
-          echo "status=$status" >> "$GITHUB_OUTPUT"
-          exit 0
-
-      - name: Upload validation output
-        uses: actions/upload-artifact@v4
-        with:
-          name: validation-output
-          path: validation-output.txt
-          if-no-files-found: error
-          retention-days: 1
-
-      - name: Require structural validation success
-        run: test "${{ steps.structure.outputs.status }}" = "0"
+      - name: Validate site structure and assets
+        run: python3 scripts/validate_site.py
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
