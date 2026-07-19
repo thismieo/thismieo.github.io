@@ -26,6 +26,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          from textwrap import dedent
 
           index_path = Path("index.html")
           index_text = index_path.read_text(encoding="utf-8")
@@ -47,11 +48,21 @@ jobs:
           validate_path = Path("scripts/validate_site.py")
           validate_text = validate_path.read_text(encoding="utf-8")
 
-          old_release = '''    if 'data-release="2026.07.19.78"' not in index_text:
-              errors.append("V78 release marker is missing")
-          '''
-          new_release = '''    if 'data-release="2026.07.19.81"' not in index_text:
-              errors.append("V81 release marker is missing")
+          simple_replacements = {
+              'data-release="2026.07.19.78"': 'data-release="2026.07.19.81"',
+              'errors.append("V78 release marker is missing")': 'errors.append("V81 release marker is missing")',
+          }
+          for old, new in simple_replacements.items():
+              count = validate_text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected exactly one validation occurrence of {old!r}; found {count}")
+              validate_text = validate_text.replace(old, new, 1)
+
+          release_anchor = '        errors.append("V81 release marker is missing")\n'
+          if validate_text.count(release_anchor) != 1:
+              raise SystemExit("Could not locate the V81 release validation anchor")
+
+          v81_checks = dedent('''
 
               if 'tech-icons-v69.css?v=20260719.81' not in index_text:
                   errors.append("V81 technical rail stylesheet cache key is missing")
@@ -103,29 +114,18 @@ jobs:
               for token in forbidden_css_tokens:
                   if token in tech_css_text:
                       errors.append(f"Legacy technical rail CSS remains: {token}")
-          '''
+          ''')
+          validate_text = validate_text.replace(release_anchor, release_anchor + v81_checks, 1)
 
-          if validate_text.count(old_release) != 1:
-              raise SystemExit("Could not find the exact V78 release validation block")
-          validate_text = validate_text.replace(old_release, new_release, 1)
+          asset_anchor = '        "hero-interface-v68.js",\n        "projects-runtime-v68.js",\n'
+          if validate_text.count(asset_anchor) != 1:
+              raise SystemExit("Could not locate the exact-once asset anchor")
+          validate_text = validate_text.replace(
+              asset_anchor,
+              '        "hero-interface-v68.js",\n        "tech-icons-v69.css",\n        "projects-runtime-v68.js",\n',
+              1,
+          )
 
-          old_assets = '''    exact_once_assets = (
-                  "hero-interface-v68.css",
-                  "hero-interface-v68.js",
-                  "projects-runtime-v68.js",
-              )
-          '''
-          new_assets = '''    exact_once_assets = (
-                  "hero-interface-v68.css",
-                  "hero-interface-v68.js",
-                  "tech-icons-v69.css",
-                  "projects-runtime-v68.js",
-              )
-          '''
-
-          if validate_text.count(old_assets) != 1:
-              raise SystemExit("Could not find the exact-once asset validation block")
-          validate_text = validate_text.replace(old_assets, new_assets, 1)
           validate_path.write_text(validate_text, encoding="utf-8")
           PY
 
