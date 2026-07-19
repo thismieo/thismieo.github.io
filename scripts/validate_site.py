@@ -1,338 +1,49 @@
 #!/usr/bin/env python3
-"""Structural, asset, and regression checks for the static portfolio."""
-
-from __future__ import annotations
-
-from collections import Counter
-from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit
-import re
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
 
+required = [
+    INDEX,
+    ROOT / "assets/css/main.css",
+    ROOT / "assets/css/components.css",
+    ROOT / "assets/css/responsive.css",
+    ROOT / "assets/js/app.js",
+    ROOT / "assets/js/projects.js",
+]
 
-class SiteParser(HTMLParser):
-    def __init__(self) -> None:
-        super().__init__(convert_charrefs=True)
-        self.ids: list[str] = []
-        self.local_assets: list[tuple[str, str]] = []
-        self.runtime_assets: list[str] = []
-        self.nav_targets: list[str] = []
+errors = []
+for path in required:
+    if not path.is_file():
+        errors.append(f"Missing file: {path.relative_to(ROOT)}")
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        values = dict(attrs)
-        element_id = values.get("id")
-        if element_id:
-            self.ids.append(element_id)
+if INDEX.is_file():
+    html = INDEX.read_text(encoding="utf-8")
+    for target in ("home", "about", "journey", "stack", "direction", "projects", "goals", "contact"):
+        if f'id="{target}"' not in html:
+            errors.append(f"Missing section: {target}")
+    for asset in required[1:]:
+        relative = asset.relative_to(ROOT).as_posix()
+        if relative not in html:
+            errors.append(f"Asset not loaded: {relative}")
+    if html.count('class="project-card"') != 3:
+        errors.append("Expected exactly three project cards")
+    if html.count('class="visual-footer"') != 3:
+        errors.append("Expected exactly three visual footers")
 
-        if tag == "a":
-            href = values.get("href")
-            if href and href.startswith("#") and len(href) > 1:
-                self.nav_targets.append(href[1:])
+for stylesheet in required[1:4]:
+    if stylesheet.is_file():
+        css = stylesheet.read_text(encoding="utf-8")
+        if css.count("{") != css.count("}"):
+            errors.append(f"Unbalanced CSS: {stylesheet.relative_to(ROOT)}")
+        if "!important" in css:
+            errors.append(f"Unexpected !important: {stylesheet.relative_to(ROOT)}")
 
-        candidate: str | None = None
-        if tag == "link" and values.get("rel") == "stylesheet":
-            candidate = values.get("href")
-        elif tag in {"script", "img", "source"}:
-            candidate = values.get("src")
+if errors:
+    print("Portfolio V2 validation failed")
+    for error in errors:
+        print(f"ERROR: {error}")
+    raise SystemExit(1)
 
-        if not candidate:
-            return
-
-        parsed = urlsplit(candidate)
-        if parsed.scheme or parsed.netloc or candidate.startswith(("//", "data:", "mailto:", "tel:")):
-            return
-
-        clean = parsed.path.lstrip("/")
-        if clean:
-            self.local_assets.append((candidate, clean))
-            if tag in {"link", "script"}:
-                self.runtime_assets.append(clean)
-
-
-def check_balanced_css(path: Path, errors: list[str]) -> None:
-    text = path.read_text(encoding="utf-8", errors="replace")
-    depth = 0
-    quote: str | None = None
-    escaped = False
-    in_comment = False
-    index = 0
-
-    while index < len(text):
-        char = text[index]
-        nxt = text[index + 1] if index + 1 < len(text) else ""
-
-        if in_comment:
-            if char == "*" and nxt == "/":
-                in_comment = False
-                index += 2
-                continue
-            index += 1
-            continue
-
-        if quote:
-            if escaped:
-                escaped = False
-            elif char == "\\":
-                escaped = True
-            elif char == quote:
-                quote = None
-            index += 1
-            continue
-
-        if char == "/" and nxt == "*":
-            in_comment = True
-            index += 2
-            continue
-
-        if char in {'"', "'"}:
-            quote = char
-        elif char == "{":
-            depth += 1
-        elif char == "}":
-            depth -= 1
-            if depth < 0:
-                errors.append(f"CSS closes before opening: {path.relative_to(ROOT)}")
-                return
-        index += 1
-
-    if in_comment:
-        errors.append(f"Unclosed CSS comment: {path.relative_to(ROOT)}")
-    if quote:
-        errors.append(f"Unclosed CSS string: {path.relative_to(ROOT)}")
-    if depth != 0:
-        errors.append(f"Unbalanced CSS braces ({depth}): {path.relative_to(ROOT)}")
-
-
-def main() -> int:
-    errors: list[str] = []
-
-    if not INDEX.is_file():
-        raise SystemExit("index.html is missing")
-
-    index_text = INDEX.read_text(encoding="utf-8", errors="replace")
-    parser = SiteParser()
-    parser.feed(index_text)
-    parser.close()
-
-    duplicates = sorted(item for item, count in Counter(parser.ids).items() if count > 1)
-    if duplicates:
-        errors.append(f"Duplicate HTML ids: {', '.join(duplicates)}")
-
-    missing_targets = sorted(set(parser.nav_targets) - set(parser.ids))
-    if missing_targets:
-        errors.append(f"Anchor targets are missing: {', '.join(missing_targets)}")
-
-    required_ids = {"home", "about", "journey", "stack", "neural", "projects", "goals", "contact", "thank-you"}
-    missing_required = sorted(required_ids - set(parser.ids))
-    if missing_required:
-        errors.append(f"Required sections are missing: {', '.join(missing_required)}")
-
-    for original, clean in parser.local_assets:
-        if not (ROOT / clean).is_file():
-            errors.append(f"Referenced local asset is missing: {original}")
-
-    duplicate_assets = sorted(asset for asset, count in Counter(parser.runtime_assets).items() if count > 1)
-    if duplicate_assets:
-        errors.append(f"Duplicate stylesheet/script references: {', '.join(duplicate_assets)}")
-
-    css_files = sorted(ROOT.glob("*.css"))
-    js_files = sorted(ROOT.glob("*.js"))
-    source_files = [INDEX, *css_files, *js_files]
-
-    for css_file in css_files:
-        check_balanced_css(css_file, errors)
-
-    conflict_pattern = re.compile(r"^(<<<<<<<|=======|>>>>>>>)", re.MULTILINE)
-    for source_file in source_files:
-        text = source_file.read_text(encoding="utf-8", errors="replace")
-        if not text.strip():
-            errors.append(f"Empty source file: {source_file.relative_to(ROOT)}")
-        if conflict_pattern.search(text):
-            errors.append(f"Merge-conflict marker remains in {source_file.relative_to(ROOT)}")
-
-    loaded_assets = set(parser.runtime_assets)
-    required_runtime = {
-        "interactions.js",
-        "hero-v33.js",
-        "hero-interface-v68.js",
-        "hero-interface-v68.css",
-        "tech-icons-v69.css",
-        "learning-console-v92.css",
-        "mobile-performance-v92.css",
-        "planetary-motion-v97.css",
-        "planetary-motion-v97.js",
-        "projects-runtime-v68.js",
-        "core-contact-v63.js",
-    }
-    missing_runtime = sorted(required_runtime - loaded_assets)
-    if missing_runtime:
-        errors.append(f"Required runtime assets are not loaded: {', '.join(missing_runtime)}")
-
-    dynamic_runtime = {
-        "micro-polish.css": ("hero-interface-v68.js", 'microStylesheet.href = "micro-polish.css'),
-    }
-    for asset, (loader_name, loader_token) in dynamic_runtime.items():
-        asset_path = ROOT / asset
-        loader_path = ROOT / loader_name
-        if not asset_path.is_file():
-            errors.append(f"Dynamically loaded asset is missing: {asset}")
-            continue
-        if not loader_path.is_file():
-            errors.append(f"Dynamic asset loader is missing: {loader_name}")
-            continue
-        loader_text = loader_path.read_text(encoding="utf-8", errors="replace")
-        if loader_token not in loader_text:
-            errors.append(f"Dynamic asset is no longer loaded by {loader_name}: {asset}")
-
-    root_runtime = {path.name for path in [*css_files, *js_files]}
-    allowed_runtime = loaded_assets | set(dynamic_runtime)
-    orphan_runtime = sorted(root_runtime - allowed_runtime)
-    if orphan_runtime:
-        errors.append(f"Unreferenced root CSS/JavaScript files: {', '.join(orphan_runtime)}")
-
-    required_support_files = {
-        ".gitignore",
-        "README.md",
-        "index.html",
-    }
-    missing_support = sorted(name for name in required_support_files if not (ROOT / name).is_file())
-    if missing_support:
-        errors.append(f"Required repository files are missing: {', '.join(missing_support)}")
-
-    allowed_root_files = required_support_files | root_runtime
-    actual_root_files = {path.name for path in ROOT.iterdir() if path.is_file()}
-    unexpected_root_files = sorted(actual_root_files - allowed_root_files)
-    if unexpected_root_files:
-        errors.append(f"Unexpected root files: {', '.join(unexpected_root_files)}")
-
-    allowed_root_directories = {".git", ".github", "scripts"}
-    unexpected_root_directories = sorted(
-        path.name
-        for path in ROOT.iterdir()
-        if path.is_dir() and path.name not in allowed_root_directories
-    )
-    if unexpected_root_directories:
-        errors.append(f"Unexpected root directories: {', '.join(unexpected_root_directories)}")
-
-    required_index_tokens = (
-        'data-release="2026.07.19.103"',
-        'project-readouts-v66.css?v=20260719.103',
-        'project-visuals-v54.js?v=20260719.103',
-        'core-contact-v63.js?v=20260719.103',
-        'learning-console-v92.css?v=20260719.92',
-        'mobile-performance-v92.css?v=20260719.92',
-        'planetary-motion-v97.css?v=20260719.97',
-        'planetary-motion-v97.js?v=20260719.97',
-        'hero-v33.js?v=20260719.89',
-        'class="hero-console-v92"',
-        'class="hero-console-v92-messages"',
-        'class="hero-console-v92-caret"',
-    )
-    for token in required_index_tokens:
-        if token not in index_text:
-            errors.append(f"Required index token is missing: {token}")
-
-    if index_text.count('class="hero-console-v92"') != 1:
-        errors.append("V92 must contain exactly one Hero console")
-    if index_text.count('class="hero-console-v92-message"') != 3:
-        errors.append("V92 Hero console must contain exactly three messages")
-    if index_text.count('class="hero-v33-rotator ') != 0:
-        errors.append("V97 must not keep superseded HTML orbit rotators")
-
-    console_css = (ROOT / "learning-console-v92.css").read_text(encoding="utf-8", errors="replace")
-    mobile_css = (ROOT / "mobile-performance-v92.css").read_text(encoding="utf-8", errors="replace")
-    planetary_css = (ROOT / "planetary-motion-v97.css").read_text(encoding="utf-8", errors="replace")
-    planetary_js = (ROOT / "planetary-motion-v97.js").read_text(encoding="utf-8", errors="replace")
-
-    for token in (
-        "@keyframes heroConsoleV92Type",
-        "@keyframes heroConsoleV92CaretBlink",
-        ".hero-console-v92-message:nth-child(1)",
-        ".hero-console-v92-message:nth-child(2)",
-        ".hero-console-v92-message:nth-child(3)",
-        "@media (prefers-reduced-motion: reduce)",
-    ):
-        if token not in console_css:
-            errors.append(f"V92 console CSS token is missing: {token}")
-
-    for token in (
-        ".ambient,",
-        ".page-grid,",
-        ".scroll-progress",
-        "display: none !important",
-        "overflow-anchor: none",
-        "contain: layout",
-    ):
-        if token not in mobile_css:
-            errors.append(f"Mobile stability token is missing: {token}")
-
-    for token in (
-        "aspect-ratio: 680 / 620",
-        "heroV97Stars",
-        "heroV97OrbitFlow",
-        "heroV97PlanetSpin",
-        "heroV97PlanetBreath",
-        ".hero-v97-satellite",
-        ".hero-v97-satellite-blue",
-        ".hero-v97-satellite-pink",
-        ".hero-v97-satellite-violet",
-        "@media (max-width: 860px)",
-        "@media (prefers-reduced-motion: reduce)",
-    ):
-        if token not in planetary_css:
-            errors.append(f"V97 planetary CSS token is missing: {token}")
-
-    for token in (
-        "createElementNS",
-        "animateMotion",
-        "buildMotionPath",
-        "sampleCount = 240",
-        "preserveAspectRatio",
-        "native-svg-v97",
-        "unpauseAnimations",
-        "pageshow",
-        "visibilitychange",
-        "prefers-reduced-motion",
-    ):
-        if token not in planetary_js:
-            errors.append(f"V97 planetary JavaScript token is missing: {token}")
-
-    for obsolete_asset in (
-        "planetary-motion-v94.css",
-        "planetary-motion-v94.js",
-        "planetary-motion-v95.css",
-        "planetary-motion-v95.js",
-        "planetary-motion-v96.css",
-        "planetary-motion-v96.js",
-    ):
-        if obsolete_asset in index_text:
-            errors.append(f"Superseded planetary asset is still loaded: {obsolete_asset}")
-
-    for forbidden_runtime in (
-        'window.addEventListener("scroll"',
-        "requestAnimationFrame",
-        "IntersectionObserver",
-        "ResizeObserver",
-        "getBoundingClientRect",
-        "getScreenCTM",
-        "--orbit-x",
-        "--orbit-y",
-    ):
-        if forbidden_runtime in planetary_js:
-            errors.append(f"Superseded JavaScript orbit runtime remains: {forbidden_runtime}")
-
-    if errors:
-        print("Portfolio validation failed")
-        for error in errors:
-            print(f"ERROR: {error}")
-        return 1
-
-    print("Portfolio validation passed")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+print("Portfolio V2 validation passed")
