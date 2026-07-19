@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+  // Stable semantic classes keep legacy hero chip styling isolated from this component.
   document.documentElement.dataset.release = "2026.07.19.82";
 
   const home = document.querySelector("#home");
