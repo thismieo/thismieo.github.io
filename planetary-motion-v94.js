@@ -6,18 +6,29 @@
 
   const orbitSvg = planetary.querySelector(".hero-v33-orbit-svg");
   const orbitLines = Array.from(planetary.querySelectorAll(".hero-v33-orbit-svg .orbit-line")).slice(0, 2);
-  const satellites = Array.from(planetary.querySelectorAll(".hero-v33-rotator")).slice(0, 2);
-  if (!orbitSvg || orbitLines.length !== 2 || satellites.length !== 2) return;
+  const existingSatellites = Array.from(planetary.querySelectorAll(".hero-v33-rotator")).slice(0, 2);
+  if (!orbitSvg || orbitLines.length !== 2 || existingSatellites.length !== 2) return;
 
+  let thirdSatellite = planetary.querySelector(".rotator-v33-three");
+  if (!thirdSatellite) {
+    thirdSatellite = document.createElement("div");
+    thirdSatellite.className = "hero-v33-rotator rotator-v33-three";
+    thirdSatellite.setAttribute("aria-hidden", "true");
+    thirdSatellite.innerHTML = "<i></i>";
+    planetary.appendChild(thirdSatellite);
+  }
+
+  const satellites = [...existingSatellites, thirdSatellite];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const coarsePointer = window.matchMedia("(pointer: coarse)");
   const configurations = [
-    { duration: 18000, phase: 0.08, direction: 1 },
-    { duration: 24000, phase: 0.43, direction: -1 }
+    { lineIndex: 0, duration: 18000, phase: 0.08, direction: 1, className: "orbit-glow-blue" },
+    { lineIndex: 1, duration: 24000, phase: 0.43, direction: -1, className: "orbit-glow-pink" },
+    { lineIndex: 0, duration: 21000, phase: 0.62, direction: 1, className: "orbit-glow-violet" }
   ];
 
   satellites.forEach((satellite, index) => {
-    satellite.classList.add("is-path-driven");
+    satellite.classList.add("is-path-driven", configurations[index].className);
     satellite.dataset.orbitIndex = String(index + 1);
   });
 
@@ -44,8 +55,8 @@
   };
 
   const placeSatellites = (timestamp = performance.now(), staticPlacement = false) => {
-    orbitLines.forEach((line, index) => {
-      const configuration = configurations[index];
+    configurations.forEach((configuration, index) => {
+      const line = orbitLines[configuration.lineIndex];
       let progress = staticPlacement
         ? configuration.phase
         : ((timestamp / configuration.duration) + configuration.phase) % 1;
