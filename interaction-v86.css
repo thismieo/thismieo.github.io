@@ -1,0 +1,229 @@
+/* Portfolio V86 — fluid pointer feedback and frame-synchronised terminal motion. */
+
+:root {
+  --v86-touch-in: 150ms;
+  --v86-touch-out: 320ms;
+  --v86-touch-ease: cubic-bezier(0.2, 0.76, 0.24, 1);
+}
+
+/* One pointer system for the technical stack, Hero actions, and social utilities. */
+#home.has-tech-rail .hero-tech-item,
+#home .hero-v33-actions .button,
+#home .hero-v33-links a {
+  --press-x: 50%;
+  --press-y: 50%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    transform var(--v86-touch-out) var(--v86-touch-ease),
+    border-color var(--v86-touch-out) ease,
+    background var(--v86-touch-out) ease,
+    box-shadow var(--v86-touch-out) ease,
+    color var(--v86-touch-out) ease !important;
+  will-change: transform;
+}
+
+#home.has-tech-rail .hero-tech-item::after,
+#home .hero-v33-actions .button::after,
+#home .hero-v33-links a::after {
+  content: "" !important;
+  position: absolute;
+  z-index: -1;
+  left: var(--press-x);
+  top: var(--press-y);
+  width: 148%;
+  aspect-ratio: 1;
+  display: block !important;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(var(--tech-accent, var(--social-accent, 103, 232, 249)), 0.19) 0%,
+    rgba(var(--tech-accent, var(--social-accent, 103, 232, 249)), 0.075) 31%,
+    transparent 69%
+  );
+  filter: blur(2px);
+  transform: translate3d(-50%, -50%, 0) scale(0.42);
+  transition:
+    opacity var(--v86-touch-in) ease,
+    transform 420ms var(--v86-touch-ease);
+}
+
+#home.has-tech-rail .hero-tech-item.is-pressing,
+#home .hero-v33-actions .button.is-pressing,
+#home .hero-v33-links a.is-pressing {
+  transform: translate3d(0, 1px, 0) scale(0.972) !important;
+  transition-duration: var(--v86-touch-in) !important;
+}
+
+#home.has-tech-rail .hero-tech-item.is-pressing::after,
+#home .hero-v33-actions .button.is-pressing::after,
+#home .hero-v33-links a.is-pressing::after {
+  opacity: 1;
+  transform: translate3d(-50%, -50%, 0) scale(1);
+}
+
+#home.has-tech-rail .hero-tech-item.is-releasing,
+#home .hero-v33-actions .button.is-releasing,
+#home .hero-v33-links a.is-releasing {
+  transform: translate3d(0, 0, 0) scale(1) !important;
+}
+
+#home.has-tech-rail .hero-tech-item.is-releasing::after,
+#home .hero-v33-actions .button.is-releasing::after,
+#home .hero-v33-links a.is-releasing::after {
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(1.2);
+  transition-duration: var(--v86-touch-out), var(--v86-touch-out);
+}
+
+#home.has-tech-rail .hero-tech-icon-shell,
+#home.has-tech-rail .hero-tech-icon,
+#home .hero-v33-links a svg,
+#home .hero-v33-actions .button svg {
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center;
+  transition:
+    transform var(--v86-touch-out) var(--v86-touch-ease),
+    filter var(--v86-touch-out) ease,
+    background var(--v86-touch-out) ease !important;
+  will-change: transform;
+}
+
+#home.has-tech-rail .hero-tech-item.is-pressing .hero-tech-icon-shell,
+#home .hero-v33-links a.is-pressing svg,
+#home .hero-v33-actions .button.is-pressing svg {
+  transform: translate3d(0, 1px, 0) scale(0.9);
+  transition-duration: var(--v86-touch-in) !important;
+}
+
+#home.has-tech-rail .hero-tech-item.is-pressing .hero-tech-icon {
+  transform: scale(0.94);
+  filter: drop-shadow(0 0 11px rgba(var(--tech-accent), 0.58));
+  transition-duration: var(--v86-touch-in) !important;
+}
+
+#home.has-tech-rail .hero-tech-item.is-releasing .hero-tech-icon-shell,
+#home .hero-v33-links a.is-releasing svg,
+#home .hero-v33-actions .button.is-releasing svg {
+  transform: translate3d(0, -1px, 0) scale(1.045);
+}
+
+#home.has-tech-rail .hero-tech-item.is-releasing .hero-tech-icon {
+  transform: scale(1.035);
+  filter: drop-shadow(0 0 8px rgba(var(--tech-accent), 0.42));
+}
+
+#home.has-tech-rail .hero-tech-item.is-pressing {
+  background:
+    radial-gradient(circle at var(--press-x) var(--press-y), rgba(var(--tech-accent), 0.105), transparent 66%),
+    rgba(10, 22, 42, 0.48) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--tech-accent), 0.1),
+    0 0 18px rgba(var(--tech-accent), 0.065) !important;
+}
+
+#home .hero-v33-links a.is-pressing {
+  border-color: rgba(var(--social-accent), 0.48) !important;
+  box-shadow:
+    0 0 22px rgba(var(--social-accent), 0.09),
+    inset 0 0 0 1px rgba(var(--social-accent), 0.055) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #home.has-tech-rail .hero-tech-item:hover .hero-tech-icon-shell,
+  #home .hero-v33-links a:hover svg,
+  #home .hero-v33-actions .button:hover svg {
+    transform: translate3d(0, -1px, 0) scale(1.035);
+  }
+}
+
+/* The complete command stays in the DOM while a fractional monospace width reveals it smoothly. */
+#home .terminal-v33-line {
+  overflow: hidden;
+}
+
+#home #hero-v33-terminal-text {
+  width: calc(var(--terminal-visible-chars, 0) * 1ch);
+  max-width: 100%;
+  min-width: 0;
+  min-height: 1.1em;
+  display: inline-block;
+  flex: 0 1 auto;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  opacity: 0.96;
+  transform: translateZ(0);
+  transition: none !important;
+  will-change: width;
+}
+
+#home .terminal-v33-line .terminal-v33-caret {
+  margin-left: 1px;
+  opacity: 0.92;
+  transform: translateZ(0);
+  transition: opacity 180ms ease, filter 220ms ease, transform 220ms ease;
+}
+
+#home .terminal-v33-line.is-writing .terminal-v33-caret {
+  opacity: 0.92;
+  filter: drop-shadow(0 0 5px rgba(103, 215, 227, 0.35));
+}
+
+#home .terminal-v33-line.is-deleting .terminal-v33-caret {
+  opacity: 0.68;
+  filter: drop-shadow(0 0 4px rgba(103, 215, 227, 0.22));
+  transform: scaleY(0.88);
+}
+
+#home .terminal-v33-line.is-holding .terminal-v33-caret {
+  animation: heroV86CaretBreathe 0.94s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}
+
+@keyframes heroV86CaretBreathe {
+  0%, 100% {
+    opacity: 0.2;
+    filter: drop-shadow(0 0 2px rgba(103, 215, 227, 0.16));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(103, 215, 227, 0.48));
+  }
+}
+
+@media (max-width: 860px) {
+  #home.has-tech-rail .hero-tech-item,
+  #home .hero-v33-links a,
+  #home .hero-v33-actions .button {
+    -webkit-touch-callout: none;
+  }
+
+  #home #hero-v33-terminal-text {
+    opacity: 0.94;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home.has-tech-rail .hero-tech-item,
+  #home.has-tech-rail .hero-tech-item::after,
+  #home.has-tech-rail .hero-tech-icon-shell,
+  #home.has-tech-rail .hero-tech-icon,
+  #home .hero-v33-actions .button,
+  #home .hero-v33-actions .button::after,
+  #home .hero-v33-actions .button svg,
+  #home .hero-v33-links a,
+  #home .hero-v33-links a::after,
+  #home .hero-v33-links a svg,
+  #home .terminal-v33-line .terminal-v33-caret {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  #home .terminal-v33-line .terminal-v33-caret {
+    opacity: 1 !important;
+  }
+}
