@@ -1,4 +1,4 @@
-/* Portfolio V74 — targeted phone balance for the Machine Learning icon and label. */
+/* Portfolio V75 — proportional mobile tech cards with balanced icon and label alignment. */
 
 #home.is-tech-icons-v73 .hero-v73-tech-strip {
   position: relative;
@@ -132,27 +132,37 @@
 @media (max-width: 860px) {
   #home.is-tech-icons-v73 .hero-v73-tech-strip {
     width: min(100%, 520px);
+    max-width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns:
+      minmax(0, 0.95fr)
+      minmax(0, 0.78fr)
+      minmax(0, 1.34fr)
+      minmax(0, 1.05fr);
+    align-items: stretch;
+    justify-content: center;
     gap: 6px;
+    margin-inline: auto;
     border-radius: 12px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item {
-    min-height: 48px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 49px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-    padding: 8px 5px;
+    padding: 8px 4px;
     border-radius: 11px;
-    text-align: left;
+    text-align: center;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-icon {
     width: 17px;
     height: 17px;
-    flex-basis: 17px;
+    flex: 0 0 17px;
     stroke-width: 1.82;
   }
 
@@ -161,33 +171,25 @@
     font-size: clamp(0.44rem, 1.82vw, 0.5rem);
     letter-spacing: 0.014em;
     line-height: 1.04;
-    text-align: left;
+    text-align: center;
     text-overflow: clip;
-    white-space: normal;
+    white-space: nowrap;
     overflow-wrap: normal;
     word-break: normal;
   }
 
-  /* V74: balance only the Machine Learning icon/label group on phones. */
+  /* Short labels use compact cards; the longer ML label receives the extra space. */
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
-    justify-content: center;
-    gap: 4px;
-    padding-inline: 4px;
-  }
-
-  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
-    width: 19px;
-    height: 19px;
-    flex-basis: 19px;
-    stroke-width: 1.92;
+    gap: 5px;
+    padding-inline: 6px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 64px;
-    font-size: clamp(0.48rem, 1.98vw, 0.54rem);
-    letter-spacing: 0.006em;
-    line-height: 1;
-    text-align: center;
+    max-width: 60px;
+    font-size: clamp(0.47rem, 1.9vw, 0.52rem);
+    letter-spacing: 0.004em;
+    line-height: 1.02;
+    white-space: normal;
   }
 }
 
@@ -199,7 +201,7 @@
   #home.is-tech-icons-v73 .hero-v73-tech-item {
     min-height: 47px;
     gap: 4px;
-    padding-inline: 4px;
+    padding-inline: 3px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-icon {
@@ -213,23 +215,30 @@
     letter-spacing: 0.008em;
   }
 
-  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
-    width: 18px;
-    height: 18px;
-    flex-basis: 18px;
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+    gap: 4px;
+    padding-inline: 4px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 61px;
-    font-size: 0.47rem;
+    max-width: 56px;
+    font-size: 0.46rem;
   }
 }
 
 @media (max-width: 350px) {
+  #home.is-tech-icons-v73 .hero-v73-tech-strip {
+    grid-template-columns:
+      minmax(0, 0.96fr)
+      minmax(0, 0.75fr)
+      minmax(0, 1.38fr)
+      minmax(0, 1.03fr);
+  }
+
   #home.is-tech-icons-v73 .hero-v73-tech-item {
     min-height: 45px;
     gap: 3px;
-    padding-inline: 3px;
+    padding-inline: 2px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-icon {
@@ -245,17 +254,11 @@
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
     gap: 3px;
-    padding-inline: 2px;
-  }
-
-  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) .hero-v73-tech-icon {
-    width: 16px;
-    height: 16px;
-    flex-basis: 16px;
+    padding-inline: 3px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 55px;
+    max-width: 52px;
     font-size: 0.42rem;
   }
 }
