@@ -161,7 +161,8 @@ def main() -> int:
         "hero-interface-v68.js",
         "hero-interface-v68.css",
         "tech-icons-v69.css",
-        "learning-console-v90.css",
+        "learning-console-v92.css",
+        "mobile-performance-v92.css",
         "projects-runtime-v68.js",
         "core-contact-v63.js",
     }
@@ -170,30 +171,45 @@ def main() -> int:
         errors.append(f"Required runtime assets are not loaded: {', '.join(missing_runtime)}")
 
     required_index_tokens = (
-        'data-release="2026.07.19.90"',
-        'learning-console-v90.css?v=20260719.90',
+        'data-release="2026.07.19.92"',
+        'learning-console-v92.css?v=20260719.92',
+        'mobile-performance-v92.css?v=20260719.92',
         'hero-v33.js?v=20260719.89',
-        'class="hero-console-v90"',
-        'class="hero-console-v90-lights"',
-        'class="hero-console-v90-copy"',
-        'class="hero-console-v90-messages"',
-        'class="hero-console-v90-state"',
+        'class="hero-console-v92"',
+        'class="hero-console-v92-lights"',
+        'class="hero-console-v92-copy"',
+        'class="hero-console-v92-messages"',
+        'class="hero-console-v92-caret"',
+        'class="hero-console-v92-state"',
     )
     for token in required_index_tokens:
         if token not in index_text:
-            errors.append(f"V90 typing-console token is missing: {token}")
+            errors.append(f"V92 typing-console token is missing: {token}")
 
-    if index_text.count('class="hero-console-v90-message"') != 3:
-        errors.append("V89 learning console must contain exactly three messages")
+    if index_text.count('class="hero-console-v92"') != 1:
+        errors.append("V92 must contain exactly one Hero console")
+    if index_text.count('class="hero-console-v92-message"') != 3:
+        errors.append("V92 Hero console must contain exactly three messages")
+    if index_text.count('class="hero-console-v92-caret"') != 1:
+        errors.append("V92 Hero console must contain exactly one caret")
+
+    inside_copy_marker = '            </nav>\n\n            <aside class="hero-console-v92"'
+    closing_copy_marker = '            </aside>\n          </div>\n        </div>'
+    if inside_copy_marker not in index_text or closing_copy_marker not in index_text:
+        errors.append("V92 Hero console is not physically nested below the profile links")
 
     all_css = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in css_files)
-    console_css = (ROOT / "learning-console-v90.css").read_text(encoding="utf-8", errors="replace")
+    console_css = (ROOT / "learning-console-v92.css").read_text(encoding="utf-8", errors="replace")
+    mobile_css = (ROOT / "mobile-performance-v92.css").read_text(encoding="utf-8", errors="replace")
     terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
 
     forbidden_legacy_surface_tokens = (
         "hero-v33-terminal",
         "hero-console-v89",
+        "hero-console-v90",
         "learning-console-v89.css",
+        "learning-console-v90.css",
+        "mobile-performance-v91.css",
         "terminal-v33-",
         "hero-v33-terminal-text",
         'terminalMode = "line-swap"',
@@ -201,6 +217,7 @@ def main() -> int:
         "FADE_DURATION",
         "heroV33Caret",
         '"terminal terminal"',
+        "grid-area: console",
     )
     legacy_surface = "\n".join((index_text, all_css, terminal_js))
     for token in forbidden_legacy_surface_tokens:
@@ -218,14 +235,17 @@ def main() -> int:
             errors.append(f"Superseded Terminal runtime remains in hero-v33.js: {token}")
 
     required_console_css = (
-        "grid-area: console",
-        "@keyframes heroConsoleV90TypeA",
-        "@keyframes heroConsoleV90TypeB",
-        "@keyframes heroConsoleV90TypeC",
-        ".hero-console-v90-message:nth-child(1)",
-        ".hero-console-v90-message:nth-child(2)",
-        ".hero-console-v90-message:nth-child(3)",
-        "steps(29, end)",
+        "overflow-anchor: none",
+        "contain: layout paint",
+        "clip-path: inset(0 100% 0 0)",
+        "@keyframes heroConsoleV92Type",
+        "@keyframes heroConsoleV92CaretPath",
+        "@keyframes heroConsoleV92CaretBlink",
+        ".hero-console-v92-message:nth-child(1)",
+        ".hero-console-v92-message:nth-child(2)",
+        ".hero-console-v92-message:nth-child(3)",
+        ".hero-console-v92-caret",
+        "steps(28, end)",
         "animation-delay: 5s",
         "animation-delay: 10s",
         "@media (max-width: 860px)",
@@ -233,7 +253,21 @@ def main() -> int:
     )
     for token in required_console_css:
         if token not in console_css:
-            errors.append(f"V90 typing-console CSS token is missing: {token}")
+            errors.append(f"V92 typing-console CSS token is missing: {token}")
+
+    required_mobile_css = (
+        ".ambient,",
+        ".page-grid,",
+        ".scroll-progress",
+        "display: none !important",
+        "backdrop-filter: none !important",
+        "overflow-anchor: none",
+        "animation: none !important",
+        "#home .hero-console-v92-message",
+    )
+    for token in required_mobile_css:
+        if token not in mobile_css:
+            errors.append(f"V92 mobile-stability CSS token is missing: {token}")
 
     if errors:
         print("Portfolio validation failed")
