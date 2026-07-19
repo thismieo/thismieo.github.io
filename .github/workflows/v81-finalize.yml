@@ -1,0 +1,164 @@
+name: Finalize V81 learning rail
+
+on:
+  push:
+    branches:
+      - feat/v81-unified-learning-rail
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Wire release keys and strengthen validation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index_path = Path("index.html")
+          index_text = index_path.read_text(encoding="utf-8")
+
+          replacements = {
+              '<html lang="en" data-release="2026.07.19.78">': '<html lang="en" data-release="2026.07.19.81">',
+              'tech-icons-v69.css?v=20260719.78': 'tech-icons-v69.css?v=20260719.81',
+              'hero-interface-v68.js?v=20260719.78': 'hero-interface-v68.js?v=20260719.81',
+          }
+
+          for old, new in replacements.items():
+              count = index_text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected exactly one index occurrence of {old!r}; found {count}")
+              index_text = index_text.replace(old, new, 1)
+
+          index_path.write_text(index_text, encoding="utf-8")
+
+          validate_path = Path("scripts/validate_site.py")
+          validate_text = validate_path.read_text(encoding="utf-8")
+
+          old_release = '''    if 'data-release="2026.07.19.78"' not in index_text:
+              errors.append("V78 release marker is missing")
+          '''
+          new_release = '''    if 'data-release="2026.07.19.81"' not in index_text:
+              errors.append("V81 release marker is missing")
+
+              if 'tech-icons-v69.css?v=20260719.81' not in index_text:
+                  errors.append("V81 technical rail stylesheet cache key is missing")
+
+              if 'hero-interface-v68.js?v=20260719.81' not in index_text:
+                  errors.append("V81 technical rail script cache key is missing")
+
+              tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
+              tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
+
+              required_js_tokens = (
+                  'is-tech-icons-v81',
+                  'hero-v81-tech-rail',
+                  'hero-v81-tech-item',
+                  'hero-v81-tech-badge',
+                  'hero-v81-tech-copy',
+                  'document.createElement("a")',
+                  'dataset.techIcons = "v81"',
+              )
+              for token in required_js_tokens:
+                  if token not in tech_js_text:
+                      errors.append(f"V81 technical rail JavaScript token is missing: {token}")
+
+              required_css_tokens = (
+                  '#home.is-tech-icons-v81 .hero-v81-tech-rail',
+                  '#home.is-tech-icons-v81 .hero-v81-tech-item',
+                  '@keyframes heroV81RailWave',
+                  '@media (prefers-reduced-motion: reduce)',
+              )
+              for token in required_css_tokens:
+                  if token not in tech_css_text:
+                      errors.append(f"V81 technical rail CSS token is missing: {token}")
+
+              forbidden_js_tokens = (
+                  'window.open(',
+                  'item.addEventListener("click"',
+                  'is-tech-icons-v73',
+                  'dataset.techIcons = "v80"',
+              )
+              for token in forbidden_js_tokens:
+                  if token in tech_js_text:
+                      errors.append(f"Legacy technical rail JavaScript remains: {token}")
+
+              forbidden_css_tokens = (
+                  '.hero-v73-tech-item',
+                  '.hero-v73-tech-strip',
+                  'heroV73StripWave',
+              )
+              for token in forbidden_css_tokens:
+                  if token in tech_css_text:
+                      errors.append(f"Legacy technical rail CSS remains: {token}")
+          '''
+
+          if validate_text.count(old_release) != 1:
+              raise SystemExit("Could not find the exact V78 release validation block")
+          validate_text = validate_text.replace(old_release, new_release, 1)
+
+          old_assets = '''    exact_once_assets = (
+                  "hero-interface-v68.css",
+                  "hero-interface-v68.js",
+                  "projects-runtime-v68.js",
+              )
+          '''
+          new_assets = '''    exact_once_assets = (
+                  "hero-interface-v68.css",
+                  "hero-interface-v68.js",
+                  "tech-icons-v69.css",
+                  "projects-runtime-v68.js",
+              )
+          '''
+
+          if validate_text.count(old_assets) != 1:
+              raise SystemExit("Could not find the exact-once asset validation block")
+          validate_text = validate_text.replace(old_assets, new_assets, 1)
+          validate_path.write_text(validate_text, encoding="utf-8")
+          PY
+
+      - name: Run syntax and repository validation
+        run: |
+          node --check hero-interface-v68.js
+          python scripts/validate_site.py
+          python - <<'PY'
+          from pathlib import Path
+
+          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
+          if css.count("{") != css.count("}"):
+              raise SystemExit("Unbalanced CSS braces")
+
+          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
+          expected = (
+              'title: "Python"',
+              'title: "Data"',
+              'title: "Machine"',
+              'title: "AI"',
+              'subtitle: "Foundations"',
+              'subtitle: "Learning"',
+              'subtitle: "Systems"',
+          )
+          missing = [token for token in expected if token not in js]
+          if missing:
+              raise SystemExit(f"Missing V81 content tokens: {missing}")
+          PY
+
+      - name: Commit finalized release and remove one-time workflow
+        run: |
+          rm -f .github/workflows/v81-finalize.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No finalization changes to commit"
+            exit 0
+          fi
+          git commit -m "Finalize V81 learning rail and validation"
+          git push origin HEAD:feat/v81-unified-learning-rail
