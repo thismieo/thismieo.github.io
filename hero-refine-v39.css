@@ -178,57 +178,6 @@
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18), 0 0 18px rgba(103, 232, 249, 0.045);
   }
 
-  /* Premium mini terminal: clearer content, calmer surface, aligned code. */
-  #home .hero-v33-terminal {
-    min-height: 70px;
-    padding: 12px 16px;
-    border-color: rgba(103, 232, 249, 0.14);
-    background:
-      linear-gradient(100deg, rgba(6, 182, 212, 0.052), transparent 34%, rgba(217, 70, 239, 0.035)),
-      rgba(2, 9, 22, 0.66);
-    box-shadow:
-      0 18px 46px rgba(0, 0, 0, 0.27),
-      inset 0 1px 0 rgba(255, 255, 255, 0.035),
-      0 0 24px rgba(103, 232, 249, 0.025);
-  }
-
-  #home .terminal-v33-controls {
-    gap: 6px;
-    opacity: 0.9;
-  }
-
-  #home .terminal-v33-controls i {
-    width: 7px;
-    height: 7px;
-  }
-
-  #home .terminal-v33-body {
-    gap: 4px;
-    padding-inline-start: clamp(18px, 1.35vw, 24px);
-  }
-
-  #home .terminal-v33-body small {
-    color: #6d8099;
-    font-size: 0.56rem;
-  }
-
-  #home .terminal-v33-line {
-    gap: 7px;
-    font-size: 0.78rem;
-  }
-
-  #home #hero-v33-terminal-text {
-    color: #e1edf9;
-    text-shadow: 0 0 14px rgba(103, 232, 249, 0.045);
-  }
-
-  #home .terminal-v33-live {
-    padding: 6px 8px;
-    border: 1px solid rgba(52, 211, 153, 0.12);
-    border-radius: 9px;
-    background: rgba(4, 31, 29, 0.24);
-  }
-
   /* Planetary system: slightly tighter and more connected visually. */
   #home .hero-v33-planetary {
     min-height: 560px;

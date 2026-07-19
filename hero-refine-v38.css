@@ -28,10 +28,6 @@
     animation-duration: 4.6s !important;
   }
 
-  #home .terminal-v33-body {
-    padding-inline-start: clamp(14px, 1.1vw, 20px);
-  }
-
   /* Clean X-only portrait close control. */
   .portrait-close {
     top: 12px !important;
