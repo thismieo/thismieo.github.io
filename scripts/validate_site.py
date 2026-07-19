@@ -171,6 +171,52 @@ def main() -> int:
     if missing_runtime:
         errors.append(f"Required runtime assets are not loaded: {', '.join(missing_runtime)}")
 
+    dynamic_runtime = {
+        "micro-polish.css": ("hero-interface-v68.js", 'microStylesheet.href = "micro-polish.css'),
+    }
+    for asset, (loader_name, loader_token) in dynamic_runtime.items():
+        asset_path = ROOT / asset
+        loader_path = ROOT / loader_name
+        if not asset_path.is_file():
+            errors.append(f"Dynamically loaded asset is missing: {asset}")
+            continue
+        if not loader_path.is_file():
+            errors.append(f"Dynamic asset loader is missing: {loader_name}")
+            continue
+        loader_text = loader_path.read_text(encoding="utf-8", errors="replace")
+        if loader_token not in loader_text:
+            errors.append(f"Dynamic asset is no longer loaded by {loader_name}: {asset}")
+
+    root_runtime = {path.name for path in [*css_files, *js_files]}
+    allowed_runtime = loaded_assets | set(dynamic_runtime)
+    orphan_runtime = sorted(root_runtime - allowed_runtime)
+    if orphan_runtime:
+        errors.append(f"Unreferenced root CSS/JavaScript files: {', '.join(orphan_runtime)}")
+
+    required_support_files = {
+        ".gitignore",
+        "README.md",
+        "index.html",
+    }
+    missing_support = sorted(name for name in required_support_files if not (ROOT / name).is_file())
+    if missing_support:
+        errors.append(f"Required repository files are missing: {', '.join(missing_support)}")
+
+    allowed_root_files = required_support_files | root_runtime
+    actual_root_files = {path.name for path in ROOT.iterdir() if path.is_file()}
+    unexpected_root_files = sorted(actual_root_files - allowed_root_files)
+    if unexpected_root_files:
+        errors.append(f"Unexpected root files: {', '.join(unexpected_root_files)}")
+
+    allowed_root_directories = {".git", ".github", "scripts"}
+    unexpected_root_directories = sorted(
+        path.name
+        for path in ROOT.iterdir()
+        if path.is_dir() and path.name not in allowed_root_directories
+    )
+    if unexpected_root_directories:
+        errors.append(f"Unexpected root directories: {', '.join(unexpected_root_directories)}")
+
     required_index_tokens = (
         'data-release="2026.07.19.97"',
         'learning-console-v92.css?v=20260719.92',

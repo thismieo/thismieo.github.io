@@ -1,46 +1,65 @@
 # Mohammed Muayad — Personal Portfolio
 
-A responsive personal portfolio website for **Mohammed Muayad**, an AI Engineering Student from Baghdad, Iraq.
+Production repository for the responsive portfolio of **Mohammed Muayad**, an AI Engineering Student from Baghdad, Iraq.
 
-## Website
-
-The production website will be available at:
+## Live Website
 
 **https://thismieo.github.io**
 
-## Portfolio V1
+## Current Scope
 
-The first version includes:
+The portfolio presents Mohammed's identity, learning journey, technology direction, projects, goals, and contact channels through one responsive interface for desktop and mobile devices.
 
-- Responsive desktop, tablet, and mobile layouts
-- Futuristic AI visual identity matching the GitHub profile
-- Hero, About, Learning Journey, Technology Stack, Focus Areas, Projects, Goals, and Contact sections
-- Mobile navigation
-- Scroll-based reveal animations
-- Accessible reduced-motion support
-- Direct links to GitHub, email, Kaggle, and Instagram
+The current production release includes:
 
-## Current Learning Phase
+- Semantic single-page HTML structure
+- Layered responsive CSS for desktop, tablet, and mobile layouts
+- Modular JavaScript for navigation, project visuals, contact interactions, and the planetary Hero system
+- Keyboard-accessible navigation and reduced-motion support
+- GitHub Pages deployment from the `main` branch
+- Automated structural, asset, CSS, JavaScript, and repository-cleanliness validation
 
-- Python foundations
-- Conditions and loops
-- Algorithms and problem solving
-- Git and GitHub workflow
-
-## Development Workflow
-
-Development is completed on the `dev-portfolio-v1` branch before review and deployment to `main`.
-
-## Project Structure
+## Repository Structure
 
 ```text
 thismieo.github.io/
+├── .github/workflows/validate-site.yml
+├── scripts/validate_site.py
 ├── index.html
-├── styles.css
-├── script.js
+├── *.css
+├── *.js
+├── .gitignore
 └── README.md
 ```
 
+The HTML entry point explicitly loads production stylesheets and scripts. The only intentionally dynamic local stylesheet is `micro-polish.css`, loaded by `hero-interface-v68.js`.
+
+## Validation
+
+Pull requests and updates to `main` are checked for:
+
+- Missing local assets or navigation targets
+- Duplicate HTML identifiers and runtime references
+- Unbalanced CSS and merge-conflict markers
+- JavaScript syntax errors
+- Unreferenced root CSS or JavaScript files
+- Unexpected files or directories
+- Required responsive and planetary-system regression tokens
+- Whitespace errors
+
+The local structural validator can be run with:
+
+```bash
+python3 scripts/validate_site.py
+```
+
+## Maintenance Rules
+
+- `main` contains the production website.
+- `backup/stable-2026-07-19` preserves the accepted stable release before repository cleanup.
+- New work should be completed on a dedicated branch and validated through a pull request.
+- Obsolete runtime files must be removed only after confirming they are not referenced directly or dynamically.
+
 ---
 
-**Learning Python · Building AI Skills · One commit at a time.**
+**Learning Python · Building AI Skills · One verified commit at a time.**
