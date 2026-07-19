@@ -37,9 +37,9 @@ validator = validator.replace('(ROOT / "learning-console-v89.css")', '(ROOT / "l
 old_required = '''    required_console_css = (
         "grid-area: console",
         "@keyframes heroConsoleV89Cycle",
-        ".hero-console-v89-message:nth-child(1)",
-        ".hero-console-v89-message:nth-child(2)",
-        ".hero-console-v89-message:nth-child(3)",
+        ".hero-console-v90-message:nth-child(1)",
+        ".hero-console-v90-message:nth-child(2)",
+        ".hero-console-v90-message:nth-child(3)",
         "@media (max-width: 860px)",
         "@media (prefers-reduced-motion: reduce)",
     )
