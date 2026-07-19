@@ -2,7 +2,7 @@
   "use strict";
 
   // Stable semantic classes keep legacy hero chip styling isolated from this component.
-  document.documentElement.dataset.release = "2026.07.19.82";
+  document.documentElement.dataset.release = "2026.07.19.83";
 
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
@@ -77,7 +77,7 @@
 
   const rail = document.createElement("div");
   rail.className = "hero-tech-rail";
-  rail.dataset.techIcons = "v82";
+  rail.dataset.techIcons = "v83";
   rail.dataset.presentation = "compact-terminal-rail";
   rail.dataset.wave = "continuous";
   rail.setAttribute("aria-label", "Official learning resources for the current technical path");
@@ -93,14 +93,27 @@
     item.setAttribute("aria-label", `Open the official ${title} ${subtitle} resource in a new tab`);
     item.title = `${title} ${subtitle}`;
 
-    const showTapGlow = () => {
-      item.classList.remove("is-activating");
-      void item.offsetWidth;
-      item.classList.add("is-activating");
-      window.setTimeout(() => item.classList.remove("is-activating"), 380);
+    const beginPress = (event) => {
+      item.classList.add("is-pressing");
+      if (event.pointerId !== undefined && item.setPointerCapture) {
+        try {
+          item.setPointerCapture(event.pointerId);
+        } catch {
+          // Pointer capture is an enhancement; native link behavior remains intact.
+        }
+      }
     };
 
-    item.addEventListener("pointerdown", showTapGlow, { passive: true });
+    const endPress = () => {
+      item.classList.remove("is-pressing");
+    };
+
+    item.addEventListener("pointerdown", beginPress);
+    item.addEventListener("pointerup", endPress);
+    item.addEventListener("pointercancel", endPress);
+    item.addEventListener("lostpointercapture", endPress);
+    item.addEventListener("dragstart", endPress);
+    item.addEventListener("blur", endPress);
 
     const iconShell = document.createElement("span");
     iconShell.className = "hero-tech-icon-shell";
@@ -126,6 +139,10 @@
     textWrap.append(mainText, subText);
     item.append(iconShell, textWrap);
     rail.append(item);
+  });
+
+  window.addEventListener("blur", () => {
+    rail.querySelectorAll(".is-pressing").forEach((item) => item.classList.remove("is-pressing"));
   });
 
   actions.before(rail);
