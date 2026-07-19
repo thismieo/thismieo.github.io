@@ -1,131 +1,287 @@
-/* Portfolio V102 — professional project telemetry and continuous visual motion. */
+/* Portfolio V103 — aligned project footers, readable telemetry, and clean motion paths. */
 
 /* ========================================================================== 
-   TELEMETRY
+   SECTION LABEL CLEANUP
+   Hide numbered eyebrow labels such as “06 / BUILD LOG” without reserving space.
    ========================================================================== */
 
-#projects .project-v102-readout {
+.section-index {
+  display: none !important;
+}
+
+.section-heading h2,
+.goals-copy h2,
+.contact-card h2,
+.thank-you-card h2 {
+  margin-top: 0 !important;
+}
+
+/* ========================================================================== 
+   PROJECT VISUAL STRUCTURE
+   The scene occupies the upper area. Metadata and telemetry share one aligned
+   footer row below it, so no information floats over the artwork.
+   ========================================================================== */
+
+#projects .project-v103-visual {
+  position: relative;
+  isolation: isolate;
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 220px !important;
+  min-height: 220px !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+#projects .project-v103-stage {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#projects .project-v103-stage .project-v54-svg,
+#projects .project-v103-stage .project-v54-svg.project-v54-traffic {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  transform: none !important;
+  transform-origin: center !important;
+  overflow: hidden !important;
+}
+
+#projects .project-v103-footer {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 9px 13px 11px;
+  background:
+    linear-gradient(180deg, rgba(5, 13, 28, 0.46), rgba(4, 10, 23, 0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(137, 191, 234, 0.14),
+    0 -12px 28px rgba(2, 8, 19, 0.16);
+}
+
+#projects .project-v103-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 13px;
+  width: 54px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(103, 232, 249, 0.78), transparent);
   pointer-events: none;
 }
 
-#projects .project-v102-readout .project-v54-chip {
-  fill: rgba(3, 10, 24, 0.24) !important;
-  stroke: none !important;
+/* ========================================================================== 
+   LEFT FOOTER LABEL
+   ========================================================================== */
+
+#projects .visual-badge.project-v54-badge.project-v103-badge {
+  position: relative !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 100%;
+  padding: 5px 0 5px 12px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  overflow: visible !important;
 }
 
-#projects .project-v102-readout-glow {
-  fill: rgba(103, 232, 249, 0.07);
-  stroke: none;
+#projects .visual-badge.project-v54-badge.project-v103-badge::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #67e8f9, #818cf8 58%, #f0a8bf);
+  box-shadow: 0 0 10px rgba(103, 232, 249, 0.28);
 }
 
-#projects .project-v102-readout-health .project-v102-readout-glow {
-  fill: rgba(110, 231, 183, 0.11);
+#projects .visual-badge.project-v54-badge.project-v103-badge::after {
+  display: none !important;
 }
 
-#projects .project-v102-readout-fraud .project-v102-readout-glow {
-  fill: rgba(240, 168, 191, 0.105);
+#projects .project-v103-badge span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.52rem !important;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: 0.135em !important;
+  text-transform: uppercase;
+  color: rgba(197, 221, 241, 0.78) !important;
 }
 
-#projects .project-v102-readout-traffic .project-v102-readout-glow {
-  fill: rgba(167, 139, 250, 0.11);
+#projects .project-v103-badge b {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 !important;
+  font-size: 0.72rem !important;
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: 0.045em !important;
+  color: #f4f9ff !important;
 }
 
-#projects .project-v102-readout-divider {
-  stroke: rgba(188, 218, 242, 0.17);
-  stroke-width: 0.8;
-  stroke-linecap: round;
+/* ========================================================================== 
+   RIGHT FOOTER TELEMETRY
+   Icons remain frameless. Label, value, and state have a clear visual hierarchy.
+   ========================================================================== */
+
+#projects .project-v103-telemetry {
+  display: grid;
+  grid-template-columns: 30px minmax(0, auto);
+  align-items: center;
+  gap: 7px;
+  min-width: 126px;
+  min-height: 46px;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(4, 12, 27, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-#projects .project-v102-readout-icon {
-  fill: rgba(103, 232, 249, 0.08);
-  stroke: #a8eff7;
-  stroke-width: 1.35;
+#projects .project-v103-telemetry-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: #9beef5;
+}
+
+#projects .project-v103-telemetry-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: rgba(103, 232, 249, 0.06);
+  stroke: currentColor;
+  stroke-width: 1.45;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 5px rgba(103, 232, 249, 0.3));
+  overflow: visible;
+  filter: drop-shadow(0 0 5px rgba(103, 232, 249, 0.25));
 }
 
-#projects .project-v102-readout-icon-health {
-  fill: rgba(110, 231, 183, 0.12);
-  stroke: #7ce8ba;
-  filter: drop-shadow(0 0 5px rgba(110, 231, 183, 0.32));
+#projects .project-v103-telemetry-health .project-v103-telemetry-icon {
+  color: #7ce8ba;
 }
 
-#projects .project-v102-readout-icon-fraud {
-  fill: rgba(240, 168, 191, 0.06);
-  stroke: #f5b7c9;
-  filter: drop-shadow(0 0 5px rgba(240, 168, 191, 0.3));
+#projects .project-v103-telemetry-health .project-v103-telemetry-icon svg {
+  fill: rgba(110, 231, 183, 0.07);
+  filter: drop-shadow(0 0 5px rgba(110, 231, 183, 0.28));
 }
 
-#projects .project-v102-readout-icon-traffic {
+#projects .project-v103-telemetry-fraud .project-v103-telemetry-icon {
+  color: #f5b7c9;
+}
+
+#projects .project-v103-telemetry-fraud .project-v103-telemetry-icon svg {
+  fill: rgba(240, 168, 191, 0.05);
+  filter: drop-shadow(0 0 5px rgba(240, 168, 191, 0.27));
+}
+
+#projects .project-v103-telemetry-traffic .project-v103-telemetry-icon {
+  color: #b9adff;
+}
+
+#projects .project-v103-telemetry-traffic .project-v103-telemetry-icon svg {
   fill: none;
-  stroke: #b9adff;
-  filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.32));
+  filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.28));
 }
 
-#projects .project-v102-icon-mark {
-  fill: none;
-  stroke: #ffe7ef;
-  stroke-width: 1.25;
-  stroke-linecap: round;
+#projects .project-v103-telemetry-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
 }
 
-#projects .project-v102-readout-label,
-#projects .project-v102-readout-value,
-#projects .project-v102-readout-state {
-  text-anchor: middle;
-  paint-order: stroke fill;
-  stroke: rgba(3, 9, 22, 0.74);
-}
-
-#projects .project-v102-readout-label {
-  fill: rgba(217, 232, 247, 0.82);
-  font-size: 7.1px;
+#projects .project-v103-telemetry-copy > small {
+  white-space: nowrap;
+  font-size: 0.5rem;
+  line-height: 1;
   font-weight: 700;
-  letter-spacing: 0.115em;
-  stroke-width: 0.3px;
+  letter-spacing: 0.12em;
+  color: rgba(207, 225, 242, 0.76);
 }
 
-#projects .project-v102-readout-value {
-  fill: #f5fdff;
-  font-size: 11.2px;
-  font-weight: 800;
-  letter-spacing: 0.025em;
-  stroke-width: 0.38px;
+#projects .project-v103-telemetry-copy > span {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
 }
 
-#projects .project-v102-readout-state {
+#projects .project-v103-telemetry-copy strong {
+  white-space: nowrap;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 6.4px;
-  font-weight: 700;
-  letter-spacing: 0.17em;
-  stroke-width: 0.28px;
+  font-size: 0.84rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  color: #f7fcff;
 }
 
-#projects .project-v102-readout-state.is-health {
-  fill: #88ebbf;
+#projects .project-v103-telemetry-copy em {
+  white-space: nowrap;
+  font-style: normal;
+  font-size: 0.46rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.115em;
 }
 
-#projects .project-v102-readout-state.is-fraud {
-  fill: #ffb9cd;
+#projects .project-v103-telemetry-health em {
+  color: #88ebbf;
 }
 
-#projects .project-v102-readout-state.is-traffic {
-  fill: #bcb3ff;
+#projects .project-v103-telemetry-fraud em {
+  color: #ffb9cd;
+}
+
+#projects .project-v103-telemetry-traffic em {
+  color: #bcb3ff;
 }
 
 /* ========================================================================== 
    FRAUD DETECTION — RISK INTELLIGENCE
    ========================================================================== */
 
-#projects .project-v102-fraud-orbits circle {
+#projects .project-v103-fraud-orbits circle {
   fill: none;
   stroke: rgba(147, 197, 253, 0.12);
   stroke-width: 1;
   stroke-dasharray: 3 7;
 }
 
-#projects .project-v102-fraud-links path {
+#projects .project-v103-fraud-links path {
   fill: none;
   stroke: rgba(147, 197, 253, 0.3);
   stroke-width: 1.2;
@@ -133,36 +289,36 @@
   stroke-linecap: round;
 }
 
-#projects .project-v102-fraud-links path.is-alert {
+#projects .project-v103-fraud-links path.is-alert {
   stroke: rgba(240, 168, 191, 0.58);
 }
 
-#projects.v6-active .project-v102-fraud-links path {
-  animation: projectV102FraudSignal 8.2s linear infinite;
+#projects.v6-active .project-v103-fraud-links path {
+  animation: projectV103FraudSignal 8.6s linear infinite;
 }
 
-#projects .project-v102-fraud-scan {
+#projects .project-v103-fraud-scan {
   transform-box: view-box;
-  transform-origin: 164px 60px;
+  transform-origin: 180px 59px;
 }
 
-#projects .project-v102-fraud-scan path {
-  fill: url(#project-v102-fraud-scan-gradient);
+#projects .project-v103-fraud-scan path {
+  fill: url(#project-v103-fraud-scan-gradient);
   opacity: 0.78;
 }
 
-#projects .project-v102-fraud-scan line {
+#projects .project-v103-fraud-scan line {
   stroke: rgba(174, 221, 255, 0.46);
   stroke-width: 1.1;
   stroke-linecap: round;
   filter: drop-shadow(0 0 4px rgba(147, 197, 253, 0.36));
 }
 
-#projects.v6-active .project-v102-fraud-scan {
-  animation: projectV102FraudScan 9.6s linear infinite;
+#projects.v6-active .project-v103-fraud-scan {
+  animation: projectV103FraudScan 10.2s linear infinite;
 }
 
-#projects .project-v102-fraud-core-halo {
+#projects .project-v103-fraud-core-halo {
   fill: none;
   stroke: rgba(167, 139, 250, 0.22);
   stroke-width: 1;
@@ -170,18 +326,18 @@
   transform-origin: center;
 }
 
-#projects.v6-active .project-v102-fraud-core-halo {
-  animation: projectV102FraudCoreHalo 4.4s ease-out infinite;
+#projects.v6-active .project-v103-fraud-core-halo {
+  animation: projectV103FraudCoreHalo 4.6s ease-out infinite;
 }
 
-#projects .project-v102-fraud-core {
-  fill: url(#project-v102-fraud-core-gradient);
+#projects .project-v103-fraud-core {
+  fill: url(#project-v103-fraud-core-gradient);
   stroke: rgba(219, 231, 255, 0.34);
   stroke-width: 1;
   filter: url(#project-v54-fraud-glow-filter);
 }
 
-#projects .project-v102-fraud-shield {
+#projects .project-v103-fraud-shield {
   fill: rgba(7, 16, 36, 0.5);
   stroke: #eef4ff;
   stroke-width: 1.25;
@@ -189,14 +345,14 @@
   stroke-linejoin: round;
 }
 
-#projects .project-v102-fraud-shield-mark {
+#projects .project-v103-fraud-shield-mark {
   fill: none;
   stroke: #ffd5e2;
   stroke-width: 1.25;
   stroke-linecap: round;
 }
 
-#projects .project-v102-fraud-node {
+#projects .project-v103-fraud-node {
   fill: #b2d9ff;
   stroke: rgba(240, 249, 255, 0.68);
   stroke-width: 1;
@@ -205,20 +361,20 @@
   transform-origin: center;
 }
 
-#projects.v6-active .project-v102-fraud-node {
-  animation: projectV102FraudNode 3.8s ease-in-out infinite;
+#projects.v6-active .project-v103-fraud-node {
+  animation: projectV103FraudNode 3.9s ease-in-out infinite;
 }
 
-#projects .project-v102-fraud-node.is-alert {
+#projects .project-v103-fraud-node.is-alert {
   fill: #f0a8bf;
   stroke: #fff2f6;
 }
 
-#projects.v6-active .project-v102-fraud-node.is-alert {
-  animation: projectV102FraudAlert 2.2s ease-in-out infinite;
+#projects.v6-active .project-v103-fraud-node.is-alert {
+  animation: projectV103FraudAlert 2.3s ease-in-out infinite;
 }
 
-#projects .project-v102-fraud-alert-halo {
+#projects .project-v103-fraud-alert-halo {
   fill: none;
   stroke: rgba(240, 168, 191, 0.56);
   stroke-width: 1;
@@ -226,95 +382,97 @@
   transform-origin: center;
 }
 
-#projects.v6-active .project-v102-fraud-alert-halo {
-  animation: projectV102FraudAlertHalo 3.1s ease-out infinite;
+#projects.v6-active .project-v103-fraud-alert-halo {
+  animation: projectV103FraudAlertHalo 3.2s ease-out infinite;
 }
 
-#projects .project-v102-fraud-packet {
+#projects .project-v103-fraud-packet {
   fill: #f2fbff;
   stroke: #93c5fd;
   stroke-width: 1.3;
   filter: url(#project-v54-fraud-glow-filter);
 }
 
-#projects .project-v102-fraud-packet.is-alert {
+#projects .project-v103-fraud-packet.is-alert {
   fill: #fff1f5;
   stroke: #f0a8bf;
 }
 
 /* ========================================================================== 
-   TRAFFIC — OPEN OFFSCREEN ROUTES
-   The motion paths end beyond both sides of the viewBox. The repeat jump happens
-   while each vehicle is invisible, so no return segment can appear below the road.
+   TRAFFIC — PATH-LOCKED VEHICLES
+   Road and motion paths use identical geometry. Vehicles start and finish well
+   outside the viewBox, so loop resets are invisible and never leave the road.
    ========================================================================== */
 
-#projects .project-v102-motion-path {
+#projects .project-v103-city-line {
+  fill: none;
+  stroke: rgba(167, 139, 250, 0.085);
+  stroke-width: 1;
+}
+
+#projects .project-v103-motion-path {
   fill: none;
   stroke: none;
 }
 
-#projects .project-v102-vehicle {
+#projects .project-v103-vehicle {
   filter: url(#project-v54-traffic-glow-filter);
 }
 
-#projects .project-v102-vehicle-body {
+#projects .project-v103-vehicle-body {
   fill: rgba(235, 253, 255, 0.98);
   stroke: #67e8f9;
   stroke-width: 0.95;
 }
 
-#projects .project-v102-vehicle-roof {
+#projects .project-v103-vehicle-roof {
   fill: rgba(103, 232, 249, 0.42);
   stroke: #b8f6fb;
   stroke-width: 0.75;
   stroke-linejoin: round;
 }
 
-#projects .project-v102-vehicle-window {
+#projects .project-v103-vehicle-window {
   fill: rgba(6, 22, 38, 0.82);
   stroke: rgba(220, 251, 255, 0.4);
   stroke-width: 0.45;
 }
 
-#projects .project-v102-vehicle-wheel {
+#projects .project-v103-vehicle-wheel {
   fill: #050c18;
   stroke: rgba(239, 253, 255, 0.78);
   stroke-width: 0.55;
 }
 
-#projects .project-v102-vehicle-light {
+#projects .project-v103-vehicle-light {
   fill: #f9ffff;
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
 }
 
-#projects .project-v102-vehicle.is-pink .project-v102-vehicle-body {
+#projects .project-v103-vehicle.is-pink .project-v103-vehicle-body {
   fill: rgba(255, 240, 247, 0.98);
   stroke: #f0a8bf;
 }
 
-#projects .project-v102-vehicle.is-pink .project-v102-vehicle-roof {
+#projects .project-v103-vehicle.is-pink .project-v103-vehicle-roof {
   fill: rgba(240, 168, 191, 0.42);
   stroke: #ffd7e3;
 }
 
-#projects .project-v102-vehicle.is-secondary {
-  opacity: 0.74;
+#projects .project-v103-vehicle.is-secondary {
+  opacity: 0.72;
 }
 
 #projects.v6-active .project-v54-traffic-road.is-cyan {
-  animation: projectV102TrafficFlow 9.8s linear infinite;
+  animation: projectV103TrafficFlow 10.6s linear infinite;
 }
 
 #projects.v6-active .project-v54-traffic-road.is-pink {
-  animation: projectV102TrafficFlowReverse 11.4s linear infinite;
+  animation: projectV103TrafficFlowReverse 12.2s linear infinite;
 }
 
 #projects.v6-active .project-v54-traffic-zone {
-  animation-duration: 3.2s;
-}
-
-#projects.v6-active .project-v54-flow-bar {
-  animation-duration: 3s;
+  animation-duration: 3.3s;
 }
 
 /* ========================================================================== 
@@ -322,36 +480,35 @@
    ========================================================================== */
 
 @media (max-width: 860px) {
-  #projects .project-visual-v54 {
-    min-height: 184px;
+  #projects .project-v103-visual {
+    height: 198px !important;
+    min-height: 198px !important;
   }
 
-  #projects .project-v54-svg,
-  #projects .project-v54-svg.project-v54-traffic {
-    inset: 6px auto auto 50% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    transform: translate3d(-50%, 0, 0) !important;
+  #projects .project-v103-footer {
+    min-height: 61px;
+    padding: 8px 11px 10px;
+    gap: 8px;
   }
 
-  #projects .project-v102-readout-label {
-    font-size: 7.1px !important;
+  #projects .project-v103-telemetry {
+    min-width: 122px;
+    grid-template-columns: 28px minmax(0, auto);
+    gap: 6px;
+    padding-inline: 5px;
   }
 
-  #projects .project-v102-readout-value {
-    font-size: 11.2px !important;
+  #projects .project-v103-telemetry-icon,
+  #projects .project-v103-telemetry-icon svg {
+    width: 27px;
+    height: 27px;
   }
 
-  #projects .project-v102-readout-state {
-    font-size: 6.4px !important;
-  }
-
-  #projects .project-v102-fraud-links path {
+  #projects .project-v103-fraud-links path {
     stroke-width: 1.3;
   }
 
-  #projects .project-v102-vehicle {
+  #projects .project-v103-vehicle {
     filter: none;
   }
 
@@ -363,17 +520,70 @@
   }
 }
 
+@media (max-width: 580px) {
+  #projects .project-v103-visual {
+    height: 194px !important;
+    min-height: 194px !important;
+  }
+
+  #projects .project-v103-footer {
+    padding-inline: 10px;
+  }
+
+  #projects .project-v103-badge span {
+    font-size: 0.49rem !important;
+  }
+
+  #projects .project-v103-badge b {
+    font-size: 0.68rem !important;
+  }
+}
+
 @media (max-width: 390px) {
-  #projects .project-v102-readout-label {
-    font-size: 6.8px !important;
+  #projects .project-v103-visual {
+    height: 190px !important;
+    min-height: 190px !important;
   }
 
-  #projects .project-v102-readout-value {
-    font-size: 10.8px !important;
+  #projects .project-v103-footer {
+    gap: 6px;
+    padding: 7px 8px 9px;
   }
 
-  #projects .project-v102-readout-state {
-    font-size: 6.1px !important;
+  #projects .visual-badge.project-v54-badge.project-v103-badge {
+    padding-left: 9px !important;
+  }
+
+  #projects .project-v103-telemetry {
+    min-width: 116px;
+    grid-template-columns: 25px minmax(0, auto);
+    gap: 5px;
+    padding-inline: 4px;
+  }
+
+  #projects .project-v103-telemetry-icon,
+  #projects .project-v103-telemetry-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  #projects .project-v103-telemetry-copy > small {
+    font-size: 0.46rem;
+  }
+
+  #projects .project-v103-telemetry-copy strong {
+    font-size: 0.78rem;
+  }
+
+  #projects .project-v103-telemetry-copy em {
+    font-size: 0.42rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 860px) {
+  #projects .project-v103-visual {
+    height: 184px !important;
+    min-height: 184px !important;
   }
 }
 
@@ -381,45 +591,47 @@
    MOTION
    ========================================================================== */
 
-@keyframes projectV102FraudSignal {
-  to { stroke-dashoffset: -76; }
+@keyframes projectV103FraudSignal {
+  to { stroke-dashoffset: -78; }
 }
 
-@keyframes projectV102FraudScan {
+@keyframes projectV103FraudScan {
   to { transform: rotate(360deg); }
 }
 
-@keyframes projectV102FraudCoreHalo {
+@keyframes projectV103FraudCoreHalo {
   0% { transform: scale(0.78); opacity: 0.66; }
   78%, 100% { transform: scale(1.8); opacity: 0; }
 }
 
-@keyframes projectV102FraudNode {
+@keyframes projectV103FraudNode {
   0%, 100% { opacity: 0.66; transform: scale(0.92); }
   50% { opacity: 1; transform: scale(1.08); }
 }
 
-@keyframes projectV102FraudAlert {
+@keyframes projectV103FraudAlert {
   0%, 100% { opacity: 0.84; transform: scale(0.95); }
   50% { opacity: 1; transform: scale(1.18); }
 }
 
-@keyframes projectV102FraudAlertHalo {
+@keyframes projectV103FraudAlertHalo {
   0% { transform: scale(0.55); opacity: 0.74; }
   80%, 100% { transform: scale(2.3); opacity: 0; }
 }
 
-@keyframes projectV102TrafficFlow {
+@keyframes projectV103TrafficFlow {
   to { stroke-dashoffset: -96; }
 }
 
-@keyframes projectV102TrafficFlowReverse {
+@keyframes projectV103TrafficFlowReverse {
   to { stroke-dashoffset: 96; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #projects .project-v102-fraud *,
-  #projects .project-v102-traffic * {
+  #projects .project-v103-health *,
+  #projects .project-v103-fraud *,
+  #projects .project-v103-traffic *,
+  #projects .project-visual-v54::after {
     animation: none !important;
   }
 
