@@ -1,0 +1,221 @@
+name: Finalize V82 compact technical rail
+
+on:
+  push:
+    branches:
+      - feat/v82-compact-terminal-rail
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v82-compact-terminal-rail
+          fetch-depth: 0
+
+      - name: Remove legacy rail CSS and wire V82 release
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          # Remove the obsolete V68 chip styling that was creating nested frames
+          # and animated underline artifacts inside the current rail.
+          interface_path = Path("hero-interface-v68.css")
+          interface = interface_path.read_text(encoding="utf-8")
+
+          base_start = interface.index("#home.is-hero-v68 .hero-v68-tech-strip {")
+          base_end = interface.index("@media (min-width: 861px) {", base_start)
+          interface = interface[:base_start] + interface[base_end:]
+
+          obsolete_blocks = (
+              '''  #home.is-hero-v68 .hero-v68-tech-strip {
+              justify-content: center;
+              margin: 16px auto 17px;
+              gap: 6px;
+            }
+
+            #home.is-hero-v68 .hero-v68-tech-strip span {
+              min-height: 27px;
+              padding: 7px 9px;
+              font-size: 0.53rem;
+              letter-spacing: 0.07em;
+            }
+
+          ''',
+              '''  #home.is-hero-v68 .hero-v68-tech-strip {
+              max-width: 350px;
+            }
+
+            #home.is-hero-v68 .hero-v68-tech-strip span {
+              padding-inline: 8px;
+              font-size: 0.49rem;
+            }
+
+          ''',
+              '''  #home.is-hero-v68 .hero-v68-tech-strip span {
+              font-size: 0.46rem;
+              letter-spacing: 0.05em;
+            }
+          ''',
+              '''@media (prefers-reduced-motion: reduce) {
+            #home.is-hero-v68 .hero-v68-tech-strip span::after {
+              animation: none !important;
+            }
+          }
+          ''',
+          )
+
+          for block in obsolete_blocks:
+              if interface.count(block) != 1:
+                  raise SystemExit(f"Expected one obsolete interface block, found {interface.count(block)}")
+              interface = interface.replace(block, "", 1)
+
+          interface_path.write_text(interface.rstrip() + "\n", encoding="utf-8")
+
+          index_path = Path("index.html")
+          index = index_path.read_text(encoding="utf-8")
+          replacements = {
+              '<html lang="en" data-release="2026.07.19.81">': '<html lang="en" data-release="2026.07.19.82">',
+              'hero-interface-v68.css?v=20260718.69': 'hero-interface-v68.css?v=20260719.82',
+              'tech-icons-v69.css?v=20260719.81': 'tech-icons-v69.css?v=20260719.82',
+              'hero-interface-v68.js?v=20260719.81': 'hero-interface-v68.js?v=20260719.82',
+          }
+          for old, new in replacements.items():
+              if index.count(old) != 1:
+                  raise SystemExit(f"Expected exactly one index occurrence of {old!r}; found {index.count(old)}")
+              index = index.replace(old, new, 1)
+          index_path.write_text(index, encoding="utf-8")
+
+          validator_path = Path("scripts/validate_site.py")
+          validator = validator_path.read_text(encoding="utf-8")
+          start_marker = '    if \'data-release="2026.07.19.81"\' not in index_text:'
+          end_marker = '    exact_once_assets = ('
+          start = validator.index(start_marker)
+          end = validator.index(end_marker, start)
+
+          validation_block = '''    if 'data-release="2026.07.19.82"' not in index_text:
+              errors.append("V82 release marker is missing")
+
+              if 'hero-interface-v68.css?v=20260719.82' not in index_text:
+                  errors.append("V82 hero interface stylesheet cache key is missing")
+
+              if 'tech-icons-v69.css?v=20260719.82' not in index_text:
+                  errors.append("V82 technical rail stylesheet cache key is missing")
+
+              if 'hero-interface-v68.js?v=20260719.82' not in index_text:
+                  errors.append("V82 technical rail script cache key is missing")
+
+              tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
+              tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
+              hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")
+
+              required_js_tokens = (
+                  'has-tech-rail',
+                  'hero-tech-rail',
+                  'hero-tech-item',
+                  'hero-tech-icon-shell',
+                  'hero-tech-icon',
+                  'hero-tech-copy',
+                  'document.createElement("a")',
+                  'dataset.techIcons = "v82"',
+              )
+              for token in required_js_tokens:
+                  if token not in tech_js_text:
+                      errors.append(f"V82 technical rail JavaScript token is missing: {token}")
+
+              required_css_tokens = (
+                  '#home.has-tech-rail .hero-tech-rail',
+                  '#home.has-tech-rail .hero-tech-item',
+                  '@keyframes heroTechRailWave',
+                  '@media (prefers-reduced-motion: reduce)',
+              )
+              for token in required_css_tokens:
+                  if token not in tech_css_text:
+                      errors.append(f"V82 technical rail CSS token is missing: {token}")
+
+              forbidden_js_tokens = (
+                  'window.open(',
+                  'item.addEventListener("click"',
+                  'is-tech-icons-v73',
+                  'is-tech-icons-v81',
+                  'hero-v68-tech-strip',
+                  'hero-v81-tech-rail',
+                  'dataset.techIcons = "v80"',
+                  'dataset.techIcons = "v81"',
+              )
+              for token in forbidden_js_tokens:
+                  if token in tech_js_text:
+                      errors.append(f"Legacy technical rail JavaScript remains: {token}")
+
+              forbidden_css_tokens = (
+                  '.hero-v73-tech-item',
+                  '.hero-v73-tech-strip',
+                  '.hero-v81-tech-item',
+                  '.hero-v81-tech-rail',
+                  'heroV73StripWave',
+                  'heroV81RailWave',
+                  '.hero-tech-item + .hero-tech-item::before',
+                  '.hero-tech-rail::after',
+              )
+              for token in forbidden_css_tokens:
+                  if token in tech_css_text:
+                      errors.append(f"Obsolete or duplicate technical rail CSS remains: {token}")
+
+              legacy_interface_tokens = (
+                  'hero-v68-tech-strip',
+                  'heroV68TechLine',
+              )
+              for token in legacy_interface_tokens:
+                  if token in hero_interface_text:
+                      errors.append(f"Legacy hero chip styling remains in hero-interface-v68.css: {token}")
+
+          '''
+
+          validator = validator[:start] + validation_block + validator[end:]
+          validator_path.write_text(validator, encoding="utf-8")
+          PY
+
+      - name: Validate JavaScript, CSS and repository structure
+        run: |
+          node --check hero-interface-v68.js
+          python scripts/validate_site.py
+          python - <<'PY'
+          from pathlib import Path
+
+          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
+          if css.count("{") != css.count("}"):
+              raise SystemExit("Unbalanced technical rail CSS braces")
+
+          required = (
+              "Python",
+              "Foundations",
+              "Data",
+              "Machine",
+              "Learning",
+              "AI",
+              "Systems",
+          )
+          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
+          missing = [token for token in required if token not in js]
+          if missing:
+              raise SystemExit(f"Missing technical rail content: {missing}")
+
+          if Path("scripts/__pycache__").exists():
+              raise SystemExit("Python cache directory was generated")
+          PY
+
+      - name: Commit finalized V82 release and remove workflow
+        run: |
+          rm -f .github/workflows/v82-finalize.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize compact V82 technical rail"
+          git push origin HEAD:feat/v82-compact-terminal-rail
