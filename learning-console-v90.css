@@ -1,4 +1,4 @@
-/* Portfolio V89 — rebuilt learning console: pure CSS, three short messages, no JavaScript timers. Validated rebuild. */
+/* Portfolio V90 — pure-CSS typing console in the original Hero position. */
 
 #home .hero-v33-story {
   grid-template-areas:
@@ -6,7 +6,7 @@
     "console console";
 }
 
-#home .hero-console-v89 {
+#home .hero-console-v90 {
   grid-area: console;
   position: relative;
   isolation: isolate;
@@ -30,7 +30,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-#home .hero-console-v89::before {
+#home .hero-console-v90::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
@@ -39,29 +39,29 @@
   box-shadow: 0 0 14px rgba(103, 232, 249, 0.26);
 }
 
-#home .hero-console-v89-lights {
+#home .hero-console-v90-lights {
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 
-#home .hero-console-v89-lights i {
+#home .hero-console-v90-lights i {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #67e8f9;
 }
 
-#home .hero-console-v89-lights i:nth-child(2) { background: #818cf8; }
-#home .hero-console-v89-lights i:nth-child(3) { background: #f472b6; }
+#home .hero-console-v90-lights i:nth-child(2) { background: #818cf8; }
+#home .hero-console-v90-lights i:nth-child(3) { background: #f472b6; }
 
-#home .hero-console-v89-copy {
+#home .hero-console-v90-copy {
   min-width: 0;
   display: grid;
   gap: 5px;
 }
 
-#home .hero-console-v89-copy small {
+#home .hero-console-v90-copy small {
   color: #687b94;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.53rem;
@@ -70,34 +70,71 @@
   text-transform: uppercase;
 }
 
-#home .hero-console-v89-messages {
+#home .hero-console-v90-messages {
   position: relative;
   min-width: 0;
-  min-height: 1.2em;
+  min-height: 1.25em;
   overflow: hidden;
+  padding-left: 1.05em;
+  contain: layout paint style;
   color: #dce9f8;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.74rem;
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
 }
 
-#home .hero-console-v89-message {
+#home .hero-console-v90-messages::before {
+  content: "›";
   position: absolute;
-  inset: 0 auto auto 0;
-  max-width: 100%;
+  left: 0;
+  top: 0;
+  color: #7dd3fc;
+  font-weight: 800;
+}
+
+#home .hero-console-v90-message {
+  position: absolute;
+  inset: 0 auto auto 1.05em;
+  width: 0;
+  max-width: calc(100% - 1.05em);
   overflow: hidden;
   opacity: 0;
-  text-overflow: ellipsis;
+  border-right: 1.5px solid rgba(139, 244, 255, 0.88);
+  color: inherit;
+  text-overflow: clip;
   white-space: nowrap;
-  animation: heroConsoleV89Cycle 12.6s ease-in-out infinite;
+  will-change: width, opacity;
 }
 
-#home .hero-console-v89-message:nth-child(1) { animation-delay: 0s; }
-#home .hero-console-v89-message:nth-child(2) { animation-delay: -8.4s; }
-#home .hero-console-v89-message:nth-child(3) { animation-delay: -4.2s; }
+#home .hero-console-v90-message:nth-child(1) {
+  animation-name: heroConsoleV90TypeA;
+  animation-duration: 15s;
+  animation-timing-function: steps(29, end);
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
 
-#home .hero-console-v89-state {
+#home .hero-console-v90-message:nth-child(2) {
+  animation-name: heroConsoleV90TypeB;
+  animation-duration: 15s;
+  animation-timing-function: steps(34, end);
+  animation-delay: 5s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+#home .hero-console-v90-message:nth-child(3) {
+  animation-name: heroConsoleV90TypeC;
+  animation-duration: 15s;
+  animation-timing-function: steps(22, end);
+  animation-delay: 10s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+#home .hero-console-v90-state {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -112,7 +149,7 @@
   text-transform: uppercase;
 }
 
-#home .hero-console-v89-state i {
+#home .hero-console-v90-state i {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -121,7 +158,7 @@
 }
 
 @media (min-width: 861px) and (max-width: 1180px) {
-  #home .hero-console-v89 {
+  #home .hero-console-v90 {
     width: min(100%, 720px);
     margin-left: 176px;
   }
@@ -134,7 +171,7 @@
       "console console" !important;
   }
 
-  #home .hero-console-v89 {
+  #home .hero-console-v90 {
     width: min(100%, 620px);
     min-height: 64px;
     gap: 9px;
@@ -144,58 +181,80 @@
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
   }
 
-  #home .hero-console-v89-copy {
-    gap: 4px;
-  }
+  #home .hero-console-v90-copy { gap: 4px; }
 
-  #home .hero-console-v89-copy small {
+  #home .hero-console-v90-copy small {
     font-size: 0.47rem;
     letter-spacing: 0.095em;
   }
 
-  #home .hero-console-v89-messages {
+  #home .hero-console-v90-messages {
     font-size: clamp(0.61rem, 2.65vw, 0.72rem);
   }
 
-  #home .hero-console-v89-state {
+  #home .hero-console-v90-state {
     padding: 4px 6px;
     font-size: 0.43rem;
   }
 }
 
 @media (max-width: 430px) {
-  #home .hero-console-v89 {
+  #home .hero-console-v90 {
     grid-template-columns: auto minmax(0, 1fr);
     gap: 8px;
     padding: 10px;
   }
 
-  #home .hero-console-v89-state {
+  #home .hero-console-v90-state {
     position: absolute;
     top: 8px;
     right: 8px;
     padding: 3px 5px;
   }
 
-  #home .hero-console-v89-copy {
-    padding-right: 48px;
-  }
+  #home .hero-console-v90-copy { padding-right: 48px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #home .hero-console-v89-message {
+  #home .hero-console-v90-message {
     animation: none !important;
     opacity: 0 !important;
+    width: 0 !important;
+    border-right: 0;
   }
 
-  #home .hero-console-v89-message:first-child {
+  #home .hero-console-v90-message:first-child {
     position: relative;
+    inset: auto;
+    display: inline-block;
+    width: auto !important;
     opacity: 1 !important;
   }
 }
 
-@keyframes heroConsoleV89Cycle {
-  0%, 26% { opacity: 1; }
-  31%, 95% { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes heroConsoleV90TypeA {
+  0% { width: 0; opacity: 0; }
+  0.5% { width: 0; opacity: 1; }
+  15% { width: 29ch; opacity: 1; }
+  27% { width: 29ch; opacity: 1; }
+  32% { width: 0; opacity: 1; }
+  33.333%, 100% { width: 0; opacity: 0; }
+}
+
+@keyframes heroConsoleV90TypeB {
+  0% { width: 0; opacity: 0; }
+  0.5% { width: 0; opacity: 1; }
+  15% { width: 34ch; opacity: 1; }
+  27% { width: 34ch; opacity: 1; }
+  32% { width: 0; opacity: 1; }
+  33.333%, 100% { width: 0; opacity: 0; }
+}
+
+@keyframes heroConsoleV90TypeC {
+  0% { width: 0; opacity: 0; }
+  0.5% { width: 0; opacity: 1; }
+  15% { width: 22ch; opacity: 1; }
+  27% { width: 22ch; opacity: 1; }
+  32% { width: 0; opacity: 1; }
+  33.333%, 100% { width: 0; opacity: 0; }
 }
