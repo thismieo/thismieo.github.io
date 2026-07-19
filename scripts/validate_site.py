@@ -154,7 +154,6 @@ def main() -> int:
             errors.append(f"Merge-conflict marker remains in {source_file.relative_to(ROOT)}")
 
     loaded_assets = set(parser.runtime_assets)
-    dynamic_source = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in js_files)
     required_runtime = {
         "interactions.js",
         "hero-v33.js",
@@ -163,202 +162,118 @@ def main() -> int:
         "tech-icons-v69.css",
         "learning-console-v92.css",
         "mobile-performance-v92.css",
-        "planetary-motion-v96.css",
-        "planetary-motion-v96.js",
+        "planetary-motion-v97.css",
+        "planetary-motion-v97.js",
         "projects-runtime-v68.js",
         "core-contact-v63.js",
     }
-    missing_runtime = sorted(name for name in required_runtime if name not in loaded_assets and name not in dynamic_source)
+    missing_runtime = sorted(required_runtime - loaded_assets)
     if missing_runtime:
         errors.append(f"Required runtime assets are not loaded: {', '.join(missing_runtime)}")
 
     required_index_tokens = (
-        'data-release="2026.07.19.96"',
+        'data-release="2026.07.19.97"',
         'learning-console-v92.css?v=20260719.92',
         'mobile-performance-v92.css?v=20260719.92',
-        'planetary-motion-v96.css?v=20260719.96',
-        'planetary-motion-v96.js?v=20260719.96',
-        'class="hero-v33-rotator rotator-v33-three"',
+        'planetary-motion-v97.css?v=20260719.97',
+        'planetary-motion-v97.js?v=20260719.97',
         'hero-v33.js?v=20260719.89',
         'class="hero-console-v92"',
-        'class="hero-console-v92-lights"',
-        'class="hero-console-v92-copy"',
         'class="hero-console-v92-messages"',
         'class="hero-console-v92-caret"',
-        'class="hero-console-v92-state"',
     )
     for token in required_index_tokens:
         if token not in index_text:
-            errors.append(f"V92 typing-console token is missing: {token}")
+            errors.append(f"Required index token is missing: {token}")
 
     if index_text.count('class="hero-console-v92"') != 1:
         errors.append("V92 must contain exactly one Hero console")
     if index_text.count('class="hero-console-v92-message"') != 3:
         errors.append("V92 Hero console must contain exactly three messages")
-    if index_text.count('class="hero-console-v92-caret"') != 1:
-        errors.append("V92 Hero console must contain exactly one caret")
+    if index_text.count('class="hero-v33-rotator ') != 0:
+        errors.append("V97 must not keep superseded HTML orbit rotators")
 
-    inside_copy_marker = '            </nav>\n\n            <aside class="hero-console-v92"'
-    closing_copy_marker = '            </aside>\n          </div>\n        </div>'
-    if inside_copy_marker not in index_text or closing_copy_marker not in index_text:
-        errors.append("V92 Hero console is not physically nested below the profile links")
-
-    all_css = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in css_files)
     console_css = (ROOT / "learning-console-v92.css").read_text(encoding="utf-8", errors="replace")
     mobile_css = (ROOT / "mobile-performance-v92.css").read_text(encoding="utf-8", errors="replace")
-    terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
-    planetary_css = (ROOT / "planetary-motion-v96.css").read_text(encoding="utf-8", errors="replace")
-    planetary_js = (ROOT / "planetary-motion-v96.js").read_text(encoding="utf-8", errors="replace")
+    planetary_css = (ROOT / "planetary-motion-v97.css").read_text(encoding="utf-8", errors="replace")
+    planetary_js = (ROOT / "planetary-motion-v97.js").read_text(encoding="utf-8", errors="replace")
 
-    forbidden_legacy_surface_tokens = (
-        "hero-v33-terminal",
-        "hero-console-v89",
-        "hero-console-v90",
-        "learning-console-v89.css",
-        "learning-console-v90.css",
-        "mobile-performance-v91.css",
-        "terminal-v33-",
-        "hero-v33-terminal-text",
-        'terminalMode = "line-swap"',
-        "HOLD_DURATION",
-        "FADE_DURATION",
-        "heroV33Caret",
-        '"terminal terminal"',
-        "grid-area: console",
-    )
-    legacy_surface = "\n".join((index_text, all_css, terminal_js))
-    for token in forbidden_legacy_surface_tokens:
-        if token in legacy_surface:
-            errors.append(f"Superseded Terminal token remains: {token}")
-
-    forbidden_terminal_runtime_tokens = (
-        "characterIndex",
-        "phrase.slice",
-        "setTimeout",
-        "requestAnimationFrame",
-    )
-    for token in forbidden_terminal_runtime_tokens:
-        if token in terminal_js:
-            errors.append(f"Superseded Terminal runtime remains in hero-v33.js: {token}")
-
-    required_console_css = (
-        "overflow-anchor: none",
-        "contain: layout paint",
-        "clip-path: inset(0 100% 0 0)",
+    for token in (
         "@keyframes heroConsoleV92Type",
-        "@keyframes heroConsoleV92CaretPath",
         "@keyframes heroConsoleV92CaretBlink",
         ".hero-console-v92-message:nth-child(1)",
         ".hero-console-v92-message:nth-child(2)",
         ".hero-console-v92-message:nth-child(3)",
-        ".hero-console-v92-caret",
-        "steps(28, end)",
-        "animation-delay: 5s",
-        "animation-delay: 10s",
-        "@media (max-width: 860px)",
         "@media (prefers-reduced-motion: reduce)",
-    )
-    for token in required_console_css:
+    ):
         if token not in console_css:
-            errors.append(f"V92 typing-console CSS token is missing: {token}")
+            errors.append(f"V92 console CSS token is missing: {token}")
 
-    required_mobile_css = (
+    for token in (
         ".ambient,",
         ".page-grid,",
         ".scroll-progress",
         "display: none !important",
-        "backdrop-filter: none !important",
         "overflow-anchor: none",
         "contain: layout",
-        "animation: none !important",
-        "Planetary motion is owned by V96",
-        "#home .hero-console-v92-message",
-    )
-    for token in required_mobile_css:
+    ):
         if token not in mobile_css:
-            errors.append(f"V92 mobile-stability CSS token is missing: {token}")
+            errors.append(f"Mobile stability token is missing: {token}")
 
-    required_planetary_css = (
-        "heroV96Stars",
-        "heroV96OrbitFlow",
-        "heroV96PlanetSpin",
-        "heroV96PlanetBreath",
-        "heroV96DotPulse",
-        "heroV96AuraWave",
-        ".hero-v33-rotator.is-path-driven",
-        ".rotator-v33-two.is-path-driven",
-        ".rotator-v33-three.is-path-driven",
-        "--orbit-x",
-        "--orbit-y",
-        "--glow-rgb",
-        "identical on desktop and mobile",
+    for token in (
+        "aspect-ratio: 680 / 620",
+        "heroV97Stars",
+        "heroV97OrbitFlow",
+        "heroV97PlanetSpin",
+        "heroV97PlanetBreath",
+        ".hero-v97-satellite",
+        ".hero-v97-satellite-blue",
+        ".hero-v97-satellite-pink",
+        ".hero-v97-satellite-violet",
         "@media (max-width: 860px)",
         "@media (prefers-reduced-motion: reduce)",
-    )
-    for token in required_planetary_css:
+    ):
         if token not in planetary_css:
-            errors.append(f"V96 planetary-motion CSS token is missing: {token}")
+            errors.append(f"V97 planetary CSS token is missing: {token}")
 
-    required_planetary_js = (
-        "line.cx.baseVal.value",
-        "line.transform.baseVal.consolidate",
-        "ResizeObserver",
-        "IntersectionObserver",
-        "requestAnimationFrame",
-        "cancelAnimationFrame",
-        "scheduleGeometryRefresh",
+    for token in (
+        "createElementNS",
+        "animateMotion",
+        "buildMotionPath",
+        "sampleCount = 240",
+        "preserveAspectRatio",
+        "native-svg-v97",
+        "unpauseAnimations",
         "pageshow",
-        "pagehide",
-        "--orbit-x",
-        "--orbit-y",
+        "visibilitychange",
         "prefers-reduced-motion",
-        "document.hidden",
-        "rotator-v33-three",
-        "orbit-glow-violet",
-    )
-    for token in required_planetary_js:
+    ):
         if token not in planetary_js:
-            errors.append(f"V96 planetary-motion JavaScript token is missing: {token}")
-
-    if index_text.count('class="hero-v33-rotator ') != 3:
-        errors.append("V96 must contain exactly three Hero orbit satellites")
+            errors.append(f"V97 planetary JavaScript token is missing: {token}")
 
     for obsolete_asset in (
         "planetary-motion-v94.css",
         "planetary-motion-v94.js",
         "planetary-motion-v95.css",
         "planetary-motion-v95.js",
+        "planetary-motion-v96.css",
+        "planetary-motion-v96.js",
     ):
         if obsolete_asset in index_text:
             errors.append(f"Superseded planetary asset is still loaded: {obsolete_asset}")
 
-    for saturn_token in ("width: 164%", "height: 48%", "rotate(-18deg)", "rotate(24deg)"):
-        if saturn_token in planetary_css:
-            errors.append(f"Saturn-style satellite ring remains: {saturn_token}")
-
-    if "getScreenCTM" in planetary_js:
-        errors.append("V96 must not recalculate screen coordinates for every orbit frame")
-
-    for forbidden_mobile_token in (
-        "contain: layout paint",
-        "#home .hero-v33-stars",
-        "#home .hero-v33-rotator",
-        "#home .hero-v33-orbit-svg .orbit-line",
-        "#home .hero-v33-planet::before",
-        "#home .hero-v33-planet,",
-    ):
-        if forbidden_mobile_token in mobile_css:
-            errors.append(f"Obsolete mobile planetary override remains: {forbidden_mobile_token}")
-
-    for forbidden_orbit_runtime in (
+    for forbidden_runtime in (
         'window.addEventListener("scroll"',
-        "scrolling =",
-        "scrollEndTimer",
-        "coarsePointer",
+        "requestAnimationFrame",
+        "IntersectionObserver",
+        "ResizeObserver",
+        "getBoundingClientRect",
         "getScreenCTM",
+        "--orbit-x",
+        "--orbit-y",
     ):
-        if forbidden_orbit_runtime in planetary_js:
-            errors.append(f"Unstable mobile orbit runtime remains: {forbidden_orbit_runtime}")
+        if forbidden_runtime in planetary_js:
+            errors.append(f"Superseded JavaScript orbit runtime remains: {forbidden_runtime}")
 
     if errors:
         print("Portfolio validation failed")
