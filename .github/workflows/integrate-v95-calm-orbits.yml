@@ -21,20 +21,38 @@ jobs:
       - name: Apply, validate, and clean V95
         shell: bash
         run: |
-          set -euo pipefail
-          if [ ! -f scripts/apply_v95_calm_orbits.py ]; then
-            echo "V95 integration already applied."
+          set -u
+
+          if [ -f v95-diagnostic.txt ]; then
+            echo "V95 diagnostic already recorded."
             exit 0
           fi
 
-          python3 scripts/apply_v95_calm_orbits.py
-          python3 scripts/validate_site.py
+          set +e
+          {
+            python3 scripts/apply_v95_calm_orbits.py
+            python3 scripts/validate_site.py
 
-          while IFS= read -r -d '' file; do
-            node --check "$file"
-          done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
+            while IFS= read -r -d '' file; do
+              node --check "$file"
+            done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
 
-          git diff --check
+            git diff --check
+          } > /tmp/v95-diagnostic.txt 2>&1
+          status=$?
+          set -e
+
+          if [ "$status" -ne 0 ]; then
+            git reset --hard HEAD
+            cp /tmp/v95-diagnostic.txt v95-diagnostic.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add v95-diagnostic.txt
+            git commit -m "Record V95 integration diagnostic"
+            git push origin HEAD:feat/v95-calm-orbit-glow
+            exit "$status"
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
