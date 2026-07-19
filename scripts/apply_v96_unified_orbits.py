@@ -24,8 +24,6 @@ validator_replacements = {
     'data-release="2026.07.19.95"': 'data-release="2026.07.19.96"',
     'planetary-motion-v95.css?v=20260719.95': 'planetary-motion-v96.css?v=20260719.96',
     'planetary-motion-v95.js?v=20260719.95': 'planetary-motion-v96.js?v=20260719.96',
-    'ROOT / "planetary-motion-v95.css"': 'ROOT / "planetary-motion-v96.css"',
-    'ROOT / "planetary-motion-v95.js"': 'ROOT / "planetary-motion-v96.js"',
     'V95 planetary-motion': 'V96 planetary-motion',
     'V95 must contain exactly three Hero orbit satellites': 'V96 must contain exactly three Hero orbit satellites',
     'V95 must not recalculate screen coordinates for every orbit frame': 'V96 must not recalculate screen coordinates for every orbit frame',
