@@ -1,0 +1,2 @@
+Portfolio validation failed
+ERROR: V96 planetary-motion JavaScript token is missing: rotator-v33-three
