@@ -325,32 +325,32 @@ def main() -> int:
 
 
     touch_js_tokens = (
-    "is-pressing",
-    "pointerdown",
-    "pointerup",
-    "pointercancel",
-    "lostpointercapture",
-)
-for token in touch_js_tokens:
-    if token not in tech_js_text:
-        errors.append(f"V83 touch interaction token is missing: {token}")
+        'is-pressing',
+        'pointerdown',
+        'pointerup',
+        'pointercancel',
+        'lostpointercapture',
+    )
+    for token in touch_js_tokens:
+        if token not in tech_js_text:
+            errors.append(f"V83 touch interaction token is missing: {token}")
 
-touch_css_tokens = (
-    ".hero-tech-item.is-pressing",
-    "@media (hover: hover) and (pointer: fine)",
-    "@media (min-width: 861px)",
-)
-for token in touch_css_tokens:
-    if token not in tech_css_text:
-        errors.append(f"V83 interaction or desktop-scale CSS token is missing: {token}")
+    touch_css_tokens = (
+        '.hero-tech-item.is-pressing',
+        '@media (hover: hover) and (pointer: fine)',
+        '@media (min-width: 861px)',
+    )
+    for token in touch_css_tokens:
+        if token not in tech_css_text:
+            errors.append(f"V83 interaction or desktop-scale CSS token is missing: {token}")
 
-obsolete_touch_tokens = (
-    "is-activating",
-    "showTapGlow",
-)
-for token in obsolete_touch_tokens:
-    if token in tech_js_text or token in tech_css_text:
-        errors.append(f"Obsolete timed touch state remains: {token}")
+    obsolete_touch_tokens = (
+        'is-activating',
+        'showTapGlow',
+    )
+    for token in obsolete_touch_tokens:
+        if token in tech_js_text or token in tech_css_text:
+            errors.append(f"Obsolete timed touch state remains: {token}")
 
     exact_once_assets = (
         "hero-interface-v68.css",
