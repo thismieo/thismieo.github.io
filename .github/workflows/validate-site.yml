@@ -6,14 +6,41 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  validate:
+  integrate-v90:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'feat/v90-typing-console'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out V90 branch
         uses: actions/checkout@v4
+        with:
+          ref: feat/v90-typing-console
+          fetch-depth: 0
+
+      - name: Apply V90 typing console once
+        run: |
+          if [ -f scripts/apply_v90_typing_console.py ]; then
+            python3 scripts/apply_v90_typing_console.py
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Restore code typing with a pure CSS console"
+            git push origin HEAD:feat/v90-typing-console
+          else
+            echo "V90 integration already applied."
+          fi
+
+  validate:
+    needs: [integrate-v90]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current pull request head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Validate site structure and assets
         run: python3 scripts/validate_site.py
