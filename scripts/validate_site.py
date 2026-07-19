@@ -247,8 +247,8 @@ def main() -> int:
     if "hero-v33-portrait" in parser.classes or "portrait-modal" in parser.ids:
         errors.append("Removed portrait markup remains in index.html")
 
-    if 'data-release="2026.07.19.83"' not in index_text:
-        errors.append("V83 release marker is missing")
+    if 'data-release="2026.07.19.85"' not in index_text:
+        errors.append("V85 release marker is missing")
 
     if 'hero-interface-v68.css?v=20260719.82' not in index_text:
         errors.append("V82 hero interface stylesheet cache key is missing")
@@ -256,8 +256,8 @@ def main() -> int:
     if 'tech-icons-v69.css?v=20260719.83' not in index_text:
         errors.append("V83 technical rail stylesheet cache key is missing")
 
-    if 'hero-interface-v68.js?v=20260719.83' not in index_text:
-        errors.append("V83 technical rail script cache key is missing")
+    if 'hero-interface-v68.js?v=20260719.85' not in index_text:
+        errors.append("V85 Hero refinement script cache key is missing")
 
     tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
     tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
@@ -272,6 +272,10 @@ def main() -> int:
         'hero-tech-copy',
         'document.createElement("a")',
         'dataset.techIcons = "v83"',
+        'CORE LEARNING STACK',
+        'compactViewport',
+        'is-holding',
+        'micro-polish.css?v=20260719.85',
     )
     for token in required_js_tokens:
         if token not in tech_js_text:
