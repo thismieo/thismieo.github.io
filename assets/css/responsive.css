@@ -1,0 +1,588 @@
+/* Portfolio V2 — responsive behavior designed with desktop and phone parity */
+
+@media (max-width: 1120px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 0.88fr);
+    gap: 42px;
+  }
+
+  .hero-system {
+    min-height: 560px;
+  }
+
+  .roadmap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .direction-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-card:last-child {
+    grid-column: 1 / -1;
+    width: min(100%, 620px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 920px) {
+  .wrap {
+    padding-inline: 24px;
+  }
+
+  .primary-nav {
+    position: fixed;
+    top: 68px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 28px 24px;
+    border-top: 1px solid var(--line);
+    background: rgba(10, 12, 18, 0.98);
+    backdrop-filter: blur(18px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  .primary-nav.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .primary-nav a {
+    width: 100%;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 1rem;
+  }
+
+  .primary-nav .nav-cta {
+    width: auto;
+    margin-top: 14px;
+    padding: 11px 18px;
+    border-bottom: 0;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding-top: 68px;
+  }
+
+  .hero-copy {
+    max-width: 760px;
+  }
+
+  .hero-system {
+    width: min(100%, 680px);
+    min-height: 540px;
+    margin-inline: auto;
+  }
+
+  .about-grid,
+  .stack-grid,
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid,
+  .stack-grid {
+    gap: 18px;
+  }
+
+  .stack-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stack-list li {
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .stack-list li:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .stack-list li:nth-child(-n + 2) {
+    border-top: 0;
+  }
+
+  .section-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .wrap {
+    padding-inline: 18px;
+  }
+
+  .header-row {
+    min-height: 64px;
+  }
+
+  .primary-nav {
+    top: 64px;
+    padding-inline: 18px;
+  }
+
+  .brand-copy small {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 54px;
+    padding-bottom: 70px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.75rem, 13vw, 4.45rem);
+  }
+
+  .hero-summary {
+    font-size: 0.98rem;
+  }
+
+  .profile-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-links a {
+    min-height: 43px;
+  }
+
+  .status-console {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .console-state {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .hero-system {
+    min-height: 500px;
+  }
+
+  .system-node {
+    min-width: 94px;
+    padding: 7px 9px;
+  }
+
+  .system-node.is-code { --node-x: 22%; --node-y: 23%; }
+  .system-node.is-data { --node-x: 79%; --node-y: 21%; }
+  .system-node.is-models { --node-x: 82%; --node-y: 68%; }
+  .system-node.is-ai { --node-x: 19%; --node-y: 70%; }
+
+  .system-meta {
+    width: 94%;
+    bottom: 4%;
+  }
+
+  .tech-ticker::before,
+  .tech-ticker::after {
+    width: 42px;
+  }
+
+  .section {
+    padding-top: 76px;
+    padding-bottom: 76px;
+  }
+
+  .section-heading {
+    margin-bottom: 34px;
+  }
+
+  .roadmap,
+  .direction-grid,
+  .projects-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card:last-child {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .roadmap-step {
+    min-height: 166px;
+  }
+
+  .direction-card {
+    min-height: 190px;
+  }
+
+  .direction-icon {
+    margin-bottom: 26px;
+  }
+
+  .project-visual-shell {
+    height: 226px;
+    grid-template-rows: minmax(0, 1fr) 86px;
+  }
+
+  .visual-footer {
+    grid-template-columns: minmax(0, 0.96fr) minmax(142px, 1.04fr);
+    gap: 8px;
+    padding: 9px 10px 10px;
+  }
+
+  .visual-meta {
+    gap: 4px;
+    padding-left: 10px;
+  }
+
+  .visual-meta small {
+    font-size: 0.5rem;
+    letter-spacing: 0.075em;
+  }
+
+  .visual-meta strong {
+    font-size: 0.7rem;
+  }
+
+  .telemetry {
+    gap: 7px;
+    min-height: 46px;
+    padding-left: 9px;
+  }
+
+  .telemetry-icon {
+    width: 28px;
+    height: 28px;
+    flex-basis: 28px;
+  }
+
+  .telemetry-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .telemetry-copy > small {
+    font-size: 0.47rem;
+    letter-spacing: 0.07em;
+  }
+
+  .telemetry-reading {
+    gap: 5px;
+  }
+
+  .telemetry-reading strong {
+    font-size: 0.8rem;
+  }
+
+  .telemetry-reading em {
+    font-size: 0.4rem;
+  }
+
+  .project-copy {
+    padding: 22px;
+  }
+
+  .stack-list {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-list li,
+  .stack-list li:nth-child(odd),
+  .stack-list li:nth-child(-n + 2) {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .stack-list li:first-child {
+    border-top: 0;
+  }
+
+  .footer-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .wrap {
+    padding-inline: 15px;
+  }
+
+  .brand-copy strong {
+    font-size: 0.8rem;
+  }
+
+  .hero {
+    gap: 24px;
+    padding-top: 44px;
+  }
+
+  .hero-location {
+    margin-bottom: 16px;
+    font-size: 0.64rem;
+  }
+
+  .hero h1 {
+    margin-bottom: 14px;
+    font-size: clamp(2.5rem, 14vw, 3.7rem);
+  }
+
+  .hero-role {
+    margin-bottom: 16px;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .profile-links {
+    gap: 7px;
+  }
+
+  .profile-links a {
+    font-size: 0.68rem;
+  }
+
+  .status-console {
+    gap: 9px;
+    padding: 10px;
+  }
+
+  .console-copy small {
+    font-size: 0.52rem;
+  }
+
+  .console-line {
+    font-size: 0.67rem;
+  }
+
+  .hero-system {
+    min-height: 430px;
+  }
+
+  .system-core {
+    width: 174px;
+  }
+
+  .system-node {
+    min-width: 84px;
+    gap: 6px;
+    padding: 6px 7px;
+  }
+
+  .system-node small {
+    font-size: 0.44rem;
+  }
+
+  .system-node strong {
+    font-size: 0.6rem;
+  }
+
+  .system-node.is-code { --node-x: 20%; --node-y: 24%; }
+  .system-node.is-data { --node-x: 81%; --node-y: 22%; }
+  .system-node.is-models { --node-x: 82%; --node-y: 65%; }
+  .system-node.is-ai { --node-x: 19%; --node-y: 68%; }
+
+  .system-meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .system-meta div {
+    padding: 8px 5px;
+  }
+
+  .system-meta span {
+    font-size: 0.43rem;
+  }
+
+  .system-meta strong {
+    font-size: 0.61rem;
+  }
+
+  .ticker-item {
+    padding-inline: 16px;
+    font-size: 0.68rem;
+  }
+
+  .ticker-item::after {
+    margin-left: 12px;
+  }
+
+  .section {
+    padding-top: 68px;
+    padding-bottom: 68px;
+  }
+
+  .section h2 {
+    font-size: clamp(1.85rem, 10vw, 2.7rem);
+  }
+
+  .about-panel,
+  .loop-panel,
+  .stack-primary {
+    padding: 24px 20px;
+  }
+
+  .identity div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .identity dd {
+    text-align: left;
+  }
+
+  .roadmap {
+    grid-template-columns: 1fr;
+  }
+
+  .project-visual-shell {
+    height: 218px;
+    grid-template-rows: minmax(0, 1fr) 88px;
+  }
+
+  .visual-footer {
+    grid-template-columns: minmax(0, 0.94fr) minmax(135px, 1.06fr);
+    gap: 5px;
+    padding: 8px 7px 9px;
+  }
+
+  .visual-meta {
+    padding-left: 8px;
+  }
+
+  .visual-meta::before {
+    width: 1.5px;
+  }
+
+  .visual-meta small {
+    font-size: 0.46rem;
+    letter-spacing: 0.06em;
+  }
+
+  .visual-meta strong {
+    font-size: 0.64rem;
+  }
+
+  .telemetry {
+    gap: 5px;
+    padding-left: 7px;
+  }
+
+  .telemetry-icon {
+    width: 25px;
+    height: 25px;
+    flex-basis: 25px;
+  }
+
+  .telemetry-icon svg {
+    width: 23px;
+    height: 23px;
+    stroke-width: 1.55;
+  }
+
+  .telemetry-copy {
+    gap: 4px;
+  }
+
+  .telemetry-copy > small {
+    font-size: 0.43rem;
+    letter-spacing: 0.055em;
+  }
+
+  .telemetry-reading {
+    gap: 4px;
+  }
+
+  .telemetry-reading strong {
+    font-size: 0.72rem;
+  }
+
+  .telemetry-reading em {
+    font-size: 0.36rem;
+    letter-spacing: 0.055em;
+  }
+
+  .project-copy {
+    padding: 20px;
+  }
+
+  .contact-card {
+    min-height: 96px;
+    padding: 19px;
+  }
+
+  .contact-copy strong {
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 370px) {
+  .visual-footer {
+    grid-template-columns: minmax(0, 0.92fr) minmax(128px, 1.08fr);
+    padding-inline: 6px;
+  }
+
+  .visual-meta small {
+    font-size: 0.42rem;
+  }
+
+  .visual-meta strong {
+    font-size: 0.6rem;
+  }
+
+  .telemetry-icon {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+  }
+
+  .telemetry-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .telemetry-copy > small {
+    font-size: 0.4rem;
+  }
+
+  .telemetry-reading strong {
+    font-size: 0.68rem;
+  }
+
+  .telemetry-reading em {
+    font-size: 0.33rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 920px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-system {
+    min-height: 440px;
+  }
+}
