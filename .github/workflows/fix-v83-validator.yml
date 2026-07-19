@@ -1,0 +1,101 @@
+name: Repair V83 validator
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out V83 branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/v83-touch-state-desktop-scale
+          fetch-depth: 0
+
+      - name: Repair validator indentation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/validate_site.py")
+          text = path.read_text(encoding="utf-8")
+          start_marker = "    touch_js_tokens = ("
+          end_marker = "    exact_once_assets = ("
+          start = text.index(start_marker)
+          end = text.index(end_marker, start)
+
+          block = '''    touch_js_tokens = (
+              "is-pressing",
+              "pointerdown",
+              "pointerup",
+              "pointercancel",
+              "lostpointercapture",
+          )
+          for token in touch_js_tokens:
+              if token not in tech_js_text:
+                  errors.append(f"V83 touch interaction token is missing: {token}")
+
+          touch_css_tokens = (
+              ".hero-tech-item.is-pressing",
+              "@media (hover: hover) and (pointer: fine)",
+              "@media (min-width: 861px)",
+          )
+          for token in touch_css_tokens:
+              if token not in tech_css_text:
+                  errors.append(f"V83 interaction or desktop-scale CSS token is missing: {token}")
+
+          obsolete_touch_tokens = (
+              "is-activating",
+              "showTapGlow",
+          )
+          for token in obsolete_touch_tokens:
+              if token in tech_js_text or token in tech_css_text:
+                  errors.append(f"Obsolete timed touch state remains: {token}")
+
+          '''
+
+          path.write_text(text[:start] + block + text[end:], encoding="utf-8")
+          PY
+
+      - name: Validate V83 branch
+        run: |
+          node --check hero-interface-v68.js
+          python -m py_compile scripts/validate_site.py
+          python scripts/validate_site.py
+          python - <<'PY'
+          from pathlib import Path
+
+          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
+          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
+          if css.count("{") != css.count("}"):
+              raise SystemExit("Unbalanced technical rail CSS braces")
+          required = (
+              "is-pressing",
+              "pointerup",
+              "pointercancel",
+              "lostpointercapture",
+              "@media (hover: hover) and (pointer: fine)",
+              "@media (min-width: 861px)",
+          )
+          combined = js + css
+          missing = [token for token in required if token not in combined]
+          if missing:
+              raise SystemExit(f"Missing V83 interaction tokens: {missing}")
+          PY
+
+      - name: Commit validator repair
+        run: |
+          rm -rf scripts/__pycache__
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Repair V83 validator indentation"
+          git push origin HEAD:fix/v83-touch-state-desktop-scale
