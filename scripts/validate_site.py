@@ -202,6 +202,7 @@ def main() -> int:
         "mobile-nav.js",
         "hero-interface-v68.css",
         "hero-interface-v68.js",
+        "tech-icons-v69.css",
         "projects-runtime-v68.js",
         "project-readouts-v66.css",
         "core-contact-v63.css",
@@ -246,8 +247,59 @@ def main() -> int:
     if "hero-v33-portrait" in parser.classes or "portrait-modal" in parser.ids:
         errors.append("Removed portrait markup remains in index.html")
 
-    if 'data-release="2026.07.19.78"' not in index_text:
-        errors.append("V78 release marker is missing")
+    if 'data-release="2026.07.19.81"' not in index_text:
+        errors.append("V81 release marker is missing")
+
+    if 'tech-icons-v69.css?v=20260719.81' not in index_text:
+        errors.append("V81 technical rail stylesheet cache key is missing")
+
+    if 'hero-interface-v68.js?v=20260719.81' not in index_text:
+        errors.append("V81 technical rail script cache key is missing")
+
+    tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
+    tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
+
+    required_js_tokens = (
+        'is-tech-icons-v81',
+        'hero-v81-tech-rail',
+        'hero-v81-tech-item',
+        'hero-v81-tech-badge',
+        'hero-v81-tech-copy',
+        'document.createElement("a")',
+        'dataset.techIcons = "v81"',
+    )
+    for token in required_js_tokens:
+        if token not in tech_js_text:
+            errors.append(f"V81 technical rail JavaScript token is missing: {token}")
+
+    required_css_tokens = (
+        '#home.is-tech-icons-v81 .hero-v81-tech-rail',
+        '#home.is-tech-icons-v81 .hero-v81-tech-item',
+        '@keyframes heroV81RailWave',
+        '@media (prefers-reduced-motion: reduce)',
+    )
+    for token in required_css_tokens:
+        if token not in tech_css_text:
+            errors.append(f"V81 technical rail CSS token is missing: {token}")
+
+    forbidden_js_tokens = (
+        'window.open(',
+        'item.addEventListener("click"',
+        'is-tech-icons-v73',
+        'dataset.techIcons = "v80"',
+    )
+    for token in forbidden_js_tokens:
+        if token in tech_js_text:
+            errors.append(f"Legacy technical rail JavaScript remains: {token}")
+
+    forbidden_css_tokens = (
+        '.hero-v73-tech-item',
+        '.hero-v73-tech-strip',
+        'heroV73StripWave',
+    )
+    for token in forbidden_css_tokens:
+        if token in tech_css_text:
+            errors.append(f"Legacy technical rail CSS remains: {token}")
 
     exact_once_assets = (
         "hero-interface-v68.css",
