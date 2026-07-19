@@ -1,25 +1,18 @@
 (() => {
   "use strict";
 
-  // Stable semantic classes isolate the Hero refinements and technical learning rail.
-  document.documentElement.dataset.release = "2026.07.19.86";
+  // Visual-only Hero refinements. Native links and the original terminal runtime remain untouched.
+  document.documentElement.dataset.release = "2026.07.19.87";
 
-  const loadStylesheet = (selector, dataName, href) => {
-    let stylesheet = document.querySelector(selector);
-    if (!stylesheet) {
-      stylesheet = document.createElement("link");
-      stylesheet.rel = "stylesheet";
-      stylesheet.dataset[dataName] = "true";
-      document.head.append(stylesheet);
-    }
-    stylesheet.href = href;
-  };
+  let microStylesheet = document.querySelector("link[data-micro-polish]");
+  if (!microStylesheet) {
+    microStylesheet = document.createElement("link");
+    microStylesheet.rel = "stylesheet";
+    microStylesheet.dataset.microPolish = "true";
+    document.head.append(microStylesheet);
+  }
+  microStylesheet.href = "micro-polish.css?v=20260719.87";
 
-  loadStylesheet("link[data-micro-polish]", "microPolish", "micro-polish.css?v=20260719.85");
-  loadStylesheet("link[data-interaction-v86]", "interactionV86", "interaction-v86.css?v=20260719.86");
-
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const compactViewport = window.matchMedia("(max-width: 860px)");
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
   const heading = copy?.querySelector("h1");
@@ -31,67 +24,6 @@
 
   home.dataset.heroV68Ready = "true";
   home.classList.add("is-hero-v68", "has-tech-rail");
-
-  const releaseTimers = new WeakMap();
-
-  const bindPressLifecycle = (element) => {
-    if (!element || element.dataset.microPressReady === "true") return;
-    element.dataset.microPressReady = "true";
-
-    const updatePressOrigin = (event) => {
-      const rect = element.getBoundingClientRect();
-      const x = rect.width ? ((event.clientX - rect.left) / rect.width) * 100 : 50;
-      const y = rect.height ? ((event.clientY - rect.top) / rect.height) * 100 : 50;
-      element.style.setProperty("--press-x", `${Math.max(0, Math.min(100, x)).toFixed(2)}%`);
-      element.style.setProperty("--press-y", `${Math.max(0, Math.min(100, y)).toFixed(2)}%`);
-    };
-
-    const clearReleaseTimer = () => {
-      const timer = releaseTimers.get(element);
-      if (timer) window.clearTimeout(timer);
-      releaseTimers.delete(element);
-    };
-
-    const beginPress = (event) => {
-      clearReleaseTimer();
-      updatePressOrigin(event);
-      element.classList.remove("is-releasing");
-      element.classList.add("is-pressing");
-
-      if (event.pointerId !== undefined && element.setPointerCapture) {
-        try {
-          element.setPointerCapture(event.pointerId);
-        } catch {
-          // Pointer capture is an enhancement; native link behavior remains intact.
-        }
-      }
-    };
-
-    const movePress = (event) => {
-      if (!element.classList.contains("is-pressing")) return;
-      updatePressOrigin(event);
-    };
-
-    const endPress = () => {
-      if (!element.classList.contains("is-pressing")) return;
-      element.classList.remove("is-pressing");
-      element.classList.add("is-releasing");
-      clearReleaseTimer();
-      releaseTimers.set(element, window.setTimeout(() => {
-        element.classList.remove("is-releasing");
-        releaseTimers.delete(element);
-      }, 320));
-    };
-
-    element.addEventListener("pointerdown", beginPress);
-    element.addEventListener("pointermove", movePress, { passive: true });
-    element.addEventListener("pointerup", endPress);
-    element.addEventListener("pointercancel", endPress);
-    element.addEventListener("lostpointercapture", endPress);
-    element.addEventListener("pointerleave", endPress);
-    element.addEventListener("dragstart", endPress);
-    element.addEventListener("blur", endPress);
-  };
 
   const firstLine = document.createElement("span");
   firstLine.className = "hero-v68-line hero-v68-line-one";
@@ -149,8 +81,7 @@
     }
   ];
 
-  const existingPanel = copy.querySelector(".hero-tech-panel");
-  if (existingPanel) existingPanel.remove();
+  copy.querySelector(".hero-tech-panel")?.remove();
   copy.querySelector(".hero-tech-rail")?.remove();
 
   const panel = document.createElement("div");
@@ -163,7 +94,7 @@
 
   const rail = document.createElement("div");
   rail.className = "hero-tech-rail";
-  rail.dataset.techIcons = "v86";
+  rail.dataset.techIcons = "v87";
   rail.dataset.presentation = "compact-terminal-rail";
   rail.dataset.wave = "continuous";
   rail.setAttribute("aria-labelledby", kicker.id);
@@ -203,135 +134,8 @@
     textWrap.append(mainText, subText);
     item.append(iconShell, textWrap);
     rail.append(item);
-    bindPressLifecycle(item);
   });
 
   panel.append(kicker, rail);
   actions.before(panel);
-
-  copy.querySelectorAll(".hero-v33-actions .button, .hero-v33-links a").forEach(bindPressLifecycle);
-
-  const currentOutput = document.querySelector("#hero-v33-terminal-text");
-  if (currentOutput) {
-    const output = currentOutput.cloneNode(false);
-    output.textContent = "";
-    output.setAttribute("aria-live", "polite");
-    output.setAttribute("aria-atomic", "true");
-    output.dataset.terminalV86Ready = "true";
-    currentOutput.replaceWith(output);
-
-    const terminalLine = output.closest(".terminal-v33-line");
-    const phrases = [
-      'current_focus = "Python Foundations"',
-      "practice_mode = True",
-      'next_layer = "Data Analysis"',
-      "projects_built += 1",
-      'direction = "AI Engineering"'
-    ];
-
-    const setTerminalPhase = (phase) => {
-      terminalLine?.classList.toggle("is-holding", phase === "holding");
-      terminalLine?.classList.toggle("is-writing", phase === "typing");
-      terminalLine?.classList.toggle("is-deleting", phase === "deleting");
-    };
-
-    const setVisibleCharacters = (value) => {
-      output.style.setProperty("--terminal-visible-chars", Math.max(0, value).toFixed(3));
-    };
-
-    if (reducedMotion.matches) {
-      output.textContent = phrases[0];
-      setVisibleCharacters(phrases[0].length);
-      setTerminalPhase("holding");
-    } else {
-      let phraseIndex = 0;
-      let phase = "typing";
-      let phaseStart = performance.now();
-      let frame = 0;
-      let pausedAt = 0;
-
-      const timings = () => compactViewport.matches
-        ? { typingPerChar: 74, deletingPerChar: 42, holding: 2200, gap: 560 }
-        : { typingPerChar: 58, deletingPerChar: 34, holding: 1950, gap: 460 };
-
-      const easeInOutSine = (progress) => -(Math.cos(Math.PI * progress) - 1) / 2;
-
-      const preparePhrase = () => {
-        const phrase = phrases[phraseIndex];
-        output.textContent = phrase;
-        output.setAttribute("aria-label", phrase);
-        setVisibleCharacters(phase === "deleting" ? phrase.length : 0);
-      };
-
-      const nextPhase = (next, now) => {
-        phase = next;
-        phaseStart = now;
-        setTerminalPhase(next);
-      };
-
-      const tick = (now) => {
-        const phrase = phrases[phraseIndex];
-        const speed = timings();
-        const elapsed = Math.max(0, now - phaseStart);
-
-        if (phase === "typing") {
-          const duration = Math.max(1, phrase.length * speed.typingPerChar);
-          const progress = Math.min(1, elapsed / duration);
-          setVisibleCharacters(phrase.length * easeInOutSine(progress));
-
-          if (progress >= 1) {
-            setVisibleCharacters(phrase.length);
-            nextPhase("holding", now);
-          }
-        } else if (phase === "holding") {
-          setVisibleCharacters(phrase.length);
-          if (elapsed >= speed.holding) nextPhase("deleting", now);
-        } else if (phase === "deleting") {
-          const duration = Math.max(1, phrase.length * speed.deletingPerChar);
-          const progress = Math.min(1, elapsed / duration);
-          setVisibleCharacters(phrase.length * (1 - easeInOutSine(progress)));
-
-          if (progress >= 1) {
-            setVisibleCharacters(0);
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            phase = "gap";
-            phaseStart = now;
-            setTerminalPhase("typing");
-          }
-        } else if (elapsed >= speed.gap) {
-          phase = "typing";
-          phaseStart = now;
-          preparePhrase();
-          setTerminalPhase("typing");
-        }
-
-        frame = window.requestAnimationFrame(tick);
-      };
-
-      preparePhrase();
-      setTerminalPhase("typing");
-      frame = window.requestAnimationFrame(tick);
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.hidden) {
-          pausedAt = performance.now();
-          window.cancelAnimationFrame(frame);
-          return;
-        }
-
-        const now = performance.now();
-        if (pausedAt) phaseStart += now - pausedAt;
-        pausedAt = 0;
-        frame = window.requestAnimationFrame(tick);
-      });
-    }
-  }
-
-  window.addEventListener("blur", () => {
-    home.querySelectorAll(".is-pressing").forEach((element) => {
-      element.classList.remove("is-pressing");
-      element.classList.add("is-releasing");
-      window.setTimeout(() => element.classList.remove("is-releasing"), 320);
-    });
-  });
 })();
