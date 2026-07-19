@@ -27,7 +27,16 @@ jobs:
             base64 --decode "$source" | gzip --decompress > "$target"
           }
 
-          decode_payload staging-v3/index.html.gz.b64 index.html
+          cat staging-v3/index.part01 \
+              staging-v3/index.part02 \
+              staging-v3/index.part03 \
+              staging-v3/index.part04 \
+              staging-v3/index.part05 \
+              > staging-v3/index.full.gz.b64
+
+          echo "e6549ab4ccccd268b5708388518c8d2d08d2419c0ee3dd23d8586abd43569576  staging-v3/index.full.gz.b64" | sha256sum --check --strict
+
+          decode_payload staging-v3/index.full.gz.b64 index.html
           decode_payload staging-v3/styles.css.gz.b64 styles.css
           decode_payload staging-v3/script.js.gz.b64 script.js
           decode_payload staging-v3/README.md.gz.b64 README.md
@@ -37,6 +46,10 @@ jobs:
           decode_payload staging-v3/validate-site.yml.gz.b64 .github/workflows/validate-site.yml
           decode_payload staging-v3/validate_site.py.gz.b64 scripts/validate_site.py
           chmod +x scripts/validate_site.py
+
+          echo "5f30e3453abd7e9c902a335ee78e5de44a8c5ada7e29098ec6618749e62319ee  index.html" | sha256sum --check --strict
+          echo "71ba287cbcbe7f0d23b52f2ba9192aac5b69295e78010985424ac6fb1b8a48f2  styles.css" | sha256sum --check --strict
+          echo "fc89f8b13745e9f91a0f64fb1fa18c4cb5ef5e72de6b43d0b7599c76221d36d7  script.js" | sha256sum --check --strict
 
           find . -maxdepth 1 -type f \
             ! -name index.html \
