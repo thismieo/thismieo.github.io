@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - feat/v81-unified-learning-rail
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -12,9 +16,10 @@ jobs:
   finalize:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out branch
+      - name: Check out feature branch
         uses: actions/checkout@v4
         with:
+          ref: feat/v81-unified-learning-rail
           fetch-depth: 0
 
       - name: Wire release keys and strengthen validation
