@@ -1,17 +1,18 @@
-/* Portfolio V95 — calm luminous orbit dots with stable mobile rendering. */
+/* Portfolio V96 — one calm orbit design shared by desktop and mobile. */
 
 #home .hero-v33-stars {
-  animation: heroV95Stars 34s ease-in-out infinite alternate !important;
+  animation: heroV96Stars 34s ease-in-out infinite alternate !important;
   transform: translate3d(0, 0, 0);
   will-change: transform, opacity;
 }
 
 #home .hero-v33-orbit-svg {
+  overflow: visible !important;
   transform: none !important;
 }
 
 #home .hero-v33-orbit-svg .orbit-line {
-  animation: heroV95OrbitFlow 44s linear infinite !important;
+  animation: heroV96OrbitFlow 44s linear infinite !important;
   will-change: stroke-dashoffset, opacity;
 }
 
@@ -25,13 +26,13 @@
 }
 
 #home .hero-v33-planet::before {
-  animation: heroV95PlanetBreath 7.4s ease-in-out infinite !important;
+  animation: heroV96PlanetBreath 7.4s ease-in-out infinite !important;
 }
 
 #home .hero-v33-planet > svg {
   transform-box: fill-box;
   transform-origin: center;
-  animation: heroV95PlanetSpin 74s linear infinite;
+  animation: heroV96PlanetSpin 74s linear infinite;
   will-change: transform;
 }
 
@@ -89,11 +90,11 @@
     0 0 17px rgba(var(--glow-rgb), 0.5),
     0 0 31px rgba(var(--glow-rgb), 0.22);
   transform: translateZ(0) scale(0.92);
-  animation: heroV95DotPulse var(--pulse-duration) var(--pulse-delay) ease-in-out infinite;
+  animation: heroV96DotPulse var(--pulse-duration) var(--pulse-delay) ease-in-out infinite;
   will-change: transform, opacity;
 }
 
-/* Soft circular aura only — no Saturn-style rings. */
+/* Soft circular aura only — identical on desktop and mobile. */
 #home .hero-v33-rotator.is-path-driven i::before {
   content: "";
   position: absolute;
@@ -108,7 +109,7 @@
   );
   opacity: 0.45;
   transform: scale(0.72);
-  animation: heroV95AuraWave var(--wave-duration) var(--pulse-delay) ease-in-out infinite;
+  animation: heroV96AuraWave var(--wave-duration) var(--pulse-delay) ease-in-out infinite;
   pointer-events: none;
   will-change: transform, opacity;
 }
@@ -153,50 +154,6 @@
     contain: layout !important;
     overflow: visible !important;
   }
-
-  #home .hero-v33-stars {
-    opacity: 0.62 !important;
-    animation-duration: 42s !important;
-  }
-
-  #home .hero-v33-orbit-svg .orbit-line {
-    opacity: 0.5 !important;
-    stroke-width: 1.1 !important;
-    animation-duration: 54s !important;
-  }
-
-  #home .hero-v33-orbit-svg .orbit-line.secondary {
-    opacity: 0.32 !important;
-    animation-duration: 68s !important;
-  }
-
-  #home .hero-v33-planet::before {
-    animation-duration: 8.8s !important;
-  }
-
-  #home .hero-v33-planet > svg {
-    animation-duration: 92s !important;
-  }
-
-  #home .hero-v33-rotator.is-path-driven {
-    --dot-size: 12px;
-    z-index: 12 !important;
-  }
-
-  #home .rotator-v33-two.is-path-driven {
-    --dot-size: 11px;
-  }
-
-  #home .rotator-v33-three.is-path-driven {
-    --dot-size: 9px;
-  }
-
-  #home .hero-v33-rotator.is-path-driven i {
-    box-shadow:
-      0 0 8px rgba(var(--glow-rgb), 0.98),
-      0 0 19px rgba(var(--glow-rgb), 0.54),
-      0 0 34px rgba(var(--glow-rgb), 0.24);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -210,34 +167,34 @@
   }
 }
 
-@keyframes heroV95Stars {
+@keyframes heroV96Stars {
   0% { transform: translate3d(-3px, -2px, 0); opacity: 0.5; }
   50% { transform: translate3d(2px, 1px, 0); opacity: 0.72; }
   100% { transform: translate3d(5px, 3px, 0); opacity: 0.58; }
 }
 
-@keyframes heroV95OrbitFlow {
+@keyframes heroV96OrbitFlow {
   0% { stroke-dashoffset: 0; opacity: 0.34; }
   50% { opacity: 0.54; }
   100% { stroke-dashoffset: -220; opacity: 0.38; }
 }
 
-@keyframes heroV95PlanetBreath {
+@keyframes heroV96PlanetBreath {
   0%, 100% { transform: scale(0.982); opacity: 0.76; }
   50% { transform: scale(1.018); opacity: 0.98; }
 }
 
-@keyframes heroV95PlanetSpin {
+@keyframes heroV96PlanetSpin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-@keyframes heroV95DotPulse {
+@keyframes heroV96DotPulse {
   0%, 100% { transform: translateZ(0) scale(0.9); opacity: 0.7; }
   48% { transform: translateZ(0) scale(1.1); opacity: 1; }
 }
 
-@keyframes heroV95AuraWave {
+@keyframes heroV96AuraWave {
   0%, 100% { transform: scale(0.7); opacity: 0.24; }
   52% { transform: scale(1.15); opacity: 0.68; }
 }

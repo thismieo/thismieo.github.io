@@ -1,4 +1,4 @@
-/* Portfolio V92 — final Hero layout cleanup and mobile scroll stability. */
+/* Portfolio V96 — Hero layout cleanup and mobile scroll stability without freezing the planetary system. */
 
 /* The console now lives inside the copy column, so the obsolete second grid row must not exist. */
 #home .hero-v33-story {
@@ -30,7 +30,7 @@
     transition-property: background-color, border-color !important;
   }
 
-  /* Keep the Hero geometry fixed and stop scroll anchoring around animated visuals. */
+  /* Keep Hero geometry stable and stop scroll anchoring around animated visuals. */
   #home,
   #home .hero-premium-v33,
   #home .hero-v33-story,
@@ -41,31 +41,22 @@
   }
 
   #home .hero-v33-planetary {
-    contain: layout paint;
+    contain: layout;
+    overflow: visible;
   }
 
-  /* Freeze heavy continuous decoration on touch screens; the console typing remains active. */
+  /* Freeze only unrelated heavy decoration. Planetary motion is owned by V96. */
   #home.hero::before,
   #home.hero::after,
   #home .hero-maroon-wash,
   #home .hero-premium-v33::before,
   #home .hero-premium-v33::after,
-  #home .hero-v33-stars,
-  #home .hero-v33-orbit-svg .orbit-line,
-  #home .hero-v33-planet::before,
-  #home .hero-v33-rotator,
   #home .hero-v33-orbit-node,
   #home .hero-v33-capsules article,
   #home .hero-v33-capsules article::before {
     animation: none !important;
   }
 
-  #home .hero-v33-stars,
-  #home .hero-v33-rotator {
-    transform: none !important;
-  }
-
-  #home .hero-v33-planet,
   #home .hero-v33-planetary::before,
   #home .hero-premium-v33::before,
   #home .hero-premium-v33::after {

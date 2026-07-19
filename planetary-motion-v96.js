@@ -6,12 +6,17 @@
 
   const orbitSvg = planetary.querySelector(".hero-v33-orbit-svg");
   const orbitLines = Array.from(planetary.querySelectorAll(".hero-v33-orbit-svg .orbit-line")).slice(0, 2);
+  // The third HTML satellite uses rotator-v33-three and is included in this three-item collection.
   const satellites = Array.from(planetary.querySelectorAll(".hero-v33-rotator")).slice(0, 3);
   if (!orbitSvg || orbitLines.length !== 2 || satellites.length !== 3) return;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const coarsePointer = window.matchMedia("(pointer: coarse)");
-  const viewBox = orbitSvg.viewBox.baseVal;
+  const viewBox = {
+    x: orbitSvg.viewBox.baseVal.x,
+    y: orbitSvg.viewBox.baseVal.y,
+    width: orbitSvg.viewBox.baseVal.width,
+    height: orbitSvg.viewBox.baseVal.height
+  };
 
   const orbitGeometry = orbitLines.map((line) => {
     const transform = line.transform.baseVal.consolidate()?.matrix;
@@ -39,16 +44,15 @@
 
   let orbitBox = null;
   let animationFrame = 0;
+  let geometryFrame = 0;
   let visible = false;
-  let scrolling = false;
-  let scrollEndTimer = 0;
   let lastFrameAt = 0;
   let motionTime = 0;
 
   const refreshGeometry = () => {
     const planetaryRect = planetary.getBoundingClientRect();
     const svgRect = orbitSvg.getBoundingClientRect();
-    if (!planetaryRect.width || !planetaryRect.height || !svgRect.width || !svgRect.height) return;
+    if (!planetaryRect.width || !planetaryRect.height || !svgRect.width || !svgRect.height) return false;
 
     orbitBox = {
       left: svgRect.left - planetaryRect.left,
@@ -56,6 +60,7 @@
       width: svgRect.width,
       height: svgRect.height
     };
+    return true;
   };
 
   const pointOnOrbit = (geometry, progress) => {
@@ -77,10 +82,9 @@
 
     configurations.forEach((configuration, index) => {
       const geometry = orbitGeometry[configuration.lineIndex];
-      const duration = configuration.duration * (coarsePointer.matches ? 1.2 : 1);
       let progress = staticPlacement
         ? configuration.phase
-        : ((elapsed / duration) + configuration.phase) % 1;
+        : ((elapsed / configuration.duration) + configuration.phase) % 1;
 
       if (configuration.direction < 0) progress = 1 - progress;
       const coordinates = pointOnOrbit(geometry, progress);
@@ -91,26 +95,21 @@
 
   const render = (timestamp) => {
     animationFrame = 0;
-    if (!visible || scrolling || document.hidden || reducedMotion.matches) {
+    if (!visible || document.hidden || reducedMotion.matches) {
       lastFrameAt = 0;
       return;
     }
 
     if (!lastFrameAt) lastFrameAt = timestamp;
     const delta = Math.min(timestamp - lastFrameAt, 50);
-    const frameInterval = coarsePointer.matches ? 1000 / 24 : 1000 / 60;
-
-    if (timestamp - lastFrameAt >= frameInterval) {
-      motionTime += delta;
-      placeSatellites(motionTime);
-      lastFrameAt = timestamp;
-    }
-
+    lastFrameAt = timestamp;
+    motionTime += delta;
+    placeSatellites(motionTime);
     animationFrame = requestAnimationFrame(render);
   };
 
   const start = () => {
-    if (!visible || scrolling || document.hidden || reducedMotion.matches || animationFrame) return;
+    if (!visible || document.hidden || reducedMotion.matches || animationFrame) return;
     lastFrameAt = 0;
     animationFrame = requestAnimationFrame(render);
   };
@@ -121,35 +120,33 @@
     lastFrameAt = 0;
   };
 
-  const observer = new IntersectionObserver((entries) => {
-    visible = Boolean(entries[0]?.isIntersecting);
-    if (visible) start();
-    else stop();
-  }, { rootMargin: "100px 0px" });
-
-  observer.observe(planetary);
-
   const settleGeometry = () => {
-    refreshGeometry();
+    if (!refreshGeometry()) return;
     placeSatellites(motionTime, reducedMotion.matches);
   };
 
-  const handleScroll = () => {
-    if (!coarsePointer.matches) return;
-    scrolling = true;
-    stop();
-    window.clearTimeout(scrollEndTimer);
-    scrollEndTimer = window.setTimeout(() => {
+  const scheduleGeometryRefresh = () => {
+    if (geometryFrame) return;
+    geometryFrame = requestAnimationFrame(() => {
+      geometryFrame = 0;
       settleGeometry();
-      scrolling = false;
-      start();
-    }, 140);
+    });
   };
+
+  const observer = new IntersectionObserver((entries) => {
+    visible = Boolean(entries[0]?.isIntersecting);
+    if (visible) {
+      scheduleGeometryRefresh();
+      start();
+    } else {
+      stop();
+    }
+  }, { rootMargin: "100px 0px" });
 
   const handleMotionPreference = () => {
     if (reducedMotion.matches) {
       stop();
-      settleGeometry();
+      scheduleGeometryRefresh();
       return;
     }
     start();
@@ -157,26 +154,33 @@
 
   const handleVisibility = () => {
     if (document.hidden) stop();
-    else start();
+    else {
+      scheduleGeometryRefresh();
+      start();
+    }
+  };
+
+  const handlePageShow = () => {
+    scheduleGeometryRefresh();
+    start();
   };
 
   const resizeObserver = typeof ResizeObserver === "function"
-    ? new ResizeObserver(() => {
-        window.requestAnimationFrame(settleGeometry);
-      })
+    ? new ResizeObserver(scheduleGeometryRefresh)
     : null;
 
+  observer.observe(planetary);
   resizeObserver?.observe(planetary);
   resizeObserver?.observe(orbitSvg);
   reducedMotion.addEventListener?.("change", handleMotionPreference);
   document.addEventListener("visibilitychange", handleVisibility);
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  window.addEventListener("resize", settleGeometry, { passive: true });
-  window.addEventListener("orientationchange", settleGeometry, { passive: true });
+  window.addEventListener("resize", scheduleGeometryRefresh, { passive: true });
+  window.addEventListener("orientationchange", scheduleGeometryRefresh, { passive: true });
+  window.addEventListener("pageshow", handlePageShow, { passive: true });
+  window.addEventListener("pagehide", stop, { passive: true });
 
-  window.requestAnimationFrame(() => {
-    refreshGeometry();
-    placeSatellites(0, reducedMotion.matches);
+  requestAnimationFrame(() => {
+    settleGeometry();
     start();
   });
 })();
