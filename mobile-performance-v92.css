@@ -1,0 +1,79 @@
+/* Portfolio V92 — mobile-only scroll stability without changing desktop visuals. */
+
+@media (max-width: 860px) {
+  html {
+    scroll-behavior: auto;
+    touch-action: pan-y;
+  }
+
+  body {
+    touch-action: pan-y;
+  }
+
+  /* Fixed blurred layers trigger full-screen repaints during iOS scrolling. */
+  .ambient,
+  .page-grid,
+  .scroll-progress {
+    display: none !important;
+  }
+
+  .site-header,
+  .site-header.scrolled {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition-property: background-color, border-color !important;
+  }
+
+  /* Keep the Hero geometry fixed and stop scroll anchoring around animated visuals. */
+  #home,
+  #home .hero-premium-v33,
+  #home .hero-v33-story,
+  #home .hero-v33-copy,
+  #home .hero-console-v92,
+  #home .hero-v33-planetary {
+    overflow-anchor: none;
+  }
+
+  #home .hero-v33-planetary {
+    contain: layout paint;
+  }
+
+  /* Freeze heavy continuous decoration on touch screens; the console typing remains active. */
+  #home.hero::before,
+  #home.hero::after,
+  #home .hero-maroon-wash,
+  #home .hero-premium-v33::before,
+  #home .hero-premium-v33::after,
+  #home .hero-v33-stars,
+  #home .hero-v33-orbit-svg .orbit-line,
+  #home .hero-v33-planet::before,
+  #home .hero-v33-rotator,
+  #home .hero-v33-orbit-node,
+  #home .hero-v33-capsules article,
+  #home .hero-v33-capsules article::before {
+    animation: none !important;
+  }
+
+  #home .hero-v33-stars,
+  #home .hero-v33-rotator {
+    transform: none !important;
+  }
+
+  #home .hero-v33-planet,
+  #home .hero-v33-planetary::before,
+  #home .hero-premium-v33::before,
+  #home .hero-premium-v33::after {
+    filter: none !important;
+  }
+
+  #home .hero-v33-orbit-node,
+  #home .hero-v33-actions .button-secondary {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #home .hero-console-v92-message,
+  #home .hero-console-v92-caret {
+    animation-play-state: running !important;
+  }
+}
