@@ -160,6 +160,8 @@ def main() -> int:
         errors.append("V87 technical rail stylesheet cache key is missing")
     if 'hero-interface-v68.js?v=20260719.87' not in index_text:
         errors.append("V87 visual-only Hero script cache key is missing")
+    if 'hero-v33.js?v=20260719.88' not in index_text:
+        errors.append("V88 lightweight Terminal script cache key is missing")
 
     hero_js = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
     terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
@@ -201,15 +203,27 @@ def main() -> int:
     if (ROOT / "interaction-v86.css").exists():
         errors.append("Superseded interaction-v86.css remains")
 
-    original_terminal_tokens = (
+    lightweight_terminal_tokens = (
         'const output = document.querySelector("#hero-v33-terminal-text")',
-        "window.setTimeout(step, delay)",
-        "schedule(1650)",
-        "schedule(deleting ? 24 : 48)",
+        'output.dataset.terminalMode = "line-swap"',
+        'const HOLD_DURATION = 3400',
+        'const FADE_DURATION = 240',
+        'output.style.opacity = "0"',
+        'output.textContent = phrases[phraseIndex]',
     )
-    for token in original_terminal_tokens:
+    for token in lightweight_terminal_tokens:
         if token not in terminal_js:
-            errors.append(f"Original terminal runtime token is missing: {token}")
+            errors.append(f"V88 lightweight Terminal token is missing: {token}")
+
+    forbidden_terminal_tokens = (
+        "characterIndex",
+        "deleting ? 24 : 48",
+        "phrase.slice",
+        "requestAnimationFrame",
+    )
+    for token in forbidden_terminal_tokens:
+        if token in terminal_js:
+            errors.append(f"Per-character Terminal runtime remains: {token}")
 
     if "hero-v33-terminal-text" in hero_js:
         errors.append("Hero visual script must not replace or control the Terminal output")
