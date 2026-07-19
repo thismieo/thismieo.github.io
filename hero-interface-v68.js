@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  // Stable semantic classes keep legacy hero chip styling isolated from this component.
+  // Stable semantic classes isolate the rail; pointer lifecycle controls touch feedback.
   document.documentElement.dataset.release = "2026.07.19.83";
 
   const home = document.querySelector("#home");
