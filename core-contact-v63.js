@@ -1,7 +1,8 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.19.101";
+  const PROJECT_VISUAL_VERSION = "102";
+  document.documentElement.dataset.release = "2026.07.19.102";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
   if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.68";
@@ -13,43 +14,24 @@
     readoutStylesheet.dataset.projectReadoutsV66 = "true";
     document.head.append(readoutStylesheet);
   }
-  readoutStylesheet.href = "project-readouts-v66.css?v=20260719.101";
+  readoutStylesheet.href = "project-readouts-v66.css?v=20260719.102";
 
   const projects = document.querySelector("#projects");
   projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
 
-  /* Keep every top-right SVG readout inside its 360-unit viewBox. The Health
-     panel receives extra width because its icon and two text rows need more room. */
-  const readoutSpecs = [
-    [".project-v54-health", "96", "translate(252 8)"],
-    [".project-v54-fraud", "84", "translate(266 8)"],
-    [".project-v54-traffic", "82", "translate(268 8)"]
-  ];
+  /* A stale cached V101 script can still arrive through the older index cache key.
+     Reload V102 once, then let the version flag prevent duplicate initialization. */
+  if (projects && projects.dataset.projectVisualVersion !== PROJECT_VISUAL_VERSION) {
+    delete projects.dataset.projectVisualsV54Ready;
 
-  const applyProjectReadoutSafeArea = () => {
-    if (!projects) return true;
-
-    let fixed = 0;
-    readoutSpecs.forEach(([sceneSelector, width, transform]) => {
-      const chip = projects.querySelector(`${sceneSelector} .project-v54-chip`);
-      const group = chip?.parentElement;
-      if (!chip || !group) return;
-
-      chip.setAttribute("width", width);
-      group.setAttribute("transform", transform);
-      fixed += 1;
-    });
-
-    return fixed === readoutSpecs.length;
-  };
-
-  if (!applyProjectReadoutSafeArea() && projects) {
-    const readoutObserver = new MutationObserver(() => {
-      if (!applyProjectReadoutSafeArea()) return;
-      readoutObserver.disconnect();
-    });
-    readoutObserver.observe(projects, { childList: true, subtree: true });
-    window.setTimeout(() => readoutObserver.disconnect(), 5000);
+    const existingRefresh = document.querySelector('script[data-project-visual-refresh="102"]');
+    if (!existingRefresh) {
+      const refreshScript = document.createElement("script");
+      refreshScript.src = "project-visuals-v54.js?v=20260719.102";
+      refreshScript.defer = true;
+      refreshScript.dataset.projectVisualRefresh = PROJECT_VISUAL_VERSION;
+      document.body.append(refreshScript);
+    }
   }
 
   const contact = document.querySelector("#contact");
