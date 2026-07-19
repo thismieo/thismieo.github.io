@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - feat/v87-native-cleanup
-  pull_request:
-    branches:
-      - main
 
 permissions:
   contents: write
@@ -23,144 +20,28 @@ jobs:
           ref: feat/v87-native-cleanup
           fetch-depth: 0
 
-      - name: Finalize V87 visual-only runtime
+      - name: Update V87 cache keys
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
 
-          def replace_once(text: str, old: str, new: str, label: str) -> str:
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f"Expected one {label}; found {count}")
-              return text.replace(old, new, 1)
-
-          index_path = Path("index.html")
-          index = index_path.read_text(encoding="utf-8")
-          if 'data-release="2026.07.19.86"' in index:
-              index = replace_once(index, 'data-release="2026.07.19.86"', 'data-release="2026.07.19.87"', "release marker")
-          if 'tech-icons-v69.css?v=20260719.83' in index:
-              index = replace_once(index, 'tech-icons-v69.css?v=20260719.83', 'tech-icons-v69.css?v=20260719.87', "technical rail cache key")
-          if 'hero-interface-v68.js?v=20260719.86' in index:
-              index = replace_once(index, 'hero-interface-v68.js?v=20260719.86', 'hero-interface-v68.js?v=20260719.87', "Hero script cache key")
-          index_path.write_text(index, encoding="utf-8")
-
-          tech_path = Path("tech-icons-v69.css")
-          tech = tech_path.read_text(encoding="utf-8")
-          tech = tech.replace(
-              "/* Portfolio V83 — compact single-frame rail with precise touch feedback. */",
-              "/* Portfolio V87 — compact single-frame rail with native links and desktop-only hover polish. */",
-              1,
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          replacements = (
+              ('data-release="2026.07.19.86"', 'data-release="2026.07.19.87"'),
+              ('tech-icons-v69.css?v=20260719.83', 'tech-icons-v69.css?v=20260719.87'),
+              ('hero-interface-v68.js?v=20260719.86', 'hero-interface-v68.js?v=20260719.87'),
           )
-          tech = tech.replace(
-              "  transition:\n    background 230ms ease,\n    box-shadow 230ms ease,\n    color 230ms ease;\n",
-              "",
-              1,
-          )
-          tech = tech.replace(
-              "  transition:\n    background 230ms ease,\n    filter 230ms ease;\n",
-              "",
-              1,
-          )
-          tech = tech.replace("  transition: filter 230ms ease;\n", "", 1)
-          tech = tech.replace("  transition: color 230ms ease;\n", "", 2)
-
-          focus_block = '''/* Keyboard focus remains visible; touch uses the browser's native immediate link behavior. */
-#home.has-tech-rail .hero-tech-item:focus-visible {
-  outline: 1px solid rgba(var(--tech-accent), 0.38);
-  outline-offset: -2px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(var(--tech-accent), 0.065), transparent 74%),
-    rgba(10, 22, 42, 0.38);
-  box-shadow: inset 0 0 0 1px rgba(var(--tech-accent), 0.055);
-}
-
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-icon-shell {
-  background: radial-gradient(circle, rgba(var(--tech-accent), 0.16), transparent 74%);
-  filter: drop-shadow(0 0 8px rgba(var(--tech-accent), 0.13));
-}
-
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-icon {
-  filter: drop-shadow(0 0 8px rgba(var(--tech-accent), 0.5));
-}
-
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-copy strong {
-  color: #ffffff;
-}
-
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-copy small {
-  color: #c5d4e5;
-}
-
-'''
-          tech, count = re.subn(
-              r"/\* Keyboard focus and real press states\.[\s\S]*?(?=/\* Hover is enabled only)",
-              focus_block,
-              tech,
-              count=1,
-          )
-          if count != 1:
-              raise SystemExit("Could not replace the legacy technical-rail press block")
-
-          coarse_block = '''
-@media (hover: none), (pointer: coarse) {
-  #home.has-tech-rail .hero-tech-item,
-  #home.has-tech-rail .hero-tech-icon-shell,
-  #home.has-tech-rail .hero-tech-icon,
-  #home.has-tech-rail .hero-tech-copy strong,
-  #home.has-tech-rail .hero-tech-copy small {
-    transition: none !important;
-  }
-}
-
-'''
-          marker = "@media (prefers-reduced-motion: reduce) {"
-          if coarse_block.strip() not in tech:
-              if marker not in tech:
-                  raise SystemExit("Could not locate reduced-motion block in technical rail CSS")
-              tech = tech.replace(marker, coarse_block + marker, 1)
-          tech_path.write_text(tech, encoding="utf-8")
-
-          validator_path = Path("scripts/validate_site.py")
-          validator = validator_path.read_text(encoding="utf-8")
-          validator = validator.replace('data-release="2026.07.19.86"', 'data-release="2026.07.19.87"')
-          validator = validator.replace('V86 release marker is missing', 'V87 release marker is missing')
-          validator = validator.replace('tech-icons-v69.css?v=20260719.83', 'tech-icons-v69.css?v=20260719.87')
-          validator = validator.replace('V83 technical rail stylesheet cache key is missing', 'V87 technical rail stylesheet cache key is missing')
-          validator = validator.replace('hero-interface-v68.js?v=20260719.86', 'hero-interface-v68.js?v=20260719.87')
-          validator = validator.replace('V86 Hero interaction script cache key is missing', 'V87 visual-only Hero script cache key is missing')
-          validator = validator.replace('dataset.techIcons = "v86"', 'dataset.techIcons = "v87"')
-
-          for token in (
-              "        'interaction-v86.css?v=20260719.86',\n",
-              "        'requestAnimationFrame',\n",
-              "        'is-releasing',\n",
-              "        '--press-x',\n",
-              "        '--terminal-visible-chars',\n",
-              "        'compactViewport',\n",
-              "        'is-holding',\n",
-          ):
-              validator = validator.replace(token, "")
-
-          validator = validator.replace(
-              "    touch_js_tokens = (\n        'is-pressing',\n        'pointerdown',\n        'pointerup',\n        'pointercancel',\n        'lostpointercapture',\n    )\n    for token in touch_js_tokens:\n        if token not in tech_js_text:\n            errors.append(f\"V83 touch interaction token is missing: {token}\")\n\n    touch_css_tokens = (\n        '.hero-tech-item.is-pressing',\n        '@media (hover: hover) and (pointer: fine)',\n        '@media (min-width: 861px)',\n    )\n    for token in touch_css_tokens:\n        if token not in tech_css_text:\n            errors.append(f\"V83 interaction or desktop-scale CSS token is missing: {token}\")\n\n",
-              "    visual_css_tokens = (\n        '@media (hover: hover) and (pointer: fine)',\n        '@media (min-width: 861px)',\n        '@media (hover: none), (pointer: coarse)',\n    )\n    for token in visual_css_tokens:\n        if token not in tech_css_text:\n            errors.append(f\"V87 visual rail CSS token is missing: {token}\")\n\n",
-          )
-
-          old_obsolete = "    obsolete_touch_tokens = (\n        'is-activating',\n        'showTapGlow',\n    )\n"
-          new_obsolete = "    obsolete_touch_tokens = (\n        'is-activating',\n        'showTapGlow',\n        'is-pressing',\n        'is-releasing',\n        'pointerdown',\n        'pointermove',\n        'setPointerCapture',\n        'requestAnimationFrame',\n        '--terminal-visible-chars',\n        'interaction-v86.css',\n    )\n"
-          if old_obsolete in validator:
-              validator = validator.replace(old_obsolete, new_obsolete, 1)
-          elif new_obsolete not in validator:
-              raise SystemExit("Could not locate obsolete interaction validation block")
-
-          validator_path.write_text(validator, encoding="utf-8")
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new, 1)
+              elif new not in text:
+                  raise SystemExit(f"Missing cache token: {old}")
+          path.write_text(text, encoding="utf-8")
           PY
 
-      - name: Remove superseded interaction assets
-        run: |
-          rm -f interaction-v86.css
-          rm .github/workflows/apply-v87-native-cleanup.yml
+      - name: Remove one-time workflow
+        run: rm .github/workflows/apply-v87-native-cleanup.yml
 
       - name: Validate repository
         run: |
@@ -168,10 +49,10 @@ jobs:
           python scripts/validate_site.py
           git diff --check
 
-      - name: Commit V87 cleanup
+      - name: Commit V87 integration
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Finalize V87 native interaction cleanup"
+          git add index.html .github/workflows/apply-v87-native-cleanup.yml
+          git commit -m "Finalize V87 cache keys"
           git push origin HEAD:feat/v87-native-cleanup
