@@ -1,0 +1,239 @@
+/* Portfolio V84 — focused micro-polish for header clarity, hero hierarchy, terminal life, and consistent interaction feedback. */
+
+:root {
+  --micro-press-duration: 220ms;
+  --micro-press-ease: cubic-bezier(0.2, 0.72, 0.28, 1);
+}
+
+/* Keep the header identity and menu visually fixed while the central stream moves. */
+.cyber-rail-title,
+.menu-toggle {
+  position: relative;
+  z-index: 7;
+}
+
+.cyber-track-v46.is-ready {
+  animation-duration: 60s !important;
+}
+
+.cyber-stream {
+  overflow: hidden !important;
+}
+
+/* A compact semantic label gives the technical rail a clear purpose. */
+#home.has-tech-rail .hero-tech-panel {
+  width: min(100%, 650px);
+  display: grid;
+  gap: 7px;
+  margin: 15px 0 17px;
+}
+
+#home.has-tech-rail .hero-tech-panel .hero-tech-rail {
+  width: 100%;
+  margin: 0;
+}
+
+#home.has-tech-rail .hero-tech-kicker {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 0 5px;
+  color: #71859e;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.53rem;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+#home.has-tech-rail .hero-tech-kicker::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(103, 232, 249, 0.82), rgba(167, 139, 250, 0.45));
+  box-shadow: 0 0 8px rgba(103, 232, 249, 0.18);
+}
+
+/* Consistent tactile feedback without sticky touch hover. */
+#home .hero-v33-actions .button,
+#home .hero-v33-links a {
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform var(--micro-press-duration) var(--micro-press-ease),
+    border-color var(--micro-press-duration) ease,
+    background var(--micro-press-duration) ease,
+    box-shadow var(--micro-press-duration) ease,
+    color var(--micro-press-duration) ease;
+}
+
+#home .hero-v33-actions .button.is-pressing,
+#home .hero-v33-actions .button:active {
+  transform: translate3d(0, 1px, 0) scale(0.985);
+}
+
+#home .hero-v33-actions .button-primary.is-pressing,
+#home .hero-v33-actions .button-primary:active {
+  border-color: rgba(196, 251, 255, 0.62);
+  box-shadow:
+    0 10px 28px rgba(37, 99, 235, 0.24),
+    0 0 24px rgba(217, 70, 239, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+#home .hero-v33-actions .button-secondary.is-pressing,
+#home .hero-v33-actions .button-secondary:active {
+  border-color: rgba(103, 232, 249, 0.34);
+  background: rgba(9, 21, 42, 0.72) !important;
+  box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.04);
+}
+
+#home .hero-v33-links a.is-pressing,
+#home .hero-v33-links a:active {
+  color: #e8fbff;
+  border-color: rgba(103, 232, 249, 0.48);
+  transform: translate3d(0, 1px, 0) scale(0.975);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #home .hero-v33-actions .button:hover {
+    transform: translate3d(0, -2px, 0);
+  }
+
+  #home .hero-v33-actions .button-primary:hover {
+    box-shadow: 0 20px 46px rgba(37, 99, 235, 0.26), 0 0 34px rgba(217, 70, 239, 0.11);
+  }
+}
+
+/* The live terminal becomes a calm signature element rather than a static status card. */
+#home .hero-v33-terminal {
+  transition: border-color 240ms ease, box-shadow 240ms ease, background 240ms ease;
+}
+
+#home .hero-v33-terminal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.36;
+  background: linear-gradient(108deg, transparent 18%, rgba(103, 232, 249, 0.025) 45%, rgba(167, 139, 250, 0.035) 55%, transparent 82%);
+  transform: translate3d(-55%, 0, 0);
+  animation: heroV84TerminalSweep 8.5s ease-in-out infinite;
+}
+
+#home .hero-v33-terminal > * {
+  position: relative;
+  z-index: 1;
+}
+
+#home .terminal-v33-live::before {
+  animation: heroV84TerminalPulse 2.2s ease-in-out infinite;
+}
+
+#home #hero-v33-terminal-text {
+  min-height: 1.1em;
+}
+
+@keyframes heroV84TerminalPulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.84);
+    box-shadow: 0 0 7px rgba(52, 211, 153, 0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+    box-shadow: 0 0 14px rgba(52, 211, 153, 0.72);
+  }
+}
+
+@keyframes heroV84TerminalSweep {
+  0%, 18% { transform: translate3d(-62%, 0, 0); opacity: 0; }
+  34%, 66% { opacity: 0.38; }
+  82%, 100% { transform: translate3d(62%, 0, 0); opacity: 0; }
+}
+
+@media (max-width: 860px) {
+  .cyber-track-v46.is-ready {
+    animation-duration: 64s !important;
+  }
+
+  .cyber-stream {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 85%, transparent 100%) !important;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 85%, transparent 100%) !important;
+  }
+
+  .cyber-stream::before,
+  .cyber-stream::after {
+    width: 34px !important;
+    opacity: 1;
+  }
+
+  .cyber-stream::before {
+    background: linear-gradient(90deg, rgba(5, 14, 29, 1) 0%, rgba(5, 14, 29, 0.88) 32%, transparent 100%) !important;
+  }
+
+  .cyber-stream::after {
+    background: linear-gradient(270deg, rgba(8, 12, 26, 1) 0%, rgba(8, 12, 26, 0.88) 32%, transparent 100%) !important;
+  }
+
+  #home.has-tech-rail .hero-tech-panel {
+    width: min(100%, 560px);
+    gap: 6px;
+    margin: 14px auto 15px;
+  }
+
+  #home.has-tech-rail .hero-tech-kicker {
+    margin-left: 4px;
+    font-size: 0.49rem;
+    letter-spacing: 0.115em;
+  }
+
+  #home.is-hero-v68 .hero-v33-actions {
+    gap: 8px !important;
+  }
+
+  #home.is-hero-v68 .hero-v33-actions .button-primary {
+    min-height: 49px !important;
+  }
+
+  #home.is-hero-v68 .hero-v33-actions .button-secondary {
+    min-height: 43px !important;
+    padding-block: 10px !important;
+    opacity: 0.96;
+  }
+
+  #home .hero-v33-terminal::after {
+    opacity: 0.26;
+  }
+}
+
+@media (max-width: 430px) {
+  .cyber-stream::before,
+  .cyber-stream::after {
+    width: 38px !important;
+  }
+
+  #home.has-tech-rail .hero-tech-kicker {
+    font-size: 0.46rem;
+  }
+
+  #home.is-hero-v68 .hero-v33-actions .button {
+    border-radius: 14px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber-track-v46.is-ready,
+  #home .hero-v33-terminal::after,
+  #home .terminal-v33-live::before {
+    animation: none !important;
+  }
+
+  #home .hero-v33-actions .button,
+  #home .hero-v33-links a,
+  #home .hero-v33-terminal {
+    transition: none !important;
+  }
+}
