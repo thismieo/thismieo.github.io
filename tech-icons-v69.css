@@ -1,4 +1,4 @@
-/* Portfolio V75 — proportional mobile tech cards with balanced icon and label alignment. */
+/* Portfolio V76 — professional mobile tech-card sizing with single-line labels. */
 
 #home.is-tech-icons-v73 .hero-v73-tech-strip {
   position: relative;
@@ -131,46 +131,46 @@
 
 @media (max-width: 860px) {
   #home.is-tech-icons-v73 .hero-v73-tech-strip {
-    width: min(100%, 520px);
+    width: min(100%, 540px);
     max-width: 100%;
     display: grid;
     grid-template-columns:
-      minmax(0, 0.95fr)
+      minmax(0, 0.98fr)
       minmax(0, 0.78fr)
-      minmax(0, 1.34fr)
-      minmax(0, 1.05fr);
+      minmax(0, 1.62fr)
+      minmax(0, 1.12fr);
     align-items: stretch;
     justify-content: center;
-    gap: 6px;
+    gap: 7px;
     margin-inline: auto;
-    border-radius: 12px;
+    border-radius: 13px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item {
     box-sizing: border-box;
     width: 100%;
-    min-height: 49px;
+    min-height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    padding: 8px 4px;
-    border-radius: 11px;
+    gap: 6px;
+    padding: 9px 6px;
+    border-radius: 12px;
     text-align: center;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-icon {
-    width: 17px;
-    height: 17px;
-    flex: 0 0 17px;
-    stroke-width: 1.82;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    stroke-width: 1.85;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item b {
     overflow: visible;
-    font-size: clamp(0.44rem, 1.82vw, 0.5rem);
-    letter-spacing: 0.014em;
-    line-height: 1.04;
+    font-size: clamp(0.5rem, 1.98vw, 0.56rem);
+    letter-spacing: 0.012em;
+    line-height: 1;
     text-align: center;
     text-overflow: clip;
     white-space: nowrap;
@@ -178,51 +178,93 @@
     word-break: normal;
   }
 
-  /* Short labels use compact cards; the longer ML label receives the extra space. */
+  /* The longer label receives more card width while retaining the same icon scale and alignment. */
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+    gap: 6px;
+    padding-inline: 7px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
+    max-width: none;
+    font-size: clamp(0.49rem, 1.9vw, 0.55rem);
+    letter-spacing: 0.002em;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 430px) {
+  #home.is-tech-icons-v73 .hero-v73-tech-strip {
+    grid-template-columns:
+      minmax(0, 0.98fr)
+      minmax(0, 0.78fr)
+      minmax(0, 1.66fr)
+      minmax(0, 1.12fr);
+    gap: 6px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item {
+    min-height: 54px;
+    gap: 5px;
+    padding-inline: 5px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-icon {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+    font-size: 0.51rem;
+    letter-spacing: 0.008em;
+  }
+
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
     gap: 5px;
     padding-inline: 6px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 60px;
-    font-size: clamp(0.47rem, 1.9vw, 0.52rem);
-    letter-spacing: 0.004em;
-    line-height: 1.02;
-    white-space: normal;
+    font-size: 0.5rem;
+    letter-spacing: 0;
   }
 }
 
 @media (max-width: 390px) {
   #home.is-tech-icons-v73 .hero-v73-tech-strip {
+    grid-template-columns:
+      minmax(0, 0.97fr)
+      minmax(0, 0.76fr)
+      minmax(0, 1.7fr)
+      minmax(0, 1.1fr);
     gap: 5px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item {
-    min-height: 47px;
-    gap: 4px;
-    padding-inline: 3px;
-  }
-
-  #home.is-tech-icons-v73 .hero-v73-tech-icon {
-    width: 16px;
-    height: 16px;
-    flex-basis: 16px;
-  }
-
-  #home.is-tech-icons-v73 .hero-v73-tech-item b {
-    font-size: 0.43rem;
-    letter-spacing: 0.008em;
-  }
-
-  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+    min-height: 52px;
     gap: 4px;
     padding-inline: 4px;
   }
 
+  #home.is-tech-icons-v73 .hero-v73-tech-icon {
+    width: 17px;
+    height: 17px;
+    flex-basis: 17px;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+    font-size: 0.48rem;
+    letter-spacing: 0.004em;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
+    gap: 4px;
+    padding-inline: 5px;
+  }
+
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 56px;
-    font-size: 0.46rem;
+    font-size: 0.48rem;
+    letter-spacing: -0.004em;
   }
 }
 
@@ -230,15 +272,16 @@
   #home.is-tech-icons-v73 .hero-v73-tech-strip {
     grid-template-columns:
       minmax(0, 0.96fr)
-      minmax(0, 0.75fr)
-      minmax(0, 1.38fr)
-      minmax(0, 1.03fr);
+      minmax(0, 0.74fr)
+      minmax(0, 1.72fr)
+      minmax(0, 1.08fr);
+    gap: 4px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item {
-    min-height: 45px;
+    min-height: 49px;
     gap: 3px;
-    padding-inline: 2px;
+    padding-inline: 3px;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-icon {
@@ -248,8 +291,8 @@
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item b {
-    font-size: 0.39rem;
-    letter-spacing: 0.003em;
+    font-size: 0.44rem;
+    letter-spacing: 0;
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) {
@@ -258,8 +301,8 @@
   }
 
   #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(3) b {
-    max-width: 52px;
-    font-size: 0.42rem;
+    font-size: 0.44rem;
+    letter-spacing: -0.006em;
   }
 }
 
