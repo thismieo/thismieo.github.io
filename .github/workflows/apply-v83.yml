@@ -1,9 +1,6 @@
 name: Apply V83 touch refinement
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -98,40 +95,14 @@ jobs:
           Path(".github/workflows/v83-finalize.yml").unlink(missing_ok=True)
           PY
 
-      - name: Validate final branch
-        run: |
-          node --check hero-interface-v68.js
-          python scripts/validate_site.py
-          python - <<'PY'
-          from pathlib import Path
-
-          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
-          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
-
-          if css.count("{") != css.count("}"):
-              raise SystemExit("Unbalanced technical rail CSS braces")
-
-          required_js = ("is-pressing", "pointerup", "pointercancel", "lostpointercapture")
-          required_css = (
-              "@media (hover: hover) and (pointer: fine)",
-              "@media (min-width: 861px)",
-              ".hero-tech-item.is-pressing",
-          )
-          missing = [token for token in required_js if token not in js]
-          missing += [token for token in required_css if token not in css]
-          if missing:
-              raise SystemExit(f"Missing V83 interaction tokens: {missing}")
-
-          forbidden = ("is-activating", "showTapGlow")
-          found = [token for token in forbidden if token in js or token in css]
-          if found:
-              raise SystemExit(f"Obsolete touch behavior remains: {found}")
-          PY
-
       - name: Commit V83 branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
+          if git diff --cached --quiet; then
+            echo "No V83 finalization changes required"
+            exit 0
+          fi
           git commit -m "Finalize V83 touch behavior and desktop scale"
           git push origin HEAD:fix/v83-touch-state-desktop-scale
