@@ -21,8 +21,8 @@ jobs:
       - name: Apply and validate V96 once
         shell: bash
         run: |
-          set -euo pipefail
-          if [ -f v96-integration-error.txt ]; then
+          set -uo pipefail
+          if [ -f v96-full-diagnostic.txt ]; then
             echo "V96 diagnostic already captured."
             exit 0
           fi
@@ -31,29 +31,36 @@ jobs:
             exit 0
           fi
 
-          set +e
-          python3 scripts/apply_v96_unified_orbits.py > v96-integration-error.txt 2>&1
-          status=$?
-          set -e
+          : > v96-full-diagnostic.txt
+          status=0
+
+          python3 scripts/apply_v96_unified_orbits.py >> v96-full-diagnostic.txt 2>&1 || status=$?
+
+          if [ "$status" -eq 0 ]; then
+            python3 scripts/validate_site.py >> v96-full-diagnostic.txt 2>&1 || status=$?
+          fi
+
+          if [ "$status" -eq 0 ]; then
+            while IFS= read -r -d '' file; do
+              node --check "$file" >> v96-full-diagnostic.txt 2>&1 || status=$?
+            done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
+          fi
+
+          if [ "$status" -eq 0 ]; then
+            git diff --check >> v96-full-diagnostic.txt 2>&1 || status=$?
+          fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           if [ "$status" -ne 0 ]; then
-            git add v96-integration-error.txt
-            git commit -m "Capture V96 integration error"
+            git add -A
+            git commit -m "Capture full V96 diagnostic state"
             git push origin HEAD:fix/v96-unified-orbit-motion
             exit 0
           fi
 
-          rm -f v96-integration-error.txt
-          python3 scripts/validate_site.py
-
-          while IFS= read -r -d '' file; do
-            node --check "$file"
-          done < <(find . -maxdepth 1 -type f -name '*.js' -print0)
-
-          git diff --check
+          rm -f v96-full-diagnostic.txt
           git add -A
           git commit -m "Unify mobile and desktop orbit motion"
           git push origin HEAD:fix/v96-unified-orbit-motion
