@@ -32,8 +32,6 @@ validator_replacements = {
     'data-release="2026.07.19.94"': 'data-release="2026.07.19.95"',
     'planetary-motion-v94.css?v=20260719.94': 'planetary-motion-v95.css?v=20260719.95',
     'planetary-motion-v94.js?v=20260719.94': 'planetary-motion-v95.js?v=20260719.95',
-    'ROOT / "planetary-motion-v94.css"': 'ROOT / "planetary-motion-v95.css"',
-    'ROOT / "planetary-motion-v94.js"': 'ROOT / "planetary-motion-v95.js"',
     'V94 planetary-motion': 'V95 planetary-motion',
 }
 for old, new in validator_replacements.items():
