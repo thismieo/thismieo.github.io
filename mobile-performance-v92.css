@@ -1,4 +1,10 @@
-/* Portfolio V92 — mobile-only scroll stability without changing desktop visuals. */
+/* Portfolio V92 — final Hero layout cleanup and mobile scroll stability. */
+
+/* The console now lives inside the copy column, so the obsolete second grid row must not exist. */
+#home .hero-v33-story {
+  grid-template-areas: "portrait copy" !important;
+  row-gap: 0 !important;
+}
 
 @media (max-width: 860px) {
   html {
