@@ -1,0 +1,93 @@
+name: Apply V87 native cleanup
+
+on:
+  push:
+    branches:
+      - feat/v87-native-cleanup
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out V87 branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v87-native-cleanup
+          fetch-depth: 0
+
+      - name: Finalize V87 release and validation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one {label}; found {count}")
+              return text.replace(old, new, 1)
+
+          index_path = Path("index.html")
+          index = index_path.read_text(encoding="utf-8")
+          index = replace_once(index, 'data-release="2026.07.19.86"', 'data-release="2026.07.19.87"', "release marker")
+          index = replace_once(index, 'tech-icons-v69.css?v=20260719.83', 'tech-icons-v69.css?v=20260719.87', "technical rail cache key")
+          index = replace_once(index, 'hero-interface-v68.js?v=20260719.86', 'hero-interface-v68.js?v=20260719.87', "Hero script cache key")
+          index_path.write_text(index, encoding="utf-8")
+
+          validator_path = Path("scripts/validate_site.py")
+          validator = validator_path.read_text(encoding="utf-8")
+          validator = validator.replace('data-release="2026.07.19.86"', 'data-release="2026.07.19.87"')
+          validator = validator.replace('V86 release marker is missing', 'V87 release marker is missing')
+          validator = validator.replace('tech-icons-v69.css?v=20260719.83', 'tech-icons-v69.css?v=20260719.87')
+          validator = validator.replace('V83 technical rail stylesheet cache key is missing', 'V87 technical rail stylesheet cache key is missing')
+          validator = validator.replace('hero-interface-v68.js?v=20260719.86', 'hero-interface-v68.js?v=20260719.87')
+          validator = validator.replace('V86 Hero interaction script cache key is missing', 'V87 visual-only Hero script cache key is missing')
+          validator = validator.replace('dataset.techIcons = "v86"', 'dataset.techIcons = "v87"')
+
+          for token in (
+              "        'interaction-v86.css?v=20260719.86',\n",
+              "        'requestAnimationFrame',\n",
+              "        'is-releasing',\n",
+              "        '--press-x',\n",
+              "        '--terminal-visible-chars',\n",
+              "        'compactViewport',\n",
+              "        'is-holding',\n",
+          ):
+              validator = validator.replace(token, "")
+
+          validator = validator.replace(
+              "    touch_js_tokens = (\n        'is-pressing',\n        'pointerdown',\n        'pointerup',\n        'pointercancel',\n        'lostpointercapture',\n    )\n    for token in touch_js_tokens:\n        if token not in tech_js_text:\n            errors.append(f\"V83 touch interaction token is missing: {token}\")\n\n    touch_css_tokens = (\n        '.hero-tech-item.is-pressing',\n        '@media (hover: hover) and (pointer: fine)',\n        '@media (min-width: 861px)',\n    )\n    for token in touch_css_tokens:\n        if token not in tech_css_text:\n            errors.append(f\"V83 interaction or desktop-scale CSS token is missing: {token}\")\n\n",
+              "    visual_css_tokens = (\n        '@media (hover: hover) and (pointer: fine)',\n        '@media (min-width: 861px)',\n        '@media (hover: none), (pointer: coarse)',\n    )\n    for token in visual_css_tokens:\n        if token not in tech_css_text:\n            errors.append(f\"V87 visual rail CSS token is missing: {token}\")\n\n",
+          )
+
+          anchor = "    obsolete_touch_tokens = (\n        'is-activating',\n        'showTapGlow',\n    )\n"
+          replacement = "    obsolete_touch_tokens = (\n        'is-activating',\n        'showTapGlow',\n        'is-pressing',\n        'is-releasing',\n        'pointerdown',\n        'pointermove',\n        'setPointerCapture',\n        'requestAnimationFrame',\n        '--terminal-visible-chars',\n        'interaction-v86.css',\n    )\n"
+          if anchor not in validator:
+              raise SystemExit("Could not locate obsolete touch token block")
+          validator = validator.replace(anchor, replacement, 1)
+
+          validator_path.write_text(validator, encoding="utf-8")
+          PY
+
+      - name: Remove superseded interaction assets
+        run: |
+          rm -f interaction-v86.css
+          rm .github/workflows/apply-v87-native-cleanup.yml
+
+      - name: Validate repository
+        run: |
+          find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          python scripts/validate_site.py
+          git diff --check
+
+      - name: Commit V87 cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize V87 native interaction cleanup"
+          git push origin HEAD:feat/v87-native-cleanup
