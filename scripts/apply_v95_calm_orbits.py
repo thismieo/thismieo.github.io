@@ -82,7 +82,7 @@ js_block = '''    required_planetary_js = (
         "requestAnimationFrame",
         "cancelAnimationFrame",
         "coarsePointer.matches ? 1000 / 24",
-        "window.addEventListener(\"scroll\"",
+        'window.addEventListener("scroll"',
         "scrolling = true",
         "--orbit-x",
         "--orbit-y",
