@@ -1,3 +1,4 @@
+# Triggered after workflow registration on main.
 name: Apply V84 branch integration
 
 on:
