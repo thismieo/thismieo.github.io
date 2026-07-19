@@ -163,6 +163,8 @@ def main() -> int:
         "tech-icons-v69.css",
         "learning-console-v92.css",
         "mobile-performance-v92.css",
+        "planetary-motion-v93.css",
+        "planetary-motion-v93.js",
         "projects-runtime-v68.js",
         "core-contact-v63.js",
     }
@@ -171,9 +173,11 @@ def main() -> int:
         errors.append(f"Required runtime assets are not loaded: {', '.join(missing_runtime)}")
 
     required_index_tokens = (
-        'data-release="2026.07.19.92"',
+        'data-release="2026.07.19.93"',
         'learning-console-v92.css?v=20260719.92',
         'mobile-performance-v92.css?v=20260719.92',
+        'planetary-motion-v93.css?v=20260719.93',
+        'planetary-motion-v93.js?v=20260719.93',
         'hero-v33.js?v=20260719.89',
         'class="hero-console-v92"',
         'class="hero-console-v92-lights"',
@@ -202,6 +206,8 @@ def main() -> int:
     console_css = (ROOT / "learning-console-v92.css").read_text(encoding="utf-8", errors="replace")
     mobile_css = (ROOT / "mobile-performance-v92.css").read_text(encoding="utf-8", errors="replace")
     terminal_js = (ROOT / "hero-v33.js").read_text(encoding="utf-8", errors="replace")
+    planetary_css = (ROOT / "planetary-motion-v93.css").read_text(encoding="utf-8", errors="replace")
+    planetary_js = (ROOT / "planetary-motion-v93.js").read_text(encoding="utf-8", errors="replace")
 
     forbidden_legacy_surface_tokens = (
         "hero-v33-terminal",
@@ -268,6 +274,37 @@ def main() -> int:
     for token in required_mobile_css:
         if token not in mobile_css:
             errors.append(f"V92 mobile-stability CSS token is missing: {token}")
+
+    required_planetary_css = (
+        "heroV93Stars",
+        "heroV93OrbitDash",
+        "heroV93PlanetSpin",
+        "heroV93PlanetBreath",
+        ".hero-v33-rotator.is-path-driven",
+        "--orbit-x",
+        "--orbit-y",
+        "@media (max-width: 860px)",
+        "@media (prefers-reduced-motion: reduce)",
+    )
+    for token in required_planetary_css:
+        if token not in planetary_css:
+            errors.append(f"V93 planetary-motion CSS token is missing: {token}")
+
+    required_planetary_js = (
+        "getTotalLength",
+        "getPointAtLength",
+        "getScreenCTM",
+        "IntersectionObserver",
+        "requestAnimationFrame",
+        "cancelAnimationFrame",
+        "--orbit-x",
+        "--orbit-y",
+        "prefers-reduced-motion",
+        "document.hidden",
+    )
+    for token in required_planetary_js:
+        if token not in planetary_js:
+            errors.append(f"V93 planetary-motion JavaScript token is missing: {token}")
 
     if errors:
         print("Portfolio validation failed")
