@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  // Stable semantic classes isolate the rail; V84 adds focused micro-polish without another runtime bundle.
-  document.documentElement.dataset.release = "2026.07.19.84";
+  // Stable semantic classes isolate the Hero refinements and technical learning rail.
+  document.documentElement.dataset.release = "2026.07.19.85";
 
   let microStylesheet = document.querySelector("link[data-micro-polish]");
   if (!microStylesheet) {
@@ -11,9 +11,10 @@
     microStylesheet.dataset.microPolish = "true";
     document.head.append(microStylesheet);
   }
-  microStylesheet.href = "micro-polish.css?v=20260719.84";
+  microStylesheet.href = "micro-polish.css?v=20260719.85";
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const compactViewport = window.matchMedia("(max-width: 860px)");
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
   const heading = copy?.querySelector("h1");
@@ -92,7 +93,7 @@
   const kicker = document.createElement("p");
   kicker.className = "hero-tech-kicker";
   kicker.id = "hero-tech-kicker";
-  kicker.textContent = "Current Learning Path";
+  kicker.textContent = "CORE LEARNING STACK";
 
   const rail = document.createElement("div");
   rail.className = "hero-tech-rail";
@@ -194,9 +195,10 @@
     output.textContent = "";
     output.setAttribute("aria-live", "polite");
     output.setAttribute("aria-atomic", "true");
-    output.dataset.terminalV84Ready = "true";
+    output.dataset.terminalV85Ready = "true";
     currentOutput.replaceWith(output);
 
+    const terminalLine = output.closest(".terminal-v33-line");
     const phrases = [
       'current_focus = "Python Foundations"',
       "practice_mode = True",
@@ -205,14 +207,24 @@
       'direction = "AI Engineering"'
     ];
 
+    const setTerminalPhase = (phase) => {
+      terminalLine?.classList.toggle("is-holding", phase === "holding");
+      terminalLine?.classList.toggle("is-writing", phase !== "holding");
+    };
+
     if (reducedMotion.matches) {
       output.textContent = phrases[0];
+      setTerminalPhase("holding");
     } else {
       let phraseIndex = 0;
       let characterIndex = 0;
-      let deleting = false;
+      let phase = "typing";
       let timer = 0;
       let pausedByVisibility = false;
+
+      const timings = () => compactViewport.matches
+        ? { typing: 62, deleting: 28, holding: 1950, gap: 360 }
+        : { typing: 44, deleting: 20, holding: 1650, gap: 300 };
 
       const schedule = (delay) => {
         window.clearTimeout(timer);
@@ -226,26 +238,47 @@
         }
 
         const phrase = phrases[phraseIndex];
-        characterIndex += deleting ? -1 : 1;
-        output.textContent = phrase.slice(0, Math.max(0, characterIndex));
+        const speed = timings();
 
-        if (!deleting && characterIndex >= phrase.length) {
-          deleting = true;
-          schedule(1380);
+        if (phase === "typing") {
+          characterIndex += 1;
+          output.textContent = phrase.slice(0, characterIndex);
+          setTerminalPhase("typing");
+
+          if (characterIndex >= phrase.length) {
+            phase = "holding";
+            setTerminalPhase("holding");
+            schedule(speed.holding);
+            return;
+          }
+
+          schedule(speed.typing);
           return;
         }
 
-        if (deleting && characterIndex <= 0) {
-          deleting = false;
+        if (phase === "holding") {
+          phase = "deleting";
+          setTerminalPhase("deleting");
+          schedule(speed.deleting);
+          return;
+        }
+
+        characterIndex = Math.max(0, characterIndex - 1);
+        output.textContent = phrase.slice(0, characterIndex);
+        setTerminalPhase("deleting");
+
+        if (characterIndex === 0) {
           phraseIndex = (phraseIndex + 1) % phrases.length;
-          schedule(300);
+          phase = "typing";
+          schedule(speed.gap);
           return;
         }
 
-        schedule(deleting ? 20 : 40);
+        schedule(speed.deleting);
       };
 
-      schedule(260);
+      setTerminalPhase("typing");
+      schedule(320);
 
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
@@ -256,7 +289,7 @@
 
         if (pausedByVisibility) {
           pausedByVisibility = false;
-          schedule(180);
+          schedule(220);
         }
       });
     }
