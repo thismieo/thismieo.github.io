@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: write
@@ -25,6 +29,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
+          import textwrap
 
           interface_path = Path("hero-interface-v68.css")
           interface = interface_path.read_text(encoding="utf-8")
@@ -71,83 +76,85 @@ jobs:
           start = validator.index(start_marker)
           end = validator.index(end_marker, start)
 
-          validation_block = """    if 'data-release=\"2026.07.19.82\"' not in index_text:
+          validation_block = textwrap.indent(textwrap.dedent("""\
+          if 'data-release="2026.07.19.82"' not in index_text:
               errors.append("V82 release marker is missing")
 
-              if 'hero-interface-v68.css?v=20260719.82' not in index_text:
-                  errors.append("V82 hero interface stylesheet cache key is missing")
+          if 'hero-interface-v68.css?v=20260719.82' not in index_text:
+              errors.append("V82 hero interface stylesheet cache key is missing")
 
-              if 'tech-icons-v69.css?v=20260719.82' not in index_text:
-                  errors.append("V82 technical rail stylesheet cache key is missing")
+          if 'tech-icons-v69.css?v=20260719.82' not in index_text:
+              errors.append("V82 technical rail stylesheet cache key is missing")
 
-              if 'hero-interface-v68.js?v=20260719.82' not in index_text:
-                  errors.append("V82 technical rail script cache key is missing")
+          if 'hero-interface-v68.js?v=20260719.82' not in index_text:
+              errors.append("V82 technical rail script cache key is missing")
 
-              tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
-              tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
-              hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")
+          tech_js_text = (ROOT / "hero-interface-v68.js").read_text(encoding="utf-8", errors="replace")
+          tech_css_text = (ROOT / "tech-icons-v69.css").read_text(encoding="utf-8", errors="replace")
+          hero_interface_text = (ROOT / "hero-interface-v68.css").read_text(encoding="utf-8", errors="replace")
 
-              required_js_tokens = (
-                  'has-tech-rail',
-                  'hero-tech-rail',
-                  'hero-tech-item',
-                  'hero-tech-icon-shell',
-                  'hero-tech-icon',
-                  'hero-tech-copy',
-                  'document.createElement("a")',
-                  'dataset.techIcons = "v82"',
-              )
-              for token in required_js_tokens:
-                  if token not in tech_js_text:
-                      errors.append(f"V82 technical rail JavaScript token is missing: {token}")
+          required_js_tokens = (
+              'has-tech-rail',
+              'hero-tech-rail',
+              'hero-tech-item',
+              'hero-tech-icon-shell',
+              'hero-tech-icon',
+              'hero-tech-copy',
+              'document.createElement("a")',
+              'dataset.techIcons = "v82"',
+          )
+          for token in required_js_tokens:
+              if token not in tech_js_text:
+                  errors.append(f"V82 technical rail JavaScript token is missing: {token}")
 
-              required_css_tokens = (
-                  '#home.has-tech-rail .hero-tech-rail',
-                  '#home.has-tech-rail .hero-tech-item',
-                  '@keyframes heroTechRailWave',
-                  '@media (prefers-reduced-motion: reduce)',
-              )
-              for token in required_css_tokens:
-                  if token not in tech_css_text:
-                      errors.append(f"V82 technical rail CSS token is missing: {token}")
+          required_css_tokens = (
+              '#home.has-tech-rail .hero-tech-rail',
+              '#home.has-tech-rail .hero-tech-item',
+              '@keyframes heroTechRailWave',
+              '@media (prefers-reduced-motion: reduce)',
+          )
+          for token in required_css_tokens:
+              if token not in tech_css_text:
+                  errors.append(f"V82 technical rail CSS token is missing: {token}")
 
-              forbidden_js_tokens = (
-                  'window.open(',
-                  'item.addEventListener("click"',
-                  'is-tech-icons-v73',
-                  'is-tech-icons-v81',
-                  'hero-v68-tech-strip',
-                  'hero-v81-tech-rail',
-                  'dataset.techIcons = "v80"',
-                  'dataset.techIcons = "v81"',
-              )
-              for token in forbidden_js_tokens:
-                  if token in tech_js_text:
-                      errors.append(f"Legacy technical rail JavaScript remains: {token}")
+          forbidden_js_tokens = (
+              'window.open(',
+              'item.addEventListener("click"',
+              'is-tech-icons-v73',
+              'is-tech-icons-v81',
+              'hero-v68-tech-strip',
+              'hero-v81-tech-rail',
+              'dataset.techIcons = "v80"',
+              'dataset.techIcons = "v81"',
+          )
+          for token in forbidden_js_tokens:
+              if token in tech_js_text:
+                  errors.append(f"Legacy technical rail JavaScript remains: {token}")
 
-              forbidden_css_tokens = (
-                  '.hero-v73-tech-item',
-                  '.hero-v73-tech-strip',
-                  '.hero-v81-tech-item',
-                  '.hero-v81-tech-rail',
-                  'heroV73StripWave',
-                  'heroV81RailWave',
-                  '.hero-tech-item + .hero-tech-item::before',
-                  '.hero-tech-rail::after',
-              )
-              for token in forbidden_css_tokens:
-                  if token in tech_css_text:
-                      errors.append(f"Obsolete or duplicate technical rail CSS remains: {token}")
+          forbidden_css_tokens = (
+              '.hero-v73-tech-item',
+              '.hero-v73-tech-strip',
+              '.hero-v81-tech-item',
+              '.hero-v81-tech-rail',
+              'heroV73StripWave',
+              'heroV81RailWave',
+              '.hero-tech-item + .hero-tech-item::before',
+              '.hero-tech-rail::after',
+          )
+          for token in forbidden_css_tokens:
+              if token in tech_css_text:
+                  errors.append(f"Obsolete or duplicate technical rail CSS remains: {token}")
 
-              legacy_interface_tokens = (
-                  'hero-v68-tech-strip',
-                  'heroV68TechLine',
-              )
-              for token in legacy_interface_tokens:
-                  if token in hero_interface_text:
-                      errors.append(f"Legacy hero chip styling remains in hero-interface-v68.css: {token}")
+          legacy_interface_tokens = (
+              'hero-v68-tech-strip',
+              'heroV68TechLine',
+          )
+          for token in legacy_interface_tokens:
+              if token in hero_interface_text:
+                  errors.append(f"Legacy hero chip styling remains in hero-interface-v68.css: {token}")
 
-          """
+          """), "    ") + "\n"
+
           validator = validator[:start] + validation_block + validator[end:]
           validator_path.write_text(validator, encoding="utf-8")
 
