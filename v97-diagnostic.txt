@@ -1,0 +1,5 @@
+APPLY_STATUS=0
+Portfolio validation failed
+ERROR: V92 typing-console token is missing: class="hero-v33-rotator rotator-v33-three"
+ERROR: V97 planetary-motion CSS token is missing: identical on desktop and mobile
+VALIDATE_STATUS=1
