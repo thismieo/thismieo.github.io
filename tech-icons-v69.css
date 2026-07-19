@@ -1,4 +1,4 @@
-/* Portfolio V76 — professional mobile tech-card sizing with single-line labels. */
+/* Portfolio V78 — reliable official-resource links with refined tap and focus feedback. */
 
 #home.is-tech-icons-v73 .hero-v73-tech-strip {
   position: relative;
@@ -6,6 +6,7 @@
   gap: 8px;
   overflow: hidden;
   border-radius: 14px;
+  pointer-events: auto;
 }
 
 /* One continuous light beam crosses the complete strip. Cards themselves never animate. */
@@ -59,7 +60,19 @@
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  text-decoration: none;
+  cursor: pointer;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
   transform: none;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
 }
 
 #home.is-tech-icons-v73 .hero-v73-tech-item:nth-child(2) { --hero-v73-accent: 96, 165, 250; }
@@ -70,6 +83,10 @@
 #home.is-tech-icons-v73 .hero-v73-tech-item::after {
   content: none !important;
   display: none !important;
+}
+
+#home.is-tech-icons-v73 .hero-v73-tech-item > * {
+  pointer-events: none;
 }
 
 #home.is-tech-icons-v73 .hero-v73-tech-icon {
@@ -87,6 +104,7 @@
   color: rgb(var(--hero-v73-accent));
   filter: drop-shadow(0 0 5px rgba(var(--hero-v73-accent), 0.22));
   transform: none;
+  transition: filter 180ms ease;
 }
 
 #home.is-tech-icons-v73 .hero-v73-tech-icon path,
@@ -110,6 +128,34 @@
   text-transform: uppercase;
   white-space: nowrap;
   transform: none;
+  transition: color 180ms ease;
+}
+
+#home.is-tech-icons-v73 .hero-v73-tech-item:active,
+#home.is-tech-icons-v73 .hero-v73-tech-item.is-activating,
+#home.is-tech-icons-v73 .hero-v73-tech-item:focus-visible {
+  border-color: rgba(var(--hero-v73-accent), 0.72);
+  background: rgba(8, 20, 42, 0.94);
+  color: #eef8ff;
+  outline: none;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(var(--hero-v73-accent), 0.15),
+    0 0 20px rgba(var(--hero-v73-accent), 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    inset 0 0 18px rgba(var(--hero-v73-accent), 0.055);
+}
+
+#home.is-tech-icons-v73 .hero-v73-tech-item:active .hero-v73-tech-icon,
+#home.is-tech-icons-v73 .hero-v73-tech-item.is-activating .hero-v73-tech-icon,
+#home.is-tech-icons-v73 .hero-v73-tech-item:focus-visible .hero-v73-tech-icon {
+  filter: drop-shadow(0 0 8px rgba(var(--hero-v73-accent), 0.52));
+}
+
+#home.is-tech-icons-v73 .hero-v73-tech-item:active b,
+#home.is-tech-icons-v73 .hero-v73-tech-item.is-activating b,
+#home.is-tech-icons-v73 .hero-v73-tech-item:focus-visible b {
+  color: #f1f7ff;
 }
 
 @keyframes heroV73StripWave {
@@ -308,11 +354,11 @@
 
 @media (hover: hover) and (pointer: fine) {
   #home.is-tech-icons-v73 .hero-v73-tech-item:hover {
-    border-color: rgba(var(--hero-v73-accent), 0.3);
+    border-color: rgba(var(--hero-v73-accent), 0.42);
     color: #dce8f5;
     box-shadow:
       0 11px 25px rgba(0, 0, 0, 0.17),
-      0 0 14px rgba(var(--hero-v73-accent), 0.055),
+      0 0 14px rgba(var(--hero-v73-accent), 0.09),
       inset 0 1px 0 rgba(255, 255, 255, 0.03);
     transform: none;
   }
@@ -322,5 +368,11 @@
   #home.is-tech-icons-v73 .hero-v73-tech-strip::before {
     animation: none !important;
     opacity: 0 !important;
+  }
+
+  #home.is-tech-icons-v73 .hero-v73-tech-item,
+  #home.is-tech-icons-v73 .hero-v73-tech-icon,
+  #home.is-tech-icons-v73 .hero-v73-tech-item b {
+    transition: none !important;
   }
 }
