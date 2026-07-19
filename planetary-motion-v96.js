@@ -6,6 +6,7 @@
 
   const orbitSvg = planetary.querySelector(".hero-v33-orbit-svg");
   const orbitLines = Array.from(planetary.querySelectorAll(".hero-v33-orbit-svg .orbit-line")).slice(0, 2);
+  // The third HTML satellite uses rotator-v33-three and is included in this three-item collection.
   const satellites = Array.from(planetary.querySelectorAll(".hero-v33-rotator")).slice(0, 3);
   if (!orbitSvg || orbitLines.length !== 2 || satellites.length !== 3) return;
 
