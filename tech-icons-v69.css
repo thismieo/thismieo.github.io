@@ -1,4 +1,4 @@
-/* Portfolio V83 — compact single-frame rail with precise touch feedback. */
+/* Portfolio V87 — compact single-frame learning rail with native links and desktop-only hover polish. */
 
 #home.has-tech-rail .hero-tech-rail {
   position: relative;
@@ -68,15 +68,11 @@
   color: #dbe7f4;
   text-decoration: none;
   cursor: pointer;
-  pointer-events: auto !important;
+  pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  transition:
-    background 230ms ease,
-    box-shadow 230ms ease,
-    color 230ms ease;
 }
 
 #home.has-tech-rail .hero-tech-item:nth-child(2) { --tech-accent: 96, 165, 250; }
@@ -106,9 +102,6 @@
   border-radius: 10px;
   background: radial-gradient(circle, rgba(var(--tech-accent), 0.105), transparent 72%);
   box-shadow: none;
-  transition:
-    background 230ms ease,
-    filter 230ms ease;
 }
 
 #home.has-tech-rail .hero-tech-icon {
@@ -123,7 +116,6 @@
   stroke-linejoin: round;
   color: rgb(var(--tech-accent));
   filter: drop-shadow(0 0 5px rgba(var(--tech-accent), 0.25));
-  transition: filter 230ms ease;
 }
 
 #home.has-tech-rail .hero-tech-icon path,
@@ -158,7 +150,6 @@
   font-weight: 700;
   letter-spacing: 0.035em;
   line-height: 1;
-  transition: color 230ms ease;
 }
 
 #home.has-tech-rail .hero-tech-copy small {
@@ -167,47 +158,38 @@
   font-weight: 620;
   letter-spacing: 0.075em;
   line-height: 1;
-  transition: color 230ms ease;
 }
 
-/* Keyboard focus and real press states. Touch state exists only while the finger is held down. */
-#home.has-tech-rail .hero-tech-item:focus-visible,
-#home.has-tech-rail .hero-tech-item:active,
-#home.has-tech-rail .hero-tech-item.is-pressing {
-  outline: none;
+#home.has-tech-rail .hero-tech-item:focus-visible {
+  outline: 1px solid rgba(var(--tech-accent), 0.38);
+  outline-offset: -2px;
   background:
     radial-gradient(circle at 50% 0%, rgba(var(--tech-accent), 0.065), transparent 74%),
     rgba(10, 22, 42, 0.38);
   box-shadow: inset 0 0 0 1px rgba(var(--tech-accent), 0.055);
 }
 
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-icon-shell,
-#home.has-tech-rail .hero-tech-item:active .hero-tech-icon-shell,
-#home.has-tech-rail .hero-tech-item.is-pressing .hero-tech-icon-shell {
+#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-icon-shell {
   background: radial-gradient(circle, rgba(var(--tech-accent), 0.16), transparent 74%);
   filter: drop-shadow(0 0 8px rgba(var(--tech-accent), 0.13));
 }
 
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-icon,
-#home.has-tech-rail .hero-tech-item:active .hero-tech-icon,
-#home.has-tech-rail .hero-tech-item.is-pressing .hero-tech-icon {
+#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-icon {
   filter: drop-shadow(0 0 8px rgba(var(--tech-accent), 0.5));
 }
 
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-copy strong,
-#home.has-tech-rail .hero-tech-item:active .hero-tech-copy strong,
-#home.has-tech-rail .hero-tech-item.is-pressing .hero-tech-copy strong {
-  color: #ffffff;
-}
+#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-copy strong { color: #fff; }
+#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-copy small { color: #c5d4e5; }
 
-#home.has-tech-rail .hero-tech-item:focus-visible .hero-tech-copy small,
-#home.has-tech-rail .hero-tech-item:active .hero-tech-copy small,
-#home.has-tech-rail .hero-tech-item.is-pressing .hero-tech-copy small {
-  color: #c5d4e5;
-}
-
-/* Hover is enabled only on devices with a real pointing device, preventing sticky iOS hover. */
 @media (hover: hover) and (pointer: fine) {
+  #home.has-tech-rail .hero-tech-item,
+  #home.has-tech-rail .hero-tech-icon-shell,
+  #home.has-tech-rail .hero-tech-icon,
+  #home.has-tech-rail .hero-tech-copy strong,
+  #home.has-tech-rail .hero-tech-copy small {
+    transition: background 210ms ease, box-shadow 210ms ease, color 210ms ease, filter 210ms ease, transform 210ms ease;
+  }
+
   #home.has-tech-rail .hero-tech-item:hover {
     background:
       radial-gradient(circle at 50% 0%, rgba(var(--tech-accent), 0.065), transparent 74%),
@@ -222,186 +204,57 @@
 
   #home.has-tech-rail .hero-tech-item:hover .hero-tech-icon {
     filter: drop-shadow(0 0 8px rgba(var(--tech-accent), 0.5));
+    transform: translateY(-1px);
   }
 
-  #home.has-tech-rail .hero-tech-item:hover .hero-tech-copy strong {
-    color: #ffffff;
-  }
-
-  #home.has-tech-rail .hero-tech-item:hover .hero-tech-copy small {
-    color: #c5d4e5;
-  }
+  #home.has-tech-rail .hero-tech-item:hover .hero-tech-copy strong { color: #fff; }
+  #home.has-tech-rail .hero-tech-item:hover .hero-tech-copy small { color: #c5d4e5; }
 }
 
 @keyframes heroTechRailWave {
-  0% {
-    opacity: 0;
-    transform: translate3d(-180%, 0, 0) skewX(-10deg);
-  }
-  9% {
-    opacity: 0.4;
-  }
-  91% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(410%, 0, 0) skewX(-10deg);
-  }
+  0% { opacity: 0; transform: translate3d(-180%, 0, 0) skewX(-10deg); }
+  9%, 91% { opacity: 0.4; }
+  100% { opacity: 0; transform: translate3d(410%, 0, 0) skewX(-10deg); }
 }
 
-/* Desktop-only scale increase: larger icons and labels without changing the mobile rhythm. */
 @media (min-width: 861px) {
-  #home.has-tech-rail .hero-tech-rail {
-    width: min(100%, 650px);
-  }
-
-  #home.has-tech-rail .hero-tech-item {
-    min-height: 68px;
-    gap: 10px;
-    padding: 9px 8px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon-shell {
-    width: 35px;
-    height: 35px;
-    flex-basis: 35px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon {
-    width: 23px;
-    height: 23px;
-    flex-basis: 23px;
-  }
-
-  #home.has-tech-rail .hero-tech-copy {
-    gap: 4px;
-  }
-
-  #home.has-tech-rail .hero-tech-copy strong {
-    font-size: clamp(0.67rem, 0.92vw, 0.75rem);
-  }
-
-  #home.has-tech-rail .hero-tech-copy small {
-    font-size: clamp(0.52rem, 0.72vw, 0.58rem);
-  }
+  #home.has-tech-rail .hero-tech-rail { width: min(100%, 650px); }
+  #home.has-tech-rail .hero-tech-item { min-height: 68px; gap: 10px; padding: 9px 8px; }
+  #home.has-tech-rail .hero-tech-icon-shell { width: 35px; height: 35px; flex-basis: 35px; }
+  #home.has-tech-rail .hero-tech-icon { width: 23px; height: 23px; flex-basis: 23px; }
+  #home.has-tech-rail .hero-tech-copy { gap: 4px; }
+  #home.has-tech-rail .hero-tech-copy strong { font-size: clamp(0.67rem, 0.92vw, 0.75rem); }
+  #home.has-tech-rail .hero-tech-copy small { font-size: clamp(0.52rem, 0.72vw, 0.58rem); }
 }
 
 @media (max-width: 860px) {
-  #home.has-tech-rail .hero-tech-rail {
-    width: min(100%, 560px);
-    margin: 15px auto 16px;
-    padding: 5px;
-    border-radius: 15px;
-  }
-
-  #home.has-tech-rail .hero-tech-item {
-    min-height: 74px;
-    flex-direction: column;
-    gap: 5px;
-    padding: 7px 3px;
-    border-radius: 9px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon-shell {
-    width: 30px;
-    height: 30px;
-    flex-basis: 30px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon {
-    width: 19px;
-    height: 19px;
-    flex-basis: 19px;
-  }
-
-  #home.has-tech-rail .hero-tech-copy {
-    align-items: center;
-    gap: 3px;
-    text-align: center;
-  }
-
-  #home.has-tech-rail .hero-tech-copy strong {
-    font-size: clamp(0.56rem, 2.35vw, 0.64rem);
-    letter-spacing: 0.025em;
-  }
-
-  #home.has-tech-rail .hero-tech-copy small {
-    font-size: clamp(0.44rem, 1.85vw, 0.5rem);
-    letter-spacing: 0.055em;
-  }
+  #home.has-tech-rail .hero-tech-rail { width: min(100%, 560px); margin: 15px auto 16px; padding: 5px; border-radius: 15px; }
+  #home.has-tech-rail .hero-tech-item { min-height: 74px; flex-direction: column; gap: 5px; padding: 7px 3px; border-radius: 9px; }
+  #home.has-tech-rail .hero-tech-icon-shell { width: 30px; height: 30px; flex-basis: 30px; }
+  #home.has-tech-rail .hero-tech-icon { width: 19px; height: 19px; flex-basis: 19px; }
+  #home.has-tech-rail .hero-tech-copy { align-items: center; gap: 3px; text-align: center; }
+  #home.has-tech-rail .hero-tech-copy strong { font-size: clamp(0.56rem, 2.35vw, 0.64rem); letter-spacing: 0.025em; }
+  #home.has-tech-rail .hero-tech-copy small { font-size: clamp(0.44rem, 1.85vw, 0.5rem); letter-spacing: 0.055em; }
 }
 
 @media (max-width: 430px) {
-  #home.has-tech-rail .hero-tech-rail {
-    padding: 4px;
-    border-radius: 14px;
-  }
-
-  #home.has-tech-rail .hero-tech-item {
-    min-height: 70px;
-    gap: 4px;
-    padding: 6px 2px;
-    border-radius: 8px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon-shell {
-    width: 28px;
-    height: 28px;
-    flex-basis: 28px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon {
-    width: 18px;
-    height: 18px;
-    flex-basis: 18px;
-  }
-
-  #home.has-tech-rail .hero-tech-copy strong {
-    font-size: clamp(0.53rem, 2.55vw, 0.59rem);
-    letter-spacing: 0.018em;
-  }
-
-  #home.has-tech-rail .hero-tech-copy small {
-    font-size: clamp(0.42rem, 2.05vw, 0.47rem);
-    letter-spacing: 0.04em;
-  }
+  #home.has-tech-rail .hero-tech-rail { padding: 4px; border-radius: 14px; }
+  #home.has-tech-rail .hero-tech-item { min-height: 70px; gap: 4px; padding: 6px 2px; border-radius: 8px; }
+  #home.has-tech-rail .hero-tech-icon-shell { width: 28px; height: 28px; flex-basis: 28px; }
+  #home.has-tech-rail .hero-tech-icon { width: 18px; height: 18px; flex-basis: 18px; }
+  #home.has-tech-rail .hero-tech-copy strong { font-size: clamp(0.53rem, 2.55vw, 0.59rem); letter-spacing: 0.018em; }
+  #home.has-tech-rail .hero-tech-copy small { font-size: clamp(0.42rem, 2.05vw, 0.47rem); letter-spacing: 0.04em; }
 }
 
 @media (max-width: 360px) {
-  #home.has-tech-rail .hero-tech-item {
-    min-height: 66px;
-    padding-inline: 1px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon-shell {
-    width: 26px;
-    height: 26px;
-    flex-basis: 26px;
-  }
-
-  #home.has-tech-rail .hero-tech-icon {
-    width: 17px;
-    height: 17px;
-    flex-basis: 17px;
-  }
-
-  #home.has-tech-rail .hero-tech-copy strong {
-    font-size: 0.5rem;
-  }
-
-  #home.has-tech-rail .hero-tech-copy small {
-    font-size: 0.4rem;
-    letter-spacing: 0.03em;
-  }
+  #home.has-tech-rail .hero-tech-item { min-height: 66px; padding-inline: 1px; }
+  #home.has-tech-rail .hero-tech-icon-shell { width: 26px; height: 26px; flex-basis: 26px; }
+  #home.has-tech-rail .hero-tech-icon { width: 17px; height: 17px; flex-basis: 17px; }
+  #home.has-tech-rail .hero-tech-copy strong { font-size: 0.5rem; }
+  #home.has-tech-rail .hero-tech-copy small { font-size: 0.4rem; letter-spacing: 0.03em; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  #home.has-tech-rail .hero-tech-rail::before {
-    animation: none !important;
-    opacity: 0 !important;
-  }
-
+@media (hover: none), (pointer: coarse) {
   #home.has-tech-rail .hero-tech-item,
   #home.has-tech-rail .hero-tech-icon-shell,
   #home.has-tech-rail .hero-tech-icon,
@@ -409,4 +262,13 @@
   #home.has-tech-rail .hero-tech-copy small {
     transition: none !important;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home.has-tech-rail .hero-tech-rail::before { animation: none !important; opacity: 0 !important; }
+  #home.has-tech-rail .hero-tech-item,
+  #home.has-tech-rail .hero-tech-icon-shell,
+  #home.has-tech-rail .hero-tech-icon,
+  #home.has-tech-rail .hero-tech-copy strong,
+  #home.has-tech-rail .hero-tech-copy small { transition: none !important; }
 }
