@@ -1,0 +1,46 @@
+name: Patch V103 validator once
+
+on:
+  push:
+    branches:
+      - feat/project-footer-polish-v103
+    paths:
+      - .github/workflows/patch-v103-validator-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/project-footer-polish-v103
+          fetch-depth: 0
+
+      - name: Update validator release contract
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("scripts/validate_site.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''        'data-release="2026.07.19.97"',\n        'learning-console-v92.css?v=20260719.92','''
+          new = '''        'data-release="2026.07.19.103"',\n        'project-readouts-v66.css?v=20260719.103',\n        'project-visuals-v54.js?v=20260719.103',\n        'core-contact-v63.js?v=20260719.103',\n        'learning-console-v92.css?v=20260719.92','''
+          if old not in text:
+              raise SystemExit("Expected validator release contract not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+      - name: Remove temporary workflow
+        run: rm .github/workflows/patch-v103-validator-once.yml
+
+      - name: Commit clean result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/validate_site.py .github/workflows/patch-v103-validator-once.yml
+          git commit -m "Update V103 validation contract and remove temporary workflow"
+          git push origin HEAD:feat/project-footer-polish-v103
