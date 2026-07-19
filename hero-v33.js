@@ -1,8 +1,6 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.18.46";
-
   const heroCopy = document.querySelector("#home .hero-v33-copy");
   if (heroCopy && !heroCopy.querySelector(".hero-v34-name")) {
     const name = document.createElement("p");
@@ -24,58 +22,65 @@
       'direction = "AI Engineering"'
     ];
 
-    if (reducedMotion.matches) {
-      output.textContent = phrases[0];
-    } else {
-      let phraseIndex = 0;
-      let characterIndex = 0;
-      let deleting = false;
-      let timer = 0;
-      let pausedByVisibility = false;
+    const HOLD_DURATION = 3400;
+    const FADE_DURATION = 240;
+    let phraseIndex = 0;
+    let timer = 0;
+    let pausedByVisibility = false;
 
-      const schedule = (delay) => {
+    output.dataset.terminalMode = "line-swap";
+    output.textContent = phrases[0];
+    output.style.opacity = "1";
+    output.style.transform = "translate3d(0, 0, 0)";
+
+    if (!reducedMotion.matches) {
+      output.style.transition = `opacity ${FADE_DURATION}ms ease, transform ${FADE_DURATION}ms ease`;
+      output.style.willChange = "opacity, transform";
+
+      const clearTimer = () => {
         window.clearTimeout(timer);
-        timer = window.setTimeout(step, delay);
+        timer = 0;
       };
 
-      const step = () => {
+      const scheduleNext = () => {
+        clearTimer();
+        timer = window.setTimeout(swapLine, HOLD_DURATION);
+      };
+
+      const swapLine = () => {
         if (document.hidden) {
           pausedByVisibility = true;
           return;
         }
 
-        const phrase = phrases[phraseIndex];
-        characterIndex += deleting ? -1 : 1;
-        output.textContent = phrase.slice(0, Math.max(0, characterIndex));
+        output.style.opacity = "0";
+        output.style.transform = "translate3d(0, 2px, 0)";
 
-        if (!deleting && characterIndex >= phrase.length) {
-          deleting = true;
-          schedule(1650);
-          return;
-        }
-
-        if (deleting && characterIndex <= 0) {
-          deleting = false;
+        timer = window.setTimeout(() => {
           phraseIndex = (phraseIndex + 1) % phrases.length;
-          schedule(360);
-          return;
-        }
-
-        schedule(deleting ? 24 : 48);
+          output.textContent = phrases[phraseIndex];
+          output.style.opacity = "1";
+          output.style.transform = "translate3d(0, 0, 0)";
+          scheduleNext();
+        }, FADE_DURATION);
       };
 
-      output.textContent = "";
-      schedule(420);
+      scheduleNext();
 
       document.addEventListener("visibilitychange", () => {
+        clearTimer();
+
         if (document.hidden) {
-          window.clearTimeout(timer);
           pausedByVisibility = true;
           return;
         }
+
+        output.style.opacity = "1";
+        output.style.transform = "translate3d(0, 0, 0)";
+
         if (pausedByVisibility) {
           pausedByVisibility = false;
-          schedule(240);
+          scheduleNext();
         }
       });
     }
