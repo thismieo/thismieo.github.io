@@ -4,7 +4,8 @@
   aspect-ratio: 680 / 620;
   min-height: 0 !important;
   contain: layout !important;
-  overflow: visible !important;
+  max-width: 100% !important;
+  overflow: clip !important;
 }
 
 #home .hero-v33-orbit-svg {
@@ -84,7 +85,8 @@
     aspect-ratio: 680 / 620;
     min-height: 0 !important;
     contain: layout !important;
-    overflow: visible !important;
+    max-width: 100% !important;
+    overflow: clip !important;
   }
 
   #home .hero-v33-orbit-svg {
