@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const PROJECT_VISUAL_VERSION = "102";
-  document.documentElement.dataset.release = "2026.07.19.102";
+  const PROJECT_VISUAL_VERSION = "103";
+  document.documentElement.dataset.release = "2026.07.19.103";
 
   const activeStylesheet = document.querySelector("link[data-core-contact-v63]");
   if (activeStylesheet) activeStylesheet.href = "core-contact-v63.css?v=20260718.68";
@@ -14,24 +14,24 @@
     readoutStylesheet.dataset.projectReadoutsV66 = "true";
     document.head.append(readoutStylesheet);
   }
-  readoutStylesheet.href = "project-readouts-v66.css?v=20260719.102";
+  readoutStylesheet.href = "project-readouts-v66.css?v=20260719.103";
 
   const projects = document.querySelector("#projects");
   projects?.classList.add("is-project-stack-v65", "is-project-readouts-v66");
 
-  /* A stale cached V101 script can still arrive through the older index cache key.
-     Reload V102 once, then let the version flag prevent duplicate initialization. */
+  /* The legacy index cache key may briefly return an older project runtime.
+     Load V103 only when needed, then remove the temporary script node. */
   if (projects && projects.dataset.projectVisualVersion !== PROJECT_VISUAL_VERSION) {
     delete projects.dataset.projectVisualsV54Ready;
 
-    const existingRefresh = document.querySelector('script[data-project-visual-refresh="102"]');
-    if (!existingRefresh) {
-      const refreshScript = document.createElement("script");
-      refreshScript.src = "project-visuals-v54.js?v=20260719.102";
-      refreshScript.defer = true;
-      refreshScript.dataset.projectVisualRefresh = PROJECT_VISUAL_VERSION;
-      document.body.append(refreshScript);
-    }
+    document.querySelectorAll("script[data-project-visual-refresh]").forEach((script) => script.remove());
+
+    const refreshScript = document.createElement("script");
+    refreshScript.src = "project-visuals-v54.js?v=20260719.103";
+    refreshScript.defer = true;
+    refreshScript.dataset.projectVisualRefresh = PROJECT_VISUAL_VERSION;
+    refreshScript.addEventListener("load", () => refreshScript.remove(), { once: true });
+    document.body.append(refreshScript);
   }
 
   const contact = document.querySelector("#contact");
