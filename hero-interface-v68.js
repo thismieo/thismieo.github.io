@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  document.documentElement.dataset.release = "2026.07.19.78";
+  document.documentElement.dataset.release = "2026.07.19.79";
 
   const home = document.querySelector("#home");
   const copy = home?.querySelector(".hero-v33-copy");
@@ -52,17 +52,17 @@
     },
     {
       label: "Data",
-      href: "https://developers.google.com/machine-learning/data-prep",
+      href: "https://developers.google.com/machine-learning/crash-course/overfitting/data-characteristics?hl=ar",
       paths: '<ellipse cx="12" cy="5.6" rx="7.35" ry="2.65"/><path d="M4.65 5.6v6.25c0 1.47 3.3 2.65 7.35 2.65s7.35-1.18 7.35-2.65V5.6M4.65 11.85v6.25c0 1.47 3.3 2.65 7.35 2.65s7.35-1.18 7.35-2.65v-6.25"/>'
     },
     {
       label: "Machine Learning",
-      href: "https://developers.google.com/machine-learning/intro-to-ml",
+      href: "https://developers.google.com/machine-learning/intro-to-ml?hl=ar",
       paths: '<circle cx="5.7" cy="7" r="2.05"/><circle cx="18.3" cy="6" r="2.05"/><circle cx="12" cy="18.1" r="2.05"/><path d="m7.72 6.84 8.53-.67M6.84 8.84l3.93 7.38M17.12 7.88l-3.9 8.34"/>'
     },
     {
       label: "AI Systems",
-      href: "https://learn.microsoft.com/en-us/training/paths/ai-concepts/",
+      href: "https://learn.microsoft.com/ar-sa/training/paths/ai-concepts/",
       paths: '<rect x="6.25" y="6.25" width="11.5" height="11.5" rx="2.75"/><circle cx="12" cy="12" r="2.25"/><path d="M9 2.65v3.6M15 2.65v3.6M9 17.75v3.6M15 17.75v3.6M2.65 9h3.6M2.65 15h3.6M17.75 9h3.6M17.75 15h3.6"/>'
     }
   ];
@@ -72,7 +72,7 @@
 
   const strip = document.createElement("div");
   strip.className = "hero-v68-tech-strip hero-v73-tech-strip";
-  strip.dataset.techIcons = "v78";
+  strip.dataset.techIcons = "v79";
   strip.dataset.presentation = "official-learning-links";
   strip.dataset.wave = "continuous";
   strip.dataset.mobileBalance = "v76";
