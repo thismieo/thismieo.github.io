@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "103";
+  const VERSION = "104";
   const projectSection = document.querySelector("#projects");
   if (!projectSection) return;
   if (
@@ -15,22 +15,25 @@
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const telemetry = ({ kind, label, value, state, icon }) => `
-    <div class="project-v103-telemetry project-v103-telemetry-${kind}">
-      <span class="project-v103-telemetry-icon" aria-hidden="true">
+    <div class="project-v104-telemetry project-v104-telemetry-${kind}">
+      <div class="project-v104-telemetry-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24">${icon}</svg>
-      </span>
-      <span class="project-v103-telemetry-copy">
-        <small>${label}</small>
-        <span><strong>${value}</strong><em>${state}</em></span>
-      </span>
+      </div>
+      <div class="project-v104-telemetry-copy">
+        <div class="project-v104-telemetry-label">${label}</div>
+        <div class="project-v104-telemetry-reading">
+          <div class="project-v104-telemetry-value">${value}</div>
+          <div class="project-v104-telemetry-state">${state}</div>
+        </div>
+      </div>
     </div>
   `;
 
   const footer = ({ label, category, telemetryMarkup }) => `
-    <div class="project-v103-footer">
-      <div class="visual-badge project-v54-badge project-v103-badge">
-        <span>${label}</span>
-        <b>${category}</b>
+    <div class="project-v104-footer">
+      <div class="project-v104-meta">
+        <div class="project-v104-meta-label">${label}</div>
+        <div class="project-v104-meta-code">${category}</div>
       </div>
       ${telemetryMarkup}
     </div>
@@ -61,7 +64,7 @@
   });
 
   const healthMarkup = `
-    <div class="project-v103-stage">
+    <div class="project-v104-stage">
       <svg class="project-v54-svg project-v54-health project-v103-health" viewBox="0 0 360 120" role="img" aria-label="Animated health signal monitor">
         <defs>
           <linearGradient id="project-v54-health-gradient" x1="0" x2="1">
@@ -96,7 +99,7 @@
   `;
 
   const fraudMarkup = `
-    <div class="project-v103-stage">
+    <div class="project-v104-stage">
       <svg class="project-v54-svg project-v54-fraud project-v103-fraud" viewBox="0 0 360 120" role="img" aria-label="Animated financial risk intelligence scanner">
         <defs>
           <linearGradient id="project-v103-fraud-core-gradient" x1="0" y1="0" x2="1" y2="1">
@@ -173,7 +176,7 @@
   const trafficRouteB = "M-54 105C57 38 125 39 185 78S292 131 414 42";
 
   const trafficMarkup = `
-    <div class="project-v103-stage">
+    <div class="project-v104-stage">
       <svg class="project-v54-svg project-v54-traffic project-v103-traffic" viewBox="0 0 360 120" role="img" aria-label="Animated smart traffic flow forecast">
         <defs>
           <filter id="project-v54-traffic-glow-filter" x="-170%" y="-170%" width="440%" height="440%">
@@ -210,7 +213,8 @@
   const visuals = scenes.map(([selector, markup]) => {
     const visual = projectSection.querySelector(selector);
     if (!visual) return null;
-    visual.classList.add("project-visual-v54", "project-v103-visual");
+    visual.classList.remove("project-v103-visual");
+    visual.classList.add("project-visual-v54", "project-v104-visual");
     visual.innerHTML = markup;
     return visual;
   }).filter(Boolean);
