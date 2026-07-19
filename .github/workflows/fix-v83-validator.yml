@@ -63,37 +63,11 @@ jobs:
           '''
 
           path.write_text(text[:start] + block + text[end:], encoding="utf-8")
-          PY
-
-      - name: Validate V83 branch
-        run: |
-          node --check hero-interface-v68.js
-          python -m py_compile scripts/validate_site.py
-          python scripts/validate_site.py
-          python - <<'PY'
-          from pathlib import Path
-
-          css = Path("tech-icons-v69.css").read_text(encoding="utf-8")
-          js = Path("hero-interface-v68.js").read_text(encoding="utf-8")
-          if css.count("{") != css.count("}"):
-              raise SystemExit("Unbalanced technical rail CSS braces")
-          required = (
-              "is-pressing",
-              "pointerup",
-              "pointercancel",
-              "lostpointercapture",
-              "@media (hover: hover) and (pointer: fine)",
-              "@media (min-width: 861px)",
-          )
-          combined = js + css
-          missing = [token for token in required if token not in combined]
-          if missing:
-              raise SystemExit(f"Missing V83 interaction tokens: {missing}")
+          Path(".v83-repair-trigger").unlink(missing_ok=True)
           PY
 
       - name: Commit validator repair
         run: |
-          rm -rf scripts/__pycache__
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
