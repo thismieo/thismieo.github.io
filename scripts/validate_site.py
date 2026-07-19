@@ -218,7 +218,10 @@ def main() -> int:
         errors.append(f"Unexpected root directories: {', '.join(unexpected_root_directories)}")
 
     required_index_tokens = (
-        'data-release="2026.07.19.97"',
+        'data-release="2026.07.19.103"',
+        'project-readouts-v66.css?v=20260719.103',
+        'project-visuals-v54.js?v=20260719.103',
+        'core-contact-v63.js?v=20260719.103',
         'learning-console-v92.css?v=20260719.92',
         'mobile-performance-v92.css?v=20260719.92',
         'planetary-motion-v97.css?v=20260719.97',
