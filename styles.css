@@ -3178,3 +3178,147 @@ button:focus-visible {
     transform: none;
   }
 }
+
+
+/* ========================================================================== 
+   R27 comparison layer — approved scope only
+   Static green/black/maroon background, full-screen center-faded stars,
+   mobile hero alignment, equal social link placement, and scroll paint fixes.
+   ========================================================================== */
+html,
+body {
+  background-color: #080b12;
+}
+
+.background-system {
+  background:
+    radial-gradient(ellipse 64% 118% at -10% 42%, rgba(32, 122, 103, 0.34) 0%, rgba(16, 62, 54, 0.20) 38%, transparent 72%),
+    radial-gradient(ellipse 64% 118% at 110% 40%, rgba(111, 31, 48, 0.38) 0%, rgba(62, 17, 29, 0.22) 39%, transparent 72%),
+    linear-gradient(90deg, #07100f 0%, #080b12 37%, #080b12 63%, #12080d 100%);
+}
+
+.background-system::before,
+.background-system::after,
+.background-glow {
+  display: none;
+  animation: none;
+}
+
+/* Full-screen stars: strongest through the center, dissolving into both colors. */
+.background-noise {
+  inset: 0;
+  opacity: 0.68;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.82) 0 0.72px, transparent 0.98px),
+    radial-gradient(circle, rgba(86, 234, 215, 0.42) 0 0.65px, transparent 0.92px),
+    radial-gradient(circle, rgba(242, 124, 162, 0.34) 0 0.62px, transparent 0.9px);
+  background-position: 0 0, 19px 27px, 41px 13px;
+  background-size: 43px 43px, 67px 67px, 91px 91px;
+  -webkit-mask-image: radial-gradient(ellipse 68% 104% at 50% 40%, #000 0%, #000 34%, rgba(0, 0, 0, 0.82) 58%, rgba(0, 0, 0, 0.28) 80%, transparent 100%);
+  mask-image: radial-gradient(ellipse 68% 104% at 50% 40%, #000 0%, #000 34%, rgba(0, 0, 0, 0.82) 58%, rgba(0, 0, 0, 0.28) 80%, transparent 100%);
+}
+
+/* Same progress bar appearance, using compositor-friendly transform. */
+.scroll-progress span {
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .hero-copy {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero-name {
+    max-width: 8.4ch;
+    margin-inline: auto;
+    font-size: clamp(2.72rem, 13.8vw, 3.6rem);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+    white-space: normal;
+  }
+
+  .hero-headline {
+    max-width: 12ch;
+    margin: 16px auto 0;
+  }
+
+  .hero-caption,
+  .hero-summary {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-links {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    width: 100%;
+  }
+
+  .hero-links a {
+    min-height: 64px;
+    padding: 8px 4px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+  }
+
+  .hero-links svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-links span {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 0.62rem;
+    text-overflow: ellipsis;
+  }
+
+  .learning-console {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* On touch layouts, content is immediately available during scrolling. */
+@media (max-width: 860px) and (hover: none),
+       (max-width: 860px) and (pointer: coarse) {
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
+/* Variant A: retain the visual, but run its motion only while near the viewport. */
+@media (max-width: 860px) and (hover: none),
+       (max-width: 860px) and (pointer: coarse) {
+  .hero-visual::before {
+    filter: none;
+  }
+
+  .hero-visual .orbit-path,
+  .hero-visual .orbit-card::before,
+  .hero-visual .orbit-card-icon::before {
+    animation-play-state: paused;
+  }
+
+  .hero-visual.visual-active .orbit-path,
+  .hero-visual.visual-active .orbit-card::before,
+  .hero-visual.visual-active .orbit-card-icon::before {
+    animation-play-state: running;
+  }
+}

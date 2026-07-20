@@ -48,7 +48,7 @@
     const root = document.documentElement;
     const max = Math.max(0, root.scrollHeight - root.clientHeight);
     const progress = max > 0 ? (root.scrollTop / max) * 100 : 0;
-    if (progressFill) progressFill.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    if (progressFill) progressFill.style.transform = `scaleX(${Math.min(1, Math.max(0, progress / 100))})`;
   };
   document.addEventListener("scroll", () => {
     if (progressFrame) return;
@@ -58,7 +58,7 @@
 
   /* Reveal only once to avoid repeated layout work. */
   const revealElements = document.querySelectorAll(".reveal");
-  if (reduceMotion || !("IntersectionObserver" in window)) {
+  if (reduceMotion || coarsePointer || !("IntersectionObserver" in window)) {
     revealElements.forEach((element) => element.classList.add("is-visible"));
   } else {
     const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -240,14 +240,15 @@
     }
   }
 
-  /* Deterministic planetary motion.
-     Orbit nodes and globe meridians are sampled in one animation loop.
-     No SVG transform animation is used, so the globe grid cannot jump away
-     from the planet center in Chromium or Edge. */
+  /* Planetary motion: full desktop quality; touch devices animate only near the visual. */
+  const heroVisual = document.querySelector(".hero-visual");
   const orbitNodes = Array.from(document.querySelectorAll(".orbit-planet[data-orbit-path]"));
   const globeMeridians = Array.from(document.querySelectorAll("[data-globe-meridian]"));
   const globeSheen = document.querySelector("[data-globe-sheen]");
   let planetaryFrame = 0;
+  let planetaryVisible = !coarsePointer;
+  let planetaryLastPaint = 0;
+  const planetaryFrameInterval = coarsePointer ? 1000 / 24 : 0;
 
   const orbitItems = orbitNodes.map((node) => {
     const path = document.getElementById(node.dataset.orbitPath || "");
@@ -258,46 +259,77 @@
       : null;
   }).filter(Boolean);
 
-  const placePlanetaryMotion = (timeMs) => {
-    const timeSeconds = timeMs / 1000;
+  const paintPlanetaryMotion = (timeMs) => {
+    planetaryFrame = 0;
+    if (document.hidden || !planetaryVisible) return;
 
-    orbitItems.forEach(({ node, path, length, duration, phase }) => {
-      const progress = reduceMotion
-        ? phase % 1
-        : ((timeSeconds / duration) + phase) % 1;
-      const point = path.getPointAtLength(progress * length);
-      node.setAttribute("cx", point.x.toFixed(3));
-      node.setAttribute("cy", point.y.toFixed(3));
-    });
+    const shouldPaint = !planetaryFrameInterval || (timeMs - planetaryLastPaint >= planetaryFrameInterval);
+    if (shouldPaint) {
+      planetaryLastPaint = timeMs;
+      const timeSeconds = timeMs / 1000;
 
-    const globeTurn = reduceMotion ? 0.08 : (timeSeconds / 72) % 1;
-    globeMeridians.forEach((meridian) => {
-      const phase = Number(meridian.dataset.globePhase) || 0;
-      const angle = (globeTurn + phase) * Math.PI * 2;
-      const depth = Math.cos(angle);
-      const centerX = 340 + (Math.sin(angle) * 34);
-      const radiusX = 7 + (Math.abs(depth) * 61);
-      const opacity = 0.34 + ((depth + 1) * 0.18);
+      orbitItems.forEach(({ node, path, length, duration, phase }) => {
+        const progress = reduceMotion ? phase % 1 : ((timeSeconds / duration) + phase) % 1;
+        const point = path.getPointAtLength(progress * length);
+        node.setAttribute("cx", point.x.toFixed(3));
+        node.setAttribute("cy", point.y.toFixed(3));
+      });
 
-      meridian.setAttribute("cx", centerX.toFixed(3));
-      meridian.setAttribute("rx", radiusX.toFixed(3));
-      meridian.style.opacity = opacity.toFixed(3);
-    });
+      const globeTurn = reduceMotion ? 0.08 : (timeSeconds / 72) % 1;
+      globeMeridians.forEach((meridian) => {
+        const phase = Number(meridian.dataset.globePhase) || 0;
+        const angle = (globeTurn + phase) * Math.PI * 2;
+        const depth = Math.cos(angle);
+        meridian.setAttribute("cx", (340 + (Math.sin(angle) * 34)).toFixed(3));
+        meridian.setAttribute("rx", (7 + (Math.abs(depth) * 61)).toFixed(3));
+        meridian.style.opacity = (0.34 + ((depth + 1) * 0.18)).toFixed(3);
+      });
 
-    if (globeSheen) {
-      const sheenAngle = (globeTurn * Math.PI * 2) - Math.PI / 2;
-      globeSheen.setAttribute("cx", (340 + Math.cos(sheenAngle) * 48).toFixed(3));
-      globeSheen.setAttribute("cy", (310 + Math.sin(sheenAngle) * 18).toFixed(3));
+      if (globeSheen) {
+        const sheenAngle = (globeTurn * Math.PI * 2) - Math.PI / 2;
+        globeSheen.setAttribute("cx", (340 + Math.cos(sheenAngle) * 48).toFixed(3));
+        globeSheen.setAttribute("cy", (310 + Math.sin(sheenAngle) * 18).toFixed(3));
+      }
     }
 
-    if (!reduceMotion && (orbitItems.length || globeMeridians.length)) {
-      planetaryFrame = window.requestAnimationFrame(placePlanetaryMotion);
+    if (!reduceMotion && planetaryVisible && !document.hidden) {
+      planetaryFrame = window.requestAnimationFrame(paintPlanetaryMotion);
     }
   };
 
+  const stopPlanetaryMotion = () => {
+    if (planetaryFrame) window.cancelAnimationFrame(planetaryFrame);
+    planetaryFrame = 0;
+  };
+
+  const startPlanetaryMotion = () => {
+    if (reduceMotion || document.hidden || !planetaryVisible || planetaryFrame) return;
+    planetaryFrame = window.requestAnimationFrame(paintPlanetaryMotion);
+  };
+
   if (orbitItems.length || globeMeridians.length) {
-    placePlanetaryMotion(performance.now());
-    window.addEventListener("pagehide", () => window.cancelAnimationFrame(planetaryFrame), { once: true });
+    paintPlanetaryMotion(performance.now());
+
+    if (coarsePointer && heroVisual && "IntersectionObserver" in window) {
+      planetaryVisible = false;
+      const visualObserver = new IntersectionObserver(([entry]) => {
+        planetaryVisible = Boolean(entry?.isIntersecting);
+        heroVisual.classList.toggle("visual-active", planetaryVisible);
+        if (planetaryVisible) startPlanetaryMotion();
+        else stopPlanetaryMotion();
+      }, { rootMargin: "240px 0px 240px 0px", threshold: 0 });
+      visualObserver.observe(heroVisual);
+    } else {
+      heroVisual?.classList.add("visual-active");
+      planetaryVisible = true;
+      startPlanetaryMotion();
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopPlanetaryMotion();
+      else startPlanetaryMotion();
+    });
+    window.addEventListener("pagehide", stopPlanetaryMotion, { once: true });
   }
 
   /* Smooth desktop light bloom; disabled for touch devices. */
