@@ -3303,22 +3303,13 @@ body {
 }
 
 
-/* Variant A: retain the visual, but run its motion only while near the viewport. */
-@media (max-width: 860px) and (hover: none),
-       (max-width: 860px) and (pointer: coarse) {
-  .hero-visual::before {
-    filter: none;
+/* Variant B: remove only the mobile/tablet visual; desktop remains unchanged. */
+@media (max-width: 1080px) {
+  .hero-visual {
+    display: none;
   }
 
-  .hero-visual .orbit-path,
-  .hero-visual .orbit-card::before,
-  .hero-visual .orbit-card-icon::before {
-    animation-play-state: paused;
-  }
-
-  .hero-visual.visual-active .orbit-path,
-  .hero-visual.visual-active .orbit-card::before,
-  .hero-visual.visual-active .orbit-card-icon::before {
-    animation-play-state: running;
+  .hero-grid {
+    gap: 0;
   }
 }
