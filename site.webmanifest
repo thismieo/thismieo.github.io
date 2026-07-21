@@ -1,0 +1,13 @@
+{
+  "name": "Mohammed Muayad Portfolio",
+  "short_name": "Mohammed",
+  "description": "AI Engineering and applied AI portfolio of Mohammed Muayad.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0f0f",
+  "theme_color": "#0d0f0f",
+  "icons": [
+    { "src": "assets/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

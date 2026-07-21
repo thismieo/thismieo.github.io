@@ -1,625 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Mohammed Muayad — AI Engineering Student from Baghdad, building a public journey through Python, machine learning, and intelligent systems." />
-  <meta name="theme-color" content="#0A0C12" />
-  <meta name="referrer" content="no-referrer" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src https://api.open-meteo.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
-  <meta property="og:title" content="Mohammed Muayad | AI Engineering Student" />
-  <meta property="og:description" content="Building the future with code and intelligence." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://thismieo.github.io" />
-  <title>Mohammed Muayad | AI Engineering Student</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260720-r27-b" />
-  <script src="script.js?v=20260720-r27-b" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mohammed Muayad is an AI Engineering student documenting applied AI, automation, Python, machine learning, and projects built step by step.">
+  <meta name="author" content="Mohammed Muayad">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#0d0f0f">
+  <link rel="canonical" href="https://thismieo.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mohammed Muayad">
+  <meta property="og:title" content="Mohammed Muayad | AI Engineering & Applied AI">
+  <meta property="og:description" content="Building the future with code &amp; intelligence. Follow a real journey through applied AI, automation, and intelligent systems.">
+  <meta property="og:url" content="https://thismieo.github.io/">
+  <meta property="og:image" content="https://thismieo.github.io/assets/mohammed-social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mohammed Muayad — Building the future with code and intelligence">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mohammed Muayad | AI Engineering &amp; Applied AI">
+  <meta name="twitter:description" content="Building the future with code &amp; intelligence.">
+  <meta name="twitter:image" content="https://thismieo.github.io/assets/mohammed-social-preview.png">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <title>Mohammed Muayad | AI Engineering &amp; Applied AI</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="i18n.js" defer></script>
+  <script src="script.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mohammed Muayad",
+    "url": "https://thismieo.github.io/",
+    "image": "https://thismieo.github.io/assets/mohammed-portrait.webp",
+    "jobTitle": "AI Engineering Student",
+    "description": "AI Engineering student learning and applying artificial intelligence, automation, Python, and machine learning.",
+    "sameAs": ["https://github.com/thismieo"],
+    "knowsAbout": ["Artificial Intelligence", "Prompt Engineering", "AI Automation", "Python", "Machine Learning"]
+  }
+  </script>
 </head>
-<body data-build="R27-B-STATIC-BACKGROUND-NO-MOBILE-VISUAL">
-  <div class="background-system" aria-hidden="true">
-    <div class="background-grid"></div>
-    <div class="background-glow glow-cyan"></div>
-    <div class="background-glow glow-violet"></div>
-    <div class="background-glow glow-pink"></div>
-    <div class="background-noise"></div>
-  </div>
+<body class="level-two level-three level-four level-five-night">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="language-transition" data-language-transition aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
 
-  <div class="scroll-progress" aria-hidden="true"><span id="progress-fill"></span></div>
-  <div class="cursor-soft" id="cursor-soft" aria-hidden="true"></div>
+  <header class="site-header" data-header>
+    <div class="header-inner shell">
+      <a class="wordmark" href="#home" aria-label="Welcome — Home">
+        Welcome
+      </a>
 
-  <header class="site-header" id="site-header">
-    <div class="container nav-wrap">
-      <div class="world-rail" aria-label="Live city time and temperature">
-        <div class="world-track">
-          <div class="world-group">
-            <span class="world-item"><i class="city-dot dot-cyan"></i><b>Baghdad</b><time data-clock="Asia/Baghdad">--:--</time><em data-temperature="baghdad">--°</em></span>
-            <span class="world-item"><i class="city-dot dot-violet"></i><b>Dubai</b><time data-clock="Asia/Dubai">--:--</time><em data-temperature="dubai">--°</em></span>
-            <span class="world-item"><i class="city-dot dot-pink"></i><b>New York</b><time data-clock="America/New_York">--:--</time><em data-temperature="newyork">--°</em></span>
-          </div>
-          <div class="world-group" aria-hidden="true">
-            <span class="world-item"><i class="city-dot dot-cyan"></i><b>Baghdad</b><time data-clock="Asia/Baghdad">--:--</time><em data-temperature="baghdad">--°</em></span>
-            <span class="world-item"><i class="city-dot dot-violet"></i><b>Dubai</b><time data-clock="Asia/Dubai">--:--</time><em data-temperature="dubai">--°</em></span>
-            <span class="world-item"><i class="city-dot dot-pink"></i><b>New York</b><time data-clock="America/New_York">--:--</time><em data-temperature="newyork">--°</em></span>
-          </div>
-        </div>
-      </div>
-
-      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="main-nav" id="primary-navigation" aria-label="Primary navigation">
-        <a href="#home">Home</a>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-nav>
         <a href="#about">About</a>
         <a href="#journey">Journey</a>
-        <a href="#stack">Stack</a>
-        <a href="#neural">Neural</a>
         <a href="#projects">Projects</a>
-        <a class="nav-cta" href="#contact">Contact</a>
+        <a href="#contact">Contact</a>
+        <button class="language-toggle" type="button" data-language-toggle aria-label="Switch to Arabic" title="Switch to Arabic">AR</button>
       </nav>
     </div>
   </header>
 
-  <main>
-    <section class="hero section" id="home">
-      <div class="container hero-grid">
-        <div class="hero-copy reveal">
-          <h1 class="hero-name">Mohammed Muayad</h1>
-          <p class="hero-headline">Building <em>Intelligent Systems</em> for the Future.</p>
-          <p class="hero-caption">Building the Future with <strong>Code &amp; Intelligence.</strong></p>
-          <p class="hero-summary">
-            I am building a disciplined path from Python foundations to artificial intelligence through clear study,
-            consistent practice, documented progress, and projects that turn learning into real technical evidence.
-          </p>
+  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></button>
 
-          <div class="hero-actions">
-            <a class="button button-primary" href="#journey">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              <span>Explore the Journey</span>
-            </a>
-            <a class="button button-secondary" href="#projects">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.4 7.7 7.6 4.4 7.6-4.4M12 12.1V21"/></svg>
-              <span>View Projects</span>
-            </a>
-          </div>
-
-          <nav class="hero-links" aria-label="Profile links">
-            <a class="social-github" href="https://github.com/thismieo" target="_blank" rel="noreferrer" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-              <span>GitHub</span>
-            </a>
-            <a class="social-kaggle" href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer" aria-label="Kaggle">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 3.2h2.55v7.61l6.15-7.61h3.03l-6.03 7.2 6.48 10.4h-2.92l-5.3-8.53-1.41 1.68v6.85H6.7V3.2Z"/></svg>
-              <span>Kaggle</span>
-            </a>
-            <a class="social-instagram" href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-              <span>Instagram</span>
-            </a>
-            <a class="social-email" href="mailto:thismieo@gmail.com" aria-label="Email">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="m4 7 8 6 8-6"/></svg>
-              <span>Email</span>
-            </a>
-          </nav>
-
-          <aside class="learning-console" aria-label="Current learning status">
-            <span class="console-lights" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="console-copy">
-              <small>journey.py / live learning log</small>
-              <span class="console-line"><code id="status-text">focus = "Python Foundations"</code><i class="console-caret" aria-hidden="true"></i></span>
-            </span>
-            <span class="console-state"><i aria-hidden="true"></i>Active</span>
-          </aside>
-        </div>
-
-        <div class="hero-visual reveal" role="img" aria-label="A calm planetary learning system connecting code, data, models, and generative AI">
-          <div class="star-field" aria-hidden="true"></div>
-          <svg class="orbit-system" viewBox="0 0 680 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <defs>
-              <linearGradient id="orbitGradient" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#4DEBD1" />
-                <stop offset="0.55" stop-color="#9B7FF0" />
-                <stop offset="1" stop-color="#F6739A" />
-              </linearGradient>
-              <radialGradient id="planetFill" cx="35%" cy="28%" r="74%">
-                <stop offset="0" stop-color="#1f94aa" stop-opacity="0.78" />
-                <stop offset="0.45" stop-color="#12375c" stop-opacity="0.96" />
-                <stop offset="0.78" stop-color="#171c43" stop-opacity="0.98" />
-                <stop offset="1" stop-color="#201437" />
-              </radialGradient>
-              <filter id="planetGlow" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-              <clipPath id="planetClip">
-                <circle cx="340" cy="310" r="93" />
-              </clipPath>
-            </defs>
-            <g class="orbit-track-group orbit-plane-a">
-              <path id="orbitPathA" class="orbit-path orbit-path-a" d="M555.19 355.74 C546.92 394.64 443.88 405.69 325.03 380.43 C206.18 355.16 116.54 303.15 124.81 264.26 C133.08 225.36 236.12 214.31 354.97 239.57 C473.82 264.84 563.46 316.85 555.19 355.74 Z" />
-            </g>
-            <g class="orbit-track-group orbit-plane-b">
-              <path id="orbitPathB" class="orbit-path orbit-path-b" d="M522.66 216.93 C544.22 259.25 479.92 335.23 379.04 386.63 C278.16 438.03 178.91 445.39 157.34 403.07 C135.78 360.75 200.08 284.77 300.96 233.37 C401.84 181.97 501.09 174.61 522.66 216.93 Z" />
-            </g>
-            <g class="orbit-track-group orbit-plane-c">
-              <path id="orbitPathC" class="orbit-path orbit-path-c" d="M444.66 443.96 C393.31 484.08 304.82 456.63 247.01 382.65 C189.21 308.66 183.98 216.16 235.34 176.04 C286.69 135.92 375.18 163.37 432.99 237.35 C490.79 311.34 496.02 403.84 444.66 443.96 Z" />
-            </g>
-            <g class="orbit-track-group orbit-plane-d">
-              <path id="orbitPathD" class="orbit-path orbit-path-d" d="M457.55 320.28 C448.41 424.82 388.36 504.96 323.44 499.28 C258.52 493.60 213.30 404.25 222.45 299.72 C231.59 195.18 291.64 115.04 356.56 120.72 C421.48 126.40 466.70 215.75 457.55 320.28 Z" />
-            </g>
-            <g class="orbit-planets-back" aria-hidden="true">
-              <circle class="orbit-planet planet-white" r="5" data-orbit-path="orbitPathD" data-orbit-duration="22" data-orbit-phase="0.636" />
-            </g>
-            <circle class="planet-shell" cx="340" cy="310" r="95" />
-            <g class="planet-surface" clip-path="url(#planetClip)">
-              <ellipse class="planet-grid planet-latitude" cx="340" cy="310" rx="95" ry="35" />
-              <ellipse class="planet-grid planet-latitude" cx="340" cy="310" rx="95" ry="62" />
-              <ellipse class="planet-grid planet-meridian" data-globe-meridian data-globe-phase="0.00" cx="340" cy="310" rx="68" ry="95" />
-              <ellipse class="planet-grid planet-meridian" data-globe-meridian data-globe-phase="0.25" cx="374" cy="310" rx="10" ry="95" />
-              <ellipse class="planet-grid planet-meridian" data-globe-meridian data-globe-phase="0.50" cx="340" cy="310" rx="68" ry="95" />
-              <ellipse class="planet-sheen" data-globe-sheen cx="292" cy="272" rx="62" ry="82" />
-            </g>
-            <circle class="planet-atmosphere" cx="340" cy="310" r="91" />
-            <g class="orbit-overlay-front" clip-path="url(#planetClip)" aria-hidden="true">
-              <path class="orbit-path orbit-path-front orbit-path-a" d="M555.19 355.74 C546.92 394.64 443.88 405.69 325.03 380.43 C206.18 355.16 116.54 303.15 124.81 264.26 C133.08 225.36 236.12 214.31 354.97 239.57 C473.82 264.84 563.46 316.85 555.19 355.74 Z" />
-              <path class="orbit-path orbit-path-front orbit-path-b" d="M522.66 216.93 C544.22 259.25 479.92 335.23 379.04 386.63 C278.16 438.03 178.91 445.39 157.34 403.07 C135.78 360.75 200.08 284.77 300.96 233.37 C401.84 181.97 501.09 174.61 522.66 216.93 Z" />
-              <path class="orbit-path orbit-path-front orbit-path-c" d="M444.66 443.96 C393.31 484.08 304.82 456.63 247.01 382.65 C189.21 308.66 183.98 216.16 235.34 176.04 C286.69 135.92 375.18 163.37 432.99 237.35 C490.79 311.34 496.02 403.84 444.66 443.96 Z" />
-              <path class="orbit-path orbit-path-front orbit-path-d" d="M457.55 320.28 C448.41 424.82 388.36 504.96 323.44 499.28 C258.52 493.60 213.30 404.25 222.45 299.72 C231.59 195.18 291.64 115.04 356.56 120.72 C421.48 126.40 466.70 215.75 457.55 320.28 Z" />
-            </g>
-            <g class="orbit-planets-front" aria-hidden="true">
-              <circle class="orbit-planet planet-cyan" r="8" data-orbit-path="orbitPathA" data-orbit-duration="13" data-orbit-phase="0.154" />
-              <circle class="orbit-planet planet-pink" r="7" data-orbit-path="orbitPathB" data-orbit-duration="19" data-orbit-phase="0.526" />
-              <circle class="orbit-planet planet-violet" r="9" data-orbit-path="orbitPathC" data-orbit-duration="16" data-orbit-phase="0.375" />
-            </g>
-
-          </svg>
-
-          <div class="planet-label"><small>INTELLIGENCE CORE</small><strong>BUILD · LEARN · EVOLVE</strong></div>
-          <div class="orbit-card orbit-code">
-            <span class="orbit-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span>
-            <span class="orbit-card-copy"><b>Code</b><span>Active foundation</span></span>
-          </div>
-          <div class="orbit-card orbit-data">
-            <span class="orbit-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/></svg></span>
-            <span class="orbit-card-copy"><b>Data</b><span>Next layer</span></span>
-          </div>
-          <div class="orbit-card orbit-models">
-            <span class="orbit-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="m8 11 8-4M8 13l8 4"/></svg></span>
-            <span class="orbit-card-copy"><b>Models</b><span>Roadmap</span></span>
-          </div>
-          <div class="orbit-card orbit-gen">
-            <span class="orbit-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3ZM19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z"/></svg></span>
-            <span class="orbit-card-copy"><b>Generative AI</b><span>Long-term vision</span></span>
-          </div>
+  <main id="main-content" aria-label="Portfolio">
+    <section class="hero shell" id="home" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Hello, I’m</p>
+        <h1 id="hero-title">Mohammed<br>Muayad</h1>
+        <p class="hero-role">AI Engineering Student</p>
+        <p class="hero-tagline">Building the future with code &amp; intelligence.</p>
+        <p class="hero-intro">I’m learning Python, machine learning, and modern AI technologies while building practical projects step by step.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#journey">Explore My Journey</a>
+          <a class="button button-secondary" href="#projects">View My Projects</a>
         </div>
       </div>
 
-      <div class="container hero-metrics reveal" aria-label="Learning journey overview">
-        <article><span>Journey started</span><strong>04 Jun 2026</strong></article>
-        <article><span>Current study</span><strong>Python Foundations</strong></article>
-        <article><span>Working rhythm</span><strong>Learn → Practice → Build</strong></article>
-        <article><span>Long-term direction</span><strong>AI Engineering</strong></article>
+      <div class="portrait-stage reveal">
+        <div class="portrait-backdrop" aria-hidden="true"></div>
+        <figure class="portrait-frame">
+          <img src="assets/mohammed-portrait.webp" alt="Portrait of Mohammed Muayad" width="1024" height="1024" fetchpriority="high">
+        </figure>
       </div>
     </section>
 
-    <div class="system-ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <div class="ticker-group"><span>Python Foundations</span><span>Clean Code Principles</span><span>Data-Driven Thinking</span><span>Machine Learning Systems</span><span>Neural Network Architecture</span><span>Build · Test · Improve</span><span>Intelligent Systems Engineering</span><span>Learning in Public</span></div>
-        <div class="ticker-group"><span>Python Foundations</span><span>Clean Code Principles</span><span>Data-Driven Thinking</span><span>Machine Learning Systems</span><span>Neural Network Architecture</span><span>Build · Test · Improve</span><span>Intelligent Systems Engineering</span><span>Learning in Public</span></div>
-        <div class="ticker-group"><span>Python Foundations</span><span>Clean Code Principles</span><span>Data-Driven Thinking</span><span>Machine Learning Systems</span><span>Neural Network Architecture</span><span>Build · Test · Improve</span><span>Intelligent Systems Engineering</span><span>Learning in Public</span></div>
-        <div class="ticker-group"><span>Python Foundations</span><span>Clean Code Principles</span><span>Data-Driven Thinking</span><span>Machine Learning Systems</span><span>Neural Network Architecture</span><span>Build · Test · Improve</span><span>Intelligent Systems Engineering</span><span>Learning in Public</span></div>
-      </div>
-    </div>
-
-    <section class="section" id="about">
-      <div class="container">
+    <section class="about section" id="about" aria-labelledby="about-title">
+      <div class="shell about-grid">
         <div class="section-heading reveal">
-          <div><h2>About Me</h2></div>
-          <p>A focused beginning, a documented process, and a long-term vision in artificial intelligence.</p>
+          <p class="eyebrow"><span>01</span> About me</p>
+          <h2 id="about-title">Learning with purpose.<br>Building with patience.</h2>
         </div>
 
-        <div class="about-grid">
-          <article class="glass-card about-card reveal">
-            <div class="about-card-head">
-              <span class="about-icon about-icon-profile" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5.2 20c.8-4 3.4-6.2 6.8-6.2s6 2.2 6.8 6.2"/><path d="M18.4 3.6v3M16.9 5.1h3M4.6 8.2v2.4M3.4 9.4h2.4"/></svg>
-              </span>
-              <div><span class="card-label">PROFILE</span><h3>Learning with purpose.</h3></div>
+        <div class="about-content reveal">
+          <p class="about-lead">I’m an AI Engineering student based in Baghdad, Iraq. Alongside my studies, I work in the private sector while building a strong foundation in Python, machine learning, and modern AI technologies, with the goal of creating intelligent projects and systems that benefit society and make a positive impact on the world.</p>
+          <p>I believe meaningful progress is built step by step through learning, practice, and real projects.</p>
+
+          <dl class="facts">
+            <div><dt>Based in</dt><dd>Baghdad, Iraq</dd></div>
+            <div><dt>Work sector</dt><dd>Private Sector</dd></div>
+            <div><dt>Current focus</dt><dd>Python &amp; AI Fundamentals</dd></div>
+            <div><dt>Learning path</dt><dd>AI Engineering</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey section shell" id="journey" aria-labelledby="journey-title">
+      <div class="section-heading section-heading-row reveal">
+        <div>
+          <p class="eyebrow"><span>02</span> My journey</p>
+          <h2 id="journey-title">From foundations to intelligent systems.</h2>
+        </div>
+        <p>Each stage builds the foundation for the next.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="timeline-item reveal">
+          <div class="timeline-marker"><span>01</span></div>
+          <p class="timeline-state">Currently learning</p>
+          <h3>Python Programming &amp; OOP</h3>
+          <p>Learning Python fundamentals, functions, data structures, classes, and objects.</p>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker"><span>02</span></div>
+          <p class="timeline-state">Next step</p>
+          <h3>Data Analysis &amp; Python Libraries</h3>
+          <p>Exploring NumPy, Pandas, data cleaning, preprocessing, and clear visualization.</p>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker"><span>03</span></div>
+          <p class="timeline-state">Upcoming</p>
+          <h3>Machine Learning &amp; Predictive Modeling</h3>
+          <p>Understanding classification, regression, model training, and evaluation.</p>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker"><span>04</span></div>
+          <p class="timeline-state">Future direction</p>
+          <h3>Deep Learning &amp; Neural Networks</h3>
+          <p>Exploring neural networks, hidden layers, and computer vision foundations.</p>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker"><span>05</span></div>
+          <p class="timeline-state">Advanced direction</p>
+          <h3>NLP, LLMs, RAG &amp; AI Agents</h3>
+          <p>Learning language processing, knowledge retrieval, and intelligent agent systems.</p>
+        </li>
+      </ol>
+
+      <a class="workshop-entry reveal" href="?view=workshop" data-open-workshop>
+        <span class="workshop-entry-label">Applied learning archive</span>
+        <span class="workshop-entry-title">The Workshop</span>
+        <span class="workshop-entry-copy">Where learning becomes practice.</span>
+        <span class="workshop-entry-action">Enter the workshop <span aria-hidden="true">↗</span></span>
+      </a>
+    </section>
+
+    <section class="projects section" id="projects" aria-labelledby="projects-title">
+      <div class="shell">
+        <div class="section-heading section-heading-row reveal">
+          <div>
+            <p class="eyebrow"><span>03</span> Project roadmap</p>
+            <h2 id="projects-title">Learning by building.</h2>
+          </div>
+          <p>Future projects shaped by each stage of the journey.</p>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card project-featured reveal">
+            <div class="project-meta">
+              <span class="project-number">01</span>
+              <span class="status status-next">Next project</span>
             </div>
-            <p class="about-lead">
-              I am Mohammed Muayad, an aspiring AI engineer from Baghdad who is building a practical path from programming fundamentals to intelligent systems—step by step, skill by skill, and project by project.
-            </p>
-            <p class="about-note">My goal is to grow through clear study, steady practice, and visible technical work that turns learning into real progress.</p>
-            <div class="identity-list">
-              <div><span class="identity-icon identity-role" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20v-2.2A4.8 4.8 0 0 1 9.8 13h4.4a4.8 4.8 0 0 1 4.8 4.8V20"/><circle cx="12" cy="7.2" r="3.7"/></svg></span><span class="identity-copy"><small>Role</small><strong>Aspiring AI Engineer</strong></span></div>
-              <div><span class="identity-icon identity-location" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5.4-8 11-8 11S4 15.4 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.7"/></svg></span><span class="identity-copy"><small>Location</small><strong>Baghdad, Iraq</strong></span></div>
-              <div><span class="identity-icon identity-focus" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><span class="identity-copy"><small>Focus</small><strong>Python, ML &amp; Intelligent Systems</strong></span></div>
-              <div><span class="identity-icon identity-mindset" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 2.1 5.3L20 10l-5.9 1.7L12 17l-2.1-5.3L4 10l5.9-1.7L12 3Z"/><path d="m19 16 .8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z"/></svg></span><span class="identity-copy"><small>Mindset</small><strong>Clarity, consistency &amp; real progress</strong></span></div>
+            <div>
+              <p class="project-field">Machine learning · Classification</p>
+              <h3>Heart Disease<br>Prediction</h3>
+              <p>Preparing patient health data and training a classification model to recognize patterns associated with possible heart disease.</p>
             </div>
+            <ul class="tags">
+              <li>Python</li><li>Pandas</li><li>Data Preprocessing</li><li>Scikit-learn</li><li>Classification</li>
+            </ul>
           </article>
 
-          <article class="glass-card philosophy-card reveal">
-            <div class="about-card-head">
-              <span class="about-icon about-icon-system" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 7h6v5H4zM14 12h6v5h-6zM10 9.5h2a3 3 0 0 1 3 3"/></svg>
-              </span>
-              <div><span class="card-label">SYSTEM</span><h3>My learning loop</h3></div>
-            </div>
-            <div class="loop-list">
-              <div><b>01</b><span><strong>Learn</strong><small>Study the idea clearly and understand how it works.</small></span></div>
-              <div><b>02</b><span><strong>Practice</strong><small>Repeat it through focused exercises until it feels natural.</small></span></div>
-              <div><b>03</b><span><strong>Build</strong><small>Turn each lesson into a small project, demo, or practical result.</small></span></div>
-              <div><b>04</b><span><strong>Document</strong><small>Record the progress, choices, and outcomes in a clear way.</small></span></div>
-              <div><b>05</b><span><strong>Improve</strong><small>Review the result, fix weak points, and move forward stronger.</small></span></div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="journey">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><h2>Learning Journey</h2></div>
-          <p>A clear sequence from programming fundamentals to modern generative AI systems.</p>
-        </div>
-
-        <div class="roadmap reveal">
-          <article class="roadmap-step active"><span>01</span><div><small>ACTIVE</small><h3>Python</h3><p>Syntax, conditions, loops, functions, algorithms, and practical problem solving.</p></div></article>
-          <article class="roadmap-step next"><span>02</span><div><small>NEXT</small><h3>Data Analysis</h3><p>Reading, exploring, organizing, and understanding structured data.</p></div></article>
-          <article class="roadmap-step"><span>03</span><div><small>PLANNED</small><h3>Data Preprocessing</h3><p>Cleaning, transforming, and preparing data for reliable models.</p></div></article>
-          <article class="roadmap-step"><span>04</span><div><small>PLANNED</small><h3>Machine Learning</h3><p>Building models that identify patterns and make predictions.</p></div></article>
-          <article class="roadmap-step"><span>05</span><div><small>PLANNED</small><h3>Deep Learning</h3><p>Neural networks for advanced vision, language, and prediction tasks.</p></div></article>
-          <article class="roadmap-step"><span>06</span><div><small>PLANNED</small><h3>NLP</h3><p>Teaching systems to process, understand, and generate human language.</p></div></article>
-          <article class="roadmap-step"><span>07</span><div><small>PLANNED</small><h3>LLMs</h3><p>Understanding large language models, prompting, evaluation, and applications.</p></div></article>
-          <article class="roadmap-step"><span>08</span><div><small>VISION</small><h3>Generative AI</h3><p>Building intelligent experiences that generate useful text, images, and solutions.</p></div></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="stack">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><h2>Technology Ecosystem</h2></div>
-          <p>The stack will grow honestly with every completed stage of the journey.</p>
-        </div>
-
-        <div class="stack-layout">
-          <article class="stack-core glass-card reveal">
-            <div class="stack-title"><span>ACTIVE FOUNDATION</span><b>01</b></div>
-            <div class="stack-primary">
-              <div class="tech-icon" aria-hidden="true">
-                <svg viewBox="0 0 64 64">
-                  <defs>
-                    <linearGradient id="techIconGradA" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0" stop-color="#4DEBD1"/>
-                      <stop offset="0.55" stop-color="#9B7FF0"/>
-                      <stop offset="1" stop-color="#F6739A"/>
-                    </linearGradient>
-                  </defs>
-                  <rect x="10" y="10" width="44" height="44" rx="14" fill="rgba(11,15,24,0.8)" stroke="url(#techIconGradA)" stroke-width="2"/>
-                  <path d="M24 24l-7 8 7 8" fill="none" stroke="#7CF4DE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M40 24l7 8-7 8" fill="none" stroke="#C6A4FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M35 19 29 45" fill="none" stroke="#FF8FB4" stroke-width="3" stroke-linecap="round"/>
-                </svg>
+          <div class="project-stack">
+            <article class="project-card reveal">
+              <div class="project-meta">
+                <span class="project-number">02</span>
+                <span class="status">Planned</span>
               </div>
-              <div><h3>Python</h3><p>Core programming language for my current studies, exercises, algorithms, and future AI projects.</p></div>
-            </div>
-            <div class="tool-chips"><span>VS Code</span><span>GitHub</span><span>Command Line</span><span>Problem Solving</span></div>
-          </article>
+              <p class="project-field">Machine learning · Predictive modeling</p>
+              <h3>House Price Prediction</h3>
+              <p>A predictive model that learns from property features to estimate or classify house prices.</p>
+              <ul class="tags">
+                <li>Python</li><li>Pandas</li><li>Data Preprocessing</li><li>Predictive Modeling</li>
+              </ul>
+            </article>
 
-          <div class="stack-columns">
-            <article class="stack-card stack-data reveal"><span class="stack-icon">DA</span><div><small>DATA LAYER</small><h3>Data Analysis</h3><p>Next learning stage</p></div><b>NEXT</b></article>
-            <article class="stack-card stack-ml reveal"><span class="stack-icon">ML</span><div><small>MODEL LAYER</small><h3>Machine Learning</h3><p>Core AI development</p></div><b>PLANNED</b></article>
-            <article class="stack-card stack-dl reveal"><span class="stack-icon">DL</span><div><small>NEURAL LAYER</small><h3>Deep Learning</h3><p>Advanced intelligent systems</p></div><b>PLANNED</b></article>
-            <article class="stack-card stack-nlp reveal"><span class="stack-icon">NLP</span><div><small>LANGUAGE LAYER</small><h3>NLP &amp; LLMs</h3><p>Language intelligence</p></div><b>PLANNED</b></article>
+            <article class="project-card reveal">
+              <div class="project-meta">
+                <span class="project-number">03</span>
+                <span class="status">Future direction</span>
+              </div>
+              <p class="project-field">Computer vision · Deep learning</p>
+              <h3>Smart City Violation Detection</h3>
+              <p>A future vision system designed to identify traffic violations from street and camera footage.</p>
+              <ul class="tags">
+                <li>Python</li><li>OpenCV</li><li>Neural Networks</li><li>Deep Learning</li>
+              </ul>
+            </article>
+
+            <article class="project-card reveal">
+              <div class="project-meta">
+                <span class="project-number">04</span>
+                <span class="status">Future direction</span>
+              </div>
+              <p class="project-field">Machine learning · Anomaly detection</p>
+              <h3>Financial Fraud Detection</h3>
+              <p>A future machine learning system designed to recognize suspicious patterns in financial transactions.</p>
+              <ul class="tags">
+                <li>Python</li><li>Pandas</li><li>Scikit-learn</li><li>Anomaly Detection</li>
+              </ul>
+            </article>
+
+            <article class="project-card reveal">
+              <div class="project-meta">
+                <span class="project-number">05</span>
+                <span class="status">Advanced goal</span>
+              </div>
+              <p class="project-field">Generative AI</p>
+              <h3>Multilingual Knowledge Assistant</h3>
+              <p>An advanced multilingual assistant designed to retrieve trusted knowledge, answer questions across languages, and evolve into a personal AI agent.</p>
+              <ul class="tags">
+                <li>Python</li><li>NLP</li><li>LLMs</li><li>RAG</li><li>AI Agent</li>
+              </ul>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section neural-section" id="neural">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><h2>How Intelligence Flows</h2></div>
-          <p>A living visual model of how information travels through input, hidden, and output layers.</p>
-        </div>
+    <section class="contact section shell" id="contact" aria-labelledby="contact-title">
+      <div class="contact-copy reveal">
+        <p class="eyebrow"><span>04</span> Let’s connect</p>
+        <h2 id="contact-title">Good conversations<br>can start anywhere.</h2>
+        <p>I’m always open to learning, sharing ideas, and connecting with people interested in technology and AI.</p>
+      </div>
 
-        <div class="neural-lab">
-          <div class="network-visual reveal" aria-label="Animated neural network architecture">
-            <svg class="neural-svg" viewBox="0 0 760 500" role="img" aria-labelledby="neural-title neural-desc">
-              <title id="neural-title">Animated neural network</title>
-              <desc id="neural-desc">Input nodes connect through two hidden layers to output nodes, with animated signal paths.</desc>
-              <defs>
-                <linearGradient id="flowGradient" x1="0" x2="1">
-                  <stop offset="0" stop-color="#4DEBD1" />
-                  <stop offset="0.5" stop-color="#9B7FF0" />
-                  <stop offset="1" stop-color="#F6739A" />
-                </linearGradient>
-              </defs>
-              <g class="connections">
-                <path d="M100 105 L280 75 M100 105 L280 165 M100 105 L280 255 M100 105 L280 345 M100 105 L280 425" />
-                <path d="M100 200 L280 75 M100 200 L280 165 M100 200 L280 255 M100 200 L280 345 M100 200 L280 425" />
-                <path d="M100 295 L280 75 M100 295 L280 165 M100 295 L280 255 M100 295 L280 345 M100 295 L280 425" />
-                <path d="M100 390 L280 75 M100 390 L280 165 M100 390 L280 255 M100 390 L280 345 M100 390 L280 425" />
-                <path d="M280 75 L475 110 M280 75 L475 205 M280 75 L475 300 M280 75 L475 395" />
-                <path d="M280 165 L475 110 M280 165 L475 205 M280 165 L475 300 M280 165 L475 395" />
-                <path d="M280 255 L475 110 M280 255 L475 205 M280 255 L475 300 M280 255 L475 395" />
-                <path d="M280 345 L475 110 M280 345 L475 205 M280 345 L475 300 M280 345 L475 395" />
-                <path d="M280 425 L475 110 M280 425 L475 205 M280 425 L475 300 M280 425 L475 395" />
-                <path d="M475 110 L655 155 M475 110 L655 250 M475 110 L655 345" />
-                <path d="M475 205 L655 155 M475 205 L655 250 M475 205 L655 345" />
-                <path d="M475 300 L655 155 M475 300 L655 250 M475 300 L655 345" />
-                <path d="M475 395 L655 155 M475 395 L655 250 M475 395 L655 345" />
-              </g>
-              <g class="network-labels"><text x="65" y="55">INPUT</text><text x="236" y="42">HIDDEN 01</text><text x="430" y="62">HIDDEN 02</text><text x="625" y="105">OUTPUT</text></g>
-              <g class="network-nodes">
-                <circle cx="100" cy="105" r="17"/><circle cx="100" cy="200" r="17"/><circle cx="100" cy="295" r="17"/><circle cx="100" cy="390" r="17"/>
-                <circle cx="280" cy="75" r="17"/><circle cx="280" cy="165" r="17"/><circle cx="280" cy="255" r="17"/><circle cx="280" cy="345" r="17"/><circle cx="280" cy="425" r="17"/>
-                <circle cx="475" cy="110" r="17"/><circle cx="475" cy="205" r="17"/><circle cx="475" cy="300" r="17"/><circle cx="475" cy="395" r="17"/>
-                <circle cx="655" cy="155" r="17"/><circle cx="655" cy="250" r="17"/><circle cx="655" cy="345" r="17"/>
-              </g>
-            </svg>
-            <div class="network-readout"><span>SIGNAL STATUS</span><strong>learning → processing → output</strong></div>
-          </div>
-
-          <div class="neural-info">
-            <article class="neural-info-card reveal"><span>INPUT LAYER</span><h3>Receive information</h3><p>Raw values enter the network as the starting signals for processing.</p></article>
-            <article class="neural-info-card reveal"><span>HIDDEN LAYERS</span><h3>Discover patterns</h3><p>Connected neurons transform signals and learn useful relationships.</p></article>
-            <article class="neural-info-card reveal"><span>OUTPUT LAYER</span><h3>Produce a result</h3><p>The processed information becomes a prediction, class, or intelligent response.</p></article>
-          </div>
-        </div>
+      <div class="contact-links reveal">
+        <a class="contact-card" href="mailto:thismieo@outlook.com">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5h16v11H4zM4.8 7.4 12 13l7.2-5.6"/></svg>
+          </span>
+          <span class="contact-card-copy">
+            <span>Personal email</span>
+            <strong>thismieo@outlook.com</strong>
+          </span>
+        </a>
+        <a class="contact-card" href="mailto:thismieo@gmail.com">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5"/><path d="M15.5 15.5v-7h-3a3.5 3.5 0 1 0 3.5 3.5v1.1c0 1.3.8 2.4 2.2 2.4 1.2 0 2.3-.7 2.8-1.8"/></svg>
+          </span>
+          <span class="contact-card-copy">
+            <span>Public email</span>
+            <strong>thismieo@gmail.com</strong>
+          </span>
+        </a>
+        <a class="contact-card" href="https://github.com/thismieo" target="_blank" rel="noopener noreferrer">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 19.2c-3 .9-3-1.5-4.2-1.9M12.8 21v-3.5c0-1 .1-1.4-.5-2 2.6-.3 5.4-1.3 5.4-5.8 0-1.3-.5-2.4-1.2-3.2.1-.3.5-1.5-.1-3.1 0 0-1-.3-3.3 1.2a11.5 11.5 0 0 0-6 0C4.8 3 3.8 3.4 3.8 3.4c-.6 1.6-.2 2.8-.1 3.1A4.6 4.6 0 0 0 2.5 9.7c0 4.5 2.8 5.5 5.4 5.8-.5.5-.6 1.1-.6 2V21"/></svg>
+          </span>
+          <span class="contact-card-copy">
+            <span>GitHub projects</span>
+            <strong>github.com/thismieo</strong>
+          </span>
+        </a>
       </div>
     </section>
 
-    <section class="section" id="focus">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><h2>Focus Areas</h2></div>
-          <p>Fields I want to explore as my programming and machine-learning foundation becomes stronger.</p>
-        </div>
-
-        <div class="focus-grid">
-          <article class="focus-card reveal"><span>01</span><h3>Computer Vision</h3><p>Systems that understand images, objects, scenes, and visual patterns.</p></article>
-          <article class="focus-card reveal"><span>02</span><h3>Intelligent Assistants</h3><p>Useful AI tools that support people through natural interaction.</p></article>
-          <article class="focus-card reveal"><span>03</span><h3>Medical AI</h3><p>Responsible systems that can support analysis and healthcare decisions.</p></article>
-          <article class="focus-card reveal"><span>04</span><h3>Smart Systems</h3><p>Practical solutions for organizations, services, and everyday challenges.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section projects-section" id="projects">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div><h2>Projects</h2></div>
-          <p>Future portfolio systems presented as clear engineering concepts, each designed to become a documented repository when its learning stage begins.</p>
-        </div>
-
-        <div class="projects-grid" aria-label="Project concepts">
-          <article class="project-card project-health reveal">
-            <div class="project-visual" aria-label="Animated health data monitor">
-              <div class="project-stage">
-                <svg class="health-monitor" viewBox="0 0 420 220" role="img" aria-label="Heart disease risk analysis signal">
-                  <defs>
-                    <linearGradient id="healthSignal" x1="0" x2="1">
-                      <stop offset="0" stop-color="#4DEBD1" />
-                      <stop offset="0.52" stop-color="#84F3C6" />
-                      <stop offset="1" stop-color="#9B7FF0" />
-                    </linearGradient>
-                    <filter id="healthGlow" x="-100%" y="-100%" width="300%" height="300%">
-                      <feGaussianBlur stdDeviation="3" result="blur" />
-                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                  </defs>
-                  <g class="project-grid-lines"><path d="M0 44H420M0 88H420M0 132H420M0 176H420M52 0V220M104 0V220M156 0V220M208 0V220M260 0V220M312 0V220M364 0V220"/></g>
-                  <path class="health-signal-base" d="M10 138H72L90 126L110 150L142 68L158 43L180 151L202 137H255L278 119L299 141L328 96L348 137H410"/>
-                  <path class="health-signal" d="M10 138H72L90 126L110 150L142 68L158 43L180 151L202 137H255L278 119L299 141L328 96L348 137H410"/>
-                  <circle class="health-core" cx="158" cy="43" r="6"/>
-                  <circle class="health-ring" cx="158" cy="43" r="13"/>
-                  <circle class="health-dot" r="4">
-                    <animateMotion dur="5s" calcMode="linear" repeatCount="indefinite" path="M10 138H72L90 126L110 150L142 68L158 43L180 151L202 137H255L278 119L299 141L328 96L348 137H410" />
-                  </circle>
-                </svg>
-                <div class="patient-panel">
-                  <div><span>AGE</span><strong>54</strong></div>
-                  <div><span>BP</span><strong>128/82</strong></div>
-                  <div><span>CHOLESTEROL</span><strong>198</strong></div>
-                </div>
-              </div>
-              <div class="project-readout">
-                <div class="readout-label"><span>LIVE VITAL TRACE</span><strong>HEALTH / 01</strong></div>
-                <div class="readout-metric">
-                  <span class="metric-icon heart-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20.2S3.5 15.1 3.5 8.9C3.5 5.6 7.7 4.1 12 8c4.3-3.9 8.5-2.4 8.5.9 0 6.2-8.5 11.3-8.5 11.3Z"/><path d="M5.7 12h3l1.5-3.1 2.2 6.2 1.7-3.1h4.2"/></svg></span>
-                  <span><small>HEART RATE</small><strong>72 BPM</strong><em>NORMAL</em></span>
-                </div>
-              </div>
-            </div>
-            <div class="project-body">
-              <div class="project-top"><span>HEALTH DATA ANALYSIS</span><b>01</b></div>
-              <h3>Heart Disease Risk Analysis</h3>
-              <p>A planned analysis of patient indicators such as age, blood pressure, cholesterol, heart rate, and chest-pain patterns to discover meaningful health trends.</p>
-              <div class="project-tags"><span>Python</span><span>Pandas</span><span>Healthcare Data</span></div>
-              <span class="project-status status-planned">PLANNED</span>
-            </div>
-          </article>
-
-          <article class="project-card project-fraud reveal">
-            <div class="project-visual" aria-label="Animated financial fraud scanner">
-              <div class="project-stage fraud-stage">
-                <svg class="fraud-scanner" viewBox="0 0 420 220" role="img" aria-label="Fraud detection system risk network">
-                  <defs>
-                    <linearGradient id="fraudRoute" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0" stop-color="#4DEBD1" />
-                      <stop offset="0.58" stop-color="#9B7FF0" />
-                      <stop offset="1" stop-color="#F6739A" />
-                    </linearGradient>
-                    <filter id="fraudGlow" x="-100%" y="-100%" width="300%" height="300%">
-                      <feGaussianBlur stdDeviation="3" result="blur" />
-                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                  </defs>
-                  <g class="project-grid-lines"><path d="M0 44H420M0 88H420M0 132H420M0 176H420M52 0V220M104 0V220M156 0V220M208 0V220M260 0V220M312 0V220M364 0V220"/></g>
-                  <path class="fraud-arc arc-one" d="M132 154A96 96 0 0 1 296 75"/>
-                  <path class="fraud-arc arc-two" d="M154 69A72 72 0 0 1 272 154"/>
-                  <path class="fraud-arc arc-three" d="M178 146A44 44 0 0 1 246 82"/>
-                  <path id="fraudPathA" class="fraud-route" d="M36 154Q110 44 210 110T384 126"/>
-                  <path id="fraudPathB" class="fraud-route alert-route" d="M36 154Q126 190 210 110T302 40"/>
-                  <path id="fraudPathC" class="fraud-route" d="M104 48Q155 68 210 110T384 126"/>
-                  <circle class="fraud-core-halo" cx="210" cy="110" r="30"/>
-                  <circle class="fraud-core" cx="210" cy="110" r="22"/>
-                  <path class="fraud-shield" d="M210 92l13 5v11c0 8-5 14-13 19-8-5-13-11-13-19V97l13-5Z"/>
-                  <path class="fraud-mark" d="M210 100v9M210 116h.01"/>
-                  <circle class="fraud-node" cx="36" cy="154" r="6"/>
-                  <circle class="fraud-node" cx="104" cy="48" r="6"/>
-                  <circle class="fraud-node" cx="146" cy="153" r="5"/>
-                  <circle class="fraud-node alert-node" cx="302" cy="40" r="7"/>
-                  <circle class="fraud-node" cx="384" cy="126" r="6"/>
-                  <circle class="fraud-packet" r="3"><animateMotion dur="6.5s" calcMode="linear" repeatCount="indefinite"><mpath href="#fraudPathA"/></animateMotion></circle>
-                  <circle class="fraud-packet alert-packet" r="3.5"><animateMotion dur="5.2s" calcMode="linear" begin="-1.5s" repeatCount="indefinite"><mpath href="#fraudPathB"/></animateMotion></circle>
-                </svg>
-              </div>
-              <div class="project-readout">
-                <div class="readout-label"><span>RISK INTELLIGENCE</span><strong>SECURITY / 02</strong></div>
-                <div class="readout-metric">
-                  <span class="metric-icon fraud-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8 20 6v5.4c0 5-3.1 8.4-8 10.8-4.9-2.4-8-5.8-8-10.8V6l8-3.2Z"/><path d="M12 7.4v5.7M12 16.6h.01"/></svg></span>
-                  <span><small>RISK SCORE</small><strong>0.84</strong><em>ALERT</em></span>
-                </div>
-              </div>
-            </div>
-            <div class="project-body">
-              <div class="project-top"><span>FINANCIAL INTELLIGENCE</span><b>02</b></div>
-              <h3>Fraud Detection System</h3>
-              <p>A future classification system designed to detect unusual transaction patterns and separate normal financial behavior from suspicious activity.</p>
-              <div class="project-tags"><span>Machine Learning</span><span>Classification</span><span>Security</span></div>
-              <span class="project-status status-roadmap">ROADMAP</span>
-            </div>
-          </article>
-
-          <article class="project-card project-traffic reveal">
-            <div class="project-visual" aria-label="Animated smart traffic flow system">
-              <div class="project-stage traffic-stage">
-                <svg class="traffic-map" viewBox="0 0 420 220" role="img" aria-label="Smart traffic flow prediction routes">
-                  <defs>
-                    <linearGradient id="trafficRoad" x1="0" x2="1">
-                      <stop offset="0" stop-color="#4DEBD1" />
-                      <stop offset="0.56" stop-color="#9B7FF0" />
-                      <stop offset="1" stop-color="#F6739A" />
-                    </linearGradient>
-                    <filter id="trafficGlow" x="-100%" y="-100%" width="300%" height="300%">
-                      <feGaussianBlur stdDeviation="2.5" result="blur" />
-                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                  </defs>
-                  <g class="project-grid-lines"><path d="M0 44H420M0 88H420M0 132H420M0 176H420M52 0V220M104 0V220M156 0V220M208 0V220M260 0V220M312 0V220M364 0V220"/></g>
-                  <path id="trafficRouteA" class="traffic-road road-a" d="M-70 140C40 38 140 44 214 112S332 192 490 34"/>
-                  <path id="trafficRouteB" class="traffic-road road-b" d="M-70 172C42 72 142 78 214 143S336 220 490 68"/>
-                  <path class="traffic-centerline" d="M-70 156C42 56 141 61 214 127S334 205 490 51"/>
-                  <circle class="traffic-hub" cx="102" cy="73" r="7"/>
-                  <circle class="traffic-hub" cx="214" cy="127" r="8"/>
-                  <circle class="traffic-hub" cx="338" cy="167" r="7"/>
-                  <g class="vehicle vehicle-cyan">
-                    <rect x="-10" y="-5" width="20" height="10" rx="3"/><path d="M-6-5 -3-8H4L7-5Z"/>
-                    <animateMotion dur="9s" calcMode="linear" repeatCount="indefinite" rotate="auto"><mpath href="#trafficRouteA"/></animateMotion>
-                  </g>
-                  <g class="vehicle vehicle-violet">
-                    <rect x="-10" y="-5" width="20" height="10" rx="3"/><path d="M-6-5 -3-8H4L7-5Z"/>
-                    <animateMotion dur="10.5s" calcMode="linear" begin="-3s" repeatCount="indefinite" rotate="auto"><mpath href="#trafficRouteB"/></animateMotion>
-                  </g>
-                  <g class="vehicle vehicle-pink">
-                    <rect x="-10" y="-5" width="20" height="10" rx="3"/><path d="M-6-5 -3-8H4L7-5Z"/>
-                    <animateMotion dur="11.2s" calcMode="linear" begin="-6s" repeatCount="indefinite" rotate="auto"><mpath href="#trafficRouteA"/></animateMotion>
-                  </g>
-                </svg>
-                <div class="traffic-legend"><span><i></i>clear</span><span><i></i>moderate</span><span><i></i>forecast</span></div>
-              </div>
-              <div class="project-readout">
-                <div class="readout-label"><span>FLOW FORECAST</span><strong>SMART CITY / 03</strong></div>
-                <div class="readout-metric">
-                  <span class="metric-icon traffic-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h8c3.5 0 5.7-1.4 8.5-4M3 17h8c3.5 0 5.7 1.4 8.5 4M16.5 1l3 2-3 2M16.5 19l3 2-3 2"/></svg></span>
-                  <span><small>FLOW INDEX</small><strong>78%</strong><em>CLEAR</em></span>
-                </div>
-              </div>
-            </div>
-            <div class="project-body">
-              <div class="project-top"><span>SMART CITY AI</span><b>03</b></div>
-              <h3>Smart Traffic Flow Prediction</h3>
-              <p>A future time-series and machine-learning system for forecasting congestion patterns and supporting more efficient urban traffic decisions.</p>
-              <div class="project-tags"><span>Time Series</span><span>Prediction</span><span>Smart Systems</span></div>
-              <span class="project-status status-future">FUTURE</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section goals-section" id="goals">
-      <div class="container goals-grid">
-        <div class="goals-copy reveal">
-          <h2>Long-term Goals</h2>
-          <p>Each goal is treated as a realistic path with learnable stages, practical evidence, and steady progress.</p>
-          <a class="button button-secondary" href="https://github.com/thismieo?tab=repositories" target="_blank" rel="noreferrer">Follow the build log</a>
-        </div>
-        <div class="goal-list reveal">
-          <div><span>01</span><p>Strengthen Python fundamentals and build confident problem-solving habits.</p></div>
-          <div><span>02</span><p>Learn the full machine-learning workflow from data preparation to evaluation.</p></div>
-          <div><span>03</span><p>Build a strong set of documented programming and AI projects.</p></div>
-          <div><span>04</span><p>Improve my GitHub, portfolio, and technical communication presence.</p></div>
-          <div><span>05</span><p>Contribute to open source and collaborate with other developers over time.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section contact-section" id="contact">
-      <div class="container">
-        <div class="contact-card reveal">
-          <div class="contact-copy">
-            <h2>Let’s build something meaningful.</h2>
-            <p>Follow the journey, explore future projects, or reach out through the channels below. I am building this portfolio as a calm and clear record of growth.</p>
-          </div>
-          <div class="contact-links" aria-label="Contact links">
-            <a class="contact-icon-link contact-github" href="https://github.com/thismieo" target="_blank" rel="noreferrer" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-            </a>
-            <a class="contact-icon-link contact-email" href="mailto:thismieo@gmail.com" aria-label="Email">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="m4 7 8 6 8-6"/></svg>
-            </a>
-            <a class="contact-icon-link contact-kaggle" href="https://www.kaggle.com/thismieo" target="_blank" rel="noreferrer" aria-label="Kaggle">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.7 3.2h2.55v7.61l6.15-7.61h3.03l-6.03 7.2 6.48 10.4h-2.92l-5.3-8.53-1.41 1.68v6.85H6.7V3.2Z"/></svg>
-            </a>
-            <a class="contact-icon-link contact-instagram" href="https://www.instagram.com/thismieo/" target="_blank" rel="noreferrer" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section thank-you-section" id="thank-you">
-      <div class="container">
-        <div class="thank-you-card reveal">
-          <div class="thank-you-copy">
-            <span class="thank-you-kicker">END OF CURRENT BUILD</span>
-            <h2>Thank you for visiting.</h2>
-            <p>This portfolio is a living record of a real learning journey—one concept, one practice session, and one project at a time. Thank you for your time, and I hope you come back to see what is built next.</p>
-            <a href="#home" class="thank-you-home">
-              <span>Return to the beginning</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5 5.5 11.5l1.4 1.4 4.1-4.1V20h2V8.8l4.1 4.1 1.4-1.4L12 5Z"/></svg>
-            </a>
-          </div>
-        </div>
+    <section class="closing-note section shell" aria-labelledby="closing-title">
+      <div class="closing-note-copy reveal">
+        <p class="eyebrow"><span>05</span> A note for visitors</p>
+        <h2 id="closing-title">Thank you for being here.</h2>
+        <p>This is where I document what I learn, build, and improve: one concept and one project at a time. I hope it grows into a home for my work, future projects, and meaningful collaborations with people, companies, and organizations in Iraq and around the world. Enjoy the journey, and come back to see what is built next.</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-wrap">
-      <p class="footer-name">Mohammed Muayad<sup class="registered-mark">®</sup></p>
-      <p class="footer-description">A focused journey from programming foundations to intelligent systems.</p>
-      <span class="footer-version">Portfolio v3.0 · <span id="current-year">2026</span></span>
+    <div class="shell footer-inner">
+      <p>© <span data-year>2026</span> Mohammed Muayad</p>
+      <p>Version 1.5</p>
+      <p class="footer-motto">
+        <span>Built with curiosity</span>
+        <span class="footer-motto-line" aria-hidden="true"></span>
+        <span>Growing with purpose.</span>
+      </p>
     </div>
   </footer>
+
+  <section class="workshop-view" data-workshop-view hidden aria-labelledby="workshop-title">
+    <header class="workshop-header shell">
+      <button class="workshop-back" type="button" data-close-workshop aria-label="Return to portfolio">
+        <span aria-hidden="true">←</span> Back to portfolio
+      </button>
+      <p>The Workshop</p>
+    </header>
+
+    <div class="workshop-main shell">
+      <div class="workshop-hero">
+        <p class="eyebrow">The Workshop</p>
+        <h1 id="workshop-title">Knowledge<br>in progress.</h1>
+        <p>A focused record of what I learn, apply, and build as each concept becomes practical experience.</p>
+      </div>
+
+      <div class="workshop-status" role="group" aria-label="Learning status legend">
+        <span><i class="status-dot understood"></i> Understood</span>
+        <span><i class="status-dot applied"></i> Applied</span>
+        <span><i class="status-dot upcoming"></i> Upcoming</span>
+      </div>
+
+      <section class="workshop-block" aria-labelledby="foundation-title">
+        <div class="workshop-block-heading">
+          <p class="eyebrow"><span>01</span> Foundation</p>
+          <h2 id="foundation-title">Concepts that shape the path.</h2>
+        </div>
+        <div class="workshop-grid">
+          <article class="workshop-card"><span class="workshop-state understood">Understood</span><h3>AI Foundations</h3><p>AI types, supervised learning, features, labels, classification, regression, and the role of data.</p></article>
+          <article class="workshop-card"><span class="workshop-state understood">Understood</span><h3>Data Foundations</h3><p>Structured and unstructured data, collection, labeling, quality, missing values, and cleaning.</p></article>
+          <article class="workshop-card"><span class="workshop-state understood">Understood</span><h3>Algorithms</h3><p>Inputs, processing, outputs, pseudocode, flowcharts, efficiency, and an introduction to Big O.</p></article>
+          <article class="workshop-card"><span class="workshop-state understood">Understood</span><h3>LLMs &amp; Chatbots</h3><p>Tokens, context windows, temporary memory, hallucinations, bias, limitations, and tool support.</p></article>
+        </div>
+      </section>
+
+      <section class="workshop-block" aria-labelledby="practice-title">
+        <div class="workshop-block-heading">
+          <p class="eyebrow"><span>02</span> Applied practice</p>
+          <h2 id="practice-title">Knowledge used in real workflows.</h2>
+        </div>
+        <div class="workshop-grid workshop-grid-featured">
+          <article class="workshop-card workshop-card-featured"><span class="workshop-state applied">Applied</span><h3>Prompt Engineering</h3><p>Using clear instructions, roles, context, examples, and structured reasoning to guide AI tools toward accurate and useful results.</p></article>
+          <article class="workshop-card"><span class="workshop-state applied">Applied</span><h3>AI Automation</h3><p>Building connected workflows that move information between AI tools, computers, and applications to complete practical tasks.</p></article>
+          <article class="workshop-card"><span class="workshop-state applied">Applied</span><h3>Generative AI Media</h3><p>Creating and refining images, videos, and other digital media with AI tools through clear prompting, thoughtful iteration, and careful quality review.</p></article>
+        </div>
+      </section>
+
+      <section class="workshop-block" aria-labelledby="current-title">
+        <div class="workshop-block-heading">
+          <p class="eyebrow"><span>03</span> Current track</p>
+          <h2 id="current-title">Python, one practical step at a time.</h2>
+        </div>
+        <article class="current-track-card">
+          <div><span class="workshop-state upcoming">Upcoming</span><h3>Python Programming</h3><p>A practical path through Python fundamentals, focused on steady progress, hands-on practice, and building clear programming solutions.</p></div>
+          <ul class="current-track-topics"><li>Syntax &amp; indentation</li><li>Variables &amp; data types</li><li>Lists, tuples, sets &amp; dictionaries</li><li>Operators &amp; user input</li></ul>
+        </article>
+      </section>
+
+      <div class="workshop-closing">
+        <p class="workshop-motto">
+          <span>Built with curiosity</span>
+          <span class="workshop-motto-line" aria-hidden="true"></span>
+          <span>Growing with purpose.</span>
+        </p>
+        <button class="button button-secondary" type="button" data-close-workshop>Return to portfolio</button>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
