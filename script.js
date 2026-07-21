@@ -15,16 +15,22 @@
   const backToTop = document.querySelector("[data-back-to-top]");
   let portfolioScroll = 0;
 
-  const localizedTitle = (workshop = false) => {
-    const arabic = document.documentElement.lang === "ar";
-    if (workshop) return arabic ? "الورشة | محمد مؤيد" : "The Workshop | Mohammed Muayad";
-    return arabic ? "محمد مؤيد | هندسة الذكاء الاصطناعي والتطبيقات العملية" : "Mohammed Muayad | AI Engineering & Applied AI";
-  };
+  const pageTitle = (workshop = false) => workshop
+    ? "The Workshop | Mohammed Muayad"
+    : "Mohammed Muayad | AI Engineering & Applied AI";
 
   document.querySelector("[data-year]").textContent = String(new Date().getFullYear());
 
   let lastScrollY = window.scrollY;
   let scrollFrame = 0;
+  let progressHideTimer = 0;
+  const showScrollProgress = () => {
+    const track = scrollProgress?.parentElement;
+    if (!track) return;
+    track.classList.add("is-active");
+    window.clearTimeout(progressHideTimer);
+    progressHideTimer = window.setTimeout(() => track.classList.remove("is-active"), 620);
+  };
   const updateScrollInterface = () => {
     const currentY = Math.max(window.scrollY, 0);
     const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
@@ -45,13 +51,32 @@
   };
 
   const requestScrollInterface = () => {
+    showScrollProgress();
     if (scrollFrame) return;
     scrollFrame = window.requestAnimationFrame(updateScrollInterface);
   };
 
-  window.addEventListener("scroll", requestScrollInterface, { passive: true });
-  window.addEventListener("resize", requestScrollInterface);
-  updateScrollInterface();
+  if (!stableTouchLayout) {
+    window.addEventListener("scroll", requestScrollInterface, { passive: true });
+    window.addEventListener("resize", requestScrollInterface);
+    updateScrollInterface();
+  } else {
+    header?.classList.remove("is-hidden", "is-scrolled");
+    const updateMobileUtilities = () => {
+      const currentY = Math.max(window.scrollY, 0);
+      const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      if (scrollProgress) scrollProgress.style.transform = `scaleX(${Math.min(currentY / scrollable, 1)})`;
+      backToTop?.classList.toggle("is-visible", currentY > Math.min(720, window.innerHeight * 0.8));
+      scrollFrame = 0;
+    };
+    const requestMobileUtilities = () => {
+      showScrollProgress();
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(updateMobileUtilities);
+    };
+    window.addEventListener("scroll", requestMobileUtilities, { passive: true });
+    updateMobileUtilities();
+  }
 
   backToTop?.addEventListener("click", () => {
     header?.classList.remove("is-hidden");
@@ -72,7 +97,12 @@
     document.body.classList.toggle("menu-open", open);
   });
 
-  navLinks.forEach((link) => link.addEventListener("click", closeMenu));
+  navLinks.forEach((link) => link.addEventListener("click", () => {
+    if (stableTouchLayout) {
+      navLinks.forEach((item) => item.classList.toggle("is-active", item === link));
+    }
+    closeMenu();
+  }));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeMenu();
   });
@@ -102,8 +132,10 @@
     });
   };
 
-  window.addEventListener("scroll", requestActiveUpdate, { passive: true });
-  window.addEventListener("resize", requestActiveUpdate);
+  if (!stableTouchLayout) {
+    window.addEventListener("scroll", requestActiveUpdate, { passive: true });
+    window.addEventListener("resize", requestActiveUpdate);
+  }
   updateActiveSection();
 
   const isWorkshopLocation = () => new URLSearchParams(window.location.search).get("view") === "workshop";
@@ -114,15 +146,15 @@
       portfolioScroll = window.scrollY;
       workshopView.hidden = false;
       document.body.classList.add("workshop-open");
-      document.title = localizedTitle(true);
+      document.title = pageTitle(true);
       window.scrollTo(0, 0);
-      workshopView.querySelector("[data-close-workshop]")?.focus({ preventScroll: true });
+      if (!stableTouchLayout) workshopView.querySelector("[data-close-workshop]")?.focus({ preventScroll: true });
     } else {
       document.body.classList.remove("workshop-open");
       workshopView.hidden = true;
-      document.title = localizedTitle(false);
+      document.title = pageTitle(false);
       if (restoreScroll) window.scrollTo(0, portfolioScroll);
-      workshopOpeners[0]?.focus({ preventScroll: true });
+      if (!stableTouchLayout) workshopOpeners[0]?.focus({ preventScroll: true });
     }
   };
 
@@ -140,9 +172,6 @@
   }));
 
   window.addEventListener("popstate", () => renderWorkshop(isWorkshopLocation()));
-  window.addEventListener("portfolio:languagechange", () => {
-    document.title = localizedTitle(!workshopView?.hidden);
-  });
   if (isWorkshopLocation()) renderWorkshop(true, { restoreScroll: false });
 
   document.addEventListener("keydown", (event) => {
@@ -152,7 +181,7 @@
   });
 
   const revealItems = document.querySelectorAll(".reveal");
-  if (reduceMotion || !("IntersectionObserver" in window)) {
+  if (reduceMotion || stableTouchLayout || !("IntersectionObserver" in window)) {
     revealItems.forEach((item) => item.classList.add("is-visible"));
   } else {
     const revealObserver = new IntersectionObserver((entries, observer) => {

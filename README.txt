@@ -12,8 +12,7 @@ Files
 index.html       Website content and structure
 styles.css       Desktop and mobile responsive design
 script.js        Navigation and subtle interactions
-i18n.js          Instant English and Arabic language switching
-assets/          Portrait, favicon, local fonts, and social preview
+assets/          Portrait, favicon, local font, and social preview
 robots.txt       Search crawler guidance
 sitemap.xml      Search-engine page map
 site.webmanifest Browser and mobile identity
@@ -24,10 +23,11 @@ Notes
 - The same website adapts to desktop, tablet, and mobile screens.
 - The original portrait was preserved; the web copy was optimized and stripped of metadata.
 - The Workshop opens inside the same page without a reload; browser Back, the in-page Back button, and Escape return to the portfolio.
-- Every visit opens in English. Visitors can switch instantly to Arabic without a reload while preserving the current view.
-- Arabic uses the locally hosted Tajawal family with a complete RTL layout.
-- Language changes use a calm charcoal crossfade; mobile navigation hides while scrolling down and returns while scrolling up.
-- A lightweight reading-progress line and an accessible back-to-top control use native scrolling without external animation libraries.
+- The website is English-only and opens directly without loading translation logic or additional language fonts.
+- Touch devices render content immediately rather than waiting for scroll observers, preventing blank frames during fast iOS momentum scrolling.
+- Mobile performance mode uses native scrolling, a static header, simplified gradients, and no persistent animated header layer.
+- The final mobile balance removes the costly portrait drop-shadow, replaces it with a lightweight frame shadow, and keeps decorative blur layers disabled while retaining the proven header backdrop-filter.
+- Mobile and desktop keep the lightweight reading-progress line and accessible back-to-top control; the mobile control has no shadow and uses a single passive scroll listener.
 - SEO metadata, social sharing metadata, structured Person data, favicon assets, robots.txt, and sitemap.xml are included.
 
 Design direction

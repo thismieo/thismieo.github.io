@@ -6,9 +6,6 @@
   font-display: swap;
 }
 
-@font-face { font-family: "Tajawal"; src: url("assets/tajawal-arabic-400.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
-@font-face { font-family: "Tajawal"; src: url("assets/tajawal-arabic-500.woff2") format("woff2"); font-style: normal; font-weight: 500; font-display: swap; }
-@font-face { font-family: "Tajawal"; src: url("assets/tajawal-arabic-700.woff2") format("woff2"); font-style: normal; font-weight: 700; font-display: swap; }
 
 :root {
   --paper: #f7f7f3;
@@ -1719,13 +1716,12 @@ html { scroll-padding-top: 18px; }
 }
 
 @media (max-width: 700px), (hover: none), (pointer: coarse) {
-  .reveal {
-    opacity: 0;
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1;
     transform: none;
-    transition: opacity 380ms ease;
+    transition: none;
   }
-
-  .reveal.is-visible { opacity: 1; }
 
   .level-five-night .contact-links .contact-card:hover,
   .level-five-night .contact-links .contact-card:focus,
@@ -1750,22 +1746,7 @@ html { scroll-padding-top: 18px; }
   }
 }
 
-/* Calm motion system: language crossfade, scroll progress, and mobile controls. */
-.language-transition {
-  position: fixed;
-  z-index: 200;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  background:
-    radial-gradient(ellipse at 72% 28%, rgba(104, 119, 111, 0.16), transparent 48%),
-    rgba(13, 15, 15, 0.96);
-  transition: opacity 170ms ease;
-  will-change: opacity;
-}
-
-body.language-is-changing .language-transition { opacity: 1; }
-.language-toggle:disabled { cursor: wait; }
+/* Calm motion system: scroll progress and mobile controls. */
 
 .scroll-progress {
   position: fixed;
@@ -1776,7 +1757,11 @@ body.language-is-changing .language-transition { opacity: 1; }
   height: 2px;
   overflow: hidden;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
 }
+
+.scroll-progress.is-active { opacity: 1; }
 
 .scroll-progress span {
   display: block;
@@ -1823,11 +1808,16 @@ body.language-is-changing .language-transition { opacity: 1; }
     top: 0;
     transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
     will-change: transform, opacity;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   .level-five-night .site-header.is-hidden {
     opacity: 0;
-    transform: translateY(calc(-100% - 14px));
+    -webkit-transform: translate3d(0, calc(-100% - 14px), 0);
+    transform: translate3d(0, calc(-100% - 14px), 0);
     pointer-events: none;
   }
 
@@ -1840,305 +1830,117 @@ body.language-is-changing .language-transition { opacity: 1; }
     height: 39px;
     right: max(14px, env(safe-area-inset-right));
     bottom: max(14px, env(safe-area-inset-bottom));
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
+
+  .workshop-back:focus { outline: none; }
 
   .button:active,
   .contact-card:active,
-  .workshop-entry:active,
-  .language-toggle:active { transform: scale(0.985); }
+  .workshop-entry:active { transform: scale(0.985); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .language-transition { display: none; }
   .site-header,
   .back-to-top,
   .scroll-progress span { transition: none !important; }
 }
 
-/* Bilingual identity and refined language control. */
-.language-toggle {
-  position: relative;
-  width: 36px;
-  height: 31px;
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 36px;
-  margin-inline-start: 3px;
-  padding: 0;
-  color: #c6cabf;
-  border: 1px solid rgba(225, 230, 220, 0.15);
-  border-radius: 10px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  font: 750 0.61rem/1 "Manrope", system-ui, sans-serif;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
-}
+/* Mobile performance mode: native scrolling with no persistent composited UI. */
+@media (max-width: 700px), (hover: none), (pointer: coarse) {
+  html { scrollbar-gutter: auto; }
+  body { -webkit-overflow-scrolling: touch; }
 
-.language-toggle::before {
-  content: "";
-  position: absolute;
-  top: 7px;
-  bottom: 7px;
-  inset-inline-start: -13px;
-  width: 1px;
-  background: rgba(225, 230, 220, 0.1);
-}
-
-.language-toggle:hover,
-.language-toggle:focus-visible {
-  color: #f0f1ec;
-  border-color: rgba(194, 202, 188, 0.3);
-  background: rgba(180, 189, 175, 0.075);
-}
-
-.language-toggle:focus-visible { outline: 2px solid rgba(174, 179, 162, 0.56); outline-offset: 3px; }
-.lang-ar .language-toggle { color: #e0e2da; background: rgba(174, 179, 162, 0.075); }
-
-body.lang-ar {
-  font-family: "Tajawal", "Manrope", system-ui, sans-serif;
-  font-weight: 400;
-  line-height: 1.76;
-}
-
-.lang-ar .eyebrow,
-.lang-ar .site-nav a,
-.lang-ar .wordmark,
-.lang-ar .timeline-state,
-.lang-ar .project-field,
-.lang-ar .status,
-.lang-ar .workshop-state,
-.lang-ar .workshop-status,
-.lang-ar .contact-card-copy > span,
-.lang-ar .workshop-entry-label {
-  letter-spacing: 0;
-}
-
-.lang-ar .hero h1 {
-  direction: ltr;
-  text-align: right;
-  font-family: "Manrope", system-ui, sans-serif;
-}
-
-.lang-ar h2,
-.lang-ar h3,
-.lang-ar .hero-role,
-.lang-ar .hero-tagline,
-.lang-ar .workshop-entry-title,
-.lang-ar .contact-card-copy strong {
-  font-weight: 700;
-  letter-spacing: 0;
-}
-
-.lang-ar .section-heading h2,
-.lang-ar .contact h2,
-.lang-ar .closing-note h2 {
-  line-height: 1.4;
-  letter-spacing: 0;
-}
-
-.lang-ar h1,
-.lang-ar h2,
-.lang-ar h3 { text-wrap: balance; }
-
-.lang-ar p { text-wrap: pretty; }
-
-.lang-ar .timeline h3 { line-height: 1.5; }
-.lang-ar .project-card h3 { line-height: 1.48; }
-.lang-ar .workshop-entry-title { line-height: 1.35; }
-.lang-ar .eyebrow { line-height: 1.55; }
-.lang-ar .status,
-.lang-ar .workshop-state { line-height: 1.25; }
-
-.lang-ar .hero-copy,
-.lang-ar .section-heading,
-.lang-ar .about-content,
-.lang-ar .timeline-item,
-.lang-ar .project-card,
-.lang-ar .project-card > *,
-.lang-ar .contact-copy,
-.lang-ar .closing-note-copy,
-.lang-ar .workshop-hero,
-.lang-ar .workshop-block-heading > *,
-.lang-ar .workshop-card,
-.lang-ar .current-track-card > * {
-  min-width: 0;
-}
-
-.lang-ar .about-content p,
-.lang-ar .timeline-item p,
-.lang-ar .project-card p,
-.lang-ar .contact-copy p,
-.lang-ar .closing-note-copy p,
-.lang-ar .workshop-hero p,
-.lang-ar .workshop-card p,
-.lang-ar .current-track-card p {
-  overflow-wrap: break-word;
-  word-break: normal;
-}
-
-/* Arabic Workshop: keep labels and headings on one visual axis. */
-.lang-ar .workshop-main .workshop-hero {
-  max-width: 760px;
-  margin-inline-end: 0;
-}
-
-.lang-ar .workshop-hero h1 {
-  max-width: 720px;
-  font-size: clamp(3rem, 5.2vw, 4.8rem);
-  line-height: 1.4;
-  letter-spacing: 0;
-}
-
-.lang-ar .workshop-hero > p:last-child {
-  max-width: 700px;
-  line-height: 1.95;
-}
-
-.lang-ar .workshop-status {
-  justify-content: flex-start;
-  gap: 12px 28px;
-}
-
-.lang-ar .workshop-block-heading {
-  display: block;
-  margin-bottom: clamp(34px, 4.5vw, 54px);
-}
-
-.lang-ar .workshop-block-heading .eyebrow {
-  justify-content: flex-start;
-  margin: 0 0 20px;
-}
-
-.lang-ar .workshop-block-heading h2 {
-  max-width: 820px;
-  font-size: clamp(2.35rem, 4vw, 3.75rem);
-  line-height: 1.42;
-  letter-spacing: 0;
-}
-
-.lang-ar .workshop-card h3,
-.lang-ar .current-track-card h3 {
-  margin-top: 28px;
-  line-height: 1.55;
-}
-
-.lang-ar .workshop-card p,
-.lang-ar .current-track-card p { line-height: 1.95; }
-
-.lang-ar .current-track-card {
-  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
-  gap: clamp(36px, 5vw, 70px);
-  align-items: center;
-}
-
-.lang-ar .current-track-card .current-track-topics {
-  align-content: center;
-  justify-content: flex-start;
-}
-
-.lang-ar .current-track-card .current-track-topics li {
-  font-weight: 500;
-  line-height: 1.55;
-}
-
-.lang-ar .about-content,
-.lang-ar .timeline-item,
-.lang-ar .project-card,
-.lang-ar .workshop-card,
-.lang-ar .current-track-card,
-.lang-ar .contact-copy,
-.lang-ar .closing-note-copy {
-  text-align: right;
-}
-
-.lang-ar .about-content > p,
-.lang-ar .timeline-item > p:last-child,
-.lang-ar .project-card p:not(.project-field),
-.lang-ar .workshop-card p,
-.lang-ar .current-track-card p,
-.lang-ar .closing-note-copy p {
-  font-weight: 400;
-}
-
-.lang-ar .project-field,
-.lang-ar .timeline-state,
-.lang-ar .status,
-.lang-ar .workshop-state,
-.lang-ar .facts dt {
-  font-weight: 500;
-}
-
-.lang-ar .facts dd { font-weight: 500; }
-
-.lang-ar .project-number,
-.lang-ar .timeline-marker,
-.lang-ar .workshop-block-heading .eyebrow span,
-.lang-ar .footer-inner > p:first-child,
-.lang-ar .contact-card-copy strong {
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-
-.lang-ar .tags { direction: rtl; }
-.lang-ar .tags li { direction: ltr; unicode-bidi: isolate; font-family: "Manrope", system-ui, sans-serif; }
-.lang-ar .current-track-topics { direction: rtl; }
-
-.lang-ar .contact-card-copy strong { text-align: left; font-family: "Manrope", system-ui, sans-serif; }
-.lang-ar .section-heading-row > p { text-align: right; }
-.lang-ar .workshop-back span { transform: rotate(180deg); margin-right: 0; margin-left: 8px; }
-.lang-ar .workshop-back:hover span { transform: rotate(180deg) translateX(-3px); }
-.lang-ar .workshop-card p,
-.lang-ar .current-track-card p,
-.lang-ar .about-content,
-.lang-ar .project-card p,
-.lang-ar .closing-note-copy p { line-height: 1.9; }
-
-@media (max-width: 700px) {
-  .language-toggle {
-    width: 29px;
-    height: 27px;
-    flex-basis: 29px;
-    margin-inline-start: 0;
-    border-radius: 8px;
-    font-size: 0.54rem;
+  /* Avoid the decorative fixed layer that is not needed on compact screens. */
+  .level-five-night::before { display: none !important; }
+  .level-five-night .header-inner {
+    -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+    backdrop-filter: blur(18px) saturate(120%) !important;
   }
-  .language-toggle::before { display: none; }
-  .lang-ar .site-nav { gap: clamp(6px, 2vw, 10px); }
-  .lang-ar .site-nav a { font-size: clamp(0.56rem, 2.2vw, 0.66rem); }
-  .lang-ar .wordmark { font-size: 0.58rem; }
-  .lang-ar .hero h1 { text-align: right; }
-  .lang-ar .section-heading h2,
-  .lang-ar .contact h2 { font-size: clamp(2rem, 9.3vw, 2.75rem); }
-  .lang-ar .about-content .about-lead { font-size: 1.02rem; line-height: 1.82; }
-  .lang-ar .about-content > p:not(.about-lead),
-  .lang-ar .project-card p:not(.project-field),
-  .lang-ar .workshop-card p,
-  .lang-ar .current-track-card p { font-size: 0.9rem; line-height: 1.85; }
-  .lang-ar .project-card h3 { font-size: clamp(1.42rem, 6.4vw, 1.78rem); line-height: 1.48; }
-  .lang-ar .facts dt { font-size: 0.62rem; }
-  .lang-ar .facts dd { font-size: 0.84rem; line-height: 1.5; }
-  .lang-ar .workshop-hero h1 {
-    max-width: 100%;
-    font-size: clamp(2.35rem, 10.5vw, 3rem);
-    line-height: 1.4;
-  }
-  .lang-ar .workshop-block-heading { margin-bottom: 28px; }
-  .lang-ar .workshop-block-heading .eyebrow { margin-bottom: 15px; }
-  .lang-ar .workshop-block-heading h2 {
-    max-width: 100%;
-    font-size: clamp(1.9rem, 8.4vw, 2.45rem);
-    line-height: 1.45;
-  }
-  .lang-ar .current-track-card { grid-template-columns: 1fr; gap: 28px; }
-  .lang-ar .workshop-card h3,
-  .lang-ar .current-track-card h3 { line-height: 1.58; }
-}
 
-@media (max-width: 360px) {
-  .language-toggle { width: 27px; height: 26px; flex-basis: 27px; }
-  .level-five-night .site-nav { gap: 5px; }
-  .level-five-night .site-nav a { font-size: 0.53rem; }
-  .lang-ar .wordmark { font-size: 0.54rem; }
+  .level-five-night .site-header,
+  .level-five-night .site-header.is-hidden,
+  .level-five-night .site-header.is-scrolled {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    transform: none;
+    -webkit-transform: none;
+    transition: none;
+    will-change: auto;
+    pointer-events: auto;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+  }
+
+  .level-five-night .hero {
+    background:
+      radial-gradient(ellipse 58% 58% at 82% 30%, rgba(124, 139, 131, 0.1), transparent 72%),
+      linear-gradient(145deg, #181a1a 0%, #101212 72%, #151818 100%);
+  }
+
+  .level-five-night .about {
+    background:
+      radial-gradient(ellipse 54% 58% at 86% 38%, rgba(111, 125, 117, 0.08), transparent 74%),
+      linear-gradient(155deg, #191b1b, #111313 76%);
+  }
+
+  .level-five-night .journey,
+  .level-five-night .journey::before {
+    background: linear-gradient(145deg, #111313, #1a1d1c);
+  }
+
+  .level-five-night .projects {
+    background:
+      radial-gradient(ellipse 58% 62% at 28% 60%, rgba(112, 127, 119, 0.08), transparent 75%),
+      linear-gradient(150deg, #171919, #0e1010 76%);
+  }
+
+  .level-five-night .contact {
+    background:
+      radial-gradient(ellipse 52% 58% at 82% 82%, rgba(111, 126, 118, 0.08), transparent 74%),
+      linear-gradient(145deg, #191b1b, #101212);
+  }
+
+  .workshop-view {
+    background: linear-gradient(145deg, #181a1a 0%, #101212 62%, #161919 100%);
+  }
+
+  .workshop-view::before,
+  .workshop-view::after { display: none; }
+
+  .workshop-entry::before {
+    display: none;
+  }
+
+  .workshop-block::before { background: none !important; }
+
+  .level-five-night main > section,
+  .level-five-night .project-card,
+  .workshop-entry,
+  .workshop-card,
+  .current-track-card,
+  .level-five-night .contact-card,
+  .level-five-night .button-primary {
+    box-shadow: none;
+  }
+
+  .level-five-night .portrait-stage { filter: none; }
+  .level-five-night .portrait-frame { box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18); }
+  .level-five-night .hero h1,
+  .level-five-night .hero-tagline { text-shadow: none; }
+
+  .level-five-night .project-card,
+  .workshop-entry,
+  .workshop-card,
+  .current-track-card,
+  .level-five-night .contact-card {
+    transition: none;
+    will-change: auto;
+  }
+
+  .scroll-progress { height: 1px; }
+  .scroll-progress span { box-shadow: none; }
+  .back-to-top { box-shadow: none; }
 }
