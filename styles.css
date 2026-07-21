@@ -2523,3 +2523,45 @@ body.workshop-open,
     min-height: 88px;
   }
 }
+
+/* Keep the 2×2 contact grid readable on compact iPhones. */
+@media (max-width: 420px) {
+  .level-five-night .contact-links .contact-card {
+    min-height: 160px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 13px;
+    padding: 16px;
+  }
+
+  .level-five-night .contact-links .contact-card:hover,
+  .level-five-night .contact-links .contact-card:focus-visible {
+    padding-left: 16px;
+  }
+
+  .level-five-night .contact-icon {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .level-five-night .contact-card-copy {
+    width: 100%;
+  }
+
+  .level-five-night .contact-card-copy > span {
+    margin-bottom: 6px;
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    line-height: 1.25;
+  }
+
+  .level-five-night .contact-card-copy strong {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    font-size: 0.78rem;
+    line-height: 1.38;
+  }
+}
