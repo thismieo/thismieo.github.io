@@ -15,9 +15,11 @@
   const backToTop = document.querySelector("[data-back-to-top]");
   let portfolioScroll = 0;
 
-  const pageTitle = (workshop = false) => workshop
-    ? "The Workshop | Mohammed Muayad"
-    : "Mohammed Muayad | AI Engineering & Applied AI";
+  const pageTitle = (workshop = false) => {
+    const arabic = document.documentElement.lang === "ar";
+    if (workshop) return arabic ? "الورشة | محمد مؤيد" : "The Workshop | Mohammed Muayad";
+    return arabic ? "محمد مؤيد | هندسة الذكاء الاصطناعي والتطبيقات العملية" : "Mohammed Muayad | AI Engineering & Applied AI";
+  };
 
   document.querySelector("[data-year]").textContent = String(new Date().getFullYear());
 
@@ -172,6 +174,9 @@
   }));
 
   window.addEventListener("popstate", () => renderWorkshop(isWorkshopLocation()));
+  window.addEventListener("portfolio:languagechange", () => {
+    document.title = pageTitle(!workshopView?.hidden);
+  });
   if (isWorkshopLocation()) renderWorkshop(true, { restoreScroll: false });
 
   document.addEventListener("keydown", (event) => {
