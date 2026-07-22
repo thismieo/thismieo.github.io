@@ -28,7 +28,6 @@
   <link rel="manifest" href="site.webmanifest">
   <title>Mohammed Muayad | AI Engineering &amp; Applied AI</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="i18n.js" defer></script>
   <script src="script.js" defer></script>
   <script type="application/ld+json">
   {
@@ -46,7 +45,6 @@
 </head>
 <body class="level-two level-three level-four level-five-night">
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="language-transition" data-language-transition aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
 
   <header class="site-header" data-header>
@@ -57,10 +55,12 @@
 
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-nav>
         <a href="#about">About</a>
+        <span class="nav-divider" aria-hidden="true"></span>
         <a href="#journey">Journey</a>
+        <span class="nav-divider" aria-hidden="true"></span>
         <a href="#projects">Projects</a>
+        <span class="nav-divider" aria-hidden="true"></span>
         <a href="#contact">Contact</a>
-        <button class="language-toggle" type="button" data-language-toggle aria-label="Switch to Arabic" title="Switch to Arabic">AR</button>
       </nav>
     </div>
   </header>
@@ -156,7 +156,10 @@
         <span class="workshop-entry-label">Applied learning archive</span>
         <span class="workshop-entry-title">The Workshop</span>
         <span class="workshop-entry-copy">Where learning becomes practice.</span>
-        <span class="workshop-entry-action">Enter the workshop</span>
+        <span class="workshop-entry-action">
+          <span>Explore the Workshop</span>
+          <span class="workshop-control-arrow" aria-hidden="true">→</span>
+        </span>
       </a>
     </section>
 
@@ -314,7 +317,8 @@
   <section class="workshop-view" data-workshop-view hidden aria-labelledby="workshop-title">
     <header class="workshop-header shell">
       <button class="workshop-back" type="button" data-close-workshop aria-label="Back to profile">
-        <span aria-hidden="true">←</span> Back to profile
+        <span class="workshop-control-arrow" aria-hidden="true">←</span>
+        <span>Back to profile</span>
       </button>
       <p>The Workshop</p>
     </header>
@@ -374,7 +378,10 @@
           <span class="workshop-motto-line" aria-hidden="true"></span>
           <span>Purpose in every step</span>
         </p>
-        <button class="button button-secondary" type="button" data-close-workshop>Continue the journey</button>
+        <button class="button button-secondary" type="button" data-close-workshop>
+          <span>Continue the journey</span>
+          <span class="workshop-control-arrow" aria-hidden="true">→</span>
+        </button>
       </div>
     </div>
   </section>

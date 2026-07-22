@@ -15,11 +15,9 @@
   const backToTop = document.querySelector("[data-back-to-top]");
   let portfolioScroll = 0;
 
-  const pageTitle = (workshop = false) => {
-    const arabic = document.documentElement.lang === "ar";
-    if (workshop) return arabic ? "الورشة | محمد مؤيد" : "The Workshop | Mohammed Muayad";
-    return arabic ? "محمد مؤيد | هندسة الذكاء الاصطناعي والتطبيقات العملية" : "Mohammed Muayad | AI Engineering & Applied AI";
-  };
+  const pageTitle = (workshop = false) => workshop
+    ? "The Workshop | Mohammed Muayad"
+    : "Mohammed Muayad | AI Engineering & Applied AI";
 
   document.querySelector("[data-year]").textContent = String(new Date().getFullYear());
 
@@ -142,6 +140,20 @@
 
   const isWorkshopLocation = () => new URLSearchParams(window.location.search).get("view") === "workshop";
 
+  const returnToPortfolio = () => {
+    const openedFromPortfolio = window.history.state?.portfolioWorkshop === true;
+    if (isWorkshopLocation() && openedFromPortfolio) {
+      window.history.back();
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("view");
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    renderWorkshop(false, { restoreScroll: false });
+    window.scrollTo(0, 0);
+  };
+
   const renderWorkshop = (open, { restoreScroll = true } = {}) => {
     if (!workshopView) return;
     if (open) {
@@ -164,25 +176,18 @@
     event.preventDefault();
     const url = new URL(window.location.href);
     url.searchParams.set("view", "workshop");
-    window.history.pushState({ view: "workshop" }, "", `${url.pathname}${url.search}${url.hash}`);
+    window.history.pushState({ view: "workshop", portfolioWorkshop: true }, "", `${url.pathname}${url.search}${url.hash}`);
     renderWorkshop(true);
   }));
 
-  workshopClosers.forEach((closer) => closer.addEventListener("click", () => {
-    if (isWorkshopLocation()) window.history.back();
-    else renderWorkshop(false);
-  }));
+  workshopClosers.forEach((closer) => closer.addEventListener("click", returnToPortfolio));
 
   window.addEventListener("popstate", () => renderWorkshop(isWorkshopLocation()));
-  window.addEventListener("portfolio:languagechange", () => {
-    document.title = pageTitle(!workshopView?.hidden);
-  });
   if (isWorkshopLocation()) renderWorkshop(true, { restoreScroll: false });
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || workshopView?.hidden) return;
-    if (isWorkshopLocation()) window.history.back();
-    else renderWorkshop(false);
+    returnToPortfolio();
   });
 
   const revealItems = document.querySelectorAll(".reveal");

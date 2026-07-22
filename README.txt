@@ -12,7 +12,6 @@ Files
 index.html       Website content and structure
 styles.css       Desktop and mobile responsive design
 script.js        Navigation and subtle interactions
-i18n.js          English and Arabic language switching
 assets/          Portrait, favicon, local fonts, and social preview
 robots.txt       Search crawler guidance
 sitemap.xml      Search-engine page map
@@ -23,10 +22,8 @@ Notes
 - This is a standalone preview and does not modify the live GitHub website.
 - The same website adapts to desktop, tablet, and mobile screens.
 - The original portrait was preserved; the web copy was optimized and stripped of metadata.
-- The Workshop opens inside the same page without a reload; browser Back, the in-page Back button, and Escape return to the portfolio.
-- Every fresh visit opens in English; visitors can switch to Arabic and back without reloading the page.
-- Arabic uses the locally hosted Tajawal family with a complete RTL layout.
-- Language changes use a calm charcoal transition on desktop and a lightweight content fade on touch devices.
+- The Workshop opens inside the same page without a reload; its top and bottom controls return safely to the portfolio, including when the Workshop URL is opened directly.
+- The navigation uses quiet separators between links while preserving the same compact mobile header.
 - Touch devices render content immediately rather than waiting for scroll observers, preventing blank frames during fast iOS momentum scrolling.
 - Mobile performance mode uses native scrolling, a static header, simplified gradients, and no persistent animated header layer.
 - The final mobile balance removes the costly portrait drop-shadow, replaces it with a lightweight frame shadow, and keeps decorative blur layers disabled while retaining the proven header backdrop-filter.
