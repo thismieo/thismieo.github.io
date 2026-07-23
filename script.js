@@ -9,35 +9,41 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const stableTouchLayout = window.matchMedia("(max-width: 700px), (hover: none), (pointer: coarse)").matches;
   const workshopView = document.querySelector("[data-workshop-view]");
+  const workshopTransition = document.querySelector("[data-workshop-transition]");
   const workshopOpeners = [...document.querySelectorAll("[data-open-workshop]")];
   const workshopClosers = [...document.querySelectorAll("[data-close-workshop]")];
-  const scrollProgress = document.querySelector("[data-scroll-progress]");
   const backToTop = document.querySelector("[data-back-to-top]");
+  const themeColor = document.querySelector('meta[name="theme-color"]');
   let portfolioScroll = 0;
+  let workshopTransitioning = false;
+  let workshopScrollTarget = null;
+  let transitionControlsPopstate = false;
+  let resolveTransitionPopstate = null;
 
   const pageTitle = (workshop = false) => workshop
     ? "The Workshop | Mohammed Muayad"
     : "Mohammed Muayad | AI Engineering & Applied AI";
 
+  const jumpToScrollPosition = (top) => {
+    const previousBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo({ top, left: 0, behavior: "auto" });
+    document.documentElement.style.scrollBehavior = previousBehavior;
+  };
+
+  const settleScrollPosition = (top) => {
+    jumpToScrollPosition(top);
+    window.requestAnimationFrame(() => jumpToScrollPosition(top));
+  };
+
   document.querySelector("[data-year]").textContent = String(new Date().getFullYear());
 
   let lastScrollY = window.scrollY;
   let scrollFrame = 0;
-  let progressHideTimer = 0;
-  const showScrollProgress = () => {
-    const track = scrollProgress?.parentElement;
-    if (!track) return;
-    track.classList.add("is-active");
-    window.clearTimeout(progressHideTimer);
-    progressHideTimer = window.setTimeout(() => track.classList.remove("is-active"), 620);
-  };
   const updateScrollInterface = () => {
     const currentY = Math.max(window.scrollY, 0);
-    const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-    const progress = Math.min(currentY / scrollable, 1);
 
     header?.classList.toggle("is-scrolled", currentY > 14);
-    if (scrollProgress) scrollProgress.style.transform = `scaleX(${progress})`;
     backToTop?.classList.toggle("is-visible", currentY > Math.min(720, window.innerHeight * 0.8));
 
     if (stableTouchLayout && header) {
@@ -51,7 +57,6 @@
   };
 
   const requestScrollInterface = () => {
-    showScrollProgress();
     if (scrollFrame) return;
     scrollFrame = window.requestAnimationFrame(updateScrollInterface);
   };
@@ -64,13 +69,10 @@
     header?.classList.remove("is-hidden", "is-scrolled");
     const updateMobileUtilities = () => {
       const currentY = Math.max(window.scrollY, 0);
-      const scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-      if (scrollProgress) scrollProgress.style.transform = `scaleX(${Math.min(currentY / scrollable, 1)})`;
       backToTop?.classList.toggle("is-visible", currentY > Math.min(720, window.innerHeight * 0.8));
       scrollFrame = 0;
     };
     const requestMobileUtilities = () => {
-      showScrollProgress();
       if (scrollFrame) return;
       scrollFrame = window.requestAnimationFrame(updateMobileUtilities);
     };
@@ -140,49 +142,149 @@
 
   const isWorkshopLocation = () => new URLSearchParams(window.location.search).get("view") === "workshop";
 
-  const returnToPortfolio = () => {
-    const openedFromPortfolio = window.history.state?.portfolioWorkshop === true;
-    if (isWorkshopLocation() && openedFromPortfolio) {
-      window.history.back();
-      return;
-    }
-
-    const url = new URL(window.location.href);
-    url.searchParams.delete("view");
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-    renderWorkshop(false, { restoreScroll: false });
-    window.scrollTo(0, 0);
-  };
-
   const renderWorkshop = (open, { restoreScroll = true } = {}) => {
     if (!workshopView) return;
+    workshopScrollTarget = open ? 0 : (restoreScroll ? portfolioScroll : 0);
+    document.documentElement.classList.toggle("workshop-open", open);
+    themeColor?.setAttribute("content", open ? "#080c0e" : "#0d0f0f");
     if (open) {
       portfolioScroll = window.scrollY;
+      jumpToScrollPosition(0);
+      document.activeElement?.blur?.();
       workshopView.hidden = false;
       document.body.classList.add("workshop-open");
       document.title = pageTitle(true);
-      window.scrollTo(0, 0);
+      settleScrollPosition(0);
       if (!stableTouchLayout) workshopView.querySelector("[data-close-workshop]")?.focus({ preventScroll: true });
     } else {
       document.body.classList.remove("workshop-open");
       workshopView.hidden = true;
       document.title = pageTitle(false);
-      if (restoreScroll) window.scrollTo(0, portfolioScroll);
+      if (restoreScroll) settleScrollPosition(portfolioScroll);
       if (!stableTouchLayout) workshopOpeners[0]?.focus({ preventScroll: true });
     }
   };
 
+  const nextPaint = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
+
+  const runWorkshopTransition = async (open, swapView) => {
+    if (workshopTransitioning) return;
+    workshopTransitioning = true;
+    workshopScrollTarget = null;
+    const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo({ top: window.scrollY, left: 0, behavior: "auto" });
+
+    if (reduceMotion || !workshopTransition || typeof workshopTransition.animate !== "function") {
+      try {
+        await swapView();
+        if (workshopScrollTarget !== null) jumpToScrollPosition(workshopScrollTarget);
+        await nextPaint();
+        if (workshopScrollTarget !== null) jumpToScrollPosition(workshopScrollTarget);
+      } finally {
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+        workshopTransitioning = false;
+      }
+      return;
+    }
+
+    const coverStart = open ? "translate3d(0, 120%, 0)" : "translate3d(0, -120%, 0)";
+    const revealEnd = open ? "translate3d(0, -120%, 0)" : "translate3d(0, 120%, 0)";
+    const easing = "cubic-bezier(0.76, 0, 0.24, 1)";
+    let coverAnimation;
+    let revealAnimation;
+
+    document.body.classList.add("workshop-transitioning");
+    workshopTransition.classList.toggle("is-reverse", !open);
+    workshopTransition.classList.add("is-active");
+
+    try {
+      coverAnimation = workshopTransition.animate(
+        [{ transform: coverStart }, { transform: "translate3d(0, 0, 0)" }],
+        { duration: 250, easing, fill: "forwards" }
+      );
+      await coverAnimation.finished;
+      await swapView();
+      await nextPaint();
+
+      revealAnimation = workshopTransition.animate(
+        [{ transform: "translate3d(0, 0, 0)" }, { transform: revealEnd }],
+        { duration: 280, easing, fill: "forwards" }
+      );
+      coverAnimation.cancel();
+      await revealAnimation.finished;
+    } catch (error) {
+      if (error?.name !== "AbortError") console.error("Workshop transition failed", error);
+    } finally {
+      coverAnimation?.cancel();
+      revealAnimation?.cancel();
+      document.body.style.overflowY = "auto";
+      void document.body.offsetHeight;
+      if (workshopScrollTarget !== null) jumpToScrollPosition(workshopScrollTarget);
+      await nextPaint();
+      if (workshopScrollTarget !== null) jumpToScrollPosition(workshopScrollTarget);
+      document.body.classList.remove("workshop-transitioning");
+      document.body.style.removeProperty("overflow-y");
+      document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      workshopTransition.classList.remove("is-active", "is-reverse");
+      workshopTransitioning = false;
+    }
+  };
+
+  const returnToPortfolio = () => {
+    if (workshopTransitioning) return;
+
+    void runWorkshopTransition(false, async () => {
+      const openedFromPortfolio = window.history.state?.portfolioWorkshop === true;
+      if (isWorkshopLocation() && openedFromPortfolio) {
+        await new Promise((resolve) => {
+          transitionControlsPopstate = true;
+          resolveTransitionPopstate = resolve;
+          window.history.back();
+        });
+        return;
+      }
+
+      const url = new URL(window.location.href);
+      url.searchParams.delete("view");
+      window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+      renderWorkshop(false, { restoreScroll: false });
+      settleScrollPosition(0);
+    });
+  };
+
   workshopOpeners.forEach((opener) => opener.addEventListener("click", (event) => {
     event.preventDefault();
-    const url = new URL(window.location.href);
-    url.searchParams.set("view", "workshop");
-    window.history.pushState({ view: "workshop", portfolioWorkshop: true }, "", `${url.pathname}${url.search}${url.hash}`);
-    renderWorkshop(true);
+    if (workshopTransitioning) return;
+
+    void runWorkshopTransition(true, () => {
+      const url = new URL(window.location.href);
+      url.searchParams.set("view", "workshop");
+      window.history.pushState({ view: "workshop", portfolioWorkshop: true }, "", `${url.pathname}${url.search}${url.hash}`);
+      renderWorkshop(true);
+    });
   }));
 
   workshopClosers.forEach((closer) => closer.addEventListener("click", returnToPortfolio));
 
-  window.addEventListener("popstate", () => renderWorkshop(isWorkshopLocation()));
+  window.addEventListener("popstate", () => {
+    const open = isWorkshopLocation();
+
+    if (transitionControlsPopstate) {
+      transitionControlsPopstate = false;
+      renderWorkshop(open);
+      resolveTransitionPopstate?.();
+      resolveTransitionPopstate = null;
+      return;
+    }
+
+    if (workshopTransitioning) {
+      renderWorkshop(open);
+      return;
+    }
+
+    void runWorkshopTransition(open, () => renderWorkshop(open));
+  });
   if (isWorkshopLocation()) renderWorkshop(true, { restoreScroll: false });
 
   document.addEventListener("keydown", (event) => {
@@ -190,18 +292,77 @@
     returnToPortfolio();
   });
 
-  const revealItems = document.querySelectorAll(".reveal");
-  if (reduceMotion || stableTouchLayout || !("IntersectionObserver" in window)) {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
-  } else {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: stableTouchLayout ? "0px 0px -3%" : "0px 0px -8%", threshold: stableTouchLayout ? 0.03 : 0.08 });
+  const pressTargets = [...document.querySelectorAll(
+    ".facts > div, .project-card, .workshop-entry, .contact-card, .workshop-card, .current-track-card"
+  )];
+  const pressStates = new WeakMap();
+  const pressPulseTimers = new WeakMap();
 
-    revealItems.forEach((item) => revealObserver.observe(item));
-  }
+  const clearPressState = (target) => {
+    const state = pressStates.get(target);
+    if (state?.holdTimer) window.clearTimeout(state.holdTimer);
+    target.classList.remove("is-pressing");
+    pressStates.delete(target);
+  };
+
+  const pulsePress = (target) => {
+    const previousPulseTimer = pressPulseTimers.get(target);
+    if (previousPulseTimer) window.clearTimeout(previousPulseTimer);
+    target.classList.remove("is-pressing", "is-pressed");
+    void target.offsetWidth;
+    target.classList.add("is-pressed");
+    const pulseTimer = window.setTimeout(() => {
+      target.classList.remove("is-pressed");
+      pressPulseTimers.delete(target);
+    }, reduceMotion ? 120 : 360);
+    pressPulseTimers.set(target, pulseTimer);
+  };
+
+  pressTargets.forEach((target) => {
+    target.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      clearPressState(target);
+      const previousPulseTimer = pressPulseTimers.get(target);
+      if (previousPulseTimer) window.clearTimeout(previousPulseTimer);
+      pressPulseTimers.delete(target);
+      target.classList.remove("is-pressed");
+      const state = {
+        x: event.clientX,
+        y: event.clientY,
+        moved: false,
+        holdTimer: window.setTimeout(() => {
+          if (!state.moved) target.classList.add("is-pressing");
+        }, 90),
+      };
+      pressStates.set(target, state);
+    }, { passive: true });
+
+    target.addEventListener("pointermove", (event) => {
+      const state = pressStates.get(target);
+      if (!state || state.moved) return;
+      if (Math.hypot(event.clientX - state.x, event.clientY - state.y) <= 9) return;
+      state.moved = true;
+      clearPressState(target);
+    }, { passive: true });
+
+    target.addEventListener("pointerup", () => {
+      const state = pressStates.get(target);
+      if (!state || state.moved) return clearPressState(target);
+      clearPressState(target);
+      pulsePress(target);
+    }, { passive: true });
+
+    target.addEventListener("pointercancel", () => clearPressState(target), { passive: true });
+    target.addEventListener("pointerleave", (event) => {
+      if (event.pointerType === "mouse") clearPressState(target);
+    }, { passive: true });
+
+    target.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") target.classList.add("is-pressing");
+    });
+    target.addEventListener("keyup", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      pulsePress(target);
+    });
+  });
 })();

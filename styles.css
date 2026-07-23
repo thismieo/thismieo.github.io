@@ -30,6 +30,16 @@
 
 * { box-sizing: border-box; }
 
+::selection {
+  color: #f2f4ef;
+  background: rgba(130, 173, 177, 0.38);
+}
+
+::-moz-selection {
+  color: #f2f4ef;
+  background: rgba(130, 173, 177, 0.38);
+}
+
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
@@ -37,6 +47,11 @@ html {
   scrollbar-gutter: stable;
   overscroll-behavior-y: none;
   background: #0d0f0f;
+}
+
+html.workshop-open {
+  overflow-anchor: none;
+  background: #080c0e;
 }
 
 body {
@@ -410,6 +425,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .section-heading h2,
 .contact h2 { font-size: clamp(2.25rem, 4.2vw, 3.55rem); }
 
+.about-title-line { display: block; }
+.about-title-line + .about-title-line { margin-top: 10px; }
+
 .about-content { max-width: 660px; }
 .about-content > p { margin: 0; color: var(--muted); }
 .about-content > p + p { margin-top: 18px; }
@@ -610,8 +628,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .contact-links span { display: block; margin-bottom: 7px; color: var(--sage-mid); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; }
-.contact-links strong { position: relative; display: inline; font-size: clamp(0.93rem, 1.4vw, 1.08rem); font-weight: 700; background-image: linear-gradient(var(--sage-mid), var(--sage-mid)); background-position: 0 100%; background-repeat: no-repeat; background-size: 0 1px; transition: color 180ms ease, background-size 180ms ease; }
-.contact-links a:hover strong, .contact-links a:focus-visible strong { color: var(--sage-deep); background-size: 100% 1px; }
 
 .site-footer { border-top: 1px solid var(--line); }
 .footer-inner { min-height: 92px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 0.74rem; }
@@ -682,9 +698,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: 24px;
   background: var(--paper);
 }
-
-.reveal { opacity: 0; transform: translateY(15px); transition: opacity 560ms ease, transform 560ms ease; }
-.reveal.is-visible { opacity: 1; transform: none; }
 
 /* Level 5 — Charcoal Night: the proven gallery layout in a calm dark atmosphere. */
 .level-five-night {
@@ -805,8 +818,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .level-five-night .contact::after { display: none; }
 
 .level-five-night .facts { border-color: var(--line); }
-.level-five-night .facts div { border-color: var(--line); transition: background-color 180ms ease, padding-left 180ms ease; }
-.level-five-night .facts div:hover { padding-left: 12px; background: rgba(193, 198, 180, 0.045); }
+.level-five-night .facts div { border-color: var(--line); }
 
 .level-five-night .journey {
   background:
@@ -846,13 +858,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: linear-gradient(150deg, #202323, #171919);
   border-color: rgba(224, 229, 218, 0.12);
   box-shadow: 0 20px 56px rgba(0, 0, 0, 0.22);
-  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
-}
-
-.level-five-night .project-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(194, 202, 188, 0.24);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.3);
+  transition: transform 300ms ease, border-color 300ms ease;
 }
 
 .level-five-night .project-featured { color: #eef0e9; background: linear-gradient(145deg, #343a36, #1b201e 70%, #141716); }
@@ -870,10 +876,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .level-five-night .contact-links { border-color: var(--line); }
-.level-five-night .contact-links a { border-color: var(--line); transition: background-color 180ms ease, padding-left 180ms ease; }
-.level-five-night .contact-links a:hover,
-.level-five-night .contact-links a:focus-visible { padding-left: 14px; background: linear-gradient(90deg, rgba(180, 189, 175, 0.07), transparent); }
-.level-five-night .contact-links strong { color: #e5e7e0; }
+.level-five-night .contact-links a { border-color: var(--line); }
 
 .level-five-night .site-footer { color: #898e88; background: #121414; border-color: rgba(225, 230, 220, 0.11); }
 .level-five-night .menu-toggle { background: #171919; border-color: rgba(225, 230, 220, 0.16); }
@@ -984,6 +987,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .level-five-night .timeline { grid-template-columns: 1fr; }
   .level-five-night .project-stack { grid-template-columns: 1fr; }
   .level-five-night .project-stack .project-card { min-height: 310px; }
+  .level-five-night .hero {
+    background:
+      radial-gradient(ellipse 82% 54% at 68% 15%, rgba(142, 163, 156, 0.18), rgba(91, 108, 102, 0.075) 44%, transparent 78%),
+      radial-gradient(ellipse 58% 36% at 5% 8%, rgba(164, 164, 139, 0.085), transparent 72%),
+      radial-gradient(ellipse 48% 48% at 17% 92%, rgba(74, 84, 81, 0.12), transparent 70%),
+      linear-gradient(145deg, #181a1a 0%, #101212 68%, #161919 100%);
+  }
 
   .menu-toggle {
     position: relative;
@@ -1032,6 +1042,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .portrait-frame { aspect-ratio: 1 / 1.06; }
   .about-grid { gap: 40px; }
   .section-heading h2, .contact h2 { font-size: clamp(2.1rem, 10vw, 3rem); }
+  .about-title-line + .about-title-line { margin-top: 7px; }
   .facts div { grid-template-columns: 120px 1fr; }
   .section-heading-row { align-items: flex-start; flex-direction: column; gap: 20px; }
   .section-heading-row > p { text-align: left; }
@@ -1057,7 +1068,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .status { padding-inline: 8px; font-size: 0.52rem; }
 }
 
-/* Version 1.5 — identity, discoverability, and The Workshop. */
+/* Version 1.6.4 — identity, discoverability, and The Workshop. */
 .workshop-entry {
   position: relative;
   display: grid;
@@ -1073,7 +1084,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border-radius: 24px;
   background: linear-gradient(135deg, rgba(23, 26, 26, 0.96), rgba(14, 16, 16, 0.98));
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.18);
-  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  transition: transform 300ms ease, border-color 300ms ease;
 }
 
 .workshop-entry::before {
@@ -1089,8 +1100,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   pointer-events: none;
 }
 
-.workshop-entry:hover,
-.workshop-entry:focus-visible { transform: translateY(-3px); border-color: rgba(200, 205, 194, 0.3); box-shadow: 0 28px 80px rgba(0, 0, 0, 0.25); }
 .workshop-entry:focus-visible { outline: 2px solid #a7b0a4; outline-offset: 4px; }
 .workshop-entry-label { color: #929991; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
 .workshop-entry-title { font-size: clamp(1.65rem, 3.6vw, 3.1rem); font-weight: 700; letter-spacing: -0.055em; line-height: 1; }
@@ -1114,9 +1123,34 @@ button, a { -webkit-tap-highlight-color: transparent; }
   white-space: nowrap;
 }
 
-.workshop-control-arrow { display: inline-block; transition: transform 180ms ease; }
-.workshop-entry:hover .workshop-control-arrow,
-.workshop-entry:focus-visible .workshop-control-arrow { transform: translateX(3px); }
+.workshop-control-chevron {
+  width: 7px;
+  height: 12px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 180ms ease;
+}
+
+.workshop-transition {
+  position: fixed;
+  z-index: 9999;
+  inset: -12vh -10vw;
+  visibility: hidden;
+  pointer-events: none;
+  contain: strict;
+  backface-visibility: hidden;
+  transform: translate3d(0, 120%, 0);
+  border-radius: 50% 50% 0 0 / 11% 11% 0 0;
+  background: linear-gradient(160deg, #1b3b42 0%, #132b30 54%, #0d181b 100%);
+}
+.workshop-transition.is-active { visibility: visible; will-change: transform; }
+.workshop-transition.is-reverse { border-radius: 0 0 50% 50% / 0 0 11% 11%; }
+body.workshop-transitioning { overflow: hidden; }
+body.workshop-transitioning > *:not(.workshop-transition) { pointer-events: none; }
 
 body.workshop-open { overflow-x: hidden; background: #0d0f0f; }
 body.workshop-open > .site-header,
@@ -1124,7 +1158,7 @@ body.workshop-open > #main-content,
 body.workshop-open > .site-footer,
 body.workshop-open > .skip-link { display: none; }
 .workshop-view[hidden] { display: none; }
-.workshop-view { min-height: 100vh; color: #e6e8e1; background: #0d0f0f; }
+.workshop-view { min-height: 100vh; overflow-anchor: none; color: #e6e8e1; background: #0d0f0f; }
 .workshop-header { min-height: 82px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(200, 205, 194, 0.12); }
 .workshop-header p { margin: 0; color: #899088; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
 .workshop-back {
@@ -1145,13 +1179,14 @@ body.workshop-open > .skip-link { display: none; }
 }
 .workshop-back:hover,
 .workshop-back:focus-visible { color: #f0f1ec; border-color: rgba(200, 205, 194, 0.26); background: rgba(255, 255, 255, 0.04); }
-.workshop-back:hover .workshop-control-arrow { transform: translateX(-3px); }
+.workshop-back:hover .workshop-control-chevron,
+.workshop-back:focus-visible .workshop-control-chevron { transform: translateX(-2px); }
 .workshop-back:focus-visible { outline: 2px solid #a7b0a4; outline-offset: 5px; }
 .workshop-main { padding-top: clamp(78px, 10vw, 140px); padding-bottom: 80px; }
 .workshop-hero { max-width: 850px; }
 .workshop-hero .eyebrow { color: #939a92; }
 .workshop-hero h1 { margin: 18px 0 24px; font-size: clamp(3rem, 8vw, 7rem); line-height: 0.94; letter-spacing: -0.072em; }
-.workshop-hero > p:last-child { max-width: 660px; color: #9ea49d; font-size: clamp(1rem, 1.8vw, 1.2rem); }
+.workshop-hero .workshop-intro { max-width: 660px; color: #9ea49d; font-size: clamp(1rem, 1.8vw, 1.2rem); }
 .workshop-status { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 54px; padding: 20px 0; color: #959c94; border-top: 1px solid rgba(200, 205, 194, 0.1); border-bottom: 1px solid rgba(200, 205, 194, 0.1); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
 .workshop-status span { display: inline-flex; align-items: center; gap: 8px; }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #727872; }
@@ -1174,11 +1209,10 @@ body.workshop-open > .skip-link { display: none; }
 .current-track-card { display: grid; grid-template-columns: 1fr 0.8fr; gap: clamp(30px, 6vw, 80px); align-items: end; }
 .current-track-card ul { margin: 0; padding: 0; list-style: none; }
 .current-track-card li { padding: 11px 0; color: #a8aea6; border-bottom: 1px solid rgba(200, 205, 194, 0.1); font-size: 0.8rem; }
-.workshop-closing { margin-top: 100px; padding-top: 34px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-top: 1px solid rgba(200, 205, 194, 0.12); }
-.workshop-closing p { margin: 0; color: #929991; font-size: 0.82rem; }
+.workshop-closing { margin-top: 100px; padding-top: 34px; display: flex; align-items: center; justify-content: flex-end; gap: 30px; border-top: 1px solid rgba(200, 205, 194, 0.12); }
 .workshop-closing .button { gap: 10px; color: #dfe2da; border-color: rgba(200, 205, 194, 0.22); }
-.workshop-closing .button:hover .workshop-control-arrow,
-.workshop-closing .button:focus-visible .workshop-control-arrow { transform: translateX(3px); }
+.workshop-closing .button:hover .workshop-control-chevron,
+.workshop-closing .button:focus-visible .workshop-control-chevron { transform: translateX(2px); }
 
 @media (max-width: 700px) {
   .workshop-entry { grid-template-columns: 1fr; gap: 12px; }
@@ -1191,7 +1225,7 @@ body.workshop-open > .skip-link { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .workshop-entry, .workshop-control-arrow { transition: none; }
+  .workshop-entry, .workshop-control-chevron { transition: none; }
 }
 
 /* Workshop refinement — reuse the main portfolio rhythm without gallery frames. */
@@ -1249,7 +1283,27 @@ body.workshop-open > .skip-link { display: none; }
   letter-spacing: -0.067em;
 }
 
-.workshop-hero > p:last-child { max-width: 690px; line-height: 1.75; }
+.workshop-hero .workshop-intro { max-width: 690px; line-height: 1.75; }
+.workshop-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0 0;
+  color: #a9b5b4;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.workshop-updated-divider {
+  width: 1px;
+  height: 13px;
+  flex: 0 0 1px;
+  border-radius: 999px;
+  background: rgba(130, 173, 177, 0.38);
+}
+.workshop-updated time { color: #dbe5e3; }
 .workshop-status { margin-top: clamp(48px, 7vw, 78px); padding: 20px 0; }
 
 .workshop-block {
@@ -1327,7 +1381,9 @@ body.workshop-open > .skip-link { display: none; }
     line-height: 1;
     letter-spacing: -0.062em;
   }
-  .workshop-hero > p:last-child { font-size: 0.94rem; line-height: 1.72; }
+  .workshop-hero .workshop-intro { font-size: 0.94rem; line-height: 1.72; }
+  .workshop-updated { gap: 8px; margin-top: 25px; font-size: 0.58rem; letter-spacing: 0.12em; }
+  .workshop-updated-divider { height: 11px; }
   .workshop-status { gap: 10px 18px; margin-top: 48px; padding: 17px 0; font-size: 0.59rem; }
   .workshop-block { padding-top: 88px; }
   .workshop-block::before { inset-inline: calc(50% - 50vw); }
@@ -1385,7 +1441,7 @@ body.workshop-open > .skip-link { display: none; }
   line-height: 1;
   letter-spacing: -0.062em;
 }
-.workshop-hero > p:last-child { max-width: 620px; font-size: clamp(0.98rem, 1.45vw, 1.1rem); }
+.workshop-hero .workshop-intro { max-width: 620px; font-size: clamp(0.98rem, 1.45vw, 1.1rem); }
 .workshop-status {
   margin-top: clamp(34px, 4.5vw, 52px);
   padding: 0;
@@ -1432,27 +1488,10 @@ body.workshop-open > .skip-link { display: none; }
   border-color: rgba(200, 205, 194, 0.25);
 }
 
-.workshop-motto {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  margin: 0;
-  color: #929991;
-  font-size: 0.78rem;
-  white-space: nowrap;
-}
-
-.workshop-motto-line {
-  width: 22px;
-  height: 1px;
-  display: inline-block;
-  background: rgba(167, 174, 164, 0.38);
-}
-
 @media (max-width: 700px) {
   .level-four .workshop-main { padding-top: 48px; padding-bottom: 62px; }
   .workshop-hero h1 { margin: 17px 0 21px; font-size: clamp(2.35rem, 10vw, 2.9rem); line-height: 1.02; }
-  .workshop-hero > p:last-child { font-size: 0.9rem; line-height: 1.68; }
+  .workshop-hero .workshop-intro { font-size: 0.9rem; line-height: 1.68; }
   .workshop-status { margin-top: 34px; }
   .workshop-block { padding-top: 64px; }
   .workshop-block-heading { margin-bottom: 26px; }
@@ -1460,19 +1499,12 @@ body.workshop-open > .skip-link { display: none; }
   .workshop-block-heading .eyebrow span { width: 27px; height: 27px; flex-basis: 27px; font-size: 0.5rem; }
   .current-track-card .current-track-topics { gap: 8px; }
   .current-track-card .current-track-topics li { padding: 7px 10px; font-size: 0.59rem; }
-  .workshop-motto { justify-content: center; gap: 8px; font-size: 0.7rem; }
-  .workshop-motto-line { width: 18px; }
   .workshop-closing { margin-top: 68px; }
-}
-
-@media (max-width: 380px) {
-  .workshop-motto { flex-wrap: wrap; white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
-  .reveal { opacity: 1; transform: none; }
 }
 
 /* Version 1.4 — static navigation, calm information cards, and closing note. */
@@ -1520,12 +1552,6 @@ html { scroll-padding-top: 18px; }
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
 }
 
-.level-five-night .facts div:hover {
-  padding-left: 18px;
-  border-color: rgba(194, 202, 188, 0.21);
-  background: rgba(193, 198, 180, 0.055);
-}
-
 .level-five-night .facts dd { line-height: 1.4; }
 
 .level-five-night .contact {
@@ -1551,15 +1577,7 @@ html { scroll-padding-top: 18px; }
   border-radius: 15px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.014));
   text-decoration: none;
-  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
-}
-
-.level-five-night .contact-links .contact-card:hover,
-.level-five-night .contact-links .contact-card:focus-visible {
-  padding-left: 17px;
-  border-color: rgba(194, 202, 188, 0.24);
-  background: rgba(180, 189, 175, 0.07);
-  transform: translateY(-2px);
+  transition: transform 300ms ease, border-color 300ms ease;
 }
 
 .level-five-night .contact-icon {
@@ -1596,30 +1614,28 @@ html { scroll-padding-top: 18px; }
   text-transform: none;
 }
 
-.level-five-night .contact-card-copy > span {
+.level-five-night .contact-platform {
   display: block;
   margin: 0 0 5px;
-  color: #91978f;
-  font-size: 0.58rem;
+  color: #a9c1c3;
+  font-size: 0.61rem;
   font-weight: 800;
-  letter-spacing: 0.13em;
-  line-height: 1.2;
+  letter-spacing: 0.16em;
+  line-height: 1.15;
   text-transform: uppercase;
+  transition: color 300ms ease;
 }
 
-.level-five-night .contact-card-copy strong {
+.level-five-night .contact-card-purpose {
   display: block;
-  overflow-wrap: anywhere;
-  color: #e5e7e0;
-  font-size: clamp(0.78rem, 1.05vw, 0.94rem);
-  line-height: 1.4;
-  background: none;
-}
-
-.level-five-night .contact-card:hover strong,
-.level-five-night .contact-card:focus-visible strong {
-  color: #f0f1ec;
-  background: none;
+  margin: 0;
+  color: #91978f;
+  font-size: clamp(0.72rem, 1vw, 0.84rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.28;
+  text-transform: none;
+  transition: color 300ms ease;
 }
 
 .level-five-night .closing-note {
@@ -1631,6 +1647,7 @@ html { scroll-padding-top: 18px; }
 
 .level-five-night .closing-note-copy { max-width: 880px; }
 .level-five-night .closing-note h2 { margin: 0; font-size: clamp(2.25rem, 4.2vw, 3.55rem); font-weight: 700; letter-spacing: -0.06em; line-height: 1.03; }
+.level-five-night .closing-note h2 span { display: inline; }
 .level-five-night .closing-note-copy > p:last-child { max-width: 840px; margin: 28px 0 0; color: var(--muted); }
 
 .level-five-night .footer-inner {
@@ -1646,15 +1663,7 @@ html { scroll-padding-top: 18px; }
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 9px;
   white-space: nowrap;
-}
-
-.level-five-night .footer-motto-line {
-  width: 22px;
-  height: 1px;
-  display: inline-block;
-  background: rgba(167, 174, 164, 0.38);
 }
 
 @media (max-width: 700px) {
@@ -1709,19 +1718,23 @@ html { scroll-padding-top: 18px; }
     padding: 14px;
   }
 
-  .level-five-night .facts div:hover { padding-left: 14px; }
   .level-five-night .facts dt { font-size: 0.56rem; }
   .level-five-night .facts dd { font-size: 0.8rem; }
 
   .level-five-night .contact-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .level-five-night .contact-links .contact-card { padding: 15px; }
-  .level-five-night .contact-links .contact-card:hover,
-  .level-five-night .contact-links .contact-card:focus-visible { padding-left: 15px; }
 
-  .level-five-night .closing-note { padding: 72px 18px; }
+  .level-five-night .closing-note { padding: 62px 18px 58px; }
+  .level-five-night .closing-note h2 {
+    font-size: clamp(2rem, 10.4vw, 2.55rem);
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  .level-five-night .closing-note h2 span { display: block; }
+  .level-five-night .closing-note h2 span + span { margin-top: 4px; }
 
   .level-five-night .footer-inner {
-    min-height: 132px;
+    min-height: 102px;
     grid-template-columns: 1fr;
     justify-items: center;
     align-content: center;
@@ -1734,8 +1747,13 @@ html { scroll-padding-top: 18px; }
   .level-five-night .footer-inner p:first-child { order: 2; }
   .level-five-night .footer-inner p:nth-child(2) { order: 1; }
   .level-five-night .footer-inner p:last-child { order: 3; }
-  .level-five-night .footer-motto { justify-content: center; gap: 8px; }
-  .level-five-night .footer-motto-line { width: 18px; }
+  .level-five-night .footer-motto {
+    max-width: 100%;
+    justify-content: center;
+    white-space: normal;
+    line-height: 1.45;
+    text-wrap: balance;
+  }
 }
 
 @media (max-width: 380px) {
@@ -1745,10 +1763,10 @@ html { scroll-padding-top: 18px; }
   .level-five-night .site-nav a { font-size: 0.68rem; }
 }
 
-/* Stable scrolling and pointer specific interaction. */
+/* Stable card foundations. */
 .workshop-card,
 .current-track-card {
-  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+  transition: transform 300ms ease, border-color 300ms ease;
 }
 
 .current-track-card .current-track-topics li {
@@ -1756,73 +1774,14 @@ html { scroll-padding-top: 18px; }
   font-size: 0.74rem;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .workshop-card:hover,
-  .current-track-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(194, 202, 188, 0.24);
-    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.3);
-  }
-}
-
 @media (max-width: 700px), (hover: none), (pointer: coarse) {
-  .reveal,
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .level-five-night .contact-links .contact-card:hover,
-  .level-five-night .contact-links .contact-card:focus,
-  .level-five-night .project-card:hover,
-  .workshop-entry:hover,
-  .workshop-card:hover,
-  .current-track-card:hover,
-  .button:hover {
-    transform: none;
-    box-shadow: none;
-  }
-
-  .level-five-night .contact-links .contact-card:hover,
-  .level-five-night .contact-links .contact-card:focus {
-    border-color: rgba(225, 230, 220, 0.12);
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.014));
-  }
-
   .current-track-card .current-track-topics li {
     padding: 9px 12px;
     font-size: 0.68rem;
   }
 }
 
-/* Calm motion system: scroll progress and mobile controls. */
-
-.scroll-progress {
-  position: fixed;
-  z-index: 120;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 160ms ease;
-}
-
-.scroll-progress.is-active { opacity: 1; }
-
-.scroll-progress span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(118, 133, 125, 0.55), rgba(188, 197, 184, 0.9));
-  box-shadow: 0 0 12px rgba(172, 185, 175, 0.22);
-  transform: scaleX(0);
-  transform-origin: left center;
-  will-change: transform;
-}
+/* Calm motion system: mobile controls. */
 
 .back-to-top {
   position: fixed;
@@ -1847,9 +1806,24 @@ html { scroll-padding-top: 18px; }
 }
 
 .back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.back-to-top svg {
+  width: 18px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 180ms ease;
+}
 .back-to-top:hover,
 .back-to-top:focus-visible { color: #f0f2eb; border-color: rgba(225, 230, 220, 0.3); }
 .back-to-top:focus-visible { outline: 2px solid rgba(174, 179, 162, 0.56); outline-offset: 3px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .back-to-top:hover svg,
+  .back-to-top:focus-visible svg { transform: translateY(-1px); }
+}
 
 @media (max-width: 700px), (hover: none), (pointer: coarse) {
   .level-five-night .site-header {
@@ -1885,16 +1859,11 @@ html { scroll-padding-top: 18px; }
   }
 
   .workshop-back:focus { outline: none; }
-
-  .button:active,
-  .contact-card:active,
-  .workshop-entry:active { transform: scale(0.985); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header,
-  .back-to-top,
-  .scroll-progress span { transition: none !important; }
+  .back-to-top { transition: none !important; }
 }
 
 /* Mobile performance mode: native scrolling with no persistent composited UI. */
@@ -1905,8 +1874,9 @@ html { scroll-padding-top: 18px; }
   /* Avoid the decorative fixed layer that is not needed on compact screens. */
   .level-five-night::before { display: none !important; }
   .level-five-night .header-inner {
-    -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
-    backdrop-filter: blur(18px) saturate(120%) !important;
+    box-shadow: none;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
   .level-five-night .site-header,
@@ -1977,21 +1947,10 @@ html { scroll-padding-top: 18px; }
   }
 
   .level-five-night .portrait-stage { filter: none; }
-  .level-five-night .portrait-frame { box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18); }
+  .level-five-night .portrait-frame { box-shadow: 0 12px 24px rgba(55, 83, 88, 0.16); }
   .level-five-night .hero h1,
   .level-five-night .hero-tagline { text-shadow: none; }
 
-  .level-five-night .project-card,
-  .workshop-entry,
-  .workshop-card,
-  .current-track-card,
-  .level-five-night .contact-card {
-    transition: none;
-    will-change: auto;
-  }
-
-  .scroll-progress { height: 1px; }
-  .scroll-progress span { box-shadow: none; }
   .back-to-top { box-shadow: none; }
 }
 
@@ -2084,7 +2043,6 @@ html { scroll-padding-top: 18px; }
 .level-five-night .facts div:nth-child(2) { background: linear-gradient(145deg, rgba(87, 116, 122, 0.16), rgba(255, 255, 255, 0.012)); }
 .level-five-night .facts div:nth-child(3) { background: linear-gradient(145deg, rgba(65, 60, 123, 0.13), rgba(255, 255, 255, 0.012)); }
 .level-five-night .facts div:nth-child(4) { background: linear-gradient(145deg, rgba(176, 157, 115, 0.12), rgba(255, 255, 255, 0.012)); }
-.level-five-night .facts div:hover { background: rgba(87, 116, 122, 0.1); border-color: rgba(130, 173, 177, 0.32); }
 
 .level-five-night .journey {
   background:
@@ -2115,7 +2073,6 @@ html { scroll-padding-top: 18px; }
 }
 
 .level-five-night .project-card { border-color: rgba(222, 224, 210, 0.13); }
-.level-five-night .project-card:hover { border-color: rgba(130, 173, 177, 0.34); }
 .level-five-night .project-featured {
   background:
     radial-gradient(ellipse 70% 82% at 86% 18%, rgba(87, 116, 122, 0.27), transparent 68%),
@@ -2155,8 +2112,6 @@ html { scroll-padding-top: 18px; }
     linear-gradient(135deg, rgba(34, 24, 28, 0.98), rgba(15, 13, 15, 0.99));
 }
 .workshop-entry::before { background: rgba(87, 116, 122, 0.16); }
-.workshop-entry:hover,
-.workshop-entry:focus-visible { border-color: rgba(130, 173, 177, 0.4); }
 .workshop-entry:focus-visible,
 .workshop-back:focus-visible { outline-color: #82adb1; }
 
@@ -2186,8 +2141,6 @@ body.workshop-open,
 .workshop-block:nth-of-type(2) .workshop-card:nth-child(2) { background: linear-gradient(150deg, rgba(43, 100, 96, 0.21), rgba(27, 22, 24, 0.98)); }
 .workshop-block:nth-of-type(2) .workshop-card:nth-child(3) { background: linear-gradient(150deg, rgba(176, 157, 115, 0.19), rgba(27, 22, 24, 0.98)); }
 .workshop-block:nth-of-type(3) .current-track-card { background: radial-gradient(ellipse at 84% 14%, rgba(43, 100, 96, 0.2), transparent 62%), linear-gradient(150deg, rgba(87, 116, 122, 0.19), rgba(25, 21, 23, 0.99)); }
-
-.scroll-progress span { background: linear-gradient(90deg, rgba(87, 116, 122, 0.9), rgba(222, 224, 210, 0.94)); box-shadow: 0 0 12px rgba(87, 116, 122, 0.28); }
 
 /* Mobile pulse: stronger static gradients positioned inside the narrow viewport. */
 @media (max-width: 700px), (hover: none), (pointer: coarse) {
@@ -2223,7 +2176,6 @@ body.workshop-open,
   .workshop-block:nth-of-type(2) .workshop-card:nth-child(2) { background: linear-gradient(150deg, rgba(43, 100, 96, 0.28), rgba(27, 22, 24, 0.99)); }
   .workshop-block:nth-of-type(2) .workshop-card:nth-child(3) { background: linear-gradient(150deg, rgba(176, 157, 115, 0.25), rgba(27, 22, 24, 0.99)); }
   .workshop-block:nth-of-type(3) .current-track-card { background: radial-gradient(ellipse 110% 70% at 100% 0%, rgba(43, 100, 96, 0.27), transparent 64%), linear-gradient(150deg, rgba(87, 116, 122, 0.25), rgba(25, 21, 23, 0.99)); }
-  .scroll-progress span { box-shadow: none; }
 }
 
 /* Final contact grid: four balanced destinations with a softened Kaggle blue. */
@@ -2246,44 +2198,175 @@ body.workshop-open,
   }
 }
 
-/* Keep the 2×2 contact grid readable on compact iPhones. */
-@media (max-width: 420px) {
-  .level-five-night .contact-links .contact-card {
-    min-height: 160px;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 13px;
-    padding: 16px;
-  }
+/* Version 1.6.4 — compact contact cards and one press language across the site. */
+.level-five-night .contact-links { grid-auto-rows: 1fr; }
 
-  .level-five-night .contact-links .contact-card:hover,
-  .level-five-night .contact-links .contact-card:focus-visible {
-    padding-left: 16px;
+.level-five-night .contact-links .contact-card {
+  min-height: 82px;
+  height: 100%;
+  justify-content: flex-start;
+}
+
+.level-five-night .footer-inner { min-height: 84px; }
+
+/* Every card receives one color identity; the effect is applied by JavaScript only after a confirmed press. */
+.level-five-night .facts > div,
+.level-five-night .project-card,
+.workshop-entry,
+.workshop-card,
+.current-track-card,
+.level-five-night .contact-card {
+  --press-rgb: 130, 173, 177;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), border-color 300ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.level-five-night .facts > div :is(dt, dd),
+.level-five-night .project-card h3,
+.workshop-entry .workshop-entry-title,
+.workshop-card h3,
+.current-track-card h3,
+.level-five-night .contact-card :is(.contact-platform, .contact-card-purpose) {
+  transition: color 300ms ease;
+}
+
+.level-five-night .contact-icon {
+  transition: color 300ms ease, border-color 300ms ease, background-color 300ms ease;
+}
+
+.level-five-night .facts > div:is(.is-pressing, .is-pressed),
+.level-five-night .project-card:is(.is-pressing, .is-pressed),
+.workshop-entry:is(.is-pressing, .is-pressed),
+.workshop-card:is(.is-pressing, .is-pressed),
+.current-track-card:is(.is-pressing, .is-pressed),
+.level-five-night .contact-card:is(.is-pressing, .is-pressed) {
+  transform: translateY(1px) scale(0.992);
+  border-color: rgba(var(--press-rgb), 0.64);
+}
+
+.level-five-night .facts > div:is(.is-pressing, .is-pressed) :is(dt, dd),
+.level-five-night .project-card:is(.is-pressing, .is-pressed) h3,
+.workshop-entry:is(.is-pressing, .is-pressed) .workshop-entry-title,
+.workshop-card:is(.is-pressing, .is-pressed) h3,
+.current-track-card:is(.is-pressing, .is-pressed) h3,
+.level-five-night .contact-card:is(.is-pressing, .is-pressed) :is(.contact-platform, .contact-card-purpose) {
+  color: rgb(var(--press-rgb));
+}
+
+.level-five-night .contact-card:is(.is-pressing, .is-pressed) .contact-icon {
+  color: rgb(var(--press-rgb));
+  border-color: rgba(var(--press-rgb), 0.58);
+  background: rgba(var(--press-rgb), 0.13);
+}
+
+.level-five-night .facts > div:nth-child(1),
+.level-five-night .contact-card:nth-child(1),
+.workshop-block:nth-of-type(1) .workshop-card:nth-child(1),
+.workshop-block:nth-of-type(2) .workshop-card:nth-child(2),
+.workshop-block:nth-of-type(3) .current-track-card { --press-rgb: 91, 171, 162; }
+
+.level-five-night .facts > div:nth-child(2),
+.level-five-night .project-featured,
+.level-five-night .contact-card:nth-child(2),
+.workshop-entry,
+.workshop-block:nth-of-type(1) .workshop-card:nth-child(2) { --press-rgb: 130, 173, 177; }
+
+.level-five-night .facts > div:nth-child(3),
+.level-five-night .project-stack .project-card:nth-child(4),
+.workshop-block:nth-of-type(1) .workshop-card:nth-child(4) { --press-rgb: 151, 139, 204; }
+
+.level-five-night .facts > div:nth-child(4),
+.level-five-night .project-stack .project-card:nth-child(1),
+.level-five-night .contact-card:nth-child(3),
+.workshop-block:nth-of-type(2) .workshop-card:nth-child(3) { --press-rgb: 197, 180, 141; }
+
+.level-five-night .project-stack .project-card:nth-child(2),
+.workshop-block:nth-of-type(1) .workshop-card:nth-child(3) { --press-rgb: 148, 178, 181; }
+
+.level-five-night .project-stack .project-card:nth-child(3),
+.level-five-night .contact-card:nth-child(4),
+.workshop-block:nth-of-type(2) .workshop-card:nth-child(1) { --press-rgb: 120, 194, 212; }
+
+@media (max-width: 700px) {
+  .level-five-night .footer-inner { min-height: 102px; }
+}
+
+/* Compact iPhones keep the same horizontal 2×2 rectangle system. */
+@media (max-width: 420px) {
+  .level-five-night .contact-links { gap: 9px; }
+
+  .level-five-night .contact-links .contact-card {
+    min-height: 92px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 12px;
   }
 
   .level-five-night .contact-icon {
-    width: 42px;
-    height: 42px;
-    flex-basis: 42px;
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    border-radius: 11px;
+  }
+
+  .level-five-night .contact-icon svg {
+    width: 18px;
+    height: 18px;
   }
 
   .level-five-night .contact-card-copy {
-    width: 100%;
+    width: auto;
+    flex: 1 1 auto;
   }
 
-  .level-five-night .contact-card-copy > span {
-    margin-bottom: 6px;
+  .level-five-night .contact-platform {
+    margin-bottom: 5px;
     font-size: 0.54rem;
     letter-spacing: 0.1em;
-    line-height: 1.25;
   }
 
-  .level-five-night .contact-card-copy strong {
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: none;
-    font-size: 0.78rem;
-    line-height: 1.38;
+  .level-five-night .contact-card-purpose {
+    font-size: 0.68rem;
+    line-height: 1.24;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-five-night .facts > div:is(.is-pressing, .is-pressed),
+  .level-five-night .project-card:is(.is-pressing, .is-pressed),
+  .workshop-entry:is(.is-pressing, .is-pressed),
+  .workshop-card:is(.is-pressing, .is-pressed),
+  .current-track-card:is(.is-pressing, .is-pressed),
+  .level-five-night .contact-card:is(.is-pressing, .is-pressed) {
+    transform: none;
+  }
+}
+
+/* Version 1.6.6 — the spacious original rhythm returns; only section labels sit slightly higher. */
+.level-five-night :is(#about, #journey, #projects, #contact, .closing-note) .eyebrow {
+  position: relative;
+  top: -10px;
+}
+
+/* Version 1.6.7 — native long-press previews are suppressed on controls. */
+a,
+button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* The desktop portrait and copy now share the same vertical center. */
+@media (min-width: 961px) {
+  .level-five-night .portrait-stage { transform: none; }
+}
+
+/* Version 1.6.8 — one clear Blue Sage keyboard focus language. */
+.level-five-night a:focus-visible,
+.level-five-night button:focus-visible {
+  outline: 2px solid #82adb1;
+  outline-offset: 4px;
 }

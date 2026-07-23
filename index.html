@@ -26,6 +26,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="assets/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <title>Mohammed Muayad | AI Engineering &amp; Applied AI</title>
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
@@ -45,7 +46,7 @@
 </head>
 <body class="level-two level-three level-four level-five-night">
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
+  <div class="workshop-transition" data-workshop-transition aria-hidden="true"></div>
 
   <header class="site-header" data-header>
     <div class="header-inner shell">
@@ -65,11 +66,13 @@
     </div>
   </header>
 
-  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></button>
+  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 20 14" aria-hidden="true"><path d="m3 10 7-6 7 6"/></svg>
+  </button>
 
   <main id="main-content" aria-label="Portfolio">
     <section class="hero shell" id="home" aria-labelledby="hero-title">
-      <div class="hero-copy reveal">
+      <div class="hero-copy">
         <p class="eyebrow">Hello, I’m</p>
         <h1 id="hero-title">Mohammed<br>Muayad</h1>
         <p class="hero-role">AI Engineering Student</p>
@@ -81,7 +84,7 @@
         </div>
       </div>
 
-      <div class="portrait-stage reveal">
+      <div class="portrait-stage">
         <div class="portrait-backdrop" aria-hidden="true"></div>
         <figure class="portrait-frame">
           <img src="assets/mohammed-portrait.webp" alt="Portrait of Mohammed Muayad" width="1024" height="1024" fetchpriority="high">
@@ -91,12 +94,15 @@
 
     <section class="about section" id="about" aria-labelledby="about-title">
       <div class="shell about-grid">
-        <div class="section-heading reveal">
+        <div class="section-heading">
           <p class="eyebrow"><span>01</span> About me</p>
-          <h2 id="about-title">Learning with purpose.<br>Building with patience.</h2>
+          <h2 id="about-title">
+            <span class="about-title-line">Learning with purpose</span>
+            <span class="about-title-line">Building with patience</span>
+          </h2>
         </div>
 
-        <div class="about-content reveal">
+        <div class="about-content">
           <p class="about-lead">I’m an AI Engineering student based in Baghdad, Iraq. Alongside my studies, I work in the private sector while building a strong foundation in Python, machine learning, and modern AI technologies, with the goal of creating intelligent projects and systems that benefit society and make a positive impact on the world.</p>
           <p>I believe meaningful progress is built step by step through learning, practice, and real projects.</p>
 
@@ -111,7 +117,7 @@
     </section>
 
     <section class="journey section shell" id="journey" aria-labelledby="journey-title">
-      <div class="section-heading section-heading-row reveal">
+      <div class="section-heading section-heading-row">
         <div>
           <p class="eyebrow"><span>02</span> My journey</p>
           <h2 id="journey-title">From foundations to intelligent systems.</h2>
@@ -120,31 +126,31 @@
       </div>
 
       <ol class="timeline">
-        <li class="timeline-item reveal">
+        <li class="timeline-item">
           <div class="timeline-marker"><span>01</span></div>
           <p class="timeline-state">Currently learning</p>
           <h3>Python Programming &amp; OOP</h3>
           <p>Learning Python fundamentals, functions, data structures, classes, and objects.</p>
         </li>
-        <li class="timeline-item reveal">
+        <li class="timeline-item">
           <div class="timeline-marker"><span>02</span></div>
           <p class="timeline-state">Next step</p>
           <h3>Data Analysis &amp; Python Libraries</h3>
           <p>Exploring NumPy, Pandas, data cleaning, preprocessing, and clear visualization.</p>
         </li>
-        <li class="timeline-item reveal">
+        <li class="timeline-item">
           <div class="timeline-marker"><span>03</span></div>
           <p class="timeline-state">Upcoming</p>
           <h3>Machine Learning &amp; Predictive Modeling</h3>
           <p>Understanding classification, regression, model training, and evaluation.</p>
         </li>
-        <li class="timeline-item reveal">
+        <li class="timeline-item">
           <div class="timeline-marker"><span>04</span></div>
           <p class="timeline-state">Future direction</p>
           <h3>Deep Learning &amp; Neural Networks</h3>
           <p>Exploring neural networks, hidden layers, and computer vision foundations.</p>
         </li>
-        <li class="timeline-item reveal">
+        <li class="timeline-item">
           <div class="timeline-marker"><span>05</span></div>
           <p class="timeline-state">Advanced direction</p>
           <h3>NLP, LLMs, RAG &amp; AI Agents</h3>
@@ -152,20 +158,20 @@
         </li>
       </ol>
 
-      <a class="workshop-entry reveal" href="?view=workshop" data-open-workshop>
+      <a class="workshop-entry" href="?view=workshop" data-open-workshop>
         <span class="workshop-entry-label">Applied learning archive</span>
         <span class="workshop-entry-title">The Workshop</span>
         <span class="workshop-entry-copy">Where learning becomes practice.</span>
         <span class="workshop-entry-action">
           <span>Explore the Workshop</span>
-          <span class="workshop-control-arrow" aria-hidden="true">→</span>
+          <svg class="workshop-control-chevron" viewBox="0 0 12 20" aria-hidden="true"><path d="m3.5 3 5 7-5 7"/></svg>
         </span>
       </a>
     </section>
 
     <section class="projects section" id="projects" aria-labelledby="projects-title">
       <div class="shell">
-        <div class="section-heading section-heading-row reveal">
+        <div class="section-heading section-heading-row">
           <div>
             <p class="eyebrow"><span>03</span> Project roadmap</p>
             <h2 id="projects-title">Learning by building.</h2>
@@ -174,7 +180,7 @@
         </div>
 
         <div class="project-grid">
-          <article class="project-card project-featured reveal">
+          <article class="project-card project-featured">
             <div class="project-meta">
               <span class="project-number">01</span>
               <span class="status status-next">Next project</span>
@@ -190,7 +196,7 @@
           </article>
 
           <div class="project-stack">
-            <article class="project-card reveal">
+            <article class="project-card">
               <div class="project-meta">
                 <span class="project-number">02</span>
                 <span class="status">Planned</span>
@@ -203,7 +209,7 @@
               </ul>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card">
               <div class="project-meta">
                 <span class="project-number">03</span>
                 <span class="status">Future direction</span>
@@ -216,7 +222,7 @@
               </ul>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card">
               <div class="project-meta">
                 <span class="project-number">04</span>
                 <span class="status">Future direction</span>
@@ -229,7 +235,7 @@
               </ul>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card">
               <div class="project-meta">
                 <span class="project-number">05</span>
                 <span class="status">Advanced goal</span>
@@ -247,29 +253,29 @@
     </section>
 
     <section class="contact section shell" id="contact" aria-labelledby="contact-title">
-      <div class="contact-copy reveal">
+      <div class="contact-copy">
         <p class="eyebrow"><span>04</span> Let’s connect</p>
         <h2 id="contact-title">Good conversations<br>can start anywhere.</h2>
         <p>I’m always open to learning, sharing ideas, and connecting with people interested in technology and AI.</p>
       </div>
 
-      <div class="contact-links reveal">
+      <div class="contact-links">
         <a class="contact-card contact-card-private" href="mailto:thismieo@outlook.com" aria-label="Email Mohammed privately at thismieo@outlook.com">
           <span class="contact-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5h16v11H4zM4.8 7.4 12 13l7.2-5.6"/></svg>
           </span>
           <span class="contact-card-copy">
-            <span>Private contact</span>
-            <strong>Private correspondence</strong>
+            <span class="contact-platform">Outlook</span>
+            <span class="contact-card-purpose">Personal email</span>
           </span>
         </a>
         <a class="contact-card contact-card-general" href="mailto:thismieo@gmail.com" aria-label="Email Mohammed at thismieo@gmail.com">
           <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5"/><path d="M15.5 15.5v-7h-3a3.5 3.5 0 1 0 3.5 3.5v1.1c0 1.3.8 2.4 2.2 2.4 1.2 0 2.3-.7 2.8-1.8"/></svg>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M15.6 15.2V9h-3.4a3.4 3.4 0 1 0 3.4 3.4v1.1a2.3 2.3 0 0 0 4.6 0V12a8.2 8.2 0 1 0-2.4 5.8"/></svg>
           </span>
           <span class="contact-card-copy">
-            <span>General inquiries</span>
-            <strong>Start a conversation</strong>
+            <span class="contact-platform">Gmail</span>
+            <span class="contact-card-purpose">General inquiries</span>
           </span>
         </a>
         <a class="contact-card contact-card-github" href="https://github.com/thismieo" target="_blank" rel="noopener noreferrer" aria-label="Open Mohammed's GitHub profile">
@@ -277,8 +283,8 @@
             <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 19.2c-3 .9-3-1.5-4.2-1.9M12.8 21v-3.5c0-1 .1-1.4-.5-2 2.6-.3 5.4-1.3 5.4-5.8 0-1.3-.5-2.4-1.2-3.2.1-.3.5-1.5-.1-3.1 0 0-1-.3-3.3 1.2a11.5 11.5 0 0 0-6 0C4.8 3 3.8 3.4 3.8 3.4c-.6 1.6-.2 2.8-.1 3.1A4.6 4.6 0 0 0 2.5 9.7c0 4.5 2.8 5.5 5.4 5.8-.5.5-.6 1.1-.6 2V21"/></svg>
           </span>
           <span class="contact-card-copy">
-            <span>Code &amp; projects</span>
-            <strong>Repositories &amp; experiments</strong>
+            <span class="contact-platform">GitHub</span>
+            <span class="contact-card-purpose">Code &amp; projects</span>
           </span>
         </a>
         <a class="contact-card contact-card-kaggle" href="https://kaggle.com/thismieo" target="_blank" rel="noopener noreferrer" aria-label="Open Mohammed's Kaggle profile">
@@ -286,17 +292,17 @@
             <svg viewBox="0 0 24 24" fill="none"><path d="M8 4v16M8 13l7-9M8 13l8 7"/></svg>
           </span>
           <span class="contact-card-copy">
-            <span>Data workspace</span>
-            <strong>Notebooks &amp; datasets</strong>
+            <span class="contact-platform">Kaggle</span>
+            <span class="contact-card-purpose">Data workspace</span>
           </span>
         </a>
       </div>
     </section>
 
     <section class="closing-note section shell" aria-labelledby="closing-title">
-      <div class="closing-note-copy reveal">
+      <div class="closing-note-copy">
         <p class="eyebrow"><span>05</span> A note for visitors</p>
-        <h2 id="closing-title">Thank you for being here.</h2>
+        <h2 id="closing-title"><span>Thank you</span> <span>for being here.</span></h2>
         <p>This is where I document what I learn, build, and improve: one concept and one project at a time. I hope it grows into a home for my work, future projects, and meaningful collaborations with people, companies, and organizations in Iraq and around the world. Enjoy the journey, and come back to see what is built next.</p>
       </div>
     </section>
@@ -305,19 +311,15 @@
   <footer class="site-footer">
     <div class="shell footer-inner">
       <p>© <span data-year>2026</span> Mohammed Muayad</p>
-      <p>Version 1.5</p>
-      <p class="footer-motto">
-        <span>Curiosity in motion</span>
-        <span class="footer-motto-line" aria-hidden="true"></span>
-        <span>Purpose in every step</span>
-      </p>
+      <p>Version 1.6.8</p>
+      <p class="footer-motto">The future takes shape one step at a time</p>
     </div>
   </footer>
 
   <section class="workshop-view" data-workshop-view hidden aria-labelledby="workshop-title">
     <header class="workshop-header shell">
       <button class="workshop-back" type="button" data-close-workshop aria-label="Back to profile">
-        <span class="workshop-control-arrow" aria-hidden="true">←</span>
+        <svg class="workshop-control-chevron workshop-control-chevron-back" viewBox="0 0 12 20" aria-hidden="true"><path d="m8.5 3-5 7 5 7"/></svg>
         <span>Back to profile</span>
       </button>
       <p>The Workshop</p>
@@ -327,7 +329,12 @@
       <div class="workshop-hero">
         <p class="eyebrow">The Workshop</p>
         <h1 id="workshop-title">Knowledge<br>in progress.</h1>
-        <p>A focused record of what I learn, apply, and build as each concept becomes practical experience.</p>
+        <p class="workshop-intro">A focused record of what I learn, apply, and build as each concept becomes practical experience.</p>
+        <p class="workshop-updated">
+          <span>Last updated</span>
+          <span class="workshop-updated-divider" aria-hidden="true"></span>
+          <time datetime="2026-07">July 2026</time>
+        </p>
       </div>
 
       <div class="workshop-status" role="group" aria-label="Learning status legend">
@@ -373,14 +380,9 @@
       </section>
 
       <div class="workshop-closing">
-        <p class="workshop-motto">
-          <span>Curiosity in motion</span>
-          <span class="workshop-motto-line" aria-hidden="true"></span>
-          <span>Purpose in every step</span>
-        </p>
         <button class="button button-secondary" type="button" data-close-workshop>
           <span>Continue the journey</span>
-          <span class="workshop-control-arrow" aria-hidden="true">→</span>
+          <svg class="workshop-control-chevron" viewBox="0 0 12 20" aria-hidden="true"><path d="m3.5 3 5 7-5 7"/></svg>
         </button>
       </div>
     </div>
