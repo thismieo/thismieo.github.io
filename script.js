@@ -99,11 +99,43 @@
     document.body.classList.toggle("menu-open", open);
   });
 
-  navLinks.forEach((link) => link.addEventListener("click", () => {
-    if (stableTouchLayout) {
-      navLinks.forEach((item) => item.classList.toggle("is-active", item === link));
-    }
+  const scrollToSection = (link, { updateHistory = true } = {}) => {
+    const hash = link.getAttribute("href");
+    if (!hash || !hash.startsWith("#")) return;
+
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    const headerPosition = header ? window.getComputedStyle(header).position : "static";
+    const headerOffset = header && (headerPosition === "fixed" || headerPosition === "sticky")
+      ? header.getBoundingClientRect().height
+      : 0;
+    const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset - 12);
+
+    header?.classList.remove("is-hidden");
     closeMenu();
+
+    navLinks.forEach((item) => {
+      const active = item === link;
+      item.classList.toggle("is-active", active);
+      if (active) item.setAttribute("aria-current", "page");
+      else item.removeAttribute("aria-current");
+    });
+
+    if (updateHistory && window.location.hash !== hash) {
+      window.history.pushState({}, "", hash);
+    }
+
+    window.scrollTo({
+      top,
+      left: 0,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
+
+  navLinks.forEach((link) => link.addEventListener("click", (event) => {
+    event.preventDefault();
+    scrollToSection(link);
   }));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeMenu();
@@ -275,6 +307,19 @@
       renderWorkshop(open);
       resolveTransitionPopstate?.();
       resolveTransitionPopstate = null;
+      return;
+    }
+
+    const workshopIsOpen = document.documentElement.classList.contains("workshop-open");
+
+    // Hash-only history changes belong to the portfolio navigation. They must
+    // never trigger the full-screen Workshop transition.
+    if (open === workshopIsOpen) {
+      if (!open) {
+        const matchingLink = navLinks.find((link) => link.getAttribute("href") === window.location.hash);
+        if (matchingLink) scrollToSection(matchingLink, { updateHistory: false });
+        else if (!window.location.hash) window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      }
       return;
     }
 
