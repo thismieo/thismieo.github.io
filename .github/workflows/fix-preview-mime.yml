@@ -1,0 +1,30 @@
+name: Correct social preview metadata
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-preview-mime.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Correct metadata and clean workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i 's/<meta property="og:image:type" content="image\/jpeg">/<meta property="og:image:type" content="image\/png">/' index.html
+          grep -q '<meta property="og:image:type" content="image/png">' index.html
+          rm -rf .github
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Correct social preview image metadata"
+          git push origin HEAD:main
