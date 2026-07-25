@@ -28,3 +28,5 @@ jobs:
           git add -A
           git commit -m "Correct social preview image metadata"
           git push origin HEAD:main
+
+# Existing workflow update intentionally triggers this one-time correction.
