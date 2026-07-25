@@ -42,7 +42,7 @@
 
 html {
   color-scheme: dark;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-padding-top: 90px;
   scrollbar-gutter: stable;
   overscroll-behavior-y: none;
@@ -146,7 +146,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-size: 0.96rem;
   font-weight: 800;
   letter-spacing: -0.025em;
-  text-decoration: none;
 }
 
 .wordmark span { color: var(--sage-mid); font-size: 1.35em; }
@@ -1068,7 +1067,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .status { padding-inline: 8px; font-size: 0.52rem; }
 }
 
-/* Version 1.6.4 — identity, discoverability, and The Workshop. */
+/* Identity, discoverability, and The Workshop. */
 .workshop-entry {
   position: relative;
   display: grid;
@@ -1100,7 +1099,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   pointer-events: none;
 }
 
-.workshop-entry:focus-visible { outline: 2px solid #a7b0a4; outline-offset: 4px; }
+.workshop-entry-action:focus-visible { outline: 2px solid #a7b0a4; outline-offset: 4px; }
 .workshop-entry-label { color: #929991; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
 .workshop-entry-title { font-size: clamp(1.65rem, 3.6vw, 3.1rem); font-weight: 700; letter-spacing: -0.055em; line-height: 1; }
 .workshop-entry-copy { color: #aeb3ac; font-size: 0.92rem; }
@@ -1118,10 +1117,27 @@ button, a { -webkit-tap-highlight-color: transparent; }
   border: 1px solid rgba(200, 205, 194, 0.16);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.025);
+  font: inherit;
   font-size: 0.72rem;
   font-weight: 700;
   white-space: nowrap;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .workshop-entry-action:hover {
+    color: #f0f2ed;
+    border-color: rgba(200, 205, 194, 0.3);
+    background: rgba(255, 255, 255, 0.055);
+  }
+
+  .workshop-entry-action:hover .workshop-control-chevron { transform: translateX(2px); }
+}
+
+.workshop-entry-action:focus-visible .workshop-control-chevron { transform: translateX(2px); }
 
 .workshop-control-chevron {
   width: 7px;
@@ -1156,6 +1172,7 @@ body.workshop-open { overflow-x: hidden; background: #0d0f0f; }
 body.workshop-open > .site-header,
 body.workshop-open > #main-content,
 body.workshop-open > .site-footer,
+body.workshop-open > .section-stepper,
 body.workshop-open > .skip-link { display: none; }
 .workshop-view[hidden] { display: none; }
 .workshop-view { min-height: 100vh; overflow-anchor: none; color: #e6e8e1; background: #0d0f0f; }
@@ -1507,7 +1524,7 @@ body.workshop-open > .skip-link { display: none; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
 
-/* Version 1.4 — static navigation, calm information cards, and closing note. */
+/* Static navigation and calm information cards. */
 html { scroll-padding-top: 18px; }
 
 .level-five-night .site-header {
@@ -1569,6 +1586,8 @@ html { scroll-padding-top: 18px; }
 
 .level-five-night .contact-links .contact-card {
   min-width: 0;
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -1652,19 +1671,11 @@ html { scroll-padding-top: 18px; }
 
 .level-five-night .footer-inner {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
 }
 
-.level-five-night .footer-inner p:nth-child(2) { text-align: center; }
 .level-five-night .footer-inner p:last-child { text-align: right; }
-
-.level-five-night .footer-motto {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  white-space: nowrap;
-}
 
 @media (max-width: 700px) {
   .level-five-night .header-inner {
@@ -1706,6 +1717,27 @@ html { scroll-padding-top: 18px; }
   .level-five-night .site-nav a::after {
     bottom: 3px;
     display: block;
+    width: 100%;
+    opacity: 0;
+    transform: none;
+    transition: opacity 180ms ease;
+  }
+
+  /* Mobile navigation uses one full-width underline only during a tap.
+     The current section remains available to assistive technology without a
+     persistent visual marker. */
+  .level-five-night .site-nav a:hover,
+  .level-five-night .site-nav a.is-active { color: var(--muted); }
+  .level-five-night .site-nav a:hover::after,
+  .level-five-night .site-nav a.is-active::after {
+    opacity: 0;
+    transform: none;
+  }
+  .level-five-night .site-nav a.is-tap-feedback { color: var(--ink); }
+  .level-five-night .site-nav a.is-tap-feedback::after {
+    opacity: 1;
+    transform: none;
+    transition-duration: 0ms;
   }
 
   .level-five-night .facts {
@@ -1721,8 +1753,7 @@ html { scroll-padding-top: 18px; }
   .level-five-night .facts dt { font-size: 0.56rem; }
   .level-five-night .facts dd { font-size: 0.8rem; }
 
-  .level-five-night .contact-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .level-five-night .contact-links .contact-card { padding: 15px; }
+  .level-five-night .contact-links { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 
   .level-five-night .closing-note { padding: 62px 18px 58px; }
   .level-five-night .closing-note h2 {
@@ -1742,18 +1773,9 @@ html { scroll-padding-top: 18px; }
     text-align: center;
   }
 
-  .level-five-night .footer-inner p:nth-child(2),
-  .level-five-night .footer-inner p:last-child { text-align: center; }
+  .level-five-night .footer-inner p { text-align: center; }
   .level-five-night .footer-inner p:first-child { order: 2; }
-  .level-five-night .footer-inner p:nth-child(2) { order: 1; }
-  .level-five-night .footer-inner p:last-child { order: 3; }
-  .level-five-night .footer-motto {
-    max-width: 100%;
-    justify-content: center;
-    white-space: normal;
-    line-height: 1.45;
-    text-wrap: balance;
-  }
+  .level-five-night .footer-inner p:last-child { order: 1; }
 }
 
 @media (max-width: 380px) {
@@ -1781,9 +1803,9 @@ html { scroll-padding-top: 18px; }
   }
 }
 
-/* Calm motion system: mobile controls. */
+/* Calm motion system: section-by-section navigation control. */
 
-.back-to-top {
+.section-stepper {
   position: fixed;
   z-index: 45;
   right: max(18px, env(safe-area-inset-right));
@@ -1805,8 +1827,10 @@ html { scroll-padding-top: 18px; }
   cursor: pointer;
 }
 
-.back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
-.back-to-top svg {
+.section-stepper.is-visible { opacity: 1; visibility: visible; transform: none; }
+.section-stepper:disabled { pointer-events: none; }
+.section-stepper.is-navigating { border-color: rgba(225, 230, 220, 0.28); }
+.section-stepper svg {
   width: 18px;
   height: 14px;
   fill: none;
@@ -1816,13 +1840,13 @@ html { scroll-padding-top: 18px; }
   stroke-linejoin: round;
   transition: transform 180ms ease;
 }
-.back-to-top:hover,
-.back-to-top:focus-visible { color: #f0f2eb; border-color: rgba(225, 230, 220, 0.3); }
-.back-to-top:focus-visible { outline: 2px solid rgba(174, 179, 162, 0.56); outline-offset: 3px; }
+.section-stepper:hover,
+.section-stepper:focus-visible { color: #f0f2eb; border-color: rgba(225, 230, 220, 0.3); }
+.section-stepper:focus-visible { outline: 2px solid rgba(174, 179, 162, 0.56); outline-offset: 3px; }
 
 @media (hover: hover) and (pointer: fine) {
-  .back-to-top:hover svg,
-  .back-to-top:focus-visible svg { transform: translateY(-1px); }
+  .section-stepper:hover svg,
+  .section-stepper:focus-visible svg { transform: translateY(-1px); }
 }
 
 @media (max-width: 700px), (hover: none), (pointer: coarse) {
@@ -1849,7 +1873,7 @@ html { scroll-padding-top: 18px; }
     background: rgba(18, 20, 20, 0.96);
   }
 
-  .back-to-top {
+  .section-stepper {
     width: 39px;
     height: 39px;
     right: max(14px, env(safe-area-inset-right));
@@ -1863,7 +1887,7 @@ html { scroll-padding-top: 18px; }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header,
-  .back-to-top { transition: none !important; }
+  .section-stepper { transition: none !important; }
 }
 
 /* Mobile performance mode: native scrolling with no persistent composited UI. */
@@ -1951,7 +1975,7 @@ html { scroll-padding-top: 18px; }
   .level-five-night .hero h1,
   .level-five-night .hero-tagline { text-shadow: none; }
 
-  .back-to-top { box-shadow: none; }
+  .section-stepper { box-shadow: none; }
 }
 
 /* Final navigation rhythm after simplifying the site to English. */
@@ -2112,7 +2136,7 @@ html { scroll-padding-top: 18px; }
     linear-gradient(135deg, rgba(34, 24, 28, 0.98), rgba(15, 13, 15, 0.99));
 }
 .workshop-entry::before { background: rgba(87, 116, 122, 0.16); }
-.workshop-entry:focus-visible,
+.workshop-entry-action:focus-visible,
 .workshop-back:focus-visible { outline-color: #82adb1; }
 
 body.workshop-open,
@@ -2193,20 +2217,9 @@ body.workshop-open,
     background: linear-gradient(145deg, rgba(56, 149, 181, 0.26), rgba(20, 27, 31, 0.97));
   }
 
-  .level-five-night .contact-links .contact-card {
-    min-height: 88px;
-  }
 }
 
-/* Version 1.6.4 — compact contact cards and one press language across the site. */
-.level-five-night .contact-links { grid-auto-rows: 1fr; }
-
-.level-five-night .contact-links .contact-card {
-  min-height: 82px;
-  height: 100%;
-  justify-content: flex-start;
-}
-
+/* Compact footer rhythm retained by the current layout. */
 .level-five-night .footer-inner { min-height: 84px; }
 
 /* Every card receives one color identity; the effect is applied by JavaScript only after a confirmed press. */
@@ -2214,10 +2227,12 @@ body.workshop-open,
 .level-five-night .project-card,
 .workshop-entry,
 .workshop-card,
-.current-track-card,
-.level-five-night .contact-card {
+.current-track-card {
   --press-rgb: 130, 173, 177;
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), border-color 300ms ease;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), border-color 300ms ease, box-shadow 300ms ease;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -2225,8 +2240,7 @@ body.workshop-open,
 .level-five-night .project-card h3,
 .workshop-entry .workshop-entry-title,
 .workshop-card h3,
-.current-track-card h3,
-.level-five-night .contact-card :is(.contact-platform, .contact-card-purpose) {
+.current-track-card h3 {
   transition: color 300ms ease;
 }
 
@@ -2234,29 +2248,59 @@ body.workshop-open,
   transition: color 300ms ease, border-color 300ms ease, background-color 300ms ease;
 }
 
+.level-five-night .facts > div::after,
+.level-five-night .project-card::after,
+.workshop-entry::after,
+.workshop-card::after,
+.current-track-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(var(--press-rgb), 0.18), transparent 68%),
+    linear-gradient(145deg, rgba(var(--press-rgb), 0.09), transparent 72%);
+  box-shadow: inset 0 0 0 1px rgba(var(--press-rgb), 0.12);
+  opacity: 0;
+  transform: scale(0.985);
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.level-five-night .facts > div > *,
+.level-five-night .project-card > *,
+.workshop-entry > *,
+.workshop-card > *,
+.current-track-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 .level-five-night .facts > div:is(.is-pressing, .is-pressed),
 .level-five-night .project-card:is(.is-pressing, .is-pressed),
 .workshop-entry:is(.is-pressing, .is-pressed),
 .workshop-card:is(.is-pressing, .is-pressed),
-.current-track-card:is(.is-pressing, .is-pressed),
-.level-five-night .contact-card:is(.is-pressing, .is-pressed) {
-  transform: translateY(1px) scale(0.992);
+.current-track-card:is(.is-pressing, .is-pressed) {
   border-color: rgba(var(--press-rgb), 0.64);
+  box-shadow: inset 0 0 0 1px rgba(var(--press-rgb), 0.08);
+}
+
+.level-five-night .facts > div:is(.is-pressing, .is-pressed)::after,
+.level-five-night .project-card:is(.is-pressing, .is-pressed)::after,
+.workshop-entry:is(.is-pressing, .is-pressed)::after,
+.workshop-card:is(.is-pressing, .is-pressed)::after,
+.current-track-card:is(.is-pressing, .is-pressed)::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .level-five-night .facts > div:is(.is-pressing, .is-pressed) :is(dt, dd),
 .level-five-night .project-card:is(.is-pressing, .is-pressed) h3,
 .workshop-entry:is(.is-pressing, .is-pressed) .workshop-entry-title,
 .workshop-card:is(.is-pressing, .is-pressed) h3,
-.current-track-card:is(.is-pressing, .is-pressed) h3,
-.level-five-night .contact-card:is(.is-pressing, .is-pressed) :is(.contact-platform, .contact-card-purpose) {
+.current-track-card:is(.is-pressing, .is-pressed) h3 {
   color: rgb(var(--press-rgb));
-}
-
-.level-five-night .contact-card:is(.is-pressing, .is-pressed) .contact-icon {
-  color: rgb(var(--press-rgb));
-  border-color: rgba(var(--press-rgb), 0.58);
-  background: rgba(var(--press-rgb), 0.13);
 }
 
 .level-five-night .facts > div:nth-child(1),
@@ -2291,66 +2335,23 @@ body.workshop-open,
   .level-five-night .footer-inner { min-height: 102px; }
 }
 
-/* Compact iPhones keep the same horizontal 2×2 rectangle system. */
-@media (max-width: 420px) {
-  .level-five-night .contact-links { gap: 9px; }
-
-  .level-five-night .contact-links .contact-card {
-    min-height: 92px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 9px;
-    padding: 12px;
-  }
-
-  .level-five-night .contact-icon {
-    width: 38px;
-    height: 38px;
-    flex-basis: 38px;
-    border-radius: 11px;
-  }
-
-  .level-five-night .contact-icon svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .level-five-night .contact-card-copy {
-    width: auto;
-    flex: 1 1 auto;
-  }
-
-  .level-five-night .contact-platform {
-    margin-bottom: 5px;
-    font-size: 0.54rem;
-    letter-spacing: 0.1em;
-  }
-
-  .level-five-night .contact-card-purpose {
-    font-size: 0.68rem;
-    line-height: 1.24;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .level-five-night .facts > div:is(.is-pressing, .is-pressed),
-  .level-five-night .project-card:is(.is-pressing, .is-pressed),
-  .workshop-entry:is(.is-pressing, .is-pressed),
-  .workshop-card:is(.is-pressing, .is-pressed),
-  .current-track-card:is(.is-pressing, .is-pressed),
-  .level-five-night .contact-card:is(.is-pressing, .is-pressed) {
+  .level-five-night .facts > div::after,
+  .level-five-night .project-card::after,
+  .workshop-entry::after,
+  .workshop-card::after,
+  .current-track-card::after {
     transform: none;
   }
 }
 
-/* Version 1.6.6 — the spacious original rhythm returns; only section labels sit slightly higher. */
+/* Spacious section rhythm; section labels sit slightly higher. */
 .level-five-night :is(#about, #journey, #projects, #contact, .closing-note) .eyebrow {
   position: relative;
   top: -10px;
 }
 
-/* Version 1.6.7 — native long-press previews are suppressed on controls. */
+/* Native long-press previews are suppressed on controls. */
 a,
 button {
   -webkit-touch-callout: none;
@@ -2364,9 +2365,925 @@ button {
   .level-five-night .portrait-stage { transform: none; }
 }
 
-/* Version 1.6.8 — one clear Blue Sage keyboard focus language. */
+/* One clear Blue Sage keyboard focus language. */
 .level-five-night a:focus-visible,
 .level-five-night button:focus-visible {
   outline: 2px solid #82adb1;
   outline-offset: 4px;
+}
+
+
+/* Sharing, accessibility, contact, and motion polish. */
+
+/* Keyboard focus should land visibly on the skipped-to main region without adding a permanent outline. */
+#main-content:focus { outline: none; }
+#main-content:focus-visible { outline: 2px solid #82adb1; outline-offset: -6px; }
+
+/* The two hero actions now share the same visual navigation language. */
+.hero-actions .button {
+  gap: 11px;
+}
+
+.button-chevron {
+  width: 8px;
+  height: 14px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-actions .button:hover .button-chevron,
+.hero-actions .button:focus-visible .button-chevron {
+  transform: translateX(3px);
+}
+
+/* A quiet, one-time first impression; no observers and no hidden content after load. */
+@media (prefers-reduced-motion: no-preference) {
+  .level-five-night .hero-copy {
+    animation: hero-copy-enter 520ms cubic-bezier(0.22, 1, 0.36, 1) 40ms both;
+  }
+
+  .level-five-night .portrait-stage {
+    animation: hero-portrait-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+  }
+}
+
+@keyframes hero-copy-enter {
+  from { opacity: 0.01; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hero-portrait-enter {
+  from { opacity: 0.01; transform: translate3d(0, 12px, 0) scale(0.992); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* The current learning stage is identifiable without a distracting looped animation. */
+.level-five-night .timeline-item.is-current-stage .timeline-marker {
+  border-color: rgba(91, 171, 162, 0.78);
+  box-shadow:
+    0 0 0 7px rgba(91, 171, 162, 0.055),
+    0 0 26px rgba(91, 171, 162, 0.12);
+}
+
+.level-five-night .timeline-item.is-current-stage .timeline-state {
+  color: #9fd0c9;
+}
+
+/* Contact controls use the same press timing as the rest of the portfolio. */
+.level-five-night .contact-links {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 12px;
+}
+
+.level-five-night .contact-links .contact-card {
+  min-width: 0;
+  min-height: 78px;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  cursor: default;
+  touch-action: pan-y;
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+/* Hover is desktop-only so touch browsers cannot leave a simulated hover behind. */
+@media (hover: hover) and (pointer: fine) {
+  .level-five-night .contact-links .contact-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--press-rgb), 0.42);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+  }
+}
+
+/* The card follows the same hold-and-release rhythm without moving its content. */
+.level-five-night .contact-links .contact-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(var(--press-rgb), 0.18), transparent 68%),
+    linear-gradient(145deg, rgba(var(--press-rgb), 0.09), transparent 72%);
+  box-shadow: inset 0 0 0 1px rgba(var(--press-rgb), 0.12);
+  opacity: 0;
+  transform: scale(0.985);
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.level-five-night .contact-links .contact-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.level-five-night .contact-links .contact-card:is(.is-pressing, .is-pressed) {
+  border-color: rgba(var(--press-rgb), 0.64);
+  box-shadow: inset 0 0 0 1px rgba(var(--press-rgb), 0.08);
+}
+
+.level-five-night .contact-links .contact-card:is(.is-pressing, .is-pressed)::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.level-five-night .contact-links .contact-card:is(.is-pressing, .is-pressed) :is(.contact-platform, .contact-card-purpose) {
+  color: rgb(var(--press-rgb));
+}
+
+.level-five-night .contact-links .contact-card:is(.is-pressing, .is-pressed) .contact-icon {
+  color: rgb(var(--press-rgb));
+  border-color: rgba(var(--press-rgb), 0.58);
+  background: rgba(var(--press-rgb), 0.13);
+}
+
+.level-five-night .contact-links .contact-card :is(.contact-platform, .contact-card-purpose) {
+  transition: color 300ms ease;
+}
+
+.level-five-night .contact-links .contact-card-main {
+  min-width: 0;
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: 43px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  flex: 1 1 auto;
+  padding: 14px 16px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.level-five-night .contact-card-copy {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.level-five-night .contact-platform,
+.level-five-night .contact-card-purpose {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.level-five-night .contact-links .contact-card-action,
+.level-five-night .contact-links .contact-card-action span {
+  margin: 0;
+  color: inherit;
+}
+
+.level-five-night .contact-links .contact-card-action {
+  min-width: 76px;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 14px;
+  border: 0;
+  border-left: 1px solid rgba(225, 230, 220, 0.11);
+  color: #9ba5a0;
+  background: rgba(255, 255, 255, 0.018);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 300ms ease,
+    background-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.level-five-night .contact-links .contact-card-action:focus-visible {
+  outline: 2px solid rgba(var(--press-rgb), 0.82);
+  outline-offset: -4px;
+  color: rgb(var(--press-rgb));
+  background: rgba(var(--press-rgb), 0.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .level-five-night .contact-links .contact-card-action:hover {
+    color: rgb(var(--press-rgb));
+    background: rgba(var(--press-rgb), 0.09);
+  }
+}
+
+.level-five-night .contact-links .contact-card-action:is(.is-pressing, .is-pressed) {
+  color: rgb(var(--press-rgb));
+  background: rgba(var(--press-rgb), 0.14);
+  box-shadow: inset 0 0 0 1px rgba(var(--press-rgb), 0.16);
+}
+
+.level-five-night .contact-links .contact-action-label {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.level-five-night .contact-links .contact-action-icon {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+}
+
+.level-five-night .contact-links .contact-action-icon svg,
+.level-five-night .contact-links .contact-link-action > svg {
+  grid-area: 1 / 1;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    opacity 300ms ease,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-copy-button .copy-check {
+  opacity: 0;
+  transform: scale(0.72);
+}
+
+.contact-copy-button.is-copied {
+  color: #a7d8d0;
+  background: rgba(91, 171, 162, 0.12);
+}
+
+.contact-copy-button.is-copied .contact-action-label { color: #a7d8d0; }
+
+.contact-copy-button.is-copied .copy-icon {
+  opacity: 0;
+  transform: scale(0.72);
+}
+
+.contact-copy-button.is-copied .copy-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .level-five-night .contact-link-action:hover > svg,
+  .level-five-night .contact-link-action:focus-visible > svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+.copy-toast {
+  position: fixed;
+  z-index: 120;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  max-width: min(calc(100vw - 32px), 360px);
+  padding: 11px 15px;
+  color: #e9eee9;
+  background: rgba(17, 24, 25, 0.96);
+  border: 1px solid rgba(130, 173, 177, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.3);
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(-50%, 10px, 0);
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 220ms;
+}
+
+.copy-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(-50%, 0, 0);
+  transition-delay: 0s;
+}
+
+.copy-toast.is-error {
+  color: #f2dfd9;
+  border-color: rgba(194, 126, 113, 0.42);
+}
+
+@media (max-width: 700px) {
+  .level-five-night .contact-links {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .level-five-night .contact-links .contact-card,
+  .level-five-night .contact-links .contact-card-main {
+    min-height: 72px;
+  }
+
+  .level-five-night .contact-links .contact-card-main {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 11px 13px;
+  }
+
+  .level-five-night .contact-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .level-five-night .contact-links .contact-card-action {
+    min-width: 56px;
+    padding: 0;
+  }
+
+  .level-five-night .contact-links .contact-action-label { display: none; }
+
+  .level-five-night .contact-links .contact-action-icon,
+  .level-five-night .contact-links .contact-action-icon svg,
+  .level-five-night .contact-links .contact-link-action > svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .copy-toast { bottom: max(18px, env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 360px) {
+  .level-five-night .contact-links .contact-card-main {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 10px;
+    padding-inline: 10px;
+  }
+
+  .level-five-night .contact-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .level-five-night .contact-links .contact-card-action { min-width: 50px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-five-night .contact-links .contact-card,
+  .level-five-night .contact-links .contact-card-action,
+  .contact-action-icon,
+  .contact-action-icon svg,
+  .contact-link-action > svg,
+  .copy-toast {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* A compact custom 404 canvas that reuses the portfolio's visual language. */
+.error-page {
+  min-height: 100svh;
+  color: #e8ebe5;
+  background:
+    radial-gradient(ellipse 62% 58% at 88% 12%, rgba(87, 116, 122, 0.24), transparent 70%),
+    radial-gradient(ellipse 54% 44% at 8% 88%, rgba(43, 100, 96, 0.14), transparent 72%),
+    linear-gradient(145deg, #142027 0%, #0d1215 62%, #111719 100%);
+}
+
+.error-shell {
+  width: min(980px, calc(100% - 40px));
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin-inline: auto;
+}
+
+.error-header,
+.error-footer {
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #8f9994;
+  font-size: 0.72rem;
+}
+
+.error-header { border-bottom: 1px solid rgba(225, 230, 220, 0.11); }
+.error-footer { border-top: 1px solid rgba(225, 230, 220, 0.11); }
+.error-header .wordmark { color: #e8ebe5; }
+
+.error-main {
+  display: grid;
+  place-items: center;
+  padding: 74px 0;
+}
+
+.error-card {
+  position: relative;
+  width: min(760px, 100%);
+  padding: clamp(34px, 7vw, 72px);
+  overflow: hidden;
+  border: 1px solid rgba(225, 230, 220, 0.13);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+}
+
+.error-code {
+  position: absolute;
+  right: -18px;
+  top: -42px;
+  margin: 0;
+  color: rgba(130, 173, 177, 0.075);
+  font-size: clamp(10rem, 28vw, 18rem);
+  font-weight: 800;
+  letter-spacing: -0.1em;
+  line-height: 1;
+  user-select: none;
+}
+
+.error-card > *:not(.error-code) { position: relative; z-index: 1; }
+.error-card .eyebrow { color: #91b8bb; }
+.error-card h1 {
+  max-width: 660px;
+  margin: 18px 0 22px;
+  font-size: clamp(2.65rem, 7vw, 5.5rem);
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+.error-card > p:not(.eyebrow):not(.error-code) {
+  max-width: 580px;
+  margin: 0 0 34px;
+  color: #a3aaa4;
+}
+
+@media (max-width: 700px) {
+  .error-header,
+  .error-footer {
+    min-height: 72px;
+  }
+}
+
+@media (max-width: 420px) {
+  .error-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-chevron { transition-duration: 0.01ms; }
+}
+
+/* Version 2.0 — unified interaction surfaces and Workshop timing. */
+@media (prefers-reduced-motion: reduce) {
+  .level-five-night .contact-links .contact-card::after { transform: none; }
+}
+
+/* Version 2.0 — separate Workshop card and control press surfaces. */
+.workshop-entry-action,
+.workshop-back,
+.workshop-closing .button,
+.workshop-entry-action::after,
+.workshop-back::after,
+.workshop-closing .button::after {
+  transition-duration: 240ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workshop-entry-action,
+.workshop-back,
+.workshop-closing .button {
+  --workshop-control-rgb: 130, 173, 177;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: color, border-color, background-color, box-shadow;
+}
+
+.workshop-entry-action::after,
+.workshop-back::after,
+.workshop-closing .button::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(var(--workshop-control-rgb), 0.17), transparent 70%),
+    linear-gradient(145deg, rgba(var(--workshop-control-rgb), 0.08), transparent 74%);
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity;
+}
+
+.workshop-entry-action > *,
+.workshop-back > *,
+.workshop-closing .button > * {
+  position: relative;
+  z-index: 1;
+}
+
+.workshop-entry-action:is(.is-pressing, .is-pressed),
+.workshop-back:is(.is-pressing, .is-pressed),
+.workshop-closing .button:is(.is-pressing, .is-pressed) {
+  color: rgb(var(--workshop-control-rgb));
+  border-color: rgba(var(--workshop-control-rgb), 0.58);
+  background: rgba(var(--workshop-control-rgb), 0.08);
+  box-shadow: inset 0 0 0 1px rgba(var(--workshop-control-rgb), 0.1);
+  transform: none;
+}
+
+.workshop-entry-action:is(.is-pressing, .is-pressed)::after,
+.workshop-back:is(.is-pressing, .is-pressed)::after,
+.workshop-closing .button:is(.is-pressing, .is-pressed)::after {
+  opacity: 1;
+}
+
+.workshop-entry-action:is(.is-pressing, .is-pressed) .workshop-control-chevron,
+.workshop-back:is(.is-pressing, .is-pressed) .workshop-control-chevron,
+.workshop-closing .button:is(.is-pressing, .is-pressed) .workshop-control-chevron {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workshop-entry-action,
+  .workshop-back,
+  .workshop-closing .button,
+  .workshop-entry-action::after,
+  .workshop-back::after,
+  .workshop-closing .button::after {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* Version 2.0 — unified portfolio canvas and refined contact controls. */
+.level-five-night {
+  background:
+    radial-gradient(ellipse 60% 900px at 92% 150px, rgba(154, 164, 159, 0.16), rgba(108, 116, 112, 0.05) 43%, transparent 72%),
+    radial-gradient(ellipse 56% 920px at 94% 1450px, rgba(72, 115, 122, 0.17), transparent 74%),
+    radial-gradient(ellipse 48% 880px at 6% 1900px, rgba(43, 100, 96, 0.11), transparent 76%),
+    linear-gradient(180deg, #181a1a 0%, #141818 9%, #111b1e 18%, #15171b 31%, #17151b 44%, #111a1e 59%, #0f1d21 74%, #142124 88%, #0e1719 100%);
+  background-color: #0e1719;
+  background-repeat: no-repeat;
+}
+
+/* Keep only the original navigation capsule; the outer header field stays transparent. */
+.level-five-night .site-header {
+  padding-top: max(12px, env(safe-area-inset-top));
+  background: transparent;
+}
+
+.level-five-night .header-inner { margin-top: 0; }
+
+/* The portfolio is a full-width continuous canvas with no remaining outer frame. */
+.portfolio-panel {
+  width: 100%;
+  margin: 0;
+  overflow: clip;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.level-four main,
+.level-five-night main {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+}
+
+.level-four main > section,
+.level-five-night main > section {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.level-four .site-footer,
+.level-five-night .site-footer {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.workshop-open > .portfolio-panel { display: none; }
+
+/* Consistent, compact section rhythm without crowding content. */
+.section { padding-block: clamp(40px, 3.8vw, 58px); }
+.level-four .hero { min-height: clamp(700px, calc(100svh - 190px), 820px); padding-top: clamp(88px, 7vw, 108px); padding-bottom: clamp(38px, 3.8vw, 54px); }
+.timeline { margin-top: clamp(36px, 4vw, 52px); }
+.project-grid { margin-top: clamp(34px, 3.8vw, 50px); }
+.workshop-entry { margin-top: clamp(30px, 3.8vw, 48px); }
+.level-five-night .closing-note { padding-block: clamp(48px, 4.8vw, 70px); }
+
+/* Calm blue-teal treatment for the featured classification project. */
+.level-five-night .project-featured {
+  background:
+    radial-gradient(ellipse 72% 88% at 88% 14%, rgba(107, 164, 171, 0.22), transparent 68%),
+    radial-gradient(ellipse 58% 62% at 6% 100%, rgba(53, 119, 111, 0.14), transparent 72%),
+    linear-gradient(145deg, #253a40, #18292e 70%, #10191c);
+}
+
+.level-five-night .project-featured .project-field,
+.level-five-night .project-featured .project-number { color: #a9ced0; }
+
+/* Wide, slim contact rows with independent Copy/Visit controls. */
+.level-five-night .contact {
+  grid-template-columns: minmax(0, 0.76fr) minmax(460px, 1.24fr);
+  align-items: start;
+  gap: clamp(48px, 8vw, 112px);
+}
+
+.level-five-night .contact-links {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+
+.level-five-night .contact-links .contact-card,
+.level-five-night .contact-links .contact-card-main {
+  min-height: 70px;
+}
+
+.level-five-night .contact-links .contact-card { border-radius: 15px; }
+
+.level-five-night .contact-links .contact-card-main {
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 13px;
+  padding: 10px 14px;
+}
+
+.level-five-night .contact-icon {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+  border-radius: 11px;
+}
+
+.level-five-night .contact-links .contact-card-action {
+  min-width: 84px;
+  padding-inline: 15px;
+}
+
+.level-five-night .contact-card-purpose {
+  color: #a6ada7;
+  font-size: clamp(0.74rem, 0.95vw, 0.84rem);
+  font-weight: 650;
+  letter-spacing: 0.005em;
+}
+
+/* Match the site's established press timing on both cards and their controls. */
+.level-five-night .contact-links .contact-card,
+.level-five-night .contact-links .contact-card::after,
+.level-five-night .contact-links .contact-card-action,
+.level-five-night .contact-links .contact-card-action::after {
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 960px) {
+  .level-five-night .contact { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+}
+
+@media (max-width: 700px) {
+  .portfolio-panel {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .level-five-night .site-header { padding-top: max(8px, env(safe-area-inset-top)); }
+  .level-four .section,
+  .level-five-night .section { padding-block: 40px; }
+  .level-four .hero { min-height: auto; padding-top: 84px; padding-bottom: 40px; }
+  .timeline { margin-top: 34px; }
+  .project-grid { margin-top: 34px; }
+  .workshop-entry { margin-top: 30px; }
+  .level-five-night .closing-note { padding-block: 44px; }
+
+  .level-five-night .contact-links .contact-card,
+  .level-five-night .contact-links .contact-card-main { min-height: 68px; }
+
+  .level-five-night .contact-links .contact-card-main {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 11px;
+    padding: 9px 11px;
+  }
+
+  .level-five-night .contact-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .level-five-night .contact-links .contact-card-action {
+    min-width: 58px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .portfolio-panel { width: 100%; border-radius: 0; }
+  .level-five-night .contact-links .contact-card-action { min-width: 52px; }
+}
+
+/* Ensure no legacy section-specific border can reintroduce framed panels. */
+.level-four #main-content > section,
+.level-five-night #main-content > section {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#main-content .eyebrow { margin-bottom: 14px; }
+
+@media (max-width: 700px) {
+  #main-content .eyebrow { margin-bottom: 12px; }
+}
+
+/* Version 2.0.4 — refined hero fog, seamless header field, and line-only navigation feedback. */
+html { background: #0e1719; }
+.wordmark { text-decoration: none; }
+
+/* Remove the decorative full-width accent line above the original navigation bar. */
+.level-five-night::before { display: none; }
+
+.level-five-night #main-content > .hero {
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+/* A neutral fog sits high in the right corner, then the hero fades into the next section. */
+.level-five-night #main-content > .hero::before {
+  display: none;
+}
+
+.level-five-night #main-content > .about,
+.level-five-night #main-content > .journey,
+.level-five-night #main-content > .projects,
+.level-five-night #main-content > .contact,
+.level-five-night #main-content > .closing-note,
+.level-five-night .site-footer {
+  background: transparent !important;
+}
+
+.level-five-night #main-content > .about::before,
+.level-five-night #main-content > .journey::before,
+.level-five-night #main-content > .contact::before {
+  background: transparent !important;
+}
+
+.level-five-night .site-nav a {
+  padding: 7px 3px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.level-five-night .site-nav a::after,
+.level-five-night .site-nav a:hover::after,
+.level-five-night .site-nav a:focus-visible::after,
+.level-five-night .site-nav a.is-active::after,
+body.is-section-scrolling .site-nav a.is-active::after {
+  bottom: 1px;
+  display: block;
+  height: 1px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease;
+}
+
+.level-five-night .site-nav a.is-nav-activating {
+  color: #f2f5f2;
+  background: transparent;
+  box-shadow: none;
+}
+
+.level-five-night .site-nav a.is-nav-activating::after,
+.level-five-night .site-nav a.is-nav-activating:hover::after,
+.level-five-night .site-nav a.is-nav-activating:focus-visible::after {
+  opacity: 0.92;
+  transform: scaleX(1);
+}
+
+.section-stepper {
+  transition:
+    opacity 260ms ease,
+    visibility 260ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 300ms ease,
+    border-color 300ms ease,
+    background-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.section-stepper.is-navigating {
+  color: #edf3ef;
+  border-color: rgba(148, 178, 181, 0.42);
+  background: rgba(24, 35, 36, 0.97);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(148, 178, 181, 0.06);
+}
+
+.section-stepper.is-navigating svg { transform: translateY(-1px); }
+
+@media (max-width: 700px) {
+  .level-five-night .site-nav a {
+    position: relative;
+    width: auto;
+    padding: 5px 1px 8px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .level-five-night .site-nav a::after,
+  .level-five-night .site-nav a:hover::after,
+  .level-five-night .site-nav a:focus-visible::after,
+  .level-five-night .site-nav a.is-active::after { bottom: 2px; }
+
+}
+
+@media (min-width: 961px) {
+  .level-five-night #main-content > .hero {
+    grid-template-columns: minmax(0, 520px) minmax(410px, 490px);
+    justify-content: center;
+    column-gap: clamp(64px, 6vw, 96px);
+    padding-inline: clamp(32px, 4.5vw, 68px);
+  }
+
+  .level-five-night .hero-copy {
+    width: 100%;
+    max-width: 520px;
+    justify-self: end;
+  }
+
+  .level-five-night .hero h1 {
+    font-size: clamp(4.35rem, 5.9vw, 5.4rem);
+  }
+
+  .level-five-night .portrait-stage {
+    width: min(100%, 490px);
+    justify-self: start;
+  }
+}
+
+/* The area around the original navigation capsule is part of the page background, not a separate strip. */
+.level-five-night .site-header,
+.level-five-night .site-header.is-scrolled,
+.level-five-night .site-header.is-hidden {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.level-five-night .site-nav a:focus,
+.level-five-night .site-nav a:focus-visible,
+.level-five-night .site-nav a:active {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-five-night .site-nav a,
+  .level-five-night .site-nav a::after,
+  .section-stepper { transition-duration: 0.01ms !important; }
 }

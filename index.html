@@ -6,7 +6,7 @@
   <meta name="description" content="Mohammed Muayad is an AI Engineering student documenting applied AI, automation, Python, machine learning, and projects built step by step.">
   <meta name="author" content="Mohammed Muayad">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="theme-color" content="#0d0f0f">
+  <meta name="theme-color" content="#141819">
   <link rel="canonical" href="https://thismieo.github.io/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Mohammed Muayad">
@@ -14,6 +14,8 @@
   <meta property="og:description" content="Building the future with code &amp; intelligence. Follow a real journey through applied AI, automation, and intelligent systems.">
   <meta property="og:url" content="https://thismieo.github.io/">
   <meta property="og:image" content="https://thismieo.github.io/assets/mohammed-social-preview.png">
+  <meta property="og:image:secure_url" content="https://thismieo.github.io/assets/mohammed-social-preview.png">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Mohammed Muayad — Building the future with code and intelligence">
@@ -21,6 +23,7 @@
   <meta name="twitter:title" content="Mohammed Muayad | AI Engineering &amp; Applied AI">
   <meta name="twitter:description" content="Building the future with code &amp; intelligence.">
   <meta name="twitter:image" content="https://thismieo.github.io/assets/mohammed-social-preview.png">
+  <meta name="twitter:image:alt" content="Mohammed Muayad — AI Engineering Student portfolio">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -28,9 +31,8 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <title>Mohammed Muayad | AI Engineering &amp; Applied AI</title>
-  <link rel="stylesheet" href="styles.css?v=1.6.9">
-  <link rel="stylesheet" href="navigation-v1.6.9.css?v=1.6.9">
-  <script src="script.js?v=1.6.9" defer></script>
+  <link rel="stylesheet" href="styles.css?v=2.0.4">
+  <script src="script.js?v=2.0.4" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,11 +69,12 @@
     </div>
   </header>
 
-  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top" title="Back to top">
+  <button class="section-stepper" type="button" data-previous-section aria-label="Previous section" title="Previous section" disabled>
     <svg viewBox="0 0 20 14" aria-hidden="true"><path d="m3 10 7-6 7 6"/></svg>
   </button>
 
-  <main id="main-content" aria-label="Portfolio">
+  <div class="portfolio-panel">
+  <main id="main-content" tabindex="-1" aria-label="Portfolio">
     <section class="hero shell" id="home" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">Hello, I’m</p>
@@ -80,8 +83,14 @@
         <p class="hero-tagline">Building the future with code &amp; intelligence.</p>
         <p class="hero-intro">I’m learning Python, machine learning, and modern AI technologies while building practical projects step by step.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#journey">Explore My Journey</a>
-          <a class="button button-secondary" href="#projects">View My Projects</a>
+          <a class="button button-primary" href="#journey">
+            <span>Explore My Journey</span>
+            <svg class="button-chevron" viewBox="0 0 8 14" aria-hidden="true"><path d="m1.5 1.5 5 5.5-5 5.5"/></svg>
+          </a>
+          <a class="button button-secondary" href="#projects">
+            <span>View My Projects</span>
+            <svg class="button-chevron" viewBox="0 0 8 14" aria-hidden="true"><path d="m1.5 1.5 5 5.5-5 5.5"/></svg>
+          </a>
         </div>
       </div>
 
@@ -127,7 +136,7 @@
       </div>
 
       <ol class="timeline">
-        <li class="timeline-item">
+        <li class="timeline-item is-current-stage">
           <div class="timeline-marker"><span>01</span></div>
           <p class="timeline-state">Currently learning</p>
           <h3>Python Programming &amp; OOP</h3>
@@ -159,15 +168,15 @@
         </li>
       </ol>
 
-      <a class="workshop-entry" href="?view=workshop" data-open-workshop>
+      <div class="workshop-entry" data-workshop-card>
         <span class="workshop-entry-label">Applied learning archive</span>
         <span class="workshop-entry-title">The Workshop</span>
         <span class="workshop-entry-copy">Where learning becomes practice.</span>
-        <span class="workshop-entry-action">
+        <button class="workshop-entry-action" type="button" data-open-workshop aria-label="Explore the Workshop">
           <span>Explore the Workshop</span>
           <svg class="workshop-control-chevron" viewBox="0 0 12 20" aria-hidden="true"><path d="m3.5 3 5 7-5 7"/></svg>
-        </span>
-      </a>
+        </button>
+      </div>
     </section>
 
     <section class="projects section" id="projects" aria-labelledby="projects-title">
@@ -261,46 +270,79 @@
       </div>
 
       <div class="contact-links">
-        <a class="contact-card contact-card-private" href="mailto:thismieo@outlook.com" aria-label="Email Mohammed privately at thismieo@outlook.com">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5h16v11H4zM4.8 7.4 12 13l7.2-5.6"/></svg>
-          </span>
-          <span class="contact-card-copy">
-            <span class="contact-platform">Outlook</span>
-            <span class="contact-card-purpose">Personal email</span>
-          </span>
-        </a>
-        <a class="contact-card contact-card-general" href="mailto:thismieo@gmail.com" aria-label="Email Mohammed at thismieo@gmail.com">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M15.6 15.2V9h-3.4a3.4 3.4 0 1 0 3.4 3.4v1.1a2.3 2.3 0 0 0 4.6 0V12a8.2 8.2 0 1 0-2.4 5.8"/></svg>
-          </span>
-          <span class="contact-card-copy">
-            <span class="contact-platform">Gmail</span>
-            <span class="contact-card-purpose">General inquiries</span>
-          </span>
-        </a>
-        <a class="contact-card contact-card-github" href="https://github.com/thismieo" target="_blank" rel="noopener noreferrer" aria-label="Open Mohammed's GitHub profile">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 19.2c-3 .9-3-1.5-4.2-1.9M12.8 21v-3.5c0-1 .1-1.4-.5-2 2.6-.3 5.4-1.3 5.4-5.8 0-1.3-.5-2.4-1.2-3.2.1-.3.5-1.5-.1-3.1 0 0-1-.3-3.3 1.2a11.5 11.5 0 0 0-6 0C4.8 3 3.8 3.4 3.8 3.4c-.6 1.6-.2 2.8-.1 3.1A4.6 4.6 0 0 0 2.5 9.7c0 4.5 2.8 5.5 5.4 5.8-.5.5-.6 1.1-.6 2V21"/></svg>
-          </span>
-          <span class="contact-card-copy">
-            <span class="contact-platform">GitHub</span>
-            <span class="contact-card-purpose">Code &amp; projects</span>
-          </span>
-        </a>
-        <a class="contact-card contact-card-kaggle" href="https://kaggle.com/thismieo" target="_blank" rel="noopener noreferrer" aria-label="Open Mohammed's Kaggle profile">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4v16M8 13l7-9M8 13l8 7"/></svg>
-          </span>
-          <span class="contact-card-copy">
-            <span class="contact-platform">Kaggle</span>
-            <span class="contact-card-purpose">Data workspace</span>
-          </span>
-        </a>
+        <div class="contact-card contact-card-private contact-card-email">
+          <div class="contact-card-main">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5h16v11H4zM4.8 7.4 12 13l7.2-5.6"/></svg>
+            </span>
+            <span class="contact-card-copy">
+              <span class="contact-platform">Outlook</span>
+              <span class="contact-card-purpose">thismieo@outlook.com</span>
+            </span>
+          </div>
+          <button class="contact-card-action contact-copy-button" type="button" data-copy-email="thismieo@outlook.com" data-copy-label="Copy Outlook email address" aria-label="Copy Outlook email address">
+            <span class="contact-action-label">Copy</span>
+            <span class="contact-action-icon" aria-hidden="true">
+              <svg class="copy-icon" viewBox="0 0 24 24"><rect x="8" y="8" width="10" height="10" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+              <svg class="copy-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="contact-card contact-card-general contact-card-email">
+          <div class="contact-card-main">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15.6 15.2V9h-3.4a3.4 3.4 0 1 0 3.4 3.4v1.1a2.3 2.3 0 0 0 4.6 0V12a8.2 8.2 0 1 0-2.4 5.8"/></svg>
+            </span>
+            <span class="contact-card-copy">
+              <span class="contact-platform">Gmail</span>
+              <span class="contact-card-purpose">thismieo@gmail.com</span>
+            </span>
+          </div>
+          <button class="contact-card-action contact-copy-button" type="button" data-copy-email="thismieo@gmail.com" data-copy-label="Copy Gmail address" aria-label="Copy Gmail address">
+            <span class="contact-action-label">Copy</span>
+            <span class="contact-action-icon" aria-hidden="true">
+              <svg class="copy-icon" viewBox="0 0 24 24"><rect x="8" y="8" width="10" height="10" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+              <svg class="copy-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="contact-card contact-card-github">
+          <div class="contact-card-main">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 19.2c-3 .9-3-1.5-4.2-1.9M12.8 21v-3.5c0-1 .1-1.4-.5-2 2.6-.3 5.4-1.3 5.4-5.8 0-1.3-.5-2.4-1.2-3.2.1-.3.5-1.5-.1-3.1 0 0-1-.3-3.3 1.2a11.5 11.5 0 0 0-6 0C4.8 3 3.8 3.4 3.8 3.4c-.6 1.6-.2 2.8-.1 3.1A4.6 4.6 0 0 0 2.5 9.7c0 4.5 2.8 5.5 5.4 5.8-.5.5-.6 1.1-.6 2V21"/></svg>
+            </span>
+            <span class="contact-card-copy">
+              <span class="contact-platform">GitHub</span>
+              <span class="contact-card-purpose">Code &amp; projects</span>
+            </span>
+          </div>
+          <a class="contact-card-action contact-link-action" href="https://github.com/thismieo" target="_blank" rel="noopener noreferrer" aria-label="Open Mohammed's GitHub profile in a new tab">
+            <span class="contact-action-label">Visit</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M10 8h6v6"/></svg>
+          </a>
+        </div>
+
+        <div class="contact-card contact-card-kaggle">
+          <div class="contact-card-main">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8 4v16M8 13l7-9M8 13l8 7"/></svg>
+            </span>
+            <span class="contact-card-copy">
+              <span class="contact-platform">Kaggle</span>
+              <span class="contact-card-purpose">Data workspace</span>
+            </span>
+          </div>
+          <a class="contact-card-action contact-link-action" href="https://kaggle.com/thismieo" target="_blank" rel="noopener noreferrer" aria-label="Open Mohammed's Kaggle profile in a new tab">
+            <span class="contact-action-label">Visit</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M10 8h6v6"/></svg>
+          </a>
+        </div>
       </div>
     </section>
 
-    <section class="closing-note section shell" aria-labelledby="closing-title">
+    <section class="closing-note section shell" id="closing" aria-labelledby="closing-title">
       <div class="closing-note-copy">
         <p class="eyebrow"><span>05</span> A note for visitors</p>
         <h2 id="closing-title"><span>Thank you</span> <span>for being here.</span></h2>
@@ -312,10 +354,12 @@
   <footer class="site-footer">
     <div class="shell footer-inner">
       <p>© <span data-year>2026</span> Mohammed Muayad</p>
-      <p>Version 1.6.9</p>
-      <p class="footer-motto">The future takes shape one step at a time</p>
+      <p>Version 2.0</p>
     </div>
   </footer>
+  </div>
+
+  <div class="copy-toast" data-copy-toast role="status" aria-live="polite" aria-atomic="true"></div>
 
   <section class="workshop-view" data-workshop-view hidden aria-labelledby="workshop-title">
     <header class="workshop-header shell">
