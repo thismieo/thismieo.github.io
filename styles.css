@@ -2233,3 +2233,23 @@ body.workshop-open { overflow-x: hidden; }
     opacity: 0;
   }
 }
+
+/* Workshop title optical centering — August 2026 */
+@media (min-width: 901px) {
+  #workshop-title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.22em;
+    margin-inline: auto;
+    text-align: center;
+  }
+  #workshop-title > span {
+    display: inline-block;
+    text-align: center;
+  }
+  #workshop-title > span:first-child::after {
+    content: none;
+  }
+}
