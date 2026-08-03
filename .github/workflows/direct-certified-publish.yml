@@ -1,0 +1,86 @@
+name: Direct certified publish
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate and publish the certified site
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, re
+
+          def decode_parts(pattern, target):
+              raw = b''.join(p.read_bytes() for p in sorted(Path('.deploy').glob(pattern)))
+              clean = re.sub(rb'[^A-Za-z0-9+/]', b'', raw)
+              clean += b'=' * (-len(clean) % 4)
+              Path(target).write_bytes(base64.b64decode(clean, validate=False))
+
+          decode_parts('freshpart-*', '/tmp/site.tar.gz')
+          PY
+          gzip -t /tmp/site.tar.gz
+          rm -rf /tmp/site
+          mkdir -p /tmp/site/assets
+          tar -xzf /tmp/site.tar.gz -C /tmp/site
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, re
+          raw = b''.join(p.read_bytes() for p in sorted(Path('.deploy').glob('portrait-*')))
+          clean = re.sub(rb'[^A-Za-z0-9+/]', b'', raw)
+          clean += b'=' * (-len(clean) % 4)
+          Path('/tmp/site/assets/mohammed-portrait.webp').write_bytes(base64.b64decode(clean, validate=False))
+          PY
+          echo '558c991a9e060bf437859284c4987e67799becb797fce7114ef1599f84a9c3ec  /tmp/site/assets/mohammed-portrait.webp' | sha256sum -c -
+          for file in apple-touch-icon.png favicon-192.png favicon-32.png favicon-512.png favicon.ico manrope-latin-variable.woff2 mohammed-social-preview.png; do
+            cp "assets/$file" "/tmp/site/assets/$file"
+          done
+          cat > /tmp/expected <<'EOF'
+          .nojekyll
+          404.html
+          CHANGELOG.md
+          README.md
+          assets/apple-touch-icon.png
+          assets/favicon-192.png
+          assets/favicon-32.png
+          assets/favicon-512.png
+          assets/favicon.ico
+          assets/favicon.svg
+          assets/manrope-latin-variable.woff2
+          assets/mohammed-portrait.webp
+          assets/mohammed-social-preview.png
+          index.html
+          robots.txt
+          script.js
+          site.webmanifest
+          sitemap.xml
+          styles.css
+          EOF
+          (cd /tmp/site && find . -type f -printf '%P\n' | sort) > /tmp/actual
+          diff -u /tmp/expected /tmp/actual
+          grep -q 'styles.css?v=4.1.0' /tmp/site/index.html
+          grep -q 'script.js?v=4.1.0' /tmp/site/index.html
+          node --check /tmp/site/script.js
+          python3 -m json.tool /tmp/site/site.webmanifest >/dev/null
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('/tmp/site/sitemap.xml')
+          PY
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/site/. .
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Publish certified portfolio v4.1.0'
+          git push origin HEAD:main
