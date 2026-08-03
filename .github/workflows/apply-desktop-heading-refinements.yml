@@ -1,0 +1,224 @@
+name: Apply desktop heading refinements
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/apply-desktop-heading-refinements.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply and validate responsive typography refinements
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_parent="$(git rev-parse HEAD^)"
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          index_path = Path("index.html")
+          css_path = Path("styles.css")
+          index = index_path.read_text(encoding="utf-8")
+          css = css_path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  '<h2 id="journey-title">From foundations to intelligent systems.</h2>',
+                  '<h2 id="journey-title" class="journey-title">\n            <span class="journey-title-line">From foundations</span>\n            <span class="journey-title-line">to intelligent systems.</span>\n          </h2>',
+              ),
+              (
+                  '<h2 id="contact-title">Good conversations<br>can start anywhere.</h2>',
+                  '<h2 id="contact-title">\n          <span class="contact-title-line">Good conversations</span>\n          <span class="contact-title-line">can start anywhere.</span>\n        </h2>',
+              ),
+              (
+                  '<span class="workshop-updated-divider" aria-hidden="true">·</span>',
+                  '<span class="workshop-updated-divider" aria-hidden="true"></span>',
+              ),
+              (
+                  'styles.css?v=4.1.9',
+                  'styles.css?v=4.1.9.1',
+              ),
+          ]
+
+          for old, new in replacements:
+              count = index.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected exactly one match, found {count}: {old[:80]}")
+              index = index.replace(old, new, 1)
+
+          marker = "/* Desktop editorial line treatment — August 2026 */"
+          if marker in css:
+              raise SystemExit("Desktop editorial refinement block already exists")
+
+          css += r'''
+
+/* Desktop editorial line treatment — August 2026 */
+.workshop-updated {
+  width: min(100%, 540px);
+  margin-inline: auto;
+  gap: clamp(12px, 2.1vw, 22px);
+}
+
+.workshop-updated-divider {
+  position: relative;
+  width: clamp(58px, 9vw, 132px);
+  height: 1px;
+  display: inline-block;
+  flex: 0 1 132px;
+  overflow: hidden;
+  border-radius: 999px;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(151, 181, 191, 0.32) 18%,
+    rgba(183, 202, 208, 0.72) 50%,
+    rgba(130, 151, 190, 0.34) 82%,
+    transparent
+  );
+  box-shadow: 0 0 18px rgba(108, 151, 166, 0.12);
+}
+
+.workshop-updated-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, 0.9) 50%, transparent 100%);
+  transform: translateX(-115%);
+  animation: workshop-updated-sweep 5.8s var(--ease) infinite;
+}
+
+@keyframes workshop-updated-sweep {
+  0%, 58% { transform: translateX(-115%); opacity: 0; }
+  66% { opacity: 0.86; }
+  82% { transform: translateX(115%); opacity: 0; }
+  100% { transform: translateX(115%); opacity: 0; }
+}
+
+@media (min-width: 901px) {
+  .about .section-heading,
+  .contact-copy,
+  .workshop-block-heading {
+    max-width: 1120px;
+  }
+
+  #about-title,
+  #contact-title,
+  #foundation-title,
+  #current-title,
+  #workshop-title {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  #about-title,
+  #contact-title,
+  #foundation-title,
+  #current-title {
+    font-size: clamp(2.25rem, 4vw, 4rem);
+  }
+
+  #about-title .about-title-line,
+  #contact-title .contact-title-line,
+  #workshop-title > span {
+    display: inline;
+  }
+
+  #about-title .about-title-line:first-child::after {
+    content: ", ";
+  }
+
+  #contact-title .contact-title-line:first-child::after,
+  #workshop-title > span:first-child::after {
+    content: " ";
+  }
+
+  #workshop-title {
+    font-size: clamp(2.9rem, 5.4vw, 5.65rem);
+  }
+
+  #journey-title {
+    white-space: normal;
+  }
+
+  #journey-title .journey-title-line {
+    display: block;
+  }
+}
+
+@media (max-width: 900px) {
+  #contact-title .contact-title-line,
+  #journey-title .journey-title-line {
+    display: block;
+  }
+
+  .workshop-updated {
+    gap: 12px;
+  }
+
+  .workshop-updated-divider {
+    width: clamp(42px, 14vw, 76px);
+    flex-basis: 76px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workshop-updated-divider::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+'''
+
+          index_path.write_text(index, encoding="utf-8")
+          css_path.write_text(css, encoding="utf-8")
+
+          required_index = [
+              'class="journey-title-line">From foundations</span>',
+              'class="journey-title-line">to intelligent systems.</span>',
+              'class="contact-title-line">Good conversations</span>',
+              'class="contact-title-line">can start anywhere.</span>',
+              'class="workshop-updated-divider" aria-hidden="true"></span>',
+              'styles.css?v=4.1.9.1',
+          ]
+          for text in required_index:
+              if text not in index:
+                  raise SystemExit(f"Missing expected index content: {text}")
+
+          required_css = [
+              marker,
+              '#about-title .about-title-line:first-child::after',
+              '#workshop-title > span',
+              '#foundation-title',
+              '#current-title',
+              '#contact-title',
+              '@keyframes workshop-updated-sweep',
+          ]
+          for text in required_css:
+              if text not in css:
+                  raise SystemExit(f"Missing expected CSS content: {text}")
+          PY
+
+          rm -rf .github
+          node --check script.js
+
+          git add -A
+          tree="$(git write-tree)"
+          test "$(git ls-tree -r --name-only "$tree" | wc -l | tr -d ' ')" = "18"
+          ! git ls-tree -r --name-only "$tree" | grep -Eq '(^|/)(\.github|payload|deploy-input|tmp|temp)(/|$)'
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          commit="$(printf '%s\n' 'Refine desktop headings and Workshop update divider' | git commit-tree "$tree" -p "$base_parent")"
+          git push origin "${commit}:refs/heads/main" --force
