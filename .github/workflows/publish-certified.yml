@@ -1,0 +1,85 @@
+name: Publish certified portfolio 4.1.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-certified.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace repository with certified build
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cat > /tmp/assets.sha256 <<'EOF'
+          2f2c9fa727e47f73b9cd048cc54e9219e727658e58d9ddabcc1e68e84cac00b6  assets/apple-touch-icon.png
+          5199ff13cd40176ef6136bf5b7defd5d4e257298b18a6f8f9fcc1034e10966d2  assets/favicon-192.png
+          7e3b46821600a4e5e4f1cfa6712d75f3abde63c1614d00872cdef577fe7c07df  assets/favicon-32.png
+          0884d3653d0a6ebebcee783434ff27c79ef254025543fc0eb94151ef541e1452  assets/favicon-512.png
+          c3c038c8b6be134e7ba1ec23cf09cf547959f1b54c610c17f51d72d6a7167f57  assets/favicon.ico
+          a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972  assets/manrope-latin-variable.woff2
+          558c991a9e060bf437859284c4987e67799becb797fce7114ef1599f84a9c3ec  assets/mohammed-portrait.webp
+          6e43cb2aeb2830be54e790c79ffbd2736639c559030885763ae83afa6f6299c9  assets/mohammed-social-preview.png
+          EOF
+          sha256sum --check /tmp/assets.sha256
+
+          rm -rf /tmp/certified-site
+          mkdir -p /tmp/certified-site/assets
+          cat .deploy/part-* | base64 --decode | tar -xzf - -C /tmp/certified-site
+
+          cp assets/apple-touch-icon.png /tmp/certified-site/assets/
+          cp assets/favicon-192.png /tmp/certified-site/assets/
+          cp assets/favicon-32.png /tmp/certified-site/assets/
+          cp assets/favicon-512.png /tmp/certified-site/assets/
+          cp assets/favicon.ico /tmp/certified-site/assets/
+          cp assets/manrope-latin-variable.woff2 /tmp/certified-site/assets/
+          cp assets/mohammed-portrait.webp /tmp/certified-site/assets/
+          cp assets/mohammed-social-preview.png /tmp/certified-site/assets/
+
+          cat > /tmp/expected-files <<'EOF'
+          .nojekyll
+          404.html
+          CHANGELOG.md
+          README.md
+          assets/apple-touch-icon.png
+          assets/favicon-192.png
+          assets/favicon-32.png
+          assets/favicon-512.png
+          assets/favicon.ico
+          assets/favicon.svg
+          assets/manrope-latin-variable.woff2
+          assets/mohammed-portrait.webp
+          assets/mohammed-social-preview.png
+          index.html
+          robots.txt
+          script.js
+          site.webmanifest
+          sitemap.xml
+          styles.css
+          EOF
+          (cd /tmp/certified-site && find . -type f -printf '%P\n' | sort) > /tmp/actual-files
+          diff -u /tmp/expected-files /tmp/actual-files
+
+          grep -q 'styles.css?v=4.1.0' /tmp/certified-site/index.html
+          grep -q 'script.js?v=4.1.0' /tmp/certified-site/index.html
+          grep -q 'Version 4.1.0' /tmp/certified-site/404.html
+
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/certified-site/. .
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Publish certified portfolio v4.1.0'
+          git push origin HEAD:main
