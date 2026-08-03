@@ -48,15 +48,20 @@ jobs:
           test -f .deploy/freshpart-001
           test -f .deploy/freshpart-002
 
-          cat .deploy/freshpart-* > /tmp/certified-site.b64
-          base64 --decode --ignore-garbage /tmp/certified-site.b64 > /tmp/certified-site.tar.gz
+          : > /tmp/certified-site.tar.gz
+          for part in .deploy/freshpart-*; do
+            base64 --decode --ignore-garbage "$part" >> /tmp/certified-site.tar.gz
+          done
           gzip -t /tmp/certified-site.tar.gz
 
           rm -rf /tmp/certified-site
           mkdir -p /tmp/certified-site/assets
           tar -xzf /tmp/certified-site.tar.gz -C /tmp/certified-site
 
-          cat .deploy/portrait-* | base64 --decode --ignore-garbage > /tmp/certified-site/assets/mohammed-portrait.webp
+          : > /tmp/certified-site/assets/mohammed-portrait.webp
+          for part in .deploy/portrait-*; do
+            base64 --decode --ignore-garbage "$part" >> /tmp/certified-site/assets/mohammed-portrait.webp
+          done
           echo '558c991a9e060bf437859284c4987e67799becb797fce7114ef1599f84a9c3ec  /tmp/certified-site/assets/mohammed-portrait.webp' | sha256sum --check
 
           cp assets/apple-touch-icon.png /tmp/certified-site/assets/
