@@ -1,11 +1,9 @@
-name: Deploy clean Blue Continuum 4.1.9 final
+name: Publish independent Blue Continuum 4.1.9 tree
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - deploy-input/final-419-v3
+  push:
+    branches: [deploy-final-419-v3]
+    paths: [deploy-input/final-419-v3]
 
 permissions:
   contents: write
@@ -14,81 +12,110 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout deployment merge
+      - name: Checkout repository objects
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Rebuild and publish the clean production tree
+      - name: Create and publish an independent production tree
         shell: bash
         run: |
           set -euo pipefail
-
-          git fetch origin maintenance/cleanup-2026-07-19
+          git fetch origin deploy/blue-continuum-4.1.9-exact-payload
           payload_ref=FETCH_HEAD
-
-          mkdir -p /tmp/production-assets
-          for file in \
-            assets/apple-touch-icon.png \
-            assets/favicon-192.png \
-            assets/favicon-32.png \
-            assets/favicon-512.png \
-            assets/favicon.ico \
-            assets/manrope-latin-variable.woff2 \
-            assets/mohammed-portrait.webp \
-            assets/mohammed-social-preview.png
-          do
-            cp "$file" "/tmp/production-assets/$(basename "$file")"
-          done
-
-          for file in $(git ls-tree -r --name-only "$payload_ref" payload419-direct | grep -E 'index_[0-9]{2}\.txt$' | sort); do
-            git show "$payload_ref:$file"
-          done | base64 --decode > /tmp/index.html
-
-          for file in $(git ls-tree -r --name-only "$payload_ref" payload419-direct | grep -E 'script3_[0-9]{2}\.txt$' | sort); do
-            git show "$payload_ref:$file"
-          done | base64 --decode > /tmp/script.js
-
-          git show "$payload_ref:payload419-direct/styles_gz.txt" | base64 --decode | gzip -dc > /tmp/styles.css
-
-          test "$(git hash-object /tmp/index.html)" = "bb739724d3f1b2e07c3309e57e67bce83c41c421"
+          decode_gzip_b64() {
+            git show "$payload_ref:$1" | tr -d '\r\n' | base64 --decode | gzip -dc > "$2"
+          }
+          decode_gzip_b64 payload419-exact/index-tree.html.gz.b64 /tmp/index.html
+          decode_gzip_b64 payload419-exact/script.js.gz.b64 /tmp/script.js
+          decode_gzip_b64 payload419-exact/styles.css.gz.b64 /tmp/styles.css
+          test "$(git hash-object /tmp/index.html)" = "05c7fe9512e8a28a66ea2f679e7e3313f24ff57a"
           test "$(git hash-object /tmp/script.js)" = "95b70d850d6d32cde3d884675f581e6a4c5b8a6d"
           test "$(git hash-object /tmp/styles.css)" = "748f4b083d730711708dc6df6df2e36638b0f3ce"
-          test "$(git hash-object /tmp/production-assets/mohammed-portrait.webp)" = "7b79b0f806d02f36c70ddd0d8787edeb6078a6d0"
-
-          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-
-          cp /tmp/index.html index.html
-          cp /tmp/script.js script.js
-          cp /tmp/styles.css styles.css
-          : > .nojekyll
-
-          git show "$payload_ref:payload419-direct/files/404.html" > 404.html
-          git show "$payload_ref:payload419-direct/files/CHANGELOG.md" > CHANGELOG.md
-          git show "$payload_ref:payload419-direct/files/README.md" > README.md
-          git show "$payload_ref:payload419-direct/files/robots.txt" > robots.txt
-          git show "$payload_ref:payload419-direct/files/site.webmanifest" > site.webmanifest
-          git show "$payload_ref:payload419-direct/files/sitemap.xml" > sitemap.xml
-
-          mkdir -p assets
-          cp /tmp/production-assets/* assets/
-          git show "$payload_ref:payload419-direct/files/assets/favicon.svg" > assets/favicon.svg
-
-          test "$(find . -type f ! -path './.git/*' | wc -l | tr -d ' ')" = "19"
-          test "$(git hash-object index.html)" = "bb739724d3f1b2e07c3309e57e67bce83c41c421"
-          test "$(git hash-object script.js)" = "95b70d850d6d32cde3d884675f581e6a4c5b8a6d"
-          test "$(git hash-object styles.css)" = "748f4b083d730711708dc6df6df2e36638b0f3ce"
-          test "$(git hash-object assets/mohammed-portrait.webp)" = "7b79b0f806d02f36c70ddd0d8787edeb6078a6d0"
-          grep -q 'Version 4.1.9' index.html
-          grep -q 'styles.css?v=4.1.9' index.html
-          grep -q 'script.js?v=4.1.9' index.html
-          grep -q 'workshop-card-divider' index.html
-          ! grep -q 'workshop-status-key' index.html
-          ! grep -q 'workshop-state' index.html
-          ! find . -type f ! -path './.git/*' | grep -Eq 'payload419|deploy-input|\.github|__probe_unused__'
-
+          git show "$payload_ref:payload419-direct/files/404.html" > /tmp/404.html
+          git show "$payload_ref:payload419-direct/files/CHANGELOG.md" > /tmp/CHANGELOG.md
+          git show "$payload_ref:payload419-direct/files/README.md" > /tmp/README.md
+          git show "$payload_ref:payload419-direct/files/robots.txt" > /tmp/robots.txt
+          git show "$payload_ref:payload419-direct/files/site.webmanifest" > /tmp/site.webmanifest
+          git show "$payload_ref:payload419-direct/files/sitemap.xml" > /tmp/sitemap.xml
+          git show "$payload_ref:payload419-direct/files/assets/favicon.svg" > /tmp/favicon.svg
+          : > /tmp/.nojekyll
+          test "$(git hash-object /tmp/.nojekyll)" = "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+          test "$(git hash-object /tmp/404.html)" = "1f77d718071a543759c932b835ceded87a03ec56"
+          test "$(git hash-object /tmp/CHANGELOG.md)" = "5fb7280241700213209d880130115db790140f33"
+          test "$(git hash-object /tmp/README.md)" = "d5d830b5f5b936530af20fb5d4aebd811901b802"
+          test "$(git hash-object /tmp/robots.txt)" = "f297256cac8c11dd11d8f4ee5f95b664a988542a"
+          test "$(git hash-object /tmp/site.webmanifest)" = "bce073b640b17679c00225bcf33b7780a86d7619"
+          test "$(git hash-object /tmp/sitemap.xml)" = "3d29e52828acaf834d9eb510a6bfb995cf4dbd77"
+          test "$(git hash-object /tmp/favicon.svg)" = "c48308de111c907a07ceea6646cdd21b6f925b98"
+          for sha in 24418019a190f23419bdbb1ed028e0c87fcad037 7e61e0aad61eee1116e38c34468b8d6c8a293c72 4c30da53259b483e9ef00e31782a5eada24a4068 d7b9d563d83df9e160fc2c42c69881a4dfee6d35 f69da56657e530439e164d5e5d13c2580fd0817a 71eb731d558046199aa7f985adbf812890a093a1 7b79b0f806d02f36c70ddd0d8787edeb6078a6d0; do git cat-file -e "${sha}^{blob}"; done
+          nojekyll_sha=$(git hash-object -w /tmp/.nojekyll)
+          page404_sha=$(git hash-object -w /tmp/404.html)
+          changelog_sha=$(git hash-object -w /tmp/CHANGELOG.md)
+          readme_sha=$(git hash-object -w /tmp/README.md)
+          index_sha=$(git hash-object -w /tmp/index.html)
+          robots_sha=$(git hash-object -w /tmp/robots.txt)
+          script_sha=$(git hash-object -w /tmp/script.js)
+          manifest_sha=$(git hash-object -w /tmp/site.webmanifest)
+          sitemap_sha=$(git hash-object -w /tmp/sitemap.xml)
+          styles_sha=$(git hash-object -w /tmp/styles.css)
+          favicon_svg_sha=$(git hash-object -w /tmp/favicon.svg)
+          assets_tree=$(printf '%s\n' \
+            "100644 blob 24418019a190f23419bdbb1ed028e0c87fcad037	apple-touch-icon.png" \
+            "100644 blob 7e61e0aad61eee1116e38c34468b8d6c8a293c72	favicon-192.png" \
+            "100644 blob 4c30da53259b483e9ef00e31782a5eada24a4068	favicon-32.png" \
+            "100644 blob d7b9d563d83df9e160fc2c42c69881a4dfee6d35	favicon-512.png" \
+            "100644 blob f69da56657e530439e164d5e5d13c2580fd0817a	favicon.ico" \
+            "100644 blob ${favicon_svg_sha}	favicon.svg" \
+            "100644 blob 71eb731d558046199aa7f985adbf812890a093a1	manrope-latin-variable.woff2" \
+            "100644 blob 7b79b0f806d02f36c70ddd0d8787edeb6078a6d0	mohammed-portrait.webp" | git mktree)
+          root_tree=$(printf '%s\n' \
+            "100644 blob ${nojekyll_sha}	.nojekyll" \
+            "100644 blob ${page404_sha}	404.html" \
+            "100644 blob ${changelog_sha}	CHANGELOG.md" \
+            "100644 blob ${readme_sha}	README.md" \
+            "040000 tree ${assets_tree}	assets" \
+            "100644 blob ${index_sha}	index.html" \
+            "100644 blob ${robots_sha}	robots.txt" \
+            "100644 blob ${script_sha}	script.js" \
+            "100644 blob ${manifest_sha}	site.webmanifest" \
+            "100644 blob ${sitemap_sha}	sitemap.xml" \
+            "100644 blob ${styles_sha}	styles.css" | git mktree)
+          cat > /tmp/expected-files <<'EOF'
+          .nojekyll
+          404.html
+          CHANGELOG.md
+          README.md
+          assets/apple-touch-icon.png
+          assets/favicon-192.png
+          assets/favicon-32.png
+          assets/favicon-512.png
+          assets/favicon.ico
+          assets/favicon.svg
+          assets/manrope-latin-variable.woff2
+          assets/mohammed-portrait.webp
+          index.html
+          robots.txt
+          script.js
+          site.webmanifest
+          sitemap.xml
+          styles.css
+          EOF
+          git ls-tree -r --name-only "$root_tree" | sort > /tmp/actual-files
+          sort /tmp/expected-files -o /tmp/expected-files
+          diff -u /tmp/expected-files /tmp/actual-files
+          test "$(wc -l < /tmp/actual-files | tr -d ' ')" = "18"
+          ! grep -Eq '(^|/)(\.github|payload|deploy-input)(/|$)' /tmp/actual-files
+          grep -q 'Version 4.1.9' /tmp/index.html
+          grep -q 'styles.css?v=4.1.9' /tmp/index.html
+          grep -q 'script.js?v=4.1.9' /tmp/index.html
+          grep -q 'workshop-card-divider' /tmp/index.html
+          grep -q 'assets/mohammed-portrait.webp' /tmp/index.html
+          ! grep -q 'mohammed-social-preview' /tmp/index.html
+          node --check /tmp/script.js
+          git fetch origin main
+          parent=$(git rev-parse origin/main)
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Publish Blue Continuum 4.1.9 clean production build"
-          git push origin HEAD:main --force
+          commit=$(printf '%s\n' 'Publish Blue Continuum 4.1.9 independent clean tree' | git commit-tree "$root_tree" -p "$parent")
+          git push origin "${commit}:refs/heads/main" --force
