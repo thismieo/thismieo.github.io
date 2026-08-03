@@ -1,20 +1,23 @@
 name: Deploy clean Blue Continuum 4.1.9
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-    paths:
-      - .github/workflows/deploy-clean-419.yml
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 permissions:
   contents: write
 
 jobs:
   deploy:
+    if: github.event.pull_request.head.ref == 'deploy-final-419'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout deployment merge
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
