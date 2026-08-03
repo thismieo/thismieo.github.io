@@ -1,0 +1,94 @@
+name: Deploy clean Blue Continuum 4.1.9 final
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - deploy-input/final-419-v3
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout deployment merge
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild and publish the clean production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch origin maintenance/cleanup-2026-07-19
+          payload_ref=FETCH_HEAD
+
+          mkdir -p /tmp/production-assets
+          for file in \
+            assets/apple-touch-icon.png \
+            assets/favicon-192.png \
+            assets/favicon-32.png \
+            assets/favicon-512.png \
+            assets/favicon.ico \
+            assets/manrope-latin-variable.woff2 \
+            assets/mohammed-portrait.webp \
+            assets/mohammed-social-preview.png
+          do
+            cp "$file" "/tmp/production-assets/$(basename "$file")"
+          done
+
+          for file in $(git ls-tree -r --name-only "$payload_ref" payload419-direct | grep -E 'index_[0-9]{2}\.txt$' | sort); do
+            git show "$payload_ref:$file"
+          done | base64 --decode > /tmp/index.html
+
+          for file in $(git ls-tree -r --name-only "$payload_ref" payload419-direct | grep -E 'script3_[0-9]{2}\.txt$' | sort); do
+            git show "$payload_ref:$file"
+          done | base64 --decode > /tmp/script.js
+
+          git show "$payload_ref:payload419-direct/styles_gz.txt" | base64 --decode | gzip -dc > /tmp/styles.css
+
+          test "$(git hash-object /tmp/index.html)" = "bb739724d3f1b2e07c3309e57e67bce83c41c421"
+          test "$(git hash-object /tmp/script.js)" = "95b70d850d6d32cde3d884675f581e6a4c5b8a6d"
+          test "$(git hash-object /tmp/styles.css)" = "748f4b083d730711708dc6df6df2e36638b0f3ce"
+          test "$(git hash-object /tmp/production-assets/mohammed-portrait.webp)" = "7b79b0f806d02f36c70ddd0d8787edeb6078a6d0"
+
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+
+          cp /tmp/index.html index.html
+          cp /tmp/script.js script.js
+          cp /tmp/styles.css styles.css
+          : > .nojekyll
+
+          git show "$payload_ref:payload419-direct/files/404.html" > 404.html
+          git show "$payload_ref:payload419-direct/files/CHANGELOG.md" > CHANGELOG.md
+          git show "$payload_ref:payload419-direct/files/README.md" > README.md
+          git show "$payload_ref:payload419-direct/files/robots.txt" > robots.txt
+          git show "$payload_ref:payload419-direct/files/site.webmanifest" > site.webmanifest
+          git show "$payload_ref:payload419-direct/files/sitemap.xml" > sitemap.xml
+
+          mkdir -p assets
+          cp /tmp/production-assets/* assets/
+          git show "$payload_ref:payload419-direct/files/assets/favicon.svg" > assets/favicon.svg
+
+          test "$(find . -type f ! -path './.git/*' | wc -l | tr -d ' ')" = "19"
+          test "$(git hash-object index.html)" = "bb739724d3f1b2e07c3309e57e67bce83c41c421"
+          test "$(git hash-object script.js)" = "95b70d850d6d32cde3d884675f581e6a4c5b8a6d"
+          test "$(git hash-object styles.css)" = "748f4b083d730711708dc6df6df2e36638b0f3ce"
+          test "$(git hash-object assets/mohammed-portrait.webp)" = "7b79b0f806d02f36c70ddd0d8787edeb6078a6d0"
+          grep -q 'Version 4.1.9' index.html
+          grep -q 'styles.css?v=4.1.9' index.html
+          grep -q 'script.js?v=4.1.9' index.html
+          grep -q 'workshop-card-divider' index.html
+          ! grep -q 'workshop-status-key' index.html
+          ! grep -q 'workshop-state' index.html
+          ! find . -type f ! -path './.git/*' | grep -Eq 'payload419|deploy-input|\.github|__probe_unused__'
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish Blue Continuum 4.1.9 clean production build"
+          git push origin HEAD:main --force
