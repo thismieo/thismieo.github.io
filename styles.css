@@ -2115,3 +2115,121 @@ body.workshop-open { overflow-x: hidden; }
   .contact-card-action { min-width: 48px; padding-inline: 8px; }
   .contact-action-icon { margin-inline: auto; }
 }
+
+
+/* Desktop editorial line treatment — August 2026 */
+.workshop-updated {
+  width: min(100%, 540px);
+  margin-inline: auto;
+  gap: clamp(12px, 2.1vw, 22px);
+}
+
+.workshop-updated-divider {
+  position: relative;
+  width: clamp(58px, 9vw, 132px);
+  height: 1px;
+  display: inline-block;
+  flex: 0 1 132px;
+  overflow: hidden;
+  border-radius: 999px;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(151, 181, 191, 0.32) 18%,
+    rgba(183, 202, 208, 0.72) 50%,
+    rgba(130, 151, 190, 0.34) 82%,
+    transparent
+  );
+  box-shadow: 0 0 18px rgba(108, 151, 166, 0.12);
+}
+
+.workshop-updated-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, 0.9) 50%, transparent 100%);
+  transform: translateX(-115%);
+  animation: workshop-updated-sweep 5.8s var(--ease) infinite;
+}
+
+@keyframes workshop-updated-sweep {
+  0%, 58% { transform: translateX(-115%); opacity: 0; }
+  66% { opacity: 0.86; }
+  82% { transform: translateX(115%); opacity: 0; }
+  100% { transform: translateX(115%); opacity: 0; }
+}
+
+@media (min-width: 901px) {
+  .about .section-heading,
+  .contact-copy,
+  .workshop-block-heading {
+    max-width: 1120px;
+  }
+
+  #about-title,
+  #contact-title,
+  #foundation-title,
+  #current-title,
+  #workshop-title {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  #about-title,
+  #contact-title,
+  #foundation-title,
+  #current-title {
+    font-size: clamp(2.25rem, 4vw, 4rem);
+  }
+
+  #about-title .about-title-line,
+  #contact-title .contact-title-line,
+  #workshop-title > span {
+    display: inline;
+  }
+
+  #about-title .about-title-line:first-child::after {
+    content: ", ";
+  }
+
+  #contact-title .contact-title-line:first-child::after,
+  #workshop-title > span:first-child::after {
+    content: " ";
+  }
+
+  #workshop-title {
+    font-size: clamp(2.9rem, 5.4vw, 5.65rem);
+  }
+
+  #journey-title {
+    white-space: normal;
+  }
+
+  #journey-title .journey-title-line {
+    display: block;
+  }
+}
+
+@media (max-width: 900px) {
+  #contact-title .contact-title-line,
+  #journey-title .journey-title-line {
+    display: block;
+  }
+
+  .workshop-updated {
+    gap: 12px;
+  }
+
+  .workshop-updated-divider {
+    width: clamp(42px, 14vw, 76px);
+    flex-basis: 76px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workshop-updated-divider::after {
+    animation: none;
+    opacity: 0;
+  }
+}
