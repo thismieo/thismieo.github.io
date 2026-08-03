@@ -1,0 +1,66 @@
+name: Deploy clean Blue Continuum 4.1.9
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - deploy-input/ready
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build and publish clean production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch origin maintenance/cleanup-2026-07-19
+          for file in $(git ls-tree -r --name-only FETCH_HEAD deploy-input | grep 'chunk_.*\.txt$' | sort); do
+            git show "FETCH_HEAD:$file"
+          done | base64 --decode > /tmp/site-text.zip
+
+          mkdir -p /tmp/production-assets
+          for file in \
+            assets/apple-touch-icon.png \
+            assets/favicon-192.png \
+            assets/favicon-32.png \
+            assets/favicon-512.png \
+            assets/favicon.ico \
+            assets/favicon.svg \
+            assets/manrope-latin-variable.woff2 \
+            assets/mohammed-portrait.webp \
+            assets/mohammed-social-preview.png
+          do
+            cp "$file" /tmp/production-assets/
+          done
+
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          unzip -q /tmp/site-text.zip -d .
+          mkdir -p assets
+          cp /tmp/production-assets/* assets/
+
+          actual_files="$(find . -type f ! -path './.git/*' | wc -l | tr -d ' ')"
+          test "$actual_files" = "19"
+          test -f index.html
+          test -f styles.css
+          test -f script.js
+          test -f assets/mohammed-portrait.webp
+          grep -q 'Version 4.1.9' index.html
+          grep -q 'Workshop Dividers' README.md
+          ! find . -type f ! -path './.git/*' | grep -Eq 'deploy-input|\.github|__probe_unused__'
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish Blue Continuum 4.1.9 clean production build"
+          git push origin HEAD:main --force
