@@ -1,0 +1,79 @@
+name: Final certified upload
+
+on:
+  push:
+    branches:
+      - final-upload-410
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate and publish
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cat .upload/text3-* | base64 --decode > /tmp/text3.tar.gz
+          gzip -t /tmp/text3.tar.gz
+
+          rm -rf /tmp/site
+          mkdir -p /tmp/site
+          tar -xzf /tmp/text3.tar.gz -C /tmp/site
+
+          cp .nojekyll 404.html CHANGELOG.md README.md robots.txt site.webmanifest sitemap.xml /tmp/site/
+          cp -a assets /tmp/site/
+
+          cat > /tmp/expected <<'EOF'
+          .nojekyll
+          404.html
+          CHANGELOG.md
+          README.md
+          assets/apple-touch-icon.png
+          assets/favicon-192.png
+          assets/favicon-32.png
+          assets/favicon-512.png
+          assets/favicon.ico
+          assets/favicon.svg
+          assets/manrope-latin-variable.woff2
+          assets/mohammed-portrait.webp
+          assets/mohammed-social-preview.png
+          index.html
+          robots.txt
+          script.js
+          site.webmanifest
+          sitemap.xml
+          styles.css
+          EOF
+
+          (cd /tmp/site && find . -type f -printf '%P\n' | sort) > /tmp/actual
+          diff -u /tmp/expected /tmp/actual
+
+          test "$(git hash-object /tmp/site/index.html)" = "54b07bd9cd282328e68f37fcbbc1bc2ae12bbed2"
+          test "$(git hash-object /tmp/site/script.js)" = "4fbd3731463039ec34fe96da59eeedbda09e00bd"
+          test "$(git hash-object /tmp/site/styles.css)" = "7104ef4e6d1cc021dcda1b99715c69373dce3295"
+          grep -q 'styles.css?v=4.1.0' /tmp/site/index.html
+          grep -q 'script.js?v=4.1.0' /tmp/site/index.html
+          grep -q 'Version 4.1.0' /tmp/site/404.html
+          node --check /tmp/site/script.js
+          python3 -m json.tool /tmp/site/site.webmanifest >/dev/null
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('/tmp/site/sitemap.xml')
+          PY
+
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/site/. .
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Publish Blue Continuum 4.1.0 certified build'
+          git push origin HEAD:main
