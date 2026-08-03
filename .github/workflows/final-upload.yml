@@ -1,9 +1,9 @@
 name: Final certified upload
 
 on:
-  push:
+  pull_request:
     branches:
-      - final-upload-410
+      - main
 
 permissions:
   contents: write
