@@ -5,12 +5,18 @@ on:
     branches: [main]
     paths:
       - .github/workflows/apply-desktop-heading-refinements.yml
+  pull_request_target:
+    branches: [main]
+    paths:
+      - .desktop-refinement-trigger
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   refine:
+    if: github.actor == 'thismieo'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,6 +26,9 @@ jobs:
 
       - name: Apply and validate responsive typography refinements
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
           base_parent="$(git rev-parse HEAD^)"
@@ -222,3 +231,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           commit="$(printf '%s\n' 'Refine desktop headings and Workshop update divider' | git commit-tree "$tree" -p "$base_parent")"
           git push origin "${commit}:refs/heads/main" --force
+
+          if [[ -n "${PR_NUMBER:-}" && "${PR_NUMBER}" != "null" ]]; then
+            curl -fsSL -X PATCH \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" \
+              -d '{"state":"closed"}' >/dev/null || true
+          fi
+
+          if [[ -n "${GITHUB_HEAD_REF:-}" ]]; then
+            git push origin --delete "${GITHUB_HEAD_REF}" || true
+          fi
