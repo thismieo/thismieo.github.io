@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '*/5 * * * *'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.deploy/run-certified-4-1-0'
 
 permissions:
   contents: write
