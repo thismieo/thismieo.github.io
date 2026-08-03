@@ -83,3 +83,5 @@ jobs:
           git add -A
           git commit -m 'Publish certified portfolio v4.1.0'
           git push origin HEAD:main
+
+# Merge-triggered certified deployment.
