@@ -9,6 +9,10 @@ on:
     paths:
       - '.deploy/freshpart-*'
       - '.deploy/run-certified-4-1-0'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.deploy/run-certified-4-1-0'
 
 permissions:
   contents: write
