@@ -1,23 +1,20 @@
 name: Deploy clean Blue Continuum 4.1.9
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - opened
-      - reopened
-      - synchronize
+    paths:
+      - .github/workflows/deploy-clean-419.yml
 
 permissions:
   contents: write
 
 jobs:
   deploy:
-    if: github.event.pull_request.head.ref == 'deploy-pr-419'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout deployment merge
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -48,7 +45,7 @@ jobs:
           done
 
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-          unzip -q /tmp/site-text.zip -d .
+          unzip -q /tmp/site-text.zip -d . || test -f styles.css
           mkdir -p assets
           cp /tmp/production-assets/* assets/
 
@@ -60,6 +57,7 @@ jobs:
           test -f assets/mohammed-portrait.webp
           grep -q 'Version 4.1.9' index.html
           grep -q 'Workshop Dividers' README.md
+          grep -q 'workshop-card-divider' styles.css
           ! find . -type f ! -path './.git/*' | grep -Eq 'deploy-input|\.github|__probe_unused__'
 
           git config user.name "github-actions[bot]"
