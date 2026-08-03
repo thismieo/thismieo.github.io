@@ -40,6 +40,17 @@ jobs:
           EOF
           sha256sum --check /tmp/assets.sha256
 
+          cat > /tmp/payload.sha256 <<'EOF'
+          2e02758b3f8e4acdb7bad93b1dea65ac5a670ed4eb1d12c35e7986bec0c77491  .deploy/payload-000
+          663a411db0089dfa6ad6d53c601a981ad25aca479bf540f7a0c7595ab2a7d10d  .deploy/payload-001
+          34df3f8c476800e197ce28ade6407974607730e20b4998e44b660d2e4ef4e872  .deploy/payload-002
+          dfff985dd13aab49200f016f530e772d684659ceb2bb44b5c3fd9380c5d8a78a  .deploy/payload-003
+          9f0ea9806a569a0b8c3232d3afd37fe8e5cae4d02ded8d9e1c7aba54e60e21dc  .deploy/payload-004
+          16925a73e4182589dc49869d42329ff9b182f30cd754d4165a85e43609a037c7  .deploy/payload-005
+          995f5d577ac94042af1b1771c6c6e7957a7cad4717f0e97012962ee3fb6763c6  .deploy/payload-006
+          EOF
+          sha256sum --check /tmp/payload.sha256
+
           rm -rf /tmp/certified-site
           mkdir -p /tmp/certified-site/assets
           cat .deploy/payload-* | base64 --decode | tar -xzf - -C /tmp/certified-site
