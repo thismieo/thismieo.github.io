@@ -49,14 +49,14 @@ jobs:
           test -f .deploy/freshpart-002
 
           cat .deploy/freshpart-* > /tmp/certified-site.b64
-          base64 --decode /tmp/certified-site.b64 > /tmp/certified-site.tar.gz
+          base64 --decode --ignore-garbage /tmp/certified-site.b64 > /tmp/certified-site.tar.gz
           gzip -t /tmp/certified-site.tar.gz
 
           rm -rf /tmp/certified-site
           mkdir -p /tmp/certified-site/assets
           tar -xzf /tmp/certified-site.tar.gz -C /tmp/certified-site
 
-          cat .deploy/portrait-* | base64 --decode > /tmp/certified-site/assets/mohammed-portrait.webp
+          cat .deploy/portrait-* | base64 --decode --ignore-garbage > /tmp/certified-site/assets/mohammed-portrait.webp
           echo '558c991a9e060bf437859284c4987e67799becb797fce7114ef1599f84a9c3ec  /tmp/certified-site/assets/mohammed-portrait.webp' | sha256sum --check
 
           cp assets/apple-touch-icon.png /tmp/certified-site/assets/
