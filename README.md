@@ -1,23 +1,23 @@
-# Mohammed Muayad — Portfolio
+# Mohammed Muayad Portfolio — Blue Continuum 4.1.0
 
-Production source for the personal portfolio published through GitHub Pages.
+Certified responsive portfolio build for desktop, laptop, tablet, and mobile screens.
 
-## Release
+## Runtime files
 
-- Public release: **Version 2.0**
-- Static site: HTML, CSS, and vanilla JavaScript
-- Deployment branch: `main`
-- Public address: `https://thismieo.github.io/`
+- `index.html`
+- `styles.css`
+- `script.js`
+- `assets/`
+- `404.html`
+- `site.webmanifest`
+- `.nojekyll`, `robots.txt`, and `sitemap.xml`
 
-## Structure
+## Release 4.1.0
 
-- `index.html` — portfolio content and semantic structure
-- `styles.css` — responsive visual system
-- `script.js` — navigation, copy controls, card feedback, and Workshop transitions
-- `404.html` — custom not-found page
-- `assets/` — local font, portrait, favicons, and social preview
-- `robots.txt`, `sitemap.xml`, `site.webmanifest` — indexing and browser metadata
+- Rebuilt the Hero chevrons without SVG clipping or residual vertical pixels.
+- Removed the visible primary-button edge beside the chevron while preserving the button design.
+- Hardened the Silk Sweep animation against one-pixel remnants.
+- Consolidated repeated small-screen media rules.
+- Audited layout, navigation, interactions, assets, and Workshop behavior across desktop, tablet, and mobile viewport sizes.
 
-## Deployment
-
-The repository root is the GitHub Pages publishing source. Replacing the files on `main` publishes the site automatically.
+After replacing an older build, refresh once with `Ctrl + F5`.
