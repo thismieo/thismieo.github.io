@@ -1,14 +1,10 @@
 name: Apply Workshop copy and spacing
 
 on:
-  push:
-    branches:
-      - preview/workshop-copy-spacing
   pull_request:
     branches:
       - main
-    paths:
-      - .github/workflows/apply-workshop-copy-spacing.yml
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: write
@@ -17,18 +13,25 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout production branch
+      - name: Checkout staged production branch
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      - name: Apply verified content and spacing changes
+      - name: Apply, verify, and clean
         shell: bash
         run: |
           set -euo pipefail
-          base="$(git rev-parse HEAD)"
-          temp_branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          staged="$(git rev-parse HEAD)"
+          parent="$staged"
+          temp_branch="${GITHUB_HEAD_REF:-preview/workshop-copy-spacing}"
+
+          while test "$(git diff-tree --no-commit-id --name-only -r "$parent" | tr -d '\r')" = ".github/workflows/apply-workshop-copy-spacing.yml"; do
+            parent="$(git rev-parse "$parent^")"
+          done
+
+          test -f .github/workflows/apply-workshop-copy-spacing.yml
 
           python3 <<'PY'
           from pathlib import Path
@@ -56,16 +59,7 @@ jobs:
           path.write_text(text, encoding="utf-8")
           PY
 
-          python3 <<'PY'
-          from pathlib import Path
-
-          path = Path("styles.css")
-          text = path.read_text(encoding="utf-8")
-          marker = "/* Editorial spacing and Workshop descriptions — August 2026 */"
-          if marker in text:
-              raise SystemExit("Editorial spacing block already exists")
-
-          text += r'''
+          cat >> styles.css <<'CSS'
 
 /* Editorial spacing and Workshop descriptions — August 2026 */
 #journey .section-heading-row > p,
@@ -115,25 +109,23 @@ jobs:
     line-height: 1.72;
   }
 }
-'''
-          path.write_text(text, encoding="utf-8")
-          PY
+CSS
 
           grep -q 'styles.css?v=4.1.9.5' index.html
           grep -q 'Core ideas that build a clear foundation for everything ahead.' index.html
           grep -q 'Turning learned concepts into practical, useful experience.' index.html
           grep -q 'Building confidence through logic, practice, and small programs that turn each new concept into real progress.' index.html
-          grep -q 'Editorial spacing and Workshop descriptions' styles.css
+          test "$(grep -c 'Editorial spacing and Workshop descriptions' styles.css)" = "1"
           node --check script.js
 
           rm -rf .github
           git add -A
           tree="$(git write-tree)"
           test "$(git ls-tree -r --name-only "$tree" | wc -l | tr -d ' ')" = "18"
-          test -z "$(git ls-tree -r --name-only "$tree" | grep -E '(^|/)(\.github|trigger|temp|payload|deploy-input)' || true)"
+          test -z "$(git ls-tree -r --name-only "$tree" | grep -E '(^|/)(\.github|trigger|temp|payload|deploy-input|\.run-)' || true)"
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          commit="$(printf '%s\n' 'Refine section spacing and add Workshop descriptions' | git commit-tree "$tree" -p "$base")"
-          git push origin "${commit}:refs/heads/main" --force-with-lease="refs/heads/main:${base}"
+          commit="$(printf '%s\n' 'Refine section spacing and add Workshop descriptions' | git commit-tree "$tree" -p "$parent")"
+          git push origin "${commit}:refs/heads/main" --force-with-lease="refs/heads/main:${staged}"
           git push origin --delete "$temp_branch" || true
