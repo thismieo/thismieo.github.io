@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - preview/workshop-copy-spacing
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/apply-workshop-copy-spacing.yml
 
 permissions:
   contents: write
@@ -23,6 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           base="$(git rev-parse HEAD)"
+          temp_branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
 
           python3 <<'PY'
           from pathlib import Path
@@ -130,4 +136,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           commit="$(printf '%s\n' 'Refine section spacing and add Workshop descriptions' | git commit-tree "$tree" -p "$base")"
           git push origin "${commit}:refs/heads/main" --force-with-lease="refs/heads/main:${base}"
-          git push origin --delete "${GITHUB_REF_NAME}" || true
+          git push origin --delete "$temp_branch" || true
