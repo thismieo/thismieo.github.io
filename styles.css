@@ -2258,3 +2258,11 @@ body.workshop-open { overflow-x: hidden; }
 /* Python current track title centering — August 2026 */
 #current-title { max-width: none; white-space: normal !important; text-align: center; margin-inline: auto; }
 #current-title .current-title-line { display: block; width: 100%; text-align: center; }
+
+
+/* About title true centering — August 2026 */
+@media (min-width: 901px) {
+  #about-title { width: 100%; max-width: none; display: flex !important; justify-content: center; align-items: baseline; flex-wrap: nowrap; gap: 0; margin-inline: auto; white-space: nowrap; text-align: center; }
+  #about-title .about-title-line { width: auto; display: inline-block !important; text-align: center; }
+  #about-title .about-title-line:first-child::after { content: ",\00a0"; }
+}
