@@ -1,6 +1,54 @@
 @import url("./styles-core-4.1.9.css");
 
-/* Mobile display-heading system: fixed editorial lines, no automatic wrapping. */
+/* Editorial heading copy and fixed mobile line system. */
+#about-title {
+  --mobile-title-copy: "Learning with direction\A Building through\A practice";
+}
+
+#journey-title {
+  --mobile-title-copy: "From foundations\A to intelligent systems.";
+}
+
+#projects-title {
+  --mobile-title-copy: "Building real projects.";
+  font-size: 0;
+  line-height: 0;
+}
+
+#contact-title {
+  --mobile-title-copy: "Good\A conversations\A can start anywhere.";
+}
+
+#closing-title {
+  --mobile-title-copy: "Thank you\A for being here.";
+}
+
+#workshop-title {
+  --mobile-title-copy: "Knowledge shaped\A through practice.";
+}
+
+#foundation-title {
+  --mobile-title-copy: "Concepts that\A shape the path.";
+}
+
+#practice-title {
+  --mobile-title-copy: "Knowledge used\A in real workflows.";
+}
+
+#current-title {
+  --mobile-title-copy: "Python, one\A practical step at a time.";
+}
+
+#projects-title::after {
+  content: var(--mobile-title-copy);
+  display: block;
+  color: inherit;
+  font-size: clamp(2.4rem, 4.4vw, 4.35rem);
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: 1.02;
+}
+
 @media (max-width: 700px) {
   #about-title,
   #journey-title,
@@ -12,7 +60,7 @@
   #practice-title,
   #current-title {
     width: 100% !important;
-    max-width: calc(100vw - 40px) !important;
+    max-width: calc(100vw - 24px) !important;
     margin-inline: auto !important;
     overflow: visible !important;
     font-size: 0 !important;
@@ -27,8 +75,7 @@
   #closing-title > *,
   #workshop-title > *,
   #current-title > * {
-    font-size: 0 !important;
-    line-height: 0 !important;
+    display: none !important;
   }
 
   #about-title::after,
@@ -40,51 +87,16 @@
   #foundation-title::after,
   #practice-title::after,
   #current-title::after {
-    display: block !important;
+    content: var(--mobile-title-copy) !important;
     width: 100% !important;
+    display: block !important;
     color: #f1f5f6;
     font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: clamp(1.65rem, 9.4vw, 3.25rem) !important;
+    font-size: clamp(1rem, 7.3vw, 3.15rem) !important;
     font-weight: 730;
     letter-spacing: -0.055em;
     line-height: 1.18 !important;
     white-space: pre !important;
     text-align: center !important;
-  }
-
-  #about-title::after {
-    content: "Learning with\A direction\A Building through\A practice";
-  }
-
-  #journey-title::after {
-    content: "From foundations\A to intelligent\A systems.";
-  }
-
-  #projects-title::after {
-    content: "Learning by\A building.";
-  }
-
-  #contact-title::after {
-    content: "Good\A conversations\A can start anywhere.";
-  }
-
-  #closing-title::after {
-    content: "Thank you\A for being here.";
-  }
-
-  #workshop-title::after {
-    content: "Knowledge shaped\A through practice.";
-  }
-
-  #foundation-title::after {
-    content: "Concepts that\A shape the path.";
-  }
-
-  #practice-title::after {
-    content: "Knowledge used\A in real workflows.";
-  }
-
-  #current-title::after {
-    content: "Python,\A one practical\A step at a time.";
   }
 }
