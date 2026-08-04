@@ -55,6 +55,85 @@
       font-weight: 560;
     }
 
+    /* Python current-track card palette — August 2026 */
+    .current-track-card {
+      --accent-rgb: 158, 145, 203;
+      border-color: rgba(176, 163, 220, 0.24);
+      background:
+        radial-gradient(ellipse 62% 92% at 94% 12%, rgba(119, 102, 187, 0.19), transparent 72%),
+        radial-gradient(ellipse 54% 76% at 4% 100%, rgba(72, 118, 143, 0.11), transparent 76%),
+        linear-gradient(145deg, rgba(28, 33, 68, 0.97), rgba(12, 19, 38, 0.985));
+      box-shadow:
+        0 24px 58px rgba(4, 8, 20, 0.28),
+        inset 0 1px 0 rgba(239, 235, 255, 0.045);
+    }
+
+    .current-track-card .workshop-state.current {
+      color: #c7a1e7;
+      font-size: 0;
+      text-shadow: 0 0 14px rgba(199, 161, 231, 0.22);
+    }
+
+    .current-track-card .workshop-state.current::after {
+      content: "CURRENTLY STUDYING";
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      line-height: 1.25;
+    }
+
+    .current-track-card h3 {
+      color: #f0eef2;
+      text-shadow:
+        0 0 16px rgba(244, 241, 246, 0.13),
+        0 0 34px rgba(211, 204, 222, 0.07);
+    }
+
+    .current-track-card p {
+      color: #aab5c3;
+    }
+
+    .current-track-card .current-track-topics li {
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    .current-track-card .current-track-topics li:nth-child(1) {
+      color: #8bd7cf;
+      border-color: rgba(139, 215, 207, 0.27);
+      background: rgba(92, 180, 171, 0.065);
+      box-shadow:
+        0 0 17px rgba(92, 180, 171, 0.07),
+        inset 0 1px 0 rgba(221, 255, 250, 0.035);
+    }
+
+    .current-track-card .current-track-topics li:nth-child(2) {
+      color: #9dbbe9;
+      border-color: rgba(157, 187, 233, 0.27);
+      background: rgba(103, 143, 205, 0.065);
+      box-shadow:
+        0 0 17px rgba(103, 143, 205, 0.07),
+        inset 0 1px 0 rgba(231, 240, 255, 0.035);
+    }
+
+    .current-track-card .current-track-topics li:nth-child(3) {
+      color: #b8a4e4;
+      border-color: rgba(184, 164, 228, 0.27);
+      background: rgba(134, 106, 190, 0.065);
+      box-shadow:
+        0 0 17px rgba(134, 106, 190, 0.07),
+        inset 0 1px 0 rgba(242, 235, 255, 0.035);
+    }
+
+    .current-track-card .current-track-topics li:nth-child(4) {
+      color: #d6b27c;
+      border-color: rgba(214, 178, 124, 0.27);
+      background: rgba(179, 133, 72, 0.065);
+      box-shadow:
+        0 0 17px rgba(179, 133, 72, 0.07),
+        inset 0 1px 0 rgba(255, 245, 225, 0.035);
+    }
+
     @media (max-width: 900px) {
       #journey .section-heading-row > p,
       #projects .section-heading-row > p {
@@ -78,6 +157,11 @@
         margin-top: 15px;
         font-size: 0.88rem;
         line-height: 1.72;
+      }
+
+      .current-track-card .workshop-state.current::after {
+        font-size: 0.64rem;
+        letter-spacing: 0.16em;
       }
     }
   </style>
