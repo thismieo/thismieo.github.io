@@ -1,0 +1,48 @@
+name: Center Python current title
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/center-python-current-title.yml
+  pull_request_target:
+    branches: [main]
+    paths:
+      - .python-title-trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply title alignment
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          parent="3d8b5d9aa6660f7fceb2f1ee494b2e5d5d9b652e"
+          python3 -c 'from pathlib import Path; p=Path("index.html"); s=p.read_text(encoding="utf-8"); old="<h2 id=\"current-title\">Python, one practical step at a time.</h2>"; new="<h2 id=\"current-title\"><span class=\"current-title-line\">Python, one practical</span><span class=\"current-title-line\">step at a time.</span></h2>"; assert s.count(old)==1, s.count(old); s=s.replace(old,new,1); assert s.count("styles.css?v=4.1.9.2")==1; s=s.replace("styles.css?v=4.1.9.2","styles.css?v=4.1.9.3",1); p.write_text(s,encoding="utf-8")'
+          python3 -c 'from pathlib import Path; p=Path("styles.css"); s=p.read_text(encoding="utf-8"); marker="/* Python current track title centering — August 2026 */"; assert marker not in s; s += "\n\n"+marker+"\n#current-title { max-width: none; white-space: normal !important; text-align: center; margin-inline: auto; }\n#current-title .current-title-line { display: block; width: 100%; text-align: center; }\n"; p.write_text(s,encoding="utf-8")'
+          grep -q 'class="current-title-line">Python, one practical</span>' index.html
+          grep -q 'class="current-title-line">step at a time.</span>' index.html
+          grep -q 'styles.css?v=4.1.9.3' index.html
+          rm -rf .github
+          node --check script.js
+          git add -A
+          tree="$(git write-tree)"
+          test "$(git ls-tree -r --name-only "$tree" | wc -l | tr -d ' ')" = "18"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          commit="$(printf '%s\n' 'Center Python current track title on all screens' | git commit-tree "$tree" -p "$parent")"
+          git push origin "${commit}:refs/heads/main" --force
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            curl -fsSL -X PATCH -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" -d '{"state":"closed"}' >/dev/null
+            curl -fsSL -X DELETE -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/preview%2Fpython-title-centering" >/dev/null || true
+          fi
