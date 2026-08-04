@@ -3,40 +3,54 @@
 /* Fixed editorial headings for mobile: explicit line breaks, no automatic wrapping. */
 #about-title {
   --mobile-title-copy: "Learning with direction\A Building through\A practice.";
+  --mobile-title-size: 8.55vw;
 }
 
 #journey-title {
   --mobile-title-copy: "From foundations\A to intelligent systems.";
+  --mobile-title-size: 8.8vw;
 }
 
 #projects-title {
   --mobile-title-copy: "Building real projects.";
+  --mobile-title-size: 8.6vw;
   font-size: 0;
   line-height: 0;
 }
 
 #contact-title {
   --mobile-title-copy: "Good\A conversations\A can start anywhere.";
+  --mobile-title-size: 9.15vw;
 }
 
 #closing-title {
   --mobile-title-copy: "Thank you\A for being here.";
+  --mobile-title-size: 9.35vw;
 }
 
 #workshop-title {
   --mobile-title-copy: "Knowledge shaped\A through practice.";
+  --mobile-title-size: 8.9vw;
 }
 
 #foundation-title {
   --mobile-title-copy: "Concepts that\A shape the path.";
+  --mobile-title-size: 9.05vw;
 }
 
 #practice-title {
   --mobile-title-copy: "Knowledge used\A in real workflows.";
+  --mobile-title-size: 8.9vw;
 }
 
 #current-title {
   --mobile-title-copy: "Python, one\A practical step at a time.";
+  --mobile-title-size: 8.35vw;
+}
+
+/* Restore the approved punctuation in the desktop About heading. */
+#about-title .about-title-line:last-child::after {
+  content: ".";
 }
 
 /* The project heading uses the approved copy on every viewport. */
@@ -101,7 +115,7 @@
     display: block !important;
     color: #f1f5f6;
     font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: clamp(1.15rem, 8vw, 3.25rem) !important;
+    font-size: clamp(1.35rem, var(--mobile-title-size), 3.5rem) !important;
     font-weight: 730;
     letter-spacing: -0.055em;
     line-height: 1.18 !important;
