@@ -1,6 +1,6 @@
 @import url("./styles-core-4.1.9.css");
 
-/* Editorial heading copy and fixed mobile line system. */
+/* Fixed editorial headings for mobile: explicit line breaks, no automatic wrapping. */
 #about-title {
   --mobile-title-copy: "Learning with direction\A Building through\A practice.";
 }
@@ -39,6 +39,7 @@
   --mobile-title-copy: "Python, one\A practical step at a time.";
 }
 
+/* The project heading uses the approved copy on every viewport. */
 #projects-title::after {
   content: var(--mobile-title-copy);
   display: block;
@@ -50,15 +51,17 @@
 }
 
 @media (max-width: 700px) {
-  #about-title,
-  #journey-title,
-  #projects-title,
-  #contact-title,
-  #closing-title,
-  #workshop-title,
-  #foundation-title,
-  #practice-title,
-  #current-title {
+  :is(
+    #about-title,
+    #journey-title,
+    #projects-title,
+    #contact-title,
+    #closing-title,
+    #workshop-title,
+    #foundation-title,
+    #practice-title,
+    #current-title
+  ) {
     width: 100% !important;
     max-width: calc(100vw - 24px) !important;
     margin-inline: auto !important;
@@ -69,24 +72,30 @@
     text-align: center !important;
   }
 
-  #about-title > *,
-  #journey-title > *,
-  #contact-title > *,
-  #closing-title > *,
-  #workshop-title > *,
-  #current-title > * {
-    display: none !important;
+  /* Preserve the original heading text in the document while hiding it visually. */
+  :is(
+    #about-title,
+    #journey-title,
+    #contact-title,
+    #closing-title,
+    #workshop-title,
+    #current-title
+  ) > * {
+    font-size: 0 !important;
+    line-height: 0 !important;
   }
 
-  #about-title::after,
-  #journey-title::after,
-  #projects-title::after,
-  #contact-title::after,
-  #closing-title::after,
-  #workshop-title::after,
-  #foundation-title::after,
-  #practice-title::after,
-  #current-title::after {
+  :is(
+    #about-title,
+    #journey-title,
+    #projects-title,
+    #contact-title,
+    #closing-title,
+    #workshop-title,
+    #foundation-title,
+    #practice-title,
+    #current-title
+  )::after {
     content: var(--mobile-title-copy) !important;
     width: 100% !important;
     display: block !important;
@@ -97,6 +106,8 @@
     letter-spacing: -0.055em;
     line-height: 1.18 !important;
     white-space: pre !important;
+    word-break: keep-all;
+    overflow-wrap: normal;
     text-align: center !important;
   }
 }
