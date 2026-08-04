@@ -55,6 +55,10 @@
       font-weight: 560;
     }
 
+    .workshop-updated-divider::after {
+      animation-duration: 3s;
+    }
+
     /* Python current-track card palette — August 2026 */
     .current-track-card {
       --accent-rgb: 122, 129, 157;
@@ -143,6 +147,20 @@
         margin-top: 15px;
         font-size: 0.88rem;
         line-height: 1.72;
+      }
+
+      #current-title {
+        width: 100%;
+        max-width: none;
+        margin-inline: auto;
+        text-align: center;
+      }
+
+      #current-title .current-title-line {
+        width: 100%;
+        display: block;
+        white-space: nowrap;
+        text-align: center;
       }
 
       .current-track-card .workshop-state.current::after {
