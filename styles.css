@@ -1,4 +1,4 @@
-/* Blue Continuum 4.2.7 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.3.0 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -3035,5 +3035,37 @@ body.workshop-open { overflow-x: hidden; }
   .contact,
   .closing-note {
     padding-block: 34px;
+  }
+}
+
+/* About information divider — August 2026 */
+.facts {
+  position: relative;
+  margin-top: 30px;
+  padding-top: 30px;
+}
+
+.facts::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(70%, 620px);
+  height: 1px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  pointer-events: none;
+  background: var(--homepage-divider-line);
+  box-shadow: 0 0 14px rgba(145, 169, 178, 0.07);
+}
+
+@media (max-width: 700px) {
+  .facts {
+    margin-top: 24px;
+    padding-top: 25px;
+  }
+
+  .facts::before {
+    width: min(72%, 320px);
   }
 }
