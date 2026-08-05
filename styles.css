@@ -1,4 +1,4 @@
-/* Blue Continuum 4.2.1 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.2.2 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -351,7 +351,7 @@ main {
   font-weight: 800;
   letter-spacing: 0.2em;
   line-height: 1.2;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .eyebrow span {
@@ -380,6 +380,15 @@ main {
   font-weight: 730;
   letter-spacing: -0.06em;
   line-height: 1.02;
+  text-transform: capitalize;
+}
+
+.timeline-item h3,
+.project-card h3,
+.workshop-card h3,
+.current-track-card h3,
+.workshop-entry-title {
+  text-transform: capitalize;
 }
 
 .hero h1 {
@@ -861,6 +870,16 @@ main {
   line-height: 1.82;
 }
 
+@media (min-width: 1100px) {
+  .about-lead-line-growth {
+    max-width: none;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    font-size: clamp(0.86rem, 0.96vw, 0.96rem);
+    letter-spacing: -0.012em;
+  }
+}
+
 .about-body {
   max-width: 790px;
   margin: 16px auto 0;
@@ -952,7 +971,7 @@ main {
   font-size: 0.62rem;
   font-weight: 820;
   letter-spacing: 0.16em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .facts dt::before {
@@ -1070,7 +1089,7 @@ main {
   font-size: 0.58rem;
   font-weight: 820;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .timeline-item h3 {
@@ -1119,7 +1138,7 @@ main {
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.16em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .workshop-entry-title {
@@ -1280,7 +1299,7 @@ main {
   font-size: 0.61rem;
   font-weight: 820;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .status,
@@ -1570,6 +1589,22 @@ main {
   font-weight: 560;
 }
 
+.closing-signoff span {
+  display: inline;
+}
+
+@media (max-width: 560px) {
+  .closing-signoff {
+    max-width: 35ch;
+    font-size: 0.9rem;
+    line-height: 1.76;
+  }
+
+  .closing-signoff span {
+    display: block;
+  }
+}
+
 .site-footer {
   position: relative;
   padding-block: 24px 28px;
@@ -1587,7 +1622,7 @@ main {
 }
 
 .footer-inner p { margin: 0; }
-.footer-version { font-size: 0.61rem; font-weight: 720; letter-spacing: 0.13em; text-transform: uppercase; }
+.footer-version { font-size: 0.61rem; font-weight: 720; letter-spacing: 0.13em; text-transform: capitalize; }
 .footer-copyright { color: #84979f; font-size: 0.72rem; font-weight: 680; }
 .footer-copyright span { margin-right: 4px; }
 
@@ -1725,7 +1760,7 @@ body.workshop-open { overflow-x: hidden; }
   font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .workshop-back {
@@ -1784,7 +1819,7 @@ body.workshop-open { overflow-x: hidden; }
   font-size: 0.64rem;
   font-weight: 750;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .workshop-updated-divider {
@@ -1887,7 +1922,7 @@ body.workshop-open { overflow-x: hidden; }
   font-weight: 820;
   letter-spacing: 0.14em;
   line-height: 1.3;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .workshop-card h3 {
@@ -2619,32 +2654,10 @@ body.workshop-open { overflow-x: hidden; }
   --mobile-title-size: 8.35vw;
 }
 
-/* A long, static closing divider inside the bottom of the homepage hero. */
-.hero::after {
-  content: "";
-  position: absolute;
-  z-index: 4;
-  left: 50%;
-  bottom: 0;
-  width: min(86%, 980px);
-  height: 58px;
-  transform: translateX(-50%);
-  pointer-events: none;
-  background:
-    var(--homepage-divider-line) center / 100% 1px no-repeat,
-    radial-gradient(
-      ellipse 54% 82% at center,
-      rgba(var(--homepage-divider-glow-rgb), 0.13),
-      rgba(var(--homepage-divider-glow-rgb), 0.035) 44%,
-      transparent 76%
-    );
-  filter: drop-shadow(0 0 14px rgba(145, 169, 178, 0.065));
-}
-
 /* Static lead-in divider above and animated closing shimmer below the Workshop card. */
 .workshop-entry-separator {
-  min-height: 72px;
-  margin-top: 20px;
+  min-height: 44px;
+  margin-top: 12px;
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -2750,15 +2763,9 @@ body.workshop-open { overflow-x: hidden; }
   .hero {
     padding-bottom: 72px;
   }
-
-  .hero::after {
-    width: min(88vw, 340px);
-    height: 44px;
-  }
-
   .workshop-entry-separator {
-    min-height: 64px;
-    margin-top: 18px;
+    min-height: 44px;
+    margin-top: 10px;
   }
 
   .workshop-entry-separator-line,
@@ -2766,7 +2773,7 @@ body.workshop-open { overflow-x: hidden; }
     width: min(72%, 320px);
   }
 
-    .workshop-entry-shimmer {
+  .workshop-entry-shimmer {
     margin-top: 32px;
   }
 }
@@ -2962,67 +2969,3 @@ body.workshop-open { overflow-x: hidden; }
     opacity: 0;
   }
 }
-
-/* Section spacing and responsive copy refinement — August 2026 */
-.about::after {
-  content: "";
-  position: absolute;
-  z-index: 4;
-  left: 50%;
-  bottom: 0;
-  width: min(72%, 760px);
-  height: 44px;
-  transform: translateX(-50%);
-  pointer-events: none;
-  background:
-    var(--homepage-divider-line) center / 100% 1px no-repeat,
-    radial-gradient(
-      ellipse 54% 82% at center,
-      rgba(var(--homepage-divider-glow-rgb), 0.13),
-      rgba(var(--homepage-divider-glow-rgb), 0.035) 44%,
-      transparent 76%
-    );
-  filter: drop-shadow(0 0 14px rgba(145, 169, 178, 0.065));
-}
-
-@media (min-width: 1100px) {
-  .about-lead-line-growth {
-    max-width: none;
-    white-space: nowrap;
-    text-wrap: nowrap;
-    font-size: clamp(0.86rem, 0.96vw, 0.96rem);
-    letter-spacing: -0.012em;
-  }
-}
-
-@media (max-width: 700px) {
-  .about::after {
-    width: min(72%, 320px);
-    height: 44px;
-  }
-}
-
-@media (max-width: 560px) {
-  .closing-message {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .closing-message p:first-child {
-    max-width: 38ch;
-  }
-
-  .closing-message p:nth-child(2) {
-    max-width: 36ch;
-  }
-
-  .closing-message p:last-child {
-    width: 100%;
-    max-width: none;
-    white-space: nowrap;
-    text-wrap: nowrap;
-    font-size: clamp(0.64rem, 2.75vw, 0.78rem);
-    letter-spacing: -0.03em;
-  }
-}
-
