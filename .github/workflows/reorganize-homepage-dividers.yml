@@ -41,43 +41,18 @@ jobs:
                   raise SystemExit(f'{label}: expected exactly 1 match, found {count}')
               return text.replace(old, new, 1)
 
-          # Add four real divider elements between the five Journey cards.
           journey_replacements = [
-              (
-                  '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>02</span></div>',
-                  '        </li>\n        <li class="timeline-divider timeline-divider-teal" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>02</span></div>',
-                  'Journey divider 01-02',
-              ),
-              (
-                  '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>03</span></div>',
-                  '        </li>\n        <li class="timeline-divider timeline-divider-indigo" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>03</span></div>',
-                  'Journey divider 02-03',
-              ),
-              (
-                  '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>04</span></div>',
-                  '        </li>\n        <li class="timeline-divider timeline-divider-teal" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>04</span></div>',
-                  'Journey divider 03-04',
-              ),
-              (
-                  '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>05</span></div>',
-                  '        </li>\n        <li class="timeline-divider timeline-divider-indigo" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>05</span></div>',
-                  'Journey divider 04-05',
-              ),
+              ('        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>02</span></div>', '        </li>\n        <li class="timeline-divider timeline-divider-teal" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>02</span></div>', 'Journey divider 01-02'),
+              ('        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>03</span></div>', '        </li>\n        <li class="timeline-divider timeline-divider-indigo" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>03</span></div>', 'Journey divider 02-03'),
+              ('        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>04</span></div>', '        </li>\n        <li class="timeline-divider timeline-divider-teal" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>04</span></div>', 'Journey divider 03-04'),
+              ('        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>05</span></div>', '        </li>\n        <li class="timeline-divider timeline-divider-indigo" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>05</span></div>', 'Journey divider 04-05'),
           ]
           for old, new, label in journey_replacements:
               index = replace_once(index, old, new, label)
 
-          index = replace_once(
-              index,
-              '      <div class="workshop-entry" data-workshop-card>\n        <span class="workshop-entry-label">',
-              '      <div class="workshop-entry" data-workshop-card>\n        <span class="workshop-entry-shimmer" aria-hidden="true"></span>\n        <span class="workshop-entry-label">',
-              'Workshop internal shimmer element',
-          )
+          index = replace_once(index, '      <div class="workshop-entry" data-workshop-card>\n        <span class="workshop-entry-label">', '      <div class="workshop-entry" data-workshop-card>\n        <span class="workshop-entry-shimmer" aria-hidden="true"></span>\n        <span class="workshop-entry-label">', 'Workshop internal shimmer element')
 
-          # Turn the desktop Journey grid into alternating card/divider columns.
-          styles = replace_once(
-              styles,
-              '''.timeline {
+          styles = replace_once(styles, '''.timeline {
   position: relative;
   margin: 48px 0 0;
   padding: 0;
@@ -88,8 +63,7 @@ jobs:
 }
 
 .timeline::before { content: none; }
-''',
-              '''.timeline {
+''', '''.timeline {
   position: relative;
   margin: 48px 0 0;
   padding: 0;
@@ -137,56 +111,35 @@ jobs:
   );
   box-shadow: 0 0 12px rgba(145, 169, 178, 0.06);
 }
-''',
-              'Desktop Journey grid and dividers',
-          )
+''', 'Desktop Journey grid and dividers')
 
-          # Preserve stage palettes after inserting divider list items.
-          styles = replace_once(
-              styles,
-              '''.timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
+          styles = replace_once(styles, '''.timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
 .timeline-item:nth-child(2) { --accent-rgb: var(--palette-steel); }
 .timeline-item:nth-child(3) { --accent-rgb: var(--palette-indigo); }
 .timeline-item:nth-child(4) { --accent-rgb: var(--palette-bronze); }
 .timeline-item:nth-child(5) { --accent-rgb: var(--palette-teal); }
-''',
-              '''.timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
+''', '''.timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
 .timeline-item:nth-child(3) { --accent-rgb: var(--palette-steel); }
 .timeline-item:nth-child(5) { --accent-rgb: var(--palette-indigo); }
 .timeline-item:nth-child(7) { --accent-rgb: var(--palette-bronze); }
 .timeline-item:nth-child(9) { --accent-rgb: var(--palette-teal); }
-''',
-              'Journey stage palette selectors',
-          )
+''', 'Journey stage palette selectors')
 
-          styles = replace_once(
-              styles,
-              '  padding: 26px 28px;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;',
-              '  padding: 42px 28px 26px;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;',
-              'Workshop desktop padding',
-          )
+          styles = replace_once(styles, '  padding: 26px 28px;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;', '  padding: 42px 28px 26px;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;', 'Workshop desktop padding')
 
-          styles = replace_once(
-              styles,
-              '''@media (max-width: 1050px) {
+          styles = replace_once(styles, '''@media (max-width: 1050px) {
   .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .timeline::before { display: none; }
   .timeline-item { min-height: 240px; }
   .timeline-item:nth-child(4), .timeline-item:nth-child(5) { grid-column: span 1; }
-''',
-              '''@media (max-width: 1050px) {
+''', '''@media (max-width: 1050px) {
   .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   .timeline-divider { display: none; }
   .timeline-item { min-height: 240px; }
   .timeline-item:nth-child(7), .timeline-item:nth-child(9) { grid-column: span 1; }
-''',
-              'Tablet Journey layout',
-          )
+''', 'Tablet Journey layout')
 
-          styles = replace_once(
-              styles,
-              '  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 10px; }\n  .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }',
-              '''  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 0; }
+          styles = replace_once(styles, '  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 10px; }\n  .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }', '''  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 0; }
   .timeline-divider {
     width: 100%;
     min-height: 44px;
@@ -203,21 +156,11 @@ jobs:
     height: 1px;
     background: var(--homepage-divider-line);
   }
-  .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }''',
-              'Mobile Journey dividers',
-          )
+  .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }''', 'Mobile Journey dividers')
 
-          styles = replace_once(
-              styles,
-              '    padding: 22px 18px;\n    grid-template-columns: 1fr;',
-              '    padding: 38px 18px 22px;\n    grid-template-columns: 1fr;',
-              'Workshop mobile padding',
-          )
+          styles = replace_once(styles, '    padding: 22px 18px;\n    grid-template-columns: 1fr;', '    padding: 38px 18px 22px;\n    grid-template-columns: 1fr;', 'Workshop mobile padding')
 
-          # Remove the four decorative section separators entirely.
-          styles = replace_once(
-              styles,
-              '''/* Homepage section dividers: the same horizontal line and glow used in The Workshop. */
+          styles = replace_once(styles, '''/* Homepage section dividers: the same horizontal line and glow used in The Workshop. */
 :is(#journey, #projects, #contact, #closing)::before {
   content: "";
   position: absolute;
@@ -238,15 +181,9 @@ jobs:
   filter: drop-shadow(0 0 12px rgba(145, 169, 178, 0.06));
 }
 
-''',
-              '',
-              'Homepage section divider removal',
-          )
+''', '', 'Homepage section divider removal')
 
-          # Move the animated line from outside the card to an internal element.
-          styles = replace_once(
-              styles,
-              '''/* A dedicated shimmer line above the homepage Workshop card. */
+          styles = replace_once(styles, '''/* A dedicated shimmer line above the homepage Workshop card. */
 .timeline::after {
   content: "";
   position: absolute;
@@ -270,8 +207,7 @@ jobs:
 #journey .workshop-entry {
   margin-top: 82px;
 }
-''',
-              '''/* Animated shimmer contained inside the homepage Workshop card. */
+''', '''/* Animated shimmer contained inside the homepage Workshop card. */
 .workshop-entry-shimmer {
   position: absolute;
   z-index: 2;
@@ -291,25 +227,16 @@ jobs:
   background-position: -120% 0, 0 0;
   animation: homepage-workshop-line-sweep 3s ease-in-out infinite;
 }
-''',
-              'Workshop shimmer relocation',
-          )
+''', 'Workshop shimmer relocation')
 
-          styles = replace_once(
-              styles,
-              '''  :is(#journey, #projects, #contact, #closing)::before {
+          styles = replace_once(styles, '''  :is(#journey, #projects, #contact, #closing)::before {
     width: min(72%, 320px);
     height: 44px;
   }
 
-''',
-              '',
-              'Mobile section divider removal',
-          )
+''', '', 'Mobile section divider removal')
 
-          styles = replace_once(
-              styles,
-              '''  .timeline::after {
+          styles = replace_once(styles, '''  .timeline::after {
     bottom: -43px;
     width: min(82%, 320px);
   }
@@ -317,35 +244,26 @@ jobs:
   #journey .workshop-entry {
     margin-top: 74px;
   }
-''',
-              '''  .workshop-entry-shimmer {
+''', '''  .workshop-entry-shimmer {
     top: 18px;
     width: min(72%, 320px);
   }
-''',
-              'Mobile workshop shimmer placement',
-          )
+''', 'Mobile workshop shimmer placement')
 
-          styles = replace_once(
-              styles,
-              '''@media (prefers-reduced-motion: reduce) {
+          styles = replace_once(styles, '''@media (prefers-reduced-motion: reduce) {
   .timeline::after {
     animation: none;
     background-position: -120% 0, 0 0;
   }
 }
-''',
-              '''@media (prefers-reduced-motion: reduce) {
+''', '''@media (prefers-reduced-motion: reduce) {
   .workshop-entry-shimmer {
     animation: none;
     background-position: -120% 0, 0 0;
   }
 }
-''',
-              'Reduced-motion shimmer selector',
-          )
+''', 'Reduced-motion shimmer selector')
 
-          # Final validation before writing.
           if index.count('class="timeline-divider ') != 4:
               raise SystemExit('Expected four Journey divider elements after update.')
           if index.count('class="workshop-entry-shimmer"') != 1:
@@ -382,3 +300,5 @@ jobs:
           git add -A
           git commit -m 'Reorganize homepage dividers around cards'
           git push
+
+# Existing-workflow trigger
