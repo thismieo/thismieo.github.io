@@ -1,0 +1,104 @@
+name: Refine project card spacing
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refine-project-card-spacing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refine-project-spacing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Refine project width and separator breathing room
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('styles.css')
+          index_path = Path('index.html')
+          css = css_path.read_text(encoding='utf-8')
+          index = index_path.read_text(encoding='utf-8')
+
+          marker = '/* Project card width refinement — August 2026 */'
+          if marker in css:
+              raise SystemExit('Project width refinement already exists')
+
+          css += r'''
+
+/* Project card width refinement — August 2026 */
+@media (min-width: 1051px) {
+  .project-grid {
+    width: min(100%, 1120px);
+    margin-inline: auto;
+    column-gap: 32px;
+    row-gap: 26px;
+  }
+
+  .project-grid::before {
+    left: calc(33.333333% - 5.333px);
+  }
+
+  .project-grid::after {
+    left: calc(66.666667% + 5.333px);
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    height: calc((100% - 26px) / 2);
+  }
+
+  .project-grid {
+    background-size: 1px calc((100% - 26px) / 2);
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 701px) {
+  .project-grid {
+    width: min(100%, 880px);
+    margin-inline: auto;
+    column-gap: 24px;
+    row-gap: 18px;
+  }
+
+  .project-grid > .project-card:last-child {
+    width: calc(50% - 12px);
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    height: calc((100% - 36px) / 3);
+  }
+
+  .project-grid::after {
+    top: calc((100% - 36px) / 3 + 18px);
+  }
+}
+'''
+
+          index = index.replace('styles.css?v=4.3.3', 'styles.css?v=4.3.4')
+          index = index.replace('Version 4.3.3', 'Version 4.3.4')
+
+          if 'styles.css?v=4.3.4' not in index or 'Version 4.3.4' not in index:
+              raise SystemExit('Version bump failed')
+
+          css_path.write_text(css, encoding='utf-8')
+          index_path.write_text(index, encoding='utf-8')
+          PY
+
+          rm .github/workflows/refine-project-card-spacing.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add styles.css index.html .github
+          git commit -m 'Refine project card width and spacing'
+          git push
