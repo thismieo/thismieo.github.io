@@ -1,0 +1,168 @@
+name: Add project card separators
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/project-card-separators.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-project-separators:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Add row-only project separators
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index_path = Path('index.html')
+          css_path = Path('styles.css')
+          index = index_path.read_text(encoding='utf-8')
+          css = css_path.read_text(encoding='utf-8')
+
+          marker = '/* Project card row separators — August 2026 */'
+          if marker in css:
+              raise SystemExit('Project separators already exist')
+
+          css += r'''
+
+/* Project card row separators — August 2026 */
+@media (min-width: 1051px) {
+  .project-grid {
+    position: relative;
+    grid-auto-rows: 1fr;
+    background:
+      radial-gradient(ellipse 16px 34% at 50% 75%, rgba(151, 177, 187, 0.055), transparent 76%),
+      linear-gradient(
+        180deg,
+        transparent,
+        rgba(139, 165, 176, 0.2) 16%,
+        rgba(183, 201, 208, 0.5) 50%,
+        rgba(139, 165, 176, 0.2) 84%,
+        transparent
+      ) 50% 100% / 1px calc((100% - 24px) / 2) no-repeat;
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    width: 1px;
+    height: calc((100% - 24px) / 2);
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(139, 165, 176, 0.2) 16%,
+      rgba(183, 201, 208, 0.5) 50%,
+      rgba(139, 165, 176, 0.2) 84%,
+      transparent
+    );
+    box-shadow: 0 0 14px rgba(137, 167, 178, 0.08);
+  }
+
+  .project-grid::before {
+    left: calc(33.333333% - 3px);
+  }
+
+  .project-grid::after {
+    left: calc(66.666667% + 3px);
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 701px) {
+  .project-grid {
+    position: relative;
+    grid-auto-rows: 1fr;
+    background: none;
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+    width: 1px;
+    height: calc((100% - 32px) / 3);
+    transform: translateX(-50%);
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(139, 165, 176, 0.18) 16%,
+      rgba(183, 201, 208, 0.46) 50%,
+      rgba(139, 165, 176, 0.18) 84%,
+      transparent
+    );
+    box-shadow: 0 0 12px rgba(137, 167, 178, 0.07);
+  }
+
+  .project-grid::before {
+    top: 0;
+  }
+
+  .project-grid::after {
+    top: calc((100% - 32px) / 3 + 16px);
+  }
+}
+
+@media (max-width: 700px) {
+  .project-grid {
+    background: none;
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    content: none;
+  }
+}
+'''
+
+          index = index.replace('styles.css?v=4.3.2', 'styles.css?v=4.3.3')
+          index = index.replace('Version 4.3.2', 'Version 4.3.3')
+
+          if 'styles.css?v=4.3.3' not in index or 'Version 4.3.3' not in index:
+              raise SystemExit('Version bump failed')
+
+          css_path.write_text(css, encoding='utf-8')
+          index_path.write_text(index, encoding='utf-8')
+          PY
+
+      - name: Validate update
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          index = Path('index.html').read_text(encoding='utf-8')
+          css = Path('styles.css').read_text(encoding='utf-8')
+          assert 'Project card row separators' in css
+          assert 'left: calc(33.333333% - 3px);' in css
+          assert 'left: calc(66.666667% + 3px);' in css
+          assert ') 50% 100% / 1px calc((100% - 24px) / 2) no-repeat;' in css
+          assert 'styles.css?v=4.3.3' in index
+          assert 'Version 4.3.3' in index
+          PY
+
+      - name: Commit update and remove temporary workflow
+        shell: bash
+        run: |
+          rm .github/workflows/project-card-separators.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html styles.css .github
+          git commit -m 'Add separators between project cards'
+          git push
