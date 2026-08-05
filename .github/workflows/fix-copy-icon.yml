@@ -60,3 +60,5 @@ jobs:
           git add -A
           git commit -m 'Repair email copy icons'
           git push
+
+# Existing-workflow trigger
