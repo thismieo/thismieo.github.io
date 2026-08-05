@@ -28,6 +28,21 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Remove legacy closing selector
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("styles.css")
+          text = path.read_text(encoding="utf-8")
+          old = ".hero-tagline span,\n.hero-intro span,\n.closing-message span { display: inline; }"
+          new = ".hero-tagline span,\n.hero-intro span { display: inline; }"
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f"Legacy closing selector: expected one match, found {count}")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
       - name: Apply guarded copy polish
         run: python .github/scripts/polish_site_copy.py
 
