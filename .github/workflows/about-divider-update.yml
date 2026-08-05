@@ -1,0 +1,112 @@
+name: Add About section divider
+
+on:
+  push:
+    paths:
+      - .github/workflows/about-divider-update.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-about-divider:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add divider and refine spacing
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path("styles.css")
+          css = css_path.read_text(encoding="utf-8")
+          marker = "/* About information divider — August 2026 */"
+          if marker in css:
+              raise SystemExit("About divider already exists")
+
+          css = css.replace(
+              "/* Blue Continuum 4.2.7 — Consolidated portfolio stylesheet */",
+              "/* Blue Continuum 4.3.0 — Consolidated portfolio stylesheet */",
+              1,
+          )
+
+          block = "\n".join([
+              marker,
+              ".facts {",
+              "  position: relative;",
+              "  margin-top: 30px;",
+              "  padding-top: 30px;",
+              "}",
+              "",
+              ".facts::before {",
+              "  content: \"\";",
+              "  position: absolute;",
+              "  top: 0;",
+              "  left: 50%;",
+              "  width: min(70%, 620px);",
+              "  height: 1px;",
+              "  transform: translateX(-50%);",
+              "  border-radius: 999px;",
+              "  pointer-events: none;",
+              "  background: var(--homepage-divider-line);",
+              "  box-shadow: 0 0 14px rgba(145, 169, 178, 0.07);",
+              "}",
+              "",
+              "@media (max-width: 700px) {",
+              "  .facts {",
+              "    margin-top: 24px;",
+              "    padding-top: 25px;",
+              "  }",
+              "",
+              "  .facts::before {",
+              "    width: min(72%, 320px);",
+              "  }",
+              "}",
+          ])
+          css_path.write_text(css.rstrip() + "\n\n" + block + "\n", encoding="utf-8")
+
+          index_path = Path("index.html")
+          index = index_path.read_text(encoding="utf-8")
+          if "styles.css?v=4.2.7" not in index:
+              raise SystemExit("Expected stylesheet version was not found")
+          if "Version 4.2.9" not in index:
+              raise SystemExit("Expected footer version was not found")
+          index = index.replace("styles.css?v=4.2.7", "styles.css?v=4.3.0", 1)
+          index = index.replace("Version 4.2.9", "Version 4.3.0", 1)
+          index_path.write_text(index, encoding="utf-8")
+          PY
+
+      - name: Validate update
+        run: |
+          test "$(grep -c 'About information divider' styles.css)" -eq 1
+          grep -q 'styles.css?v=4.3.0' index.html
+          grep -q 'Version 4.3.0' index.html
+          grep -q 'Cloudflare Web Analytics' index.html
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Validator(HTMLParser):
+              pass
+
+          html = Path("index.html").read_text(encoding="utf-8")
+          Validator().feed(html)
+          assert html.count("<body") == 1
+          assert html.count("</body>") == 1
+          assert html.count("Cloudflare Web Analytics") == 2
+          print("validation=success")
+          PY
+
+      - name: Commit update and clean workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add styles.css index.html
+          git rm .github/workflows/about-divider-update.yml
+          rmdir .github/workflows .github 2>/dev/null || true
+          git commit -m "Add About copy-to-facts divider"
+          git push
