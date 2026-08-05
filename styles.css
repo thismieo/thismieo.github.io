@@ -1216,6 +1216,7 @@ main {
   min-height: 342px;
   grid-column: span 4;
   padding: 23px 21px 21px;
+  border-radius: 19px;
 }
 
 .project-grid > .project-card:nth-of-type(1) { --accent-rgb: var(--palette-teal); }
@@ -3003,5 +3004,18 @@ body.workshop-open { overflow-x: hidden; }
 
   .workshop-entry {
     margin-top: 36px;
+  }
+}
+
+
+/* Mobile project separator safeguard — August 2026 */
+@media (max-width: 900px) {
+  .project-separator,
+  .project-grid::before,
+  .project-grid::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    box-shadow: none !important;
   }
 }
