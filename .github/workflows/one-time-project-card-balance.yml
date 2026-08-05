@@ -1,0 +1,194 @@
+name: One-time project card balance
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/one-time-project-card-balance.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  balance-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Balance project card spacing
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          html_path = Path("index.html")
+          css_path = Path("styles.css")
+          html = html_path.read_text(encoding="utf-8")
+          css = css_path.read_text(encoding="utf-8")
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected 1 match, found {count}")
+              return text.replace(old, new, 1)
+
+          css = replace_once(
+              css,
+              "/* Blue Continuum 4.2.4 — Consolidated portfolio stylesheet */",
+              "/* Blue Continuum 4.2.5 — Consolidated portfolio stylesheet */",
+              "stylesheet version",
+          )
+
+          css = replace_once(
+              css,
+              """.project-featured > div:nth-child(2) {
+            margin-top: auto;
+          }""",
+              """.project-featured > div:nth-child(2) {
+            margin-top: clamp(30px, 4vw, 52px);
+          }""",
+              "featured project spacing",
+          )
+
+          css = replace_once(
+              css,
+              ".project-field { margin: auto 0 0; }",
+              """.project-field { margin: auto 0 0; }
+
+          .project-card:not(.project-featured) > .project-field {
+            padding-top: 12px;
+          }""",
+              "standard project field spacing",
+          )
+
+          html = replace_once(
+              html,
+              'href="styles.css?v=4.2.4"',
+              'href="styles.css?v=4.2.5"',
+              "stylesheet cache version",
+          )
+          html = replace_once(
+              html,
+              '<p class="footer-version">Version 4.2.4</p>',
+              '<p class="footer-version">Version 4.2.5</p>',
+              "footer version",
+          )
+
+          if css.count("{") != css.count("}"):
+              raise SystemExit("CSS braces are unbalanced")
+          if html.count("<section") != html.count("</section>"):
+              raise SystemExit("HTML section tags are unbalanced")
+          if "margin-top: auto;\n}" in css[css.find(".project-featured > div:nth-child(2)"):css.find(".project-featured > div:nth-child(2)") + 120]:
+              raise SystemExit("obsolete featured auto spacing remains")
+
+          css_path.write_text(css, encoding="utf-8")
+          html_path.write_text(html, encoding="utf-8")
+          PY
+
+      - name: Install visual QA tooling
+        continue-on-error: true
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install chromium
+
+      - name: Capture responsive QA
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          import subprocess
+          import time
+          from playwright.sync_api import sync_playwright
+
+          output = Path("qa-output")
+          output.mkdir(exist_ok=True)
+          results = {}
+          server = subprocess.Popen(
+              ["python3", "-m", "http.server", "4173", "--bind", "127.0.0.1"],
+              stdout=subprocess.DEVNULL,
+              stderr=subprocess.DEVNULL,
+          )
+          time.sleep(1.2)
+
+          try:
+              with sync_playwright() as p:
+                  browser = p.chromium.launch()
+                  for name, width, height in (
+                      ("desktop", 1440, 1000),
+                      ("mobile", 390, 844),
+                  ):
+                      page = browser.new_page(viewport={"width": width, "height": height})
+                      page.goto("http://127.0.0.1:4173", wait_until="networkidle")
+                      page.evaluate("document.fonts.ready")
+                      page.evaluate("document.activeElement && document.activeElement.blur()")
+
+                      metrics = page.evaluate("""
+                      () => {
+                        const featured = document.querySelector('.project-featured');
+                        const featuredMeta = featured.querySelector('.project-meta').getBoundingClientRect();
+                        const featuredField = featured.querySelector('.project-field').getBoundingClientRect();
+                        const standard = document.querySelector('.project-stack .project-card');
+                        const standardMeta = standard.querySelector('.project-meta').getBoundingClientRect();
+                        const standardField = standard.querySelector('.project-field').getBoundingClientRect();
+                        const fieldStyle = getComputedStyle(standardField ? standard.querySelector('.project-field') : standard);
+                        return {
+                          overflow: document.documentElement.scrollWidth - window.innerWidth,
+                          featuredHeight: featured.getBoundingClientRect().height,
+                          featuredGap: featuredField.top - featuredMeta.bottom,
+                          standardHeight: standard.getBoundingClientRect().height,
+                          standardGap: standardField.top - standardMeta.bottom,
+                          standardFieldPaddingTop: fieldStyle.paddingTop,
+                          heroGap: document.querySelector('.hero h1').getBoundingClientRect().top - document.querySelector('.hero-copy > .eyebrow').getBoundingClientRect().bottom,
+                          heroTransform: getComputedStyle(document.querySelector('.hero-copy > .eyebrow')).textTransform,
+                          sectionTransform: getComputedStyle(document.querySelector('#about .eyebrow')).textTransform,
+                          timelineTransform: getComputedStyle(document.querySelector('.timeline-state')).textTransform,
+                        };
+                      }
+                      """)
+
+                      page.locator(".hero").screenshot(path=output / f"{name}-hero.png")
+                      page.locator("#about").screenshot(path=output / f"{name}-about.png")
+                      page.locator("#journey").screenshot(path=output / f"{name}-journey.png")
+                      page.locator("#projects").screenshot(path=output / f"{name}-projects.png")
+
+                      page.locator("[data-open-workshop]").click()
+                      page.wait_for_function("document.body.classList.contains('workshop-open')")
+                      page.wait_for_timeout(500)
+                      page.locator('[aria-labelledby="current-title"]').scroll_into_view_if_needed()
+                      page.wait_for_timeout(200)
+                      page.locator('[aria-labelledby="current-title"]').screenshot(
+                          path=output / f"{name}-workshop-current.png"
+                      )
+                      results[name] = metrics
+                      page.close()
+                  browser.close()
+          finally:
+              server.terminate()
+              server.wait(timeout=5)
+
+          (output / "metrics.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+          PY
+
+      - name: Upload visual QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: balanced-project-cards-qa
+          path: qa-output
+          if-no-files-found: warn
+
+      - name: Commit balance and remove temporary files
+        run: |
+          rm -rf qa-output
+          rm -f .github/workflows/one-time-project-card-balance.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Balance project card spacing"
+          git push
