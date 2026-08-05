@@ -1,0 +1,164 @@
+name: One-time layout refinement
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-layout-refinement.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  refine-layout:
+    if: github.event.head_commit.message == 'Add one-time layout refinement workflow'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply spacing and responsive refinements
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path("styles.css")
+          html_path = Path("index.html")
+          css = css_path.read_text(encoding="utf-8")
+          html = html_path.read_text(encoding="utf-8")
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected 1 match, found {count}")
+              return text.replace(old, new, 1)
+
+          css = replace_once(
+              css,
+              "/* Blue Continuum 4.2.0 — Consolidated portfolio stylesheet */",
+              "/* Blue Continuum 4.2.1 — Consolidated portfolio stylesheet */",
+              "stylesheet version",
+          )
+
+          css = replace_once(
+              css,
+              ".workshop-entry-separator {\n  min-height: 44px;\n  margin-top: 40px;\n  display: grid;\n  place-items: center;",
+              ".workshop-entry-separator {\n  min-height: 72px;\n  margin-top: 20px;\n  display: grid;\n  place-items: center;",
+              "desktop Workshop upper divider spacing",
+          )
+
+          css = replace_once(
+              css,
+              "  margin: 24px auto 0;\n  overflow: hidden;\n  border-radius: 999px;\n  pointer-events: none;\n  background-image:",
+              "  margin: 36px auto 0;\n  overflow: hidden;\n  border-radius: 999px;\n  pointer-events: none;\n  background-image:",
+              "desktop Workshop shimmer spacing",
+          )
+
+          css = replace_once(
+              css,
+              "  .workshop-entry-separator {\n    min-height: 44px;\n    margin-top: 34px;\n  }",
+              "  .workshop-entry-separator {\n    min-height: 64px;\n    margin-top: 18px;\n  }",
+              "mobile Workshop upper divider spacing",
+          )
+
+          css = replace_once(
+              css,
+              "  .workshop-entry-shimmer {\n    margin-top: 22px;\n  }",
+              "  .workshop-entry-shimmer {\n    margin-top: 32px;\n  }",
+              "mobile Workshop shimmer spacing",
+          )
+
+          refinement = r'''
+
+/* Section spacing and responsive copy refinement — August 2026 */
+.about::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 0;
+  width: min(72%, 760px);
+  height: 44px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    var(--homepage-divider-line) center / 100% 1px no-repeat,
+    radial-gradient(
+      ellipse 54% 82% at center,
+      rgba(var(--homepage-divider-glow-rgb), 0.13),
+      rgba(var(--homepage-divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  filter: drop-shadow(0 0 14px rgba(145, 169, 178, 0.065));
+}
+
+@media (min-width: 1100px) {
+  .about-lead-line-growth {
+    max-width: none;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    font-size: clamp(0.86rem, 0.96vw, 0.96rem);
+    letter-spacing: -0.012em;
+  }
+}
+
+@media (max-width: 700px) {
+  .about::after {
+    width: min(72%, 320px);
+    height: 44px;
+  }
+}
+
+@media (max-width: 560px) {
+  .closing-message {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .closing-message p:first-child {
+    max-width: 38ch;
+  }
+
+  .closing-message p:nth-child(2) {
+    max-width: 36ch;
+  }
+
+  .closing-message p:last-child {
+    width: 100%;
+    max-width: none;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    font-size: clamp(0.64rem, 2.75vw, 0.78rem);
+    letter-spacing: -0.03em;
+  }
+}
+'''
+
+          marker = "/* Section spacing and responsive copy refinement — August 2026 */"
+          if marker in css:
+              raise SystemExit("refinement block already exists")
+          css = css.rstrip() + refinement + "\n"
+
+          html = replace_once(
+              html,
+              'href="styles.css?v=4.2.0"',
+              'href="styles.css?v=4.2.1"',
+              "stylesheet cache version",
+          )
+
+          css_path.write_text(css, encoding="utf-8", newline="\n")
+          html_path.write_text(html, encoding="utf-8", newline="\n")
+          PY
+
+      - name: Commit the finished refinement and remove this workflow
+        shell: bash
+        run: |
+          rm -f .github/workflows/one-time-layout-refinement.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Refine Workshop spacing and responsive copy"
+          git push origin HEAD:main
