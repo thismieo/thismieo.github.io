@@ -1,0 +1,238 @@
+name: Build 3+2 project grid
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/project-grid-3-2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-project-layout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Rebuild project section
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index_path = Path('index.html')
+          css_path = Path('styles.css')
+          index = index_path.read_text(encoding='utf-8')
+          css = css_path.read_text(encoding='utf-8')
+
+          start_marker = '        <div class="project-grid">'
+          end_marker = '      </div>\n    </section>\n\n    <section class="contact'
+          start = index.index(start_marker)
+          end = index.index(end_marker, start)
+
+          project_markup = '''        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-meta">
+              <span class="project-number">01</span>
+              <span class="status status-next">Next project</span>
+            </div>
+            <p class="project-field">Machine learning · Classification</p>
+            <h3>Heart Disease Prediction</h3>
+            <p>Preparing patient health data and training a classification model to recognize patterns associated with possible heart disease</p>
+            <ul class="tags">
+              <li>Python</li><li>Pandas</li><li>Data Preprocessing</li><li>Scikit-learn</li><li>Classification</li>
+            </ul>
+          </article>
+
+          <article class="project-card">
+            <div class="project-meta">
+              <span class="project-number">02</span>
+              <span class="status">Planned</span>
+            </div>
+            <p class="project-field">Machine learning · Predictive modeling</p>
+            <h3>House Price Prediction</h3>
+            <p>A predictive model that learns from property features to estimate or classify house prices</p>
+            <ul class="tags">
+              <li>Python</li><li>Pandas</li><li>Data Preprocessing</li><li>Predictive Modeling</li>
+            </ul>
+          </article>
+
+          <article class="project-card">
+            <div class="project-meta">
+              <span class="project-number">03</span>
+              <span class="status">Future direction</span>
+            </div>
+            <p class="project-field">Computer vision · Deep learning</p>
+            <h3>Smart City Violation Detection</h3>
+            <p>A future vision system designed to identify traffic violations from street and camera footage</p>
+            <ul class="tags">
+              <li>Python</li><li>OpenCV</li><li>Neural Networks</li><li>Deep Learning</li>
+            </ul>
+          </article>
+
+          <article class="project-card">
+            <div class="project-meta">
+              <span class="project-number">04</span>
+              <span class="status">Future direction</span>
+            </div>
+            <p class="project-field">Machine learning · Anomaly detection</p>
+            <h3>Financial Fraud Detection</h3>
+            <p>A future machine learning system designed to recognize suspicious patterns in financial transactions</p>
+            <ul class="tags">
+              <li>Python</li><li>Pandas</li><li>Scikit-learn</li><li>Anomaly Detection</li>
+            </ul>
+          </article>
+
+          <article class="project-card">
+            <div class="project-meta">
+              <span class="project-number">05</span>
+              <span class="status">Advanced goal</span>
+            </div>
+            <p class="project-field">Generative AI</p>
+            <h3>Multilingual Knowledge Assistant</h3>
+            <p>An advanced multilingual assistant designed to retrieve trusted knowledge, answer questions across languages and evolve into a personal AI agent</p>
+            <ul class="tags">
+              <li>Python</li><li>NLP</li><li>LLMs</li><li>RAG</li><li>AI Agent</li>
+            </ul>
+          </article>
+        </div>
+'''
+
+          index = index[:start] + project_markup + index[end:]
+          index = index.replace('styles.css?v=4.3.1', 'styles.css?v=4.3.2')
+          index = index.replace('Version 4.3.1', 'Version 4.3.2')
+
+          css_marker = '/* Project roadmap 3+2 grid — August 2026 */'
+          if css_marker in css:
+              raise SystemExit('Project grid CSS already exists')
+
+          project_css = r'''
+
+/* Project roadmap 3+2 grid — August 2026 */
+.project-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: stretch;
+  column-gap: 18px;
+  row-gap: 24px;
+}
+
+.project-grid > .project-card {
+  min-height: 342px;
+  grid-column: span 4;
+  padding: 23px 21px 21px;
+}
+
+.project-grid > .project-card:nth-child(1) { --accent-rgb: var(--palette-teal); }
+.project-grid > .project-card:nth-child(2) { --accent-rgb: var(--palette-steel); }
+.project-grid > .project-card:nth-child(3) { --accent-rgb: var(--palette-indigo); }
+.project-grid > .project-card:nth-child(4) {
+  --accent-rgb: var(--palette-bronze);
+  grid-column: 2 / span 5;
+}
+.project-grid > .project-card:nth-child(5) {
+  --accent-rgb: var(--palette-teal);
+  grid-column: 7 / span 5;
+}
+
+.project-grid > .project-card > .project-field {
+  margin: 29px 0 0;
+  padding-top: 0;
+}
+
+.project-grid > .project-card h3 {
+  margin-top: 10px;
+  font-size: clamp(1.28rem, 1.75vw, 1.62rem);
+  line-height: 1.16;
+}
+
+.project-grid > .project-card > p:not(.project-field) {
+  margin-top: 14px;
+}
+
+.project-grid > .project-card .tags {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+@media (max-width: 1050px) and (min-width: 701px) {
+  .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    column-gap: 16px;
+    row-gap: 16px;
+  }
+
+  .project-grid > .project-card:nth-child(n) {
+    min-height: 310px;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .project-grid > .project-card:last-child {
+    width: calc(50% - 8px);
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .project-grid {
+    margin-top: 34px;
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 12px;
+  }
+
+  .project-grid > .project-card:nth-child(n) {
+    min-height: 246px;
+    grid-column: 1;
+    grid-row: auto;
+    padding: 19px;
+  }
+
+  .project-grid > .project-card > .project-field {
+    margin-top: 24px;
+  }
+
+  .project-grid > .project-card .tags {
+    padding-top: 17px;
+  }
+}
+'''
+
+          css += project_css
+          index_path.write_text(index, encoding='utf-8')
+          css_path.write_text(css, encoding='utf-8')
+          PY
+
+      - name: Validate layout
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          index = Path('index.html').read_text(encoding='utf-8')
+          css = Path('styles.css').read_text(encoding='utf-8')
+          section = index[index.index('<section class="projects'):index.index('<section class="contact')]
+          assert section.count('class="project-card"') == 5
+          assert 'project-divider' not in section
+          assert 'project-stack' not in section
+          assert 'Project roadmap 3+2 grid' in css
+          assert 'styles.css?v=4.3.2' in index
+          assert 'Version 4.3.2' in index
+          PY
+
+      - name: Commit layout and remove temporary workflow
+        shell: bash
+        run: |
+          rm .github/workflows/project-grid-3-2.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html styles.css .github
+          git commit -m 'Rebuild projects as a 3+2 grid'
+          git push
