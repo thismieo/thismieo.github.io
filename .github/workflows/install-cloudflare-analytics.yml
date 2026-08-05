@@ -1,0 +1,42 @@
+name: Install Cloudflare Web Analytics
+
+"on":
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/install-cloudflare-analytics.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  install-analytics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install analytics snippet
+        run: python3 .github/scripts/add_cloudflare_analytics.py
+
+      - name: Validate generated page
+        run: |
+          grep -F "0e7c8d82c34e4ff99c367a980b7d5667" index.html
+          grep -F "Version 4.2.9" index.html
+          test "$(grep -o "0e7c8d82c34e4ff99c367a980b7d5667" index.html | wc -l)" -eq 1
+
+      - name: Commit installation and remove temporary automation
+        run: |
+          rm -f .github/scripts/add_cloudflare_analytics.py
+          rm -f .github/workflows/install-cloudflare-analytics.yml
+          rmdir .github/scripts 2>/dev/null || true
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add Cloudflare Web Analytics"
+          git push
