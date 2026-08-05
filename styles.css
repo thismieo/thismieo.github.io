@@ -1,4 +1,4 @@
-/* Blue Continuum 4.2.0 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.2.1 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -2643,8 +2643,8 @@ body.workshop-open { overflow-x: hidden; }
 
 /* Static lead-in divider above and animated closing shimmer below the Workshop card. */
 .workshop-entry-separator {
-  min-height: 44px;
-  margin-top: 40px;
+  min-height: 72px;
+  margin-top: 20px;
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -2668,7 +2668,7 @@ body.workshop-open { overflow-x: hidden; }
   position: relative;
   width: min(70%, 620px);
   height: 1px;
-  margin: 24px auto 0;
+  margin: 36px auto 0;
   overflow: hidden;
   border-radius: 999px;
   pointer-events: none;
@@ -2757,8 +2757,8 @@ body.workshop-open { overflow-x: hidden; }
   }
 
   .workshop-entry-separator {
-    min-height: 44px;
-    margin-top: 34px;
+    min-height: 64px;
+    margin-top: 18px;
   }
 
   .workshop-entry-separator-line,
@@ -2766,8 +2766,8 @@ body.workshop-open { overflow-x: hidden; }
     width: min(72%, 320px);
   }
 
-  .workshop-entry-shimmer {
-    margin-top: 22px;
+    .workshop-entry-shimmer {
+    margin-top: 32px;
   }
 }
 
@@ -2962,3 +2962,67 @@ body.workshop-open { overflow-x: hidden; }
     opacity: 0;
   }
 }
+
+/* Section spacing and responsive copy refinement — August 2026 */
+.about::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 0;
+  width: min(72%, 760px);
+  height: 44px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    var(--homepage-divider-line) center / 100% 1px no-repeat,
+    radial-gradient(
+      ellipse 54% 82% at center,
+      rgba(var(--homepage-divider-glow-rgb), 0.13),
+      rgba(var(--homepage-divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  filter: drop-shadow(0 0 14px rgba(145, 169, 178, 0.065));
+}
+
+@media (min-width: 1100px) {
+  .about-lead-line-growth {
+    max-width: none;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    font-size: clamp(0.86rem, 0.96vw, 0.96rem);
+    letter-spacing: -0.012em;
+  }
+}
+
+@media (max-width: 700px) {
+  .about::after {
+    width: min(72%, 320px);
+    height: 44px;
+  }
+}
+
+@media (max-width: 560px) {
+  .closing-message {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .closing-message p:first-child {
+    max-width: 38ch;
+  }
+
+  .closing-message p:nth-child(2) {
+    max-width: 36ch;
+  }
+
+  .closing-message p:last-child {
+    width: 100%;
+    max-width: none;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    font-size: clamp(0.64rem, 2.75vw, 0.78rem);
+    letter-spacing: -0.03em;
+  }
+}
+
