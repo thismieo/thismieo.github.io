@@ -1,4 +1,4 @@
-/* Blue Continuum 4.2.5 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.2.6 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -356,8 +356,9 @@ main {
 
 .hero-copy > .eyebrow {
   width: fit-content;
-  margin-bottom: 8px;
-  padding-left: 2px;
+  margin-bottom: 6px;
+  margin-left: 8px;
+  padding-left: 0;
   color: #bacacf;
   font-size: 0.7rem;
   font-weight: 730;
@@ -366,13 +367,8 @@ main {
 }
 
 .hero-copy > .eyebrow::after {
-  content: "";
-  width: 28px;
-  height: 1px;
-  flex: 0 0 28px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(174, 196, 203, 0.72), rgba(174, 196, 203, 0));
-  box-shadow: 0 0 14px rgba(145, 169, 178, 0.08);
+  content: none;
+  display: none;
 }
 
 .eyebrow span {
@@ -1105,6 +1101,8 @@ main {
 }
 
 .timeline-state {
+  width: 100%;
+  min-height: 1.3em;
   display: inline-flex;
   align-self: flex-start;
   margin: 24px 0 0;
@@ -1114,8 +1112,9 @@ main {
   background: transparent;
   font-size: 0.58rem;
   font-weight: 820;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   line-height: 1.3;
+  white-space: nowrap;
   text-transform: uppercase;
 }
 
@@ -2344,7 +2343,14 @@ body.workshop-open { overflow-x: hidden; }
   }
   .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }
   .timeline-marker { grid-row: 1 / span 3; }
-  .timeline-state { margin-top: 3px; }
+  .timeline-state {
+    margin-top: 3px;
+    font-size: 0.58rem;
+    font-weight: 820;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
   .timeline-item h3 { margin-top: 7px; }
   .timeline-item > p:last-child { margin-top: 9px; }
 
@@ -2665,7 +2671,7 @@ body.workshop-open { overflow-x: hidden; }
 }
 
 #closing-title {
-  --mobile-title-copy: "Thank you\A for being here";
+  --mobile-title-copy: "Thank you!\A for being here";
   --mobile-title-size: 9.35vw;
 }
 
@@ -2691,8 +2697,8 @@ body.workshop-open { overflow-x: hidden; }
 
 /* Static lead-in divider above and animated closing shimmer below the Workshop card. */
 .workshop-entry-separator {
-  min-height: 44px;
-  margin-top: 12px;
+  min-height: clamp(44px, 4vw, 52px);
+  margin-top: 0;
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -2800,7 +2806,7 @@ body.workshop-open { overflow-x: hidden; }
   }
   .workshop-entry-separator {
     min-height: 44px;
-    margin-top: 10px;
+    margin-top: 0;
   }
 
   .workshop-entry-separator-line,
