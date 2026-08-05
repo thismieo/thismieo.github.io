@@ -3080,3 +3080,97 @@ body.workshop-open { overflow-x: hidden; }
     margin-top: 36px;
   }
 }
+
+
+/* Project roadmap 3+2 grid — August 2026 */
+.project-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: stretch;
+  column-gap: 18px;
+  row-gap: 24px;
+}
+
+.project-grid > .project-card {
+  min-height: 342px;
+  grid-column: span 4;
+  padding: 23px 21px 21px;
+}
+
+.project-grid > .project-card:nth-child(1) { --accent-rgb: var(--palette-teal); }
+.project-grid > .project-card:nth-child(2) { --accent-rgb: var(--palette-steel); }
+.project-grid > .project-card:nth-child(3) { --accent-rgb: var(--palette-indigo); }
+.project-grid > .project-card:nth-child(4) {
+  --accent-rgb: var(--palette-bronze);
+  grid-column: 2 / span 5;
+}
+.project-grid > .project-card:nth-child(5) {
+  --accent-rgb: var(--palette-teal);
+  grid-column: 7 / span 5;
+}
+
+.project-grid > .project-card > .project-field {
+  margin: 29px 0 0;
+  padding-top: 0;
+}
+
+.project-grid > .project-card h3 {
+  margin-top: 10px;
+  font-size: clamp(1.28rem, 1.75vw, 1.62rem);
+  line-height: 1.16;
+}
+
+.project-grid > .project-card > p:not(.project-field) {
+  margin-top: 14px;
+}
+
+.project-grid > .project-card .tags {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+@media (max-width: 1050px) and (min-width: 701px) {
+  .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    column-gap: 16px;
+    row-gap: 16px;
+  }
+
+  .project-grid > .project-card:nth-child(n) {
+    min-height: 310px;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .project-grid > .project-card:last-child {
+    width: calc(50% - 8px);
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .project-grid {
+    margin-top: 34px;
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 12px;
+  }
+
+  .project-grid > .project-card:nth-child(n) {
+    min-height: 246px;
+    grid-column: 1;
+    grid-row: auto;
+    padding: 19px;
+  }
+
+  .project-grid > .project-card > .project-field {
+    margin-top: 24px;
+  }
+
+  .project-grid > .project-card .tags {
+    padding-top: 17px;
+  }
+}
