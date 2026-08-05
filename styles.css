@@ -3174,3 +3174,99 @@ body.workshop-open { overflow-x: hidden; }
     padding-top: 17px;
   }
 }
+
+/* Project card row separators — August 2026 */
+@media (min-width: 1051px) {
+  .project-grid {
+    position: relative;
+    grid-auto-rows: 1fr;
+    background:
+      radial-gradient(ellipse 16px 34% at 50% 75%, rgba(151, 177, 187, 0.055), transparent 76%),
+      linear-gradient(
+        180deg,
+        transparent,
+        rgba(139, 165, 176, 0.2) 16%,
+        rgba(183, 201, 208, 0.5) 50%,
+        rgba(139, 165, 176, 0.2) 84%,
+        transparent
+      ) 50% 100% / 1px calc((100% - 24px) / 2) no-repeat;
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    width: 1px;
+    height: calc((100% - 24px) / 2);
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(139, 165, 176, 0.2) 16%,
+      rgba(183, 201, 208, 0.5) 50%,
+      rgba(139, 165, 176, 0.2) 84%,
+      transparent
+    );
+    box-shadow: 0 0 14px rgba(137, 167, 178, 0.08);
+  }
+
+  .project-grid::before {
+    left: calc(33.333333% - 3px);
+  }
+
+  .project-grid::after {
+    left: calc(66.666667% + 3px);
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 701px) {
+  .project-grid {
+    position: relative;
+    grid-auto-rows: 1fr;
+    background: none;
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+    width: 1px;
+    height: calc((100% - 32px) / 3);
+    transform: translateX(-50%);
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(139, 165, 176, 0.18) 16%,
+      rgba(183, 201, 208, 0.46) 50%,
+      rgba(139, 165, 176, 0.18) 84%,
+      transparent
+    );
+    box-shadow: 0 0 12px rgba(137, 167, 178, 0.07);
+  }
+
+  .project-grid::before {
+    top: 0;
+  }
+
+  .project-grid::after {
+    top: calc((100% - 32px) / 3 + 16px);
+  }
+}
+
+@media (max-width: 700px) {
+  .project-grid {
+    background: none;
+  }
+
+  .project-grid::before,
+  .project-grid::after {
+    content: none;
+  }
+}
