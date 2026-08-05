@@ -424,8 +424,7 @@ main {
 }
 
 .hero-tagline span,
-.hero-intro span,
-.closing-message span { display: inline; }
+.hero-intro span { display: inline; }
 
 .hero-intro {
   max-width: 580px;
@@ -1543,12 +1542,32 @@ main {
 
 .closing-note h2 span { display: block; }
 
-.closing-note-copy > p:last-child {
-  max-width: 760px;
+.closing-message {
+  max-width: 780px;
   margin: 22px auto 0;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.closing-message p {
+  max-width: 100%;
+  margin: 0;
   color: #9dafb6;
   font-size: 0.96rem;
   line-height: 1.86;
+  text-wrap: balance;
+}
+
+.closing-message p:nth-child(2) {
+  max-width: 760px;
+}
+
+.closing-message p:last-child {
+  margin-top: 2px;
+  color: #bcc9ce;
+  font-weight: 560;
 }
 
 .site-footer {
@@ -2310,14 +2329,21 @@ body.workshop-open { overflow-x: hidden; }
   .contact-card-action { min-width: 92px; padding: 0 8px 0 12px; margin-block: 7px; margin-right: 7px; }
 
   .closing-note h2 span { display: block; }
-  .closing-note-copy > p:last-child {
+  .closing-message {
     max-width: 38ch;
+    gap: 12px;
+  }
+  .closing-message p {
+    max-width: 100%;
     font-size: 0.9rem;
     line-height: 1.82;
-    text-wrap: balance;
   }
-  .closing-message span { display: block; margin-top: 10px; }
-  .closing-message span:first-child { margin-top: 0; }
+  .closing-message p:nth-child(2) {
+    max-width: 36ch;
+  }
+  .closing-message p:last-child {
+    margin-top: 1px;
+  }
   .footer-inner { align-items: center; flex-direction: column; gap: 5px; }
 
   .workshop-header {
@@ -2549,47 +2575,47 @@ body.workshop-open { overflow-x: hidden; }
 
 /* Fixed editorial headings for mobile: explicit line breaks, no automatic wrapping. */
 #about-title {
-  --mobile-title-copy: "Learning with direction\A Building through\A practice.";
+  --mobile-title-copy: "Learning with direction\A Building through\A practice";
   --mobile-title-size: 8.55vw;
 }
 
 #journey-title {
-  --mobile-title-copy: "From foundations\A to intelligent systems.";
+  --mobile-title-copy: "From foundations\A to intelligent systems";
   --mobile-title-size: 8.8vw;
 }
 
 #projects-title {
-  --mobile-title-copy: "Building real projects.";
+  --mobile-title-copy: "Building real projects";
   --mobile-title-size: 8.6vw;
 }
 
 #contact-title {
-  --mobile-title-copy: "Good\A conversations\A can start anywhere.";
+  --mobile-title-copy: "Good\A conversations\A can start anywhere";
   --mobile-title-size: 9.15vw;
 }
 
 #closing-title {
-  --mobile-title-copy: "Thank you\A for being here.";
+  --mobile-title-copy: "Thank you\A for being here";
   --mobile-title-size: 9.35vw;
 }
 
 #workshop-title {
-  --mobile-title-copy: "Knowledge shaped\A through practice.";
+  --mobile-title-copy: "Knowledge shaped\A through practice";
   --mobile-title-size: 8.9vw;
 }
 
 #foundation-title {
-  --mobile-title-copy: "Concepts that\A shape the path.";
+  --mobile-title-copy: "Concepts that\A shape the path";
   --mobile-title-size: 9.05vw;
 }
 
 #practice-title {
-  --mobile-title-copy: "Knowledge used\A in real workflows.";
+  --mobile-title-copy: "Knowledge used\A in real workflows";
   --mobile-title-size: 8.9vw;
 }
 
 #current-title {
-  --mobile-title-copy: "Python, one\A practical step at a time.";
+  --mobile-title-copy: "Python, one\A practical step at a time";
   --mobile-title-size: 8.35vw;
 }
 
