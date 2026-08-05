@@ -64,6 +64,65 @@
   line-height: 1.02;
 }
 
+/* Homepage section dividers: the same horizontal line and glow used in The Workshop. */
+:is(#journey, #projects, #contact, #closing)::before {
+  --divider-glow-rgb: 116, 113, 174;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(66%, 420px);
+  height: 50px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(160, 180, 188, 0.13) 18%,
+      rgba(178, 196, 203, 0.34) 50%,
+      rgba(160, 180, 188, 0.13) 82%,
+      transparent
+    ) center / 100% 1px no-repeat,
+    radial-gradient(
+      ellipse 48% 78% at center,
+      rgba(var(--divider-glow-rgb), 0.13),
+      rgba(var(--divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  filter: drop-shadow(0 0 12px rgba(145, 169, 178, 0.06));
+}
+
+/* A dedicated shimmer line above the homepage Workshop card. */
+.timeline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -48px;
+  width: min(76%, 720px);
+  height: 1px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border-radius: 999px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, 0.82) 50%, transparent 100%),
+    linear-gradient(90deg, transparent, rgba(151, 174, 184, 0.22) 16%, rgba(175, 195, 202, 0.34) 50%, rgba(151, 174, 184, 0.22) 84%, transparent);
+  background-repeat: no-repeat;
+  background-size: 54% 100%, 100% 100%;
+  background-position: -120% 0, 0 0;
+  animation: homepage-workshop-line-sweep 3s ease-in-out infinite;
+}
+
+#journey .workshop-entry {
+  margin-top: 82px;
+}
+
+@keyframes homepage-workshop-line-sweep {
+  0%, 42% { background-position: -120% 0, 0 0; }
+  100% { background-position: 220% 0, 0 0; }
+}
+
 @media (max-width: 700px) {
   :is(
     #about-title,
@@ -123,5 +182,26 @@
     word-break: keep-all;
     overflow-wrap: normal;
     text-align: center !important;
+  }
+
+  :is(#journey, #projects, #contact, #closing)::before {
+    width: min(72%, 320px);
+    height: 44px;
+  }
+
+  .timeline::after {
+    bottom: -43px;
+    width: min(82%, 320px);
+  }
+
+  #journey .workshop-entry {
+    margin-top: 74px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline::after {
+    animation: none;
+    background-position: -120% 0, 0 0;
   }
 }
