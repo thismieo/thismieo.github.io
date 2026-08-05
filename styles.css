@@ -1,4 +1,4 @@
-/* Blue Continuum 4.2.3 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.2.4 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -1295,7 +1295,7 @@ main {
 .project-divider-bottom { grid-column: 2; grid-row: 3; }
 
 .project-card {
-  min-height: 246px;
+  min-height: 264px;
   padding: 22px;
   display: flex;
   flex-direction: column;
@@ -1304,8 +1304,12 @@ main {
 
 .project-featured {
   --accent-rgb: var(--palette-teal);
-  min-height: 508px;
+  min-height: 546px;
   padding: 28px;
+}
+
+.project-featured > div:nth-child(2) {
+  margin-top: auto;
 }
 
 .project-stack > .project-card:nth-of-type(1) { --accent-rgb: var(--palette-steel); }
@@ -2100,7 +2104,7 @@ body.workshop-open { overflow-x: hidden; }
   .project-featured {
     grid-column: 1;
     grid-row: 1;
-    min-height: 430px;
+    min-height: 452px;
   }
   .project-divider-main {
     grid-column: 1;
@@ -2381,8 +2385,8 @@ body.workshop-open { overflow-x: hidden; }
     height: 1px;
     background: var(--homepage-divider-line);
   }
-  .project-featured { min-height: 390px; padding: 22px; }
-  .project-card { min-height: 230px; padding: 19px; }
+  .project-featured { min-height: 412px; padding: 22px; }
+  .project-card { min-height: 246px; padding: 19px; }
 
   .contact-links { grid-template-columns: 1fr; gap: 10px; }
   .contact-card { min-height: 78px; }
