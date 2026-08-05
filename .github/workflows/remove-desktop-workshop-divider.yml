@@ -1,0 +1,72 @@
+name: Remove desktop Workshop divider
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-desktop-workshop-divider.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-workshop-spacing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Remove desktop divider and preserve spacing
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          styles_path = Path('styles.css')
+          styles = styles_path.read_text(encoding='utf-8')
+          marker = '/* Desktop Workshop divider simplification — August 2026 */'
+          block = '\n\n' + '\n'.join([
+              marker,
+              '@media (min-width: 901px) {',
+              '  .workshop-entry-separator {',
+              '    display: none;',
+              '  }',
+              '',
+              '  .workshop-entry {',
+              '    margin-top: 36px;',
+              '  }',
+              '}',
+              ''
+          ])
+          if marker not in styles:
+              styles = styles.rstrip() + block
+          styles = re.sub(r'/\* Blue Continuum [^—]+— Consolidated portfolio stylesheet \*/', '/* Blue Continuum 4.3.1 — Consolidated portfolio stylesheet */', styles, count=1)
+          styles_path.write_text(styles, encoding='utf-8')
+
+          index_path = Path('index.html')
+          index = index_path.read_text(encoding='utf-8')
+          index = index.replace('styles.css?v=4.3.0', 'styles.css?v=4.3.1')
+          index = index.replace('Version 4.3.0', 'Version 4.3.1')
+          index_path.write_text(index, encoding='utf-8')
+          PY
+
+      - name: Validate update
+        shell: bash
+        run: |
+          grep -q 'Desktop Workshop divider simplification' styles.css
+          grep -q '@media (min-width: 901px)' styles.css
+          grep -q 'styles.css?v=4.3.1' index.html
+          grep -q 'Version 4.3.1' index.html
+          test "$(grep -c 'Desktop Workshop divider simplification' styles.css)" -eq 1
+
+      - name: Commit update and clean workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/remove-desktop-workshop-divider.yml
+          git add styles.css index.html
+          git commit -m 'Remove desktop Workshop divider'
+          git push
