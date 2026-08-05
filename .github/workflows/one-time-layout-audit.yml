@@ -1,0 +1,364 @@
+name: One-time layout consistency audit
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/one-time-layout-audit.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  refine-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply layout refinements
+        run: |
+          set +e
+          python3 - <<'PY' > refinement.log 2>&1
+          from pathlib import Path
+
+          css_path = Path("styles.css")
+          html_path = Path("index.html")
+          css = css_path.read_text(encoding="utf-8")
+          html = html_path.read_text(encoding="utf-8")
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"{label}: expected 1 match, found {count}")
+              return text.replace(old, new, 1)
+
+          css = replace_once(
+              css,
+              "/* Blue Continuum 4.2.5 — Consolidated portfolio stylesheet */",
+              "/* Blue Continuum 4.2.6 — Consolidated portfolio stylesheet */",
+              "stylesheet version",
+          )
+
+          css = replace_once(
+              css,
+              """.hero-copy > .eyebrow {
+  width: fit-content;
+  margin-bottom: 8px;
+  padding-left: 2px;
+  color: #bacacf;
+  font-size: 0.7rem;
+  font-weight: 730;
+  letter-spacing: 0.075em;
+  text-transform: none;
+}
+
+.hero-copy > .eyebrow::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  flex: 0 0 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(174, 196, 203, 0.72), rgba(174, 196, 203, 0));
+  box-shadow: 0 0 14px rgba(145, 169, 178, 0.08);
+}""",
+              """.hero-copy > .eyebrow {
+  width: fit-content;
+  margin-bottom: 6px;
+  margin-left: 8px;
+  padding-left: 0;
+  color: #bacacf;
+  font-size: 0.7rem;
+  font-weight: 730;
+  letter-spacing: 0.075em;
+  text-transform: none;
+}
+
+.hero-copy > .eyebrow::after {
+  content: none;
+  display: none;
+}""",
+              "hero introduction alignment",
+          )
+
+          css = replace_once(
+              css,
+              """.timeline-state {
+  display: inline-flex;
+  align-self: flex-start;
+  margin: 24px 0 0;
+  padding: 0;
+  border: 0;
+  color: rgb(var(--accent-rgb));
+  background: transparent;
+  font-size: 0.58rem;
+  font-weight: 820;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}""",
+              """.timeline-state {
+  width: 100%;
+  min-height: 1.3em;
+  display: inline-flex;
+  align-self: flex-start;
+  margin: 24px 0 0;
+  padding: 0;
+  border: 0;
+  color: rgb(var(--accent-rgb));
+  background: transparent;
+  font-size: 0.58rem;
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-transform: uppercase;
+}""",
+              "journey status typography",
+          )
+
+          css = replace_once(
+              css,
+              "  .timeline-state { margin-top: 3px; }",
+              """  .timeline-state {
+    margin-top: 3px;
+    font-size: 0.58rem;
+    font-weight: 820;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    white-space: nowrap;
+  }""",
+              "mobile journey status typography",
+          )
+
+          css = replace_once(
+              css,
+              """.workshop-entry-separator {
+  min-height: 44px;
+  margin-top: 12px;""",
+              """.workshop-entry-separator {
+  min-height: clamp(44px, 4vw, 52px);
+  margin-top: 0;""",
+              "desktop workshop separator spacing",
+          )
+
+          css = replace_once(
+              css,
+              """  .workshop-entry-separator {
+    min-height: 44px;
+    margin-top: 10px;
+  }""",
+              """  .workshop-entry-separator {
+    min-height: 44px;
+    margin-top: 0;
+  }""",
+              "mobile workshop separator spacing",
+          )
+
+          css = replace_once(
+              css,
+              '#closing-title {\n  --mobile-title-copy: "Thank you\\A for being here";',
+              '#closing-title {\n  --mobile-title-copy: "Thank you!\\A for being here";',
+              "mobile closing title",
+          )
+
+          html = replace_once(
+              html,
+              'href="styles.css?v=4.2.5"',
+              'href="styles.css?v=4.2.6"',
+              "stylesheet cache version",
+          )
+          html = replace_once(
+              html,
+              '<h2 id="closing-title"><span>Thank you</span><span>for being here</span></h2>',
+              '<h2 id="closing-title"><span>Thank you!</span><span>for being here</span></h2>',
+              "closing title punctuation",
+          )
+          html = replace_once(
+              html,
+              '<p class="footer-version">Version 4.2.5</p>',
+              '<p class="footer-version">Version 4.2.6</p>',
+              "footer version",
+          )
+
+          required_states = (
+              "Currently learning",
+              "Next step",
+              "Upcoming",
+              "Future direction",
+              "Advanced direction",
+          )
+          for state in required_states:
+              if html.count(f'<p class="timeline-state">{state}</p>') != 1:
+                  raise RuntimeError(f"timeline state missing or duplicated: {state}")
+
+          if css.count("{") != css.count("}"):
+              raise RuntimeError("CSS braces are unbalanced")
+          if html.count("<section") != html.count("</section>"):
+              raise RuntimeError("HTML section tags are unbalanced")
+
+          css_path.write_text(css, encoding="utf-8")
+          html_path.write_text(html, encoding="utf-8")
+          print("refinement=success")
+          PY
+          echo "refinement_status=$?" >> refinement.log
+          exit 0
+
+      - name: Install visual audit tooling
+        run: |
+          set +e
+          python3 -m pip install --quiet playwright > install.log 2>&1
+          python3 -m playwright install chromium >> install.log 2>&1
+          echo "install_status=$?" >> install.log
+          exit 0
+
+      - name: Run responsive layout audit
+        run: |
+          set +e
+          python3 - <<'PY' > audit.log 2>&1
+          from pathlib import Path
+          import subprocess
+          import time
+          from playwright.sync_api import sync_playwright
+
+          output = Path("layout-audit")
+          output.mkdir(exist_ok=True)
+          server = subprocess.Popen(
+              ["python3", "-m", "http.server", "4173", "--bind", "127.0.0.1"],
+              stdout=subprocess.DEVNULL,
+              stderr=subprocess.DEVNULL,
+          )
+          time.sleep(1.2)
+
+          try:
+              with sync_playwright() as p:
+                  browser = p.chromium.launch()
+                  viewports = (
+                      ("desktop", 1440, 1000),
+                      ("laptop", 1024, 900),
+                      ("tablet", 768, 900),
+                      ("mobile", 390, 844),
+                      ("small-mobile", 360, 800),
+                  )
+                  for name, width, height in viewports:
+                      page = browser.new_page(viewport={"width": width, "height": height})
+                      page.goto("http://127.0.0.1:4173", wait_until="networkidle")
+                      page.evaluate("document.fonts.ready")
+                      page.evaluate("document.activeElement && document.activeElement.blur()")
+
+                      checks = page.evaluate("""
+                      () => {
+                        const hero = document.querySelector('.hero-copy > .eyebrow');
+                        const heroTitle = document.querySelector('.hero h1');
+                        const states = [...document.querySelectorAll('.timeline-state')];
+                        const lastCard = document.querySelector('.timeline-item:last-child');
+                        const separatorLine = document.querySelector('.workshop-entry-separator-line');
+                        const workshopCard = document.querySelector('.workshop-entry');
+                        const styles = states.map((el) => {
+                          const s = getComputedStyle(el);
+                          return {
+                            fontSize: s.fontSize,
+                            fontWeight: s.fontWeight,
+                            letterSpacing: s.letterSpacing,
+                            lineHeight: s.lineHeight,
+                            textTransform: s.textTransform,
+                            whiteSpace: s.whiteSpace,
+                            height: el.getBoundingClientRect().height,
+                          };
+                        });
+                        const heroBox = hero.getBoundingClientRect();
+                        const titleBox = heroTitle.getBoundingClientRect();
+                        const lastBox = lastCard.getBoundingClientRect();
+                        const lineBox = separatorLine.getBoundingClientRect();
+                        const workshopBox = workshopCard.getBoundingClientRect();
+                        return {
+                          overflow: document.documentElement.scrollWidth - window.innerWidth,
+                          pseudoContent: getComputedStyle(hero, '::after').content,
+                          heroLeftOffset: heroBox.left - titleBox.left,
+                          heroCenterOffset: (heroBox.left + heroBox.width / 2) - (titleBox.left + titleBox.width / 2),
+                          stateStyles: styles,
+                          stateTexts: states.map((el) => el.textContent.trim()),
+                          separatorTopGap: lineBox.top - lastBox.bottom,
+                          separatorBottomGap: workshopBox.top - lineBox.bottom,
+                          closingText: document.querySelector('#closing-title').textContent.trim(),
+                          closingPseudo: getComputedStyle(document.querySelector('#closing-title'), '::after').content,
+                        };
+                      }
+                      """)
+
+                      assert checks["overflow"] <= 1, checks
+                      assert checks["pseudoContent"] in ("none", "normal"), checks
+                      if width > 700:
+                          assert 5 <= checks["heroLeftOffset"] <= 12, checks
+                      else:
+                          assert abs(checks["heroCenterOffset"]) <= 2, checks
+
+                      expected_states = [
+                          "Currently learning",
+                          "Next step",
+                          "Upcoming",
+                          "Future direction",
+                          "Advanced direction",
+                      ]
+                      assert checks["stateTexts"] == expected_states, checks
+                      signature = {
+                          (s["fontSize"], s["fontWeight"], s["letterSpacing"], s["lineHeight"], s["textTransform"], s["whiteSpace"])
+                          for s in checks["stateStyles"]
+                      }
+                      assert len(signature) == 1, checks
+                      assert all(s["height"] < 20 for s in checks["stateStyles"]), checks
+                      assert abs(checks["separatorTopGap"] - checks["separatorBottomGap"]) <= 1.5, checks
+                      assert checks["closingText"] == "Thank you!for being here", checks
+                      if width <= 700:
+                          assert "Thank you!" in checks["closingPseudo"], checks
+
+                      page.locator(".hero").screenshot(path=output / f"{name}-hero.png")
+                      page.locator("#journey").screenshot(path=output / f"{name}-journey.png")
+                      page.locator("#closing").screenshot(path=output / f"{name}-closing.png")
+
+                      page.locator("[data-open-workshop]").click()
+                      page.wait_for_timeout(500)
+                      assert page.evaluate("document.documentElement.scrollWidth - window.innerWidth") <= 1
+                      page.locator('[aria-labelledby="current-title"]').scroll_into_view_if_needed()
+                      page.wait_for_timeout(150)
+                      page.locator('[aria-labelledby="current-title"]').screenshot(
+                          path=output / f"{name}-workshop-current.png"
+                      )
+                      page.close()
+                  browser.close()
+              print("audit=success")
+          finally:
+              server.terminate()
+              server.wait(timeout=5)
+          PY
+          echo "audit_status=$?" >> audit.log
+          exit 0
+
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-consistency-audit
+          path: |
+            layout-audit
+            refinement.log
+            audit.log
+            install.log
+          if-no-files-found: ignore
+
+      - name: Commit refinements and remove temporary workflow
+        run: |
+          set +e
+          rm -rf layout-audit
+          rm -f refinement.log audit.log install.log
+          rm -f .github/workflows/one-time-layout-audit.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Align hero label, journey states and workshop spacing" || true
+          git push || true
+          exit 0
