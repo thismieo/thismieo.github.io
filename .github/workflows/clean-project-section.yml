@@ -1,0 +1,346 @@
+name: Clean project section
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/clean-project-section.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  clean-project-section:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Consolidate and validate project section
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import re
+
+          css_path = Path('styles.css')
+          index_path = Path('index.html')
+          css = css_path.read_text(encoding='utf-8')
+          index = index_path.read_text(encoding='utf-8')
+
+          project_css = r'''/* Projects */
+          .project-grid {
+            position: relative;
+            width: min(100%, 1120px);
+            margin: 48px auto 0;
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            align-items: stretch;
+            column-gap: 32px;
+            row-gap: 26px;
+          }
+
+          .project-grid > .project-card {
+            min-height: 342px;
+            grid-column: span 4;
+            padding: 23px 21px 21px;
+          }
+
+          .project-grid > .project-card:nth-of-type(1) { --accent-rgb: var(--palette-teal); }
+          .project-grid > .project-card:nth-of-type(2) { --accent-rgb: var(--palette-steel); }
+          .project-grid > .project-card:nth-of-type(3) { --accent-rgb: var(--palette-indigo); }
+          .project-grid > .project-card:nth-of-type(4) {
+            --accent-rgb: var(--palette-bronze);
+            grid-column: 2 / span 5;
+          }
+          .project-grid > .project-card:nth-of-type(5) {
+            --accent-rgb: var(--palette-teal);
+            grid-column: 7 / span 5;
+          }
+
+          .project-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+          }
+
+          .project-number,
+          .project-field {
+            color: rgb(var(--accent-rgb));
+            font-size: 0.61rem;
+            font-weight: 820;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+          }
+
+          .status,
+          .tags li,
+          .workshop-state,
+          .current-track-topics li {
+            border: 1px solid rgba(198, 214, 221, 0.13);
+            border-radius: 999px;
+            color: #b9c8ce;
+            background: rgba(255,255,255,0.026);
+            font-size: 0.58rem;
+            font-weight: 750;
+            letter-spacing: 0.04em;
+          }
+
+          .status { padding: 5px 9px; white-space: nowrap; }
+          .status-next { color: #c9d9d5; border-color: rgba(116, 155, 145, 0.25); }
+
+          .project-grid > .project-card > .project-field {
+            margin: 29px 0 0;
+            padding-top: 0;
+          }
+
+          .project-card h3 {
+            margin: 10px 0 0;
+            color: #eef3f4;
+            font-size: clamp(1.28rem, 1.75vw, 1.62rem);
+            letter-spacing: -0.045em;
+            line-height: 1.16;
+          }
+
+          .project-card p:not(.project-field) {
+            margin: 14px 0 0;
+            color: #9dafb6;
+            font-size: 0.82rem;
+            line-height: 1.72;
+          }
+
+          .tags {
+            margin: auto 0 0;
+            padding: 20px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            list-style: none;
+          }
+
+          .tags li { padding: 5px 8px; }
+
+          .project-separator {
+            position: absolute;
+            z-index: 2;
+            width: 1px;
+            border-radius: 999px;
+            pointer-events: none;
+            background: linear-gradient(
+              180deg,
+              transparent,
+              rgba(160, 180, 188, 0.13) 18%,
+              rgba(178, 196, 203, 0.34) 50%,
+              rgba(160, 180, 188, 0.13) 82%,
+              transparent
+            );
+            box-shadow: 0 0 8px rgba(145, 169, 178, 0.045);
+          }
+
+          .project-separator-top-one,
+          .project-separator-top-two {
+            top: 0;
+            height: calc((100% - 26px) / 2);
+          }
+
+          .project-separator-top-one { left: calc(33.333333% - 5.333px); }
+          .project-separator-top-two { left: calc(66.666667% + 5.333px); }
+
+          .project-separator-bottom {
+            top: calc((100% - 26px) / 2 + 26px);
+            left: 50%;
+            height: calc((100% - 26px) / 2);
+          }
+
+          @media (max-width: 1050px) and (min-width: 701px) {
+            .project-grid {
+              width: min(100%, 880px);
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              column-gap: 24px;
+              row-gap: 18px;
+            }
+
+            .project-grid > .project-card:nth-of-type(n) {
+              min-height: 310px;
+              grid-column: auto;
+            }
+
+            .project-grid > .project-card:nth-of-type(5) {
+              width: calc(50% - 12px);
+              grid-column: 1 / -1;
+              justify-self: center;
+            }
+
+            .project-separator {
+              left: 50%;
+              height: calc((100% - 36px) / 3);
+              transform: translateX(-50%);
+            }
+
+            .project-separator-top-one { top: 0; }
+            .project-separator-top-two { top: calc((100% - 36px) / 3 + 18px); }
+            .project-separator-bottom { display: none; }
+          }
+
+          @media (max-width: 700px) {
+            .project-grid {
+              width: 100%;
+              margin-top: 34px;
+              grid-template-columns: 1fr;
+              gap: 12px;
+            }
+
+            .project-grid > .project-card:nth-of-type(n) {
+              width: 100%;
+              min-height: 246px;
+              grid-column: 1;
+              padding: 19px;
+            }
+
+            .project-grid > .project-card > .project-field { margin-top: 24px; }
+            .project-grid > .project-card .tags { padding-top: 17px; }
+            .project-separator { display: none; }
+          }
+          '''
+
+          css, count = re.subn(
+              r'/\* Projects \*/.*?/\* Contact compact \*/',
+              project_css + '\n\n/* Contact compact */',
+              css,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('Could not replace the canonical Projects block')
+
+          css, count = re.subn(
+              r'\n  \.project-grid \{\n    grid-template-columns: 1fr;\n    grid-template-rows: auto 44px auto;\n  \}\n  \.project-featured \{.*?\n  \.project-stack \{\n    grid-column: 1;\n    grid-row: 3;\n  \}\n',
+              '\n',
+              css,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('Could not remove the old tablet project layout')
+
+          css, count = re.subn(
+              r'\n  \.project-grid \{\n    margin-top: 34px;\n    grid-template-columns: 1fr;\n    grid-template-rows: auto 44px auto;\n  \}\n  \.project-divider-main \{.*?\n  \.project-card \{ min-height: 246px; padding: 19px; \}\n',
+              '\n',
+              css,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('Could not remove the old mobile project layout')
+
+          css, count = re.subn(
+              r'\n/\* Project roadmap 3\+2 grid — August 2026 \*/.*\Z',
+              '\n',
+              css,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('Could not remove accumulated project overrides')
+
+          grid_start = index.index('        <div class="project-grid">')
+          section_end = index.index('    </section>', grid_start)
+          grid_close = index.rfind('        </div>', grid_start, section_end)
+          if grid_close < 0:
+              raise SystemExit('Could not locate project-grid closing tag')
+
+          separators = '''          <span class="project-separator project-separator-top-one" aria-hidden="true"></span>\n          <span class="project-separator project-separator-top-two" aria-hidden="true"></span>\n          <span class="project-separator project-separator-bottom" aria-hidden="true"></span>\n'''
+          if 'project-separator-top-one' not in index:
+              index = index[:grid_close] + separators + index[grid_close:]
+
+          index = index.replace('styles.css?v=4.3.4', 'styles.css?v=4.3.5')
+          index = index.replace('Version 4.3.4', 'Version 4.3.5')
+
+          legacy_tokens = (
+              '.project-featured',
+              '.project-stack',
+              '.project-divider-main',
+              '.project-divider-horizontal',
+              '.project-divider-vertical',
+              'Project roadmap 3+2 grid',
+              'Project card row separators',
+              'Project card width refinement',
+          )
+          leftovers = [token for token in legacy_tokens if token in css]
+          if leftovers:
+              raise SystemExit(f'Legacy project CSS remains: {leftovers}')
+
+          if css.count('/* Projects */') != 1:
+              raise SystemExit('Projects CSS is not canonical')
+          if index.count('<article class="project-card">') != 5:
+              raise SystemExit('Project card count changed unexpectedly')
+          if index.count('class="project-separator ') != 3:
+              raise SystemExit('Project separator count is incorrect')
+          if '.project-separator { display: none; }' not in css:
+              raise SystemExit('Mobile separator safeguard is missing')
+          if 'styles.css?v=4.3.5' not in index or 'Version 4.3.5' not in index:
+              raise SystemExit('Version bump failed')
+          if 'cloudflareinsights.com/beacon.min.js' not in index:
+              raise SystemExit('Cloudflare analytics snippet is missing')
+
+          def balanced_braces(text):
+              depth = 0
+              in_string = None
+              escaped = False
+              in_comment = False
+              i = 0
+              while i < len(text):
+                  pair = text[i:i+2]
+                  if in_comment:
+                      if pair == '*/':
+                          in_comment = False
+                          i += 2
+                          continue
+                      i += 1
+                      continue
+                  if not in_string and pair == '/*':
+                      in_comment = True
+                      i += 2
+                      continue
+                  ch = text[i]
+                  if in_string:
+                      if escaped:
+                          escaped = False
+                      elif ch == '\\':
+                          escaped = True
+                      elif ch == in_string:
+                          in_string = None
+                  elif ch in ('"', "'"):
+                      in_string = ch
+                  elif ch == '{':
+                      depth += 1
+                  elif ch == '}':
+                      depth -= 1
+                      if depth < 0:
+                          return False
+                  i += 1
+              return depth == 0 and not in_comment and in_string is None
+
+          if not balanced_braces(css):
+              raise SystemExit('CSS brace/string validation failed')
+
+          class Parser(HTMLParser):
+              pass
+          Parser().feed(index)
+
+          css_path.write_text(css.rstrip() + '\n', encoding='utf-8')
+          index_path.write_text(index, encoding='utf-8')
+          PY
+
+          rm .github/workflows/clean-project-section.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html styles.css .github
+          git diff --check
+          git commit -m 'Clean and stabilize project section'
+          git push
