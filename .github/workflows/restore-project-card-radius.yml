@@ -1,0 +1,65 @@
+name: Restore project card radius
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-project-card-radius.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore-project-card-radius:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Restore rounded project card corners
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css_path = Path('styles.css')
+          index_path = Path('index.html')
+          css = css_path.read_text(encoding='utf-8')
+          index = index_path.read_text(encoding='utf-8')
+
+          old = '''.project-grid > .project-card {
+  min-height: 342px;
+  grid-column: span 4;
+  padding: 23px 21px 21px;
+}'''
+          new = '''.project-grid > .project-card {
+  min-height: 342px;
+  grid-column: span 4;
+  padding: 23px 21px 21px;
+  border-radius: 19px;
+}'''
+
+          if old not in css:
+              raise SystemExit('Project card block not found or already changed')
+
+          css = css.replace(old, new, 1)
+          index = index.replace('styles.css?v=4.3.5', 'styles.css?v=4.3.6')
+          index = index.replace('Version 4.3.5', 'Version 4.3.6')
+
+          assert css.count('border-radius: 19px;') >= 1
+          assert 'styles.css?v=4.3.6' in index
+          assert 'Version 4.3.6' in index
+
+          css_path.write_text(css, encoding='utf-8')
+          index_path.write_text(index, encoding='utf-8')
+          PY
+
+          rm .github/workflows/restore-project-card-radius.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add styles.css index.html .github
+          git commit -m 'Restore rounded project card corners'
+          git push
