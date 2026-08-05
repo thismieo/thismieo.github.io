@@ -1,0 +1,15 @@
+/* LinkedIn contact card — Version 4.3.8 */
+.contact-card-linkedin {
+  --accent-rgb: var(--palette-steel);
+  grid-column: 1 / -1;
+  width: calc(50% - 6px);
+  justify-self: center;
+}
+
+@media (max-width: 700px) {
+  .contact-card-linkedin {
+    grid-column: auto;
+    width: 100%;
+    justify-self: stretch;
+  }
+}
