@@ -2,16 +2,14 @@ name: One-time layout refinement
 
 on:
   push:
-    branches: [main]
-    paths:
-      - ".github/workflows/one-time-layout-refinement.yml"
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
   refine-layout:
-    if: github.event.head_commit.message == 'Add one-time layout refinement workflow'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -19,10 +17,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Apply spacing and responsive refinements
-        shell: bash
+      - name: Apply refinements
         run: |
-          python3 - <<'PY'
+          python3 <<'PY'
           from pathlib import Path
 
           css_path = Path("styles.css")
@@ -30,7 +27,7 @@ jobs:
           css = css_path.read_text(encoding="utf-8")
           html = html_path.read_text(encoding="utf-8")
 
-          def replace_once(text: str, old: str, new: str, label: str) -> str:
+          def replace_once(text, old, new, label):
               count = text.count(old)
               if count != 1:
                   raise SystemExit(f"{label}: expected 1 match, found {count}")
@@ -47,31 +44,31 @@ jobs:
               css,
               ".workshop-entry-separator {\n  min-height: 44px;\n  margin-top: 40px;\n  display: grid;\n  place-items: center;",
               ".workshop-entry-separator {\n  min-height: 72px;\n  margin-top: 20px;\n  display: grid;\n  place-items: center;",
-              "desktop Workshop upper divider spacing",
+              "desktop Workshop upper divider",
           )
 
           css = replace_once(
               css,
               "  margin: 24px auto 0;\n  overflow: hidden;\n  border-radius: 999px;\n  pointer-events: none;\n  background-image:",
               "  margin: 36px auto 0;\n  overflow: hidden;\n  border-radius: 999px;\n  pointer-events: none;\n  background-image:",
-              "desktop Workshop shimmer spacing",
+              "desktop Workshop shimmer",
           )
 
           css = replace_once(
               css,
               "  .workshop-entry-separator {\n    min-height: 44px;\n    margin-top: 34px;\n  }",
               "  .workshop-entry-separator {\n    min-height: 64px;\n    margin-top: 18px;\n  }",
-              "mobile Workshop upper divider spacing",
+              "mobile Workshop upper divider",
           )
 
           css = replace_once(
               css,
               "  .workshop-entry-shimmer {\n    margin-top: 22px;\n  }",
               "  .workshop-entry-shimmer {\n    margin-top: 32px;\n  }",
-              "mobile Workshop shimmer spacing",
+              "mobile Workshop shimmer",
           )
 
-          refinement = r'''
+          addition = r'''
 
 /* Section spacing and responsive copy refinement — August 2026 */
 .about::after {
@@ -140,7 +137,7 @@ jobs:
           marker = "/* Section spacing and responsive copy refinement — August 2026 */"
           if marker in css:
               raise SystemExit("refinement block already exists")
-          css = css.rstrip() + refinement + "\n"
+          css = css.rstrip() + addition + "\n"
 
           html = replace_once(
               html,
@@ -149,12 +146,11 @@ jobs:
               "stylesheet cache version",
           )
 
-          css_path.write_text(css, encoding="utf-8", newline="\n")
-          html_path.write_text(html, encoding="utf-8", newline="\n")
+          css_path.write_text(css, encoding="utf-8")
+          html_path.write_text(html, encoding="utf-8")
           PY
 
-      - name: Commit the finished refinement and remove this workflow
-        shell: bash
+      - name: Commit refinements
         run: |
           rm -f .github/workflows/one-time-layout-refinement.yml
           git config user.name "github-actions[bot]"
