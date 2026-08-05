@@ -1,0 +1,336 @@
+from pathlib import Path
+
+index_path = Path("index.html")
+styles_path = Path("styles.css")
+workflow_path = Path(".github/workflows/reorganize-homepage-dividers.yml")
+script_path = Path(".github/reorganize_homepage_dividers.py")
+trigger_path = Path(".divider-reorg-trigger")
+
+index = index_path.read_text(encoding="utf-8")
+styles = styles_path.read_text(encoding="utf-8")
+
+
+def replace_once(text: str, old: str, new: str, label: str) -> str:
+    count = text.count(old)
+    if count != 1:
+        raise SystemExit(f"{label}: expected exactly 1 match, found {count}")
+    return text.replace(old, new, 1)
+
+
+journey_replacements = [
+    (
+        '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>02</span></div>',
+        '        </li>\n        <li class="timeline-divider timeline-divider-teal" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>02</span></div>',
+        "Journey divider 01-02",
+    ),
+    (
+        '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>03</span></div>',
+        '        </li>\n        <li class="timeline-divider timeline-divider-indigo" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>03</span></div>',
+        "Journey divider 02-03",
+    ),
+    (
+        '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>04</span></div>',
+        '        </li>\n        <li class="timeline-divider timeline-divider-teal" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>04</span></div>',
+        "Journey divider 03-04",
+    ),
+    (
+        '        </li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>05</span></div>',
+        '        </li>\n        <li class="timeline-divider timeline-divider-indigo" role="presentation" aria-hidden="true"><span class="timeline-divider-line"></span></li>\n        <li class="timeline-item">\n          <div class="timeline-marker"><span>05</span></div>',
+        "Journey divider 04-05",
+    ),
+]
+for old, new, label in journey_replacements:
+    index = replace_once(index, old, new, label)
+
+index = replace_once(
+    index,
+    '      <div class="workshop-entry" data-workshop-card>\n        <span class="workshop-entry-label">',
+    '      <div class="workshop-entry" data-workshop-card>\n        <span class="workshop-entry-shimmer" aria-hidden="true"></span>\n        <span class="workshop-entry-label">',
+    "Workshop internal shimmer element",
+)
+
+styles = replace_once(
+    styles,
+    '''.timeline {
+  position: relative;
+  margin: 48px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+}
+
+.timeline::before { content: none; }
+''',
+    '''.timeline {
+  position: relative;
+  margin: 48px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr);
+  gap: 0;
+  list-style: none;
+}
+
+.timeline::before { content: none; }
+
+.timeline-divider {
+  min-width: 0;
+  min-height: 272px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    ellipse 78% 62% at center,
+    rgba(var(--divider-glow-rgb), 0.12),
+    rgba(var(--divider-glow-rgb), 0.035) 42%,
+    transparent 76%
+  );
+  pointer-events: none;
+}
+
+.timeline-divider-teal { --divider-glow-rgb: 98, 145, 156; }
+.timeline-divider-indigo { --divider-glow-rgb: 116, 113, 174; }
+
+.timeline-divider-line {
+  width: 1px;
+  height: 58%;
+  display: block;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(160, 180, 188, 0.13) 18%,
+    rgba(178, 196, 203, 0.34) 50%,
+    rgba(160, 180, 188, 0.13) 82%,
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(145, 169, 178, 0.06);
+}
+''',
+    "Desktop Journey grid and dividers",
+)
+
+styles = replace_once(
+    styles,
+    '''.timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
+.timeline-item:nth-child(2) { --accent-rgb: var(--palette-steel); }
+.timeline-item:nth-child(3) { --accent-rgb: var(--palette-indigo); }
+.timeline-item:nth-child(4) { --accent-rgb: var(--palette-bronze); }
+.timeline-item:nth-child(5) { --accent-rgb: var(--palette-teal); }
+''',
+    '''.timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
+.timeline-item:nth-child(3) { --accent-rgb: var(--palette-steel); }
+.timeline-item:nth-child(5) { --accent-rgb: var(--palette-indigo); }
+.timeline-item:nth-child(7) { --accent-rgb: var(--palette-bronze); }
+.timeline-item:nth-child(9) { --accent-rgb: var(--palette-teal); }
+''',
+    "Journey stage palette selectors",
+)
+
+styles = replace_once(
+    styles,
+    "  padding: 26px 28px;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;",
+    "  padding: 42px 28px 26px;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;",
+    "Workshop desktop padding",
+)
+
+styles = replace_once(
+    styles,
+    '''@media (max-width: 1050px) {
+  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .timeline::before { display: none; }
+  .timeline-item { min-height: 240px; }
+  .timeline-item:nth-child(4), .timeline-item:nth-child(5) { grid-column: span 1; }
+''',
+    '''@media (max-width: 1050px) {
+  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .timeline-divider { display: none; }
+  .timeline-item { min-height: 240px; }
+  .timeline-item:nth-child(7), .timeline-item:nth-child(9) { grid-column: span 1; }
+''',
+    "Tablet Journey layout",
+)
+
+styles = replace_once(
+    styles,
+    "  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 10px; }\n  .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }",
+    '''  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 0; }
+  .timeline-divider {
+    width: 100%;
+    min-height: 44px;
+    display: grid;
+    background: radial-gradient(
+      ellipse 48% 78% at center,
+      rgba(var(--divider-glow-rgb), 0.13),
+      rgba(var(--divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  }
+  .timeline-divider-line {
+    width: min(72%, 320px);
+    height: 1px;
+    background: var(--homepage-divider-line);
+  }
+  .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }''',
+    "Mobile Journey dividers",
+)
+
+styles = replace_once(
+    styles,
+    "    padding: 22px 18px;\n    grid-template-columns: 1fr;",
+    "    padding: 38px 18px 22px;\n    grid-template-columns: 1fr;",
+    "Workshop mobile padding",
+)
+
+styles = replace_once(
+    styles,
+    '''/* Homepage section dividers: the same horizontal line and glow used in The Workshop. */
+:is(#journey, #projects, #contact, #closing)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(66%, 420px);
+  height: 50px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background:
+    var(--homepage-divider-line) center / 100% 1px no-repeat,
+    radial-gradient(
+      ellipse 48% 78% at center,
+      rgba(var(--homepage-divider-glow-rgb), 0.13),
+      rgba(var(--homepage-divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  filter: drop-shadow(0 0 12px rgba(145, 169, 178, 0.06));
+}
+
+''',
+    "",
+    "Homepage section divider removal",
+)
+
+styles = replace_once(
+    styles,
+    '''/* A dedicated shimmer line above the homepage Workshop card. */
+.timeline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -48px;
+  width: min(76%, 720px);
+  height: 1px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border-radius: 999px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, 0.82) 50%, transparent 100%),
+    linear-gradient(90deg, transparent, rgba(151, 174, 184, 0.22) 16%, rgba(175, 195, 202, 0.34) 50%, rgba(151, 174, 184, 0.22) 84%, transparent);
+  background-repeat: no-repeat;
+  background-size: 54% 100%, 100% 100%;
+  background-position: -120% 0, 0 0;
+  animation: homepage-workshop-line-sweep 3s ease-in-out infinite;
+}
+
+#journey .workshop-entry {
+  margin-top: 82px;
+}
+''',
+    '''/* Animated shimmer contained inside the homepage Workshop card. */
+.workshop-entry-shimmer {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: 50%;
+  width: min(70%, 620px);
+  height: 1px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border-radius: 999px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, 0.82) 50%, transparent 100%),
+    linear-gradient(90deg, transparent, rgba(151, 174, 184, 0.22) 16%, rgba(175, 195, 202, 0.34) 50%, rgba(151, 174, 184, 0.22) 84%, transparent);
+  background-repeat: no-repeat;
+  background-size: 54% 100%, 100% 100%;
+  background-position: -120% 0, 0 0;
+  animation: homepage-workshop-line-sweep 3s ease-in-out infinite;
+}
+''',
+    "Workshop shimmer relocation",
+)
+
+styles = replace_once(
+    styles,
+    '''  :is(#journey, #projects, #contact, #closing)::before {
+    width: min(72%, 320px);
+    height: 44px;
+  }
+
+''',
+    "",
+    "Mobile section divider removal",
+)
+
+styles = replace_once(
+    styles,
+    '''  .timeline::after {
+    bottom: -43px;
+    width: min(82%, 320px);
+  }
+
+  #journey .workshop-entry {
+    margin-top: 74px;
+  }
+''',
+    '''  .workshop-entry-shimmer {
+    top: 18px;
+    width: min(72%, 320px);
+  }
+''',
+    "Mobile workshop shimmer placement",
+)
+
+styles = replace_once(
+    styles,
+    '''@media (prefers-reduced-motion: reduce) {
+  .timeline::after {
+    animation: none;
+    background-position: -120% 0, 0 0;
+  }
+}
+''',
+    '''@media (prefers-reduced-motion: reduce) {
+  .workshop-entry-shimmer {
+    animation: none;
+    background-position: -120% 0, 0 0;
+  }
+}
+''',
+    "Reduced-motion shimmer selector",
+)
+
+if index.count('class="timeline-divider ') != 4:
+    raise SystemExit("Expected four Journey divider elements after update.")
+if index.count('class="workshop-entry-shimmer"') != 1:
+    raise SystemExit("Expected one Workshop shimmer element after update.")
+if ':is(#journey, #projects, #contact, #closing)::before' in styles:
+    raise SystemExit("Section divider selector still exists.")
+if ".timeline::after" in styles:
+    raise SystemExit("Old external shimmer selector still exists.")
+if styles.count(".workshop-entry-shimmer") < 3:
+    raise SystemExit("Workshop shimmer styling is incomplete.")
+if styles.count(".timeline-divider-line") < 2:
+    raise SystemExit("Journey divider styling is incomplete.")
+
+index_path.write_text(index, encoding="utf-8")
+styles_path.write_text(styles, encoding="utf-8")
+workflow_path.unlink(missing_ok=True)
+script_path.unlink(missing_ok=True)
+trigger_path.unlink(missing_ok=True)
