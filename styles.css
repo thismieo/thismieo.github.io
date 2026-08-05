@@ -3019,3 +3019,27 @@ body.workshop-open { overflow-x: hidden; }
     box-shadow: none !important;
   }
 }
+
+
+/* Mobile project separators — August 2026 */
+.project-mobile-separator { display: none; }
+
+@media (max-width: 700px) {
+  .project-grid { gap: 0; }
+
+  .project-mobile-separator {
+    width: 100%;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  .project-mobile-separator > span {
+    width: min(72%, 320px);
+    height: 1px;
+    display: block;
+    background: var(--homepage-divider-line);
+    box-shadow: 0 0 12px rgba(145, 169, 178, 0.06);
+  }
+}
