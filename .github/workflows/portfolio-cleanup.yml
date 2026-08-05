@@ -1,0 +1,45 @@
+name: One-shot portfolio cleanup
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/portfolio-cleanup.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: portfolio-cleanup
+  cancel-in-progress: false
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Consolidate and validate portfolio files
+        run: python3 .github/scripts/portfolio_cleanup.py
+
+      - name: Verify repository diff
+        run: |
+          git diff --check
+          test ! -e styles-core-4.1.9.css
+          ! grep -R 'styles-core-4.1.9.css' --include='*.html' --include='*.css' --include='*.js' --include='*.json' .
+          ! grep -R 'editorial-refinements' --include='*.html' .
+          grep -q 'styles.css?v=4.2.0' index.html
+          grep -q 'Building through practice.</span>' index.html
+          grep -q '<h2 id="projects-title">Building real projects.</h2>' index.html
+
+      - name: Commit consolidated version
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Consolidate portfolio styles and clean markup'
+          git push
