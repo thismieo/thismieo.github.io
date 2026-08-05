@@ -3270,3 +3270,31 @@ body.workshop-open { overflow-x: hidden; }
     content: none;
   }
 }
+
+
+/* Project card width refinement — August 2026 */
+@media (min-width: 1051px) {
+  .project-grid {
+    width: min(100%, 1120px);
+    margin-inline: auto;
+    column-gap: 32px;
+    row-gap: 26px;
+    background-size: 1px calc((100% - 26px) / 2);
+  }
+  .project-grid::before { left: calc(33.333333% - 5.333px); }
+  .project-grid::after { left: calc(66.666667% + 5.333px); }
+  .project-grid::before,
+  .project-grid::after { height: calc((100% - 26px) / 2); }
+}
+@media (max-width: 1050px) and (min-width: 701px) {
+  .project-grid {
+    width: min(100%, 880px);
+    margin-inline: auto;
+    column-gap: 24px;
+    row-gap: 18px;
+  }
+  .project-grid > .project-card:last-child { width: calc(50% - 12px); }
+  .project-grid::before,
+  .project-grid::after { height: calc((100% - 36px) / 3); }
+  .project-grid::after { top: calc((100% - 36px) / 3 + 18px); }
+}
