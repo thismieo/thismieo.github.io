@@ -93,6 +93,36 @@
   filter: drop-shadow(0 0 12px rgba(145, 169, 178, 0.06));
 }
 
+/* A long, static closing divider inside the bottom of the homepage hero. */
+.hero::after {
+  --divider-glow-rgb: 116, 113, 174;
+  content: "";
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 0;
+  width: min(86%, 980px);
+  height: 58px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(160, 180, 188, 0.13) 18%,
+      rgba(178, 196, 203, 0.34) 50%,
+      rgba(160, 180, 188, 0.13) 82%,
+      transparent
+    ) center / 100% 1px no-repeat,
+    radial-gradient(
+      ellipse 54% 82% at center,
+      rgba(var(--divider-glow-rgb), 0.13),
+      rgba(var(--divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  filter: drop-shadow(0 0 14px rgba(145, 169, 178, 0.065));
+}
+
 /* A dedicated shimmer line above the homepage Workshop card. */
 .timeline::after {
   content: "";
@@ -186,6 +216,15 @@
 
   :is(#journey, #projects, #contact, #closing)::before {
     width: min(72%, 320px);
+    height: 44px;
+  }
+
+  .hero {
+    padding-bottom: 72px;
+  }
+
+  .hero::after {
+    width: min(88vw, 340px);
     height: 44px;
   }
 
