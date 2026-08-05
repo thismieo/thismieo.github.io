@@ -1,4 +1,4 @@
-/* Blue Continuum 4.2.4 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.2.5 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -1309,7 +1309,7 @@ main {
 }
 
 .project-featured > div:nth-child(2) {
-  margin-top: auto;
+  margin-top: clamp(30px, 4vw, 52px);
 }
 
 .project-stack > .project-card:nth-of-type(1) { --accent-rgb: var(--palette-steel); }
@@ -1350,6 +1350,10 @@ main {
 .status-next { color: #c9d9d5; border-color: rgba(116, 155, 145, 0.25); }
 
 .project-field { margin: auto 0 0; }
+
+.project-card:not(.project-featured) > .project-field {
+  padding-top: 12px;
+}
 
 .project-card h3 {
   margin: 9px 0 0;
