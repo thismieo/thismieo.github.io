@@ -942,12 +942,49 @@ main {
   margin: 48px 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns:
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr) 30px
+    minmax(0, 1fr);
+  gap: 0;
   list-style: none;
 }
 
 .timeline::before { content: none; }
+
+.timeline-divider {
+  min-width: 0;
+  min-height: 272px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    ellipse 78% 62% at center,
+    rgba(var(--divider-glow-rgb), 0.12),
+    rgba(var(--divider-glow-rgb), 0.035) 42%,
+    transparent 76%
+  );
+  pointer-events: none;
+}
+
+.timeline-divider-teal { --divider-glow-rgb: 98, 145, 156; }
+.timeline-divider-indigo { --divider-glow-rgb: 116, 113, 174; }
+
+.timeline-divider-line {
+  width: 1px;
+  height: 58%;
+  display: block;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(160, 180, 188, 0.13) 18%,
+    rgba(178, 196, 203, 0.34) 50%,
+    rgba(160, 180, 188, 0.13) 82%,
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(145, 169, 178, 0.06);
+}
 
 .timeline-item {
   min-height: 272px;
@@ -956,10 +993,10 @@ main {
 }
 
 .timeline-item:nth-child(1) { --accent-rgb: var(--palette-teal); }
-.timeline-item:nth-child(2) { --accent-rgb: var(--palette-steel); }
-.timeline-item:nth-child(3) { --accent-rgb: var(--palette-indigo); }
-.timeline-item:nth-child(4) { --accent-rgb: var(--palette-bronze); }
-.timeline-item:nth-child(5) { --accent-rgb: var(--palette-teal); }
+.timeline-item:nth-child(3) { --accent-rgb: var(--palette-steel); }
+.timeline-item:nth-child(5) { --accent-rgb: var(--palette-indigo); }
+.timeline-item:nth-child(7) { --accent-rgb: var(--palette-bronze); }
+.timeline-item:nth-child(9) { --accent-rgb: var(--palette-teal); }
 
 .timeline-marker {
   position: relative;
@@ -1022,7 +1059,7 @@ main {
   --accent-rgb: 126, 132, 166;
   margin-top: 20px;
   min-height: 170px;
-  padding: 26px 28px;
+  padding: 42px 28px 26px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 0.64fr) auto;
   grid-template-areas:
@@ -1846,10 +1883,10 @@ body.workshop-open { overflow-x: hidden; }
 }
 
 @media (max-width: 1050px) {
-  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .timeline::before { display: none; }
+  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .timeline-divider { display: none; }
   .timeline-item { min-height: 240px; }
-  .timeline-item:nth-child(4), .timeline-item:nth-child(5) { grid-column: span 1; }
+  .timeline-item:nth-child(7), .timeline-item:nth-child(9) { grid-column: span 1; }
 
   .project-grid { grid-template-columns: 1fr; }
   .project-featured { min-height: 430px; }
@@ -2014,7 +2051,23 @@ body.workshop-open { overflow-x: hidden; }
   .facts > div { min-height: 96px; padding: 16px 17px; }
   .facts dt { padding-top: 15px; }
 
-  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 10px; }
+  .timeline { grid-template-columns: 1fr; margin-top: 34px; gap: 0; }
+  .timeline-divider {
+    width: 100%;
+    min-height: 44px;
+    display: grid;
+    background: radial-gradient(
+      ellipse 48% 78% at center,
+      rgba(var(--divider-glow-rgb), 0.13),
+      rgba(var(--divider-glow-rgb), 0.035) 44%,
+      transparent 76%
+    );
+  }
+  .timeline-divider-line {
+    width: min(72%, 320px);
+    height: 1px;
+    background: var(--homepage-divider-line);
+  }
   .timeline-item { min-height: 0; padding: 18px; display: grid; grid-template-columns: 48px 1fr; column-gap: 15px; }
   .timeline-marker { grid-row: 1 / span 3; }
   .timeline-state { margin-top: 3px; }
@@ -2023,7 +2076,7 @@ body.workshop-open { overflow-x: hidden; }
 
   .workshop-entry {
     min-height: 0;
-    padding: 22px 18px;
+    padding: 38px 18px 22px;
     grid-template-columns: 1fr;
     grid-template-areas: "label" "title" "copy" "action";
     gap: 10px;
@@ -2326,27 +2379,6 @@ body.workshop-open { overflow-x: hidden; }
   --mobile-title-size: 8.35vw;
 }
 
-/* Homepage section dividers: the same horizontal line and glow used in The Workshop. */
-:is(#journey, #projects, #contact, #closing)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: min(66%, 420px);
-  height: 50px;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  background:
-    var(--homepage-divider-line) center / 100% 1px no-repeat,
-    radial-gradient(
-      ellipse 48% 78% at center,
-      rgba(var(--homepage-divider-glow-rgb), 0.13),
-      rgba(var(--homepage-divider-glow-rgb), 0.035) 44%,
-      transparent 76%
-    );
-  filter: drop-shadow(0 0 12px rgba(145, 169, 178, 0.06));
-}
-
 /* A long, static closing divider inside the bottom of the homepage hero. */
 .hero::after {
   content: "";
@@ -2369,13 +2401,13 @@ body.workshop-open { overflow-x: hidden; }
   filter: drop-shadow(0 0 14px rgba(145, 169, 178, 0.065));
 }
 
-/* A dedicated shimmer line above the homepage Workshop card. */
-.timeline::after {
-  content: "";
+/* Animated shimmer contained inside the homepage Workshop card. */
+.workshop-entry-shimmer {
   position: absolute;
+  z-index: 2;
+  top: 20px;
   left: 50%;
-  bottom: -48px;
-  width: min(76%, 720px);
+  width: min(70%, 620px);
   height: 1px;
   transform: translateX(-50%);
   overflow: hidden;
@@ -2388,10 +2420,6 @@ body.workshop-open { overflow-x: hidden; }
   background-size: 54% 100%, 100% 100%;
   background-position: -120% 0, 0 0;
   animation: homepage-workshop-line-sweep 3s ease-in-out infinite;
-}
-
-#journey .workshop-entry {
-  margin-top: 82px;
 }
 
 @keyframes homepage-workshop-line-sweep {
@@ -2460,11 +2488,6 @@ body.workshop-open { overflow-x: hidden; }
     text-align: center !important;
   }
 
-  :is(#journey, #projects, #contact, #closing)::before {
-    width: min(72%, 320px);
-    height: 44px;
-  }
-
   .hero {
     padding-bottom: 72px;
   }
@@ -2474,18 +2497,14 @@ body.workshop-open { overflow-x: hidden; }
     height: 44px;
   }
 
-  .timeline::after {
-    bottom: -43px;
-    width: min(82%, 320px);
-  }
-
-  #journey .workshop-entry {
-    margin-top: 74px;
+  .workshop-entry-shimmer {
+    top: 18px;
+    width: min(72%, 320px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .timeline::after {
+  .workshop-entry-shimmer {
     animation: none;
     background-position: -120% 0, 0 0;
   }
