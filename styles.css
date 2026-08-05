@@ -1,4 +1,4 @@
-/* Blue Continuum 4.3.0 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.3.1 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -3067,5 +3067,16 @@ body.workshop-open { overflow-x: hidden; }
 
   .facts::before {
     width: min(72%, 320px);
+  }
+}
+
+/* Desktop Workshop divider simplification — August 2026 */
+@media (min-width: 901px) {
+  .workshop-entry-separator {
+    display: none;
+  }
+
+  .workshop-entry {
+    margin-top: 36px;
   }
 }
