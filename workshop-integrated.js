@@ -145,7 +145,7 @@
   const workshopView = root.closest(".workshop-view");
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const interactionMotion = Object.freeze({ reveal: 240, close: 190, scroll: 420, carousel: 230 });
+  const interactionMotion = Object.freeze({ scroll: 460 });
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const nextFrame = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
   const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -318,86 +318,43 @@
     state.next.disabled = nextIndex === group.exercises.length - 1;
   };
 
-  const refreshCarouselMetrics = (name, preservePosition = true) => {
+  const measureActiveCarousel = (name, instant = false) => {
     const state = carouselState[name];
     if (!state || state.viewport.clientWidth < 2) return;
-    state.heights = state.slides.map((slide) => Math.ceil(slide.getBoundingClientRect().height));
-    const index = activeIndex[name];
-    if (preservePosition) state.viewport.scrollLeft = index * state.viewport.clientWidth;
-    const height = state.heights[index];
-    if (height > 0) state.viewport.style.height = `${height}px`;
+    const slide = state.slides[activeIndex[name]];
+    if (!slide) return;
+    const height = Math.ceil(slide.getBoundingClientRect().height);
+    if (height <= 0) return;
+    state.viewport.classList.toggle("is-sizing-instant", instant);
+    state.viewport.style.height = `${height}px`;
+    if (instant) window.requestAnimationFrame(() => state.viewport.classList.remove("is-sizing-instant"));
   };
 
   const settleCarousel = (name) => {
     const state = carouselState[name];
     if (!state || state.viewport.clientWidth < 2) return;
-    const raw = state.viewport.scrollLeft / state.viewport.clientWidth;
-    const index = clamp(Math.round(raw), 0, state.slides.length - 1);
+    const index = clamp(Math.round(state.viewport.scrollLeft / state.viewport.clientWidth), 0, state.slides.length - 1);
     updateCarouselUI(name, index);
-    state.viewport.classList.remove("is-scrolling");
-    const height = state.heights[index];
-    if (height > 0) state.viewport.style.height = `${height}px`;
+    measureActiveCarousel(name);
   };
 
   const syncCarouselFromScroll = (name) => {
     const state = carouselState[name];
     if (!state || state.viewport.clientWidth < 2) return;
-    const width = state.viewport.clientWidth;
-    const raw = clamp(state.viewport.scrollLeft / width, 0, state.slides.length - 1);
-    const lower = Math.floor(raw);
-    const upper = Math.min(state.slides.length - 1, Math.ceil(raw));
-    const mix = raw - lower;
-    const lowerHeight = state.heights[lower] || 0;
-    const upperHeight = state.heights[upper] || lowerHeight;
-    const blendedHeight = lowerHeight + (upperHeight - lowerHeight) * mix;
-
-    state.viewport.classList.add("is-scrolling");
-    if (blendedHeight > 0) state.viewport.style.height = `${Math.round(blendedHeight)}px`;
-    updateCarouselUI(name, Math.round(raw));
-
-    if (!state.programmatic) {
-      window.clearTimeout(state.settleTimer);
-      state.settleTimer = window.setTimeout(() => settleCarousel(name), 105);
-    }
+    const index = clamp(Math.round(state.viewport.scrollLeft / state.viewport.clientWidth), 0, state.slides.length - 1);
+    if (index !== activeIndex[name]) updateCarouselUI(name, index);
+    window.clearTimeout(state.settleTimer);
+    state.settleTimer = window.setTimeout(() => settleCarousel(name), 90);
   };
 
-  const animateCarouselTo = (name, requestedIndex) => {
+  const goToCarousel = (name, requestedIndex) => {
     const state = carouselState[name];
     if (!state || state.viewport.clientWidth < 2) return;
     const index = clamp(requestedIndex, 0, state.slides.length - 1);
-    const start = state.viewport.scrollLeft;
-    const end = index * state.viewport.clientWidth;
-    const distance = end - start;
-
-    window.cancelAnimationFrame(state.motionFrame);
-    if (reduceMotion || Math.abs(distance) < 2) {
-      state.viewport.scrollLeft = end;
-      updateCarouselUI(name, index);
-      settleCarousel(name);
-      return;
-    }
-
-    state.programmatic = true;
-    state.viewport.style.scrollSnapType = "none";
-    state.viewport.classList.add("is-scrolling");
-    const startedAt = performance.now();
-    const ease = (t) => 1 - Math.pow(1 - t, 4);
-
-    const step = (now) => {
-      const progress = clamp((now - startedAt) / interactionMotion.carousel, 0, 1);
-      state.viewport.scrollLeft = start + distance * ease(progress);
-      if (progress < 1) {
-        state.motionFrame = window.requestAnimationFrame(step);
-      } else {
-        state.viewport.scrollLeft = end;
-        state.viewport.style.removeProperty("scroll-snap-type");
-        state.programmatic = false;
-        updateCarouselUI(name, index);
-        settleCarousel(name);
-      }
-    };
-
-    state.motionFrame = window.requestAnimationFrame(step);
+    state.viewport.scrollTo({
+      left: index * state.viewport.clientWidth,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
   };
 
   const buildCarousel = (name) => {
@@ -450,51 +407,37 @@
       dots: [...controls.querySelectorAll("[data-practice-dot]")],
       prev: controls.querySelector("[data-practice-prev]"),
       next: controls.querySelector("[data-practice-next]"),
-      heights: [],
       settleTimer: 0,
-      motionFrame: 0,
       scrollFrame: 0,
-      programmatic: false,
+      resizeTimer: 0,
     };
     carouselState[name] = state;
     updateCarouselUI(name, 0);
 
-    state.prev.addEventListener("click", () => animateCarouselTo(name, activeIndex[name] - 1));
-    state.next.addEventListener("click", () => animateCarouselTo(name, activeIndex[name] + 1));
+    state.prev.addEventListener("click", () => goToCarousel(name, activeIndex[name] - 1));
+    state.next.addEventListener("click", () => goToCarousel(name, activeIndex[name] + 1));
 
     viewport.addEventListener("scroll", () => {
       window.cancelAnimationFrame(state.scrollFrame);
       state.scrollFrame = window.requestAnimationFrame(() => syncCarouselFromScroll(name));
     }, { passive: true });
 
-    viewport.addEventListener("pointerdown", () => {
-      if (!state.programmatic) return;
-      window.cancelAnimationFrame(state.motionFrame);
-      state.programmatic = false;
-      viewport.style.removeProperty("scroll-snap-type");
-    }, { passive: true });
-
     viewport.addEventListener("keydown", (event) => {
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
       event.preventDefault();
-      animateCarouselTo(name, activeIndex[name] + (event.key === "ArrowRight" ? 1 : -1));
+      goToCarousel(name, activeIndex[name] + (event.key === "ArrowRight" ? 1 : -1));
     });
 
-    if ("onscrollend" in viewport) {
-      viewport.addEventListener("scrollend", () => {
-        if (!state.programmatic) settleCarousel(name);
-      });
-    }
+    if ("onscrollend" in viewport) viewport.addEventListener("scrollend", () => settleCarousel(name));
 
-    if (window.ResizeObserver) {
-      const observer = new ResizeObserver(() => {
-        if (slots[name].hidden) return;
-        window.clearTimeout(state.resizeTimer);
-        state.resizeTimer = window.setTimeout(() => refreshCarouselMetrics(name, false), 40);
-      });
-      slides.forEach((slide) => observer.observe(slide));
-      state.observer = observer;
-    }
+    window.addEventListener("resize", () => {
+      if (slots[name].hidden) return;
+      window.clearTimeout(state.resizeTimer);
+      state.resizeTimer = window.setTimeout(() => {
+        viewport.scrollLeft = activeIndex[name] * viewport.clientWidth;
+        measureActiveCarousel(name, true);
+      }, 90);
+    }, { passive: true });
   };
 
   const syncCollectionState = () => {
@@ -517,7 +460,7 @@
   const setSlotImmediate = (name, open) => {
     const slot = slots[name];
     slot.style.removeProperty("height");
-    slot.classList.remove("is-settled", "is-closing");
+    slot.classList.remove("is-settled", "is-closing", "is-opening");
     slot.classList.toggle("is-open", open);
     slot.hidden = !open;
     slot.inert = !open;
@@ -534,73 +477,35 @@
   const gentlyAlignOpenContent = async (name) => {
     const controls = carouselState[name]?.controls;
     if (!controls) return;
-
+    const desiredTop = window.innerWidth <= 700 ? 18 : 28;
     const rect = controls.getBoundingClientRect();
-    const mobile = window.innerWidth <= 700;
-    let delta = 0;
-
-    if (mobile) {
-      const desiredTop = 92;
-      delta = clamp(rect.top - desiredTop, -72, 220);
-    } else {
-      const safeTop = 94;
-      const safeBottom = window.innerHeight - 34;
-      if (rect.top < safeTop - 20) delta = rect.top - safeTop;
-      else if (rect.bottom > safeBottom) delta = rect.bottom - safeBottom + 8;
-      delta = clamp(delta, -96, 132);
-    }
-
-    if (Math.abs(delta) >= 6) await smoothScrollTo(window.scrollY + delta, mobile ? 420 : 340);
-  };
-
-  const gentlySettleClosedCard = async (name) => {
-    const card = cardFor(name);
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const safeTop = window.innerWidth <= 700 ? 72 : 82;
-    const lowerBound = window.innerHeight * 0.72;
-    let delta = 0;
-
-    if (rect.top < safeTop - 24) delta = rect.top - safeTop;
-    else if (rect.top > lowerBound) delta = rect.top - lowerBound;
-
-    delta = clamp(delta, -84, 84);
-    if (Math.abs(delta) >= 12) await smoothScrollTo(window.scrollY + delta, 300);
+    const targetY = window.scrollY + rect.top - desiredTop;
+    if (Math.abs(rect.top - desiredTop) >= 4) await smoothScrollTo(targetY, interactionMotion.scroll);
   };
 
   const openSlot = async (name, token) => {
     const slot = slots[name];
     slot.hidden = false;
     slot.inert = false;
-    slot.classList.remove("is-closing", "is-settled", "is-opening", "is-open");
+    slot.classList.remove("is-closing", "is-settled", "is-opening");
+    slot.classList.add("is-open");
     slot.setAttribute("aria-hidden", "false");
-
     await nextFrame();
     if (token !== interactionToken) return false;
-    refreshCarouselMetrics(name, true);
-    await nextFrame();
-    if (token !== interactionToken) return false;
-    slot.classList.add("is-open", "is-opening");
-    window.setTimeout(() => {
-      if (token === interactionToken && slot.classList.contains("is-open")) slot.classList.remove("is-opening");
-    }, interactionMotion.reveal + 30);
+    const state = carouselState[name];
+    if (state) state.viewport.scrollLeft = activeIndex[name] * state.viewport.clientWidth;
+    measureActiveCarousel(name, true);
     return true;
   };
 
   const closeSlot = async (name, token, anchorElement = null, anchorTop = NaN) => {
     const slot = slots[name];
     if (slot.hidden) return true;
-
     slot.inert = true;
     slot.setAttribute("aria-hidden", "true");
-    slot.classList.add("is-closing");
-    slot.classList.remove("is-open", "is-settled", "is-opening");
-
-    if (!reduceMotion) await wait(interactionMotion.close);
-    if (token !== interactionToken) return false;
-
     slot.hidden = true;
-    slot.classList.remove("is-closing");
+    slot.classList.remove("is-open", "is-closing", "is-settled", "is-opening");
+    if (token !== interactionToken) return false;
     preserveViewportAnchor(anchorElement, anchorTop);
     return true;
   };
@@ -622,8 +527,7 @@
     if (openGroupName === name) {
       openGroupName = "";
       syncCollectionState();
-      const closed = await closeSlot(name, token);
-      if (closed && token === interactionToken) await gentlySettleClosedCard(name);
+      await closeSlot(name, token);
       return;
     }
 
@@ -705,7 +609,7 @@
         stabilizeWorkshopBackground(true);
       }
       Object.keys(groups).forEach((name) => {
-        if (!slots[name].hidden) refreshCarouselMetrics(name, true);
+        if (!slots[name].hidden) measureActiveCarousel(name, true);
       });
     }, 120);
   }, { passive: true });

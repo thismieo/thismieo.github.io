@@ -94,26 +94,6 @@
   transition: none !important;
 }
 
-.practice-explorer-slot.is-opening .practice-swipe-controls,
-.practice-explorer-slot.is-opening .practice-carousel-viewport {
-  animation: practice-surface-open 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.practice-explorer-slot.is-closing .practice-swipe-controls,
-.practice-explorer-slot.is-closing .practice-carousel-viewport {
-  animation: practice-surface-close 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes practice-surface-open {
-  from { transform: translate3d(0, -4px, 0); }
-  to { transform: translate3d(0, 0, 0); }
-}
-
-@keyframes practice-surface-close {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(0, -3px, 0); }
-}
-
 .practice-explorer {
   --practice-accent: 164, 137, 118;
   --practice-accent-soft: 95, 77, 68;
@@ -254,18 +234,19 @@
   overflow-anchor: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: auto;
+  scroll-padding-inline: 0;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x pan-y;
-  transition: height 175ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: height 145ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.practice-carousel-viewport.is-sizing-instant {
+  transition: none !important;
 }
 
 .practice-carousel-viewport::-webkit-scrollbar {
   display: none;
-}
-
-.practice-carousel-viewport.is-scrolling {
-  transition: none;
 }
 
 .practice-carousel-track {
@@ -280,8 +261,8 @@
   max-width: none !important;
   margin: 0 !important;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
-  touch-action: pan-x pan-y !important;
+  touch-action: auto !important;
+  contain: layout paint;
 }
 
 .practice-swipe-arrow:disabled {
@@ -637,8 +618,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .practice-explorer-slot-inner,
-  .practice-explorer-slot.is-open > .practice-explorer-slot-inner,
-  .practice-explorer-slot.is-closing > .practice-explorer-slot-inner,
   .practice-carousel-viewport,
   .practice-milestone,
   .practice-milestone-action,
