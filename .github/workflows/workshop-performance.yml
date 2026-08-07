@@ -22,6 +22,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.workshop-perf-patch.py')
+          source = path.read_text(encoding='utf-8')
+          source = source.replace(
+              "init_anchor = '  syncCollectionState();\\n})();\\n'",
+              "init_anchor = '  syncCollectionState();\\n})();'",
+          )
+          source = source.replace(
+              "  window.requestAnimationFrame(() => stabilizeWorkshopBackground(true));\\n})();\\n'''",
+              "  window.requestAnimationFrame(() => stabilizeWorkshopBackground(true));\\n})();'''",
+          )
+          path.write_text(source, encoding='utf-8')
+          PY
+
           python3 .workshop-perf-patch.py
           node --check workshop-integrated.js
 
