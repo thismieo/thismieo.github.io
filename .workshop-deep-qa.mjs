@@ -22,14 +22,25 @@ const createErrorCollectors = (page) => {
 };
 
 const positionPracticeCard = async (page, group, desiredTop = 180) => {
-  await page.evaluate(({ group, desiredTop }) => {
+  const target = await page.evaluate(({ group, desiredTop }) => {
     const button = document.querySelector(`[data-practice-group="${group}"]`);
     const card = button?.closest('[data-practice-card]');
-    if (!card) return;
+    if (!card) return null;
     const rect = card.getBoundingClientRect();
-    window.scrollTo(0, Math.max(0, window.scrollY + rect.top - desiredTop));
+    return Math.max(0, window.scrollY + rect.top - desiredTop);
   }, { group, desiredTop });
-  await page.waitForTimeout(140);
+  if (target === null) throw new Error(`${group} practice card was not found`);
+
+  const start = await page.evaluate(() => window.scrollY);
+  const distance = target - start;
+  const steps = 7;
+  for (let step = 1; step <= steps; step += 1) {
+    const progress = step / steps;
+    const eased = progress * progress * (3 - 2 * progress);
+    await page.evaluate((top) => window.scrollTo(0, top), start + distance * eased);
+    await page.waitForTimeout(85);
+  }
+  await page.waitForTimeout(120);
 };
 
 const tapPracticeButton = async (page, group, hasTouch) => {
@@ -166,7 +177,6 @@ const runMobileFunctional = async (engineName, engine) => {
     check(report.afterNext.current === 'true' && report.afterNext.hidden === 'false', `${engineName}: active card ARIA is inconsistent`);
     check(report.afterNext.height > 400, `${engineName}: second card height collapsed to ${report.afterNext.height}px`);
 
-    // Vertical range / gesture ownership.
     const beforeVertical = await page.evaluate(() => window.scrollY);
     if (engineName === 'chromium') {
       const box = await page.locator('[data-practice-explorer="featured"] .practice-carousel-viewport').boundingBox();
@@ -180,7 +190,6 @@ const runMobileFunctional = async (engineName, engine) => {
     report.verticalDelta = afterVertical - beforeVertical;
     check(report.verticalDelta > 80, `${engineName}: vertical page motion moved only ${report.verticalDelta}px`);
 
-    // Copy feedback ownership.
     await page.evaluate(() => {
       try {
         Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: () => Promise.resolve() } });
@@ -193,7 +202,6 @@ const runMobileFunctional = async (engineName, engine) => {
       .map((slide) => slide.querySelector('[data-practice-copy-status]')?.textContent?.trim() || ''));
     check(report.copyStatus[1] === 'Code copied to clipboard' && report.copyStatus[0] === '', `${engineName}: copy feedback belongs to the wrong slide`);
 
-    // Close with a normal page position, then stress rapid toggles.
     await positionPracticeCard(page, 'featured', 180);
     const beforeCloseTop = await page.locator('[data-practice-group="featured"]').evaluate((el) => el.closest('[data-practice-card]').getBoundingClientRect().top);
     await tapPracticeButton(page, 'featured', true);
