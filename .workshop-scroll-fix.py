@@ -23,9 +23,9 @@ if old_sync not in js:
     raise SystemExit('syncCollectionState anchor missing')
 js = js.replace(old_sync, new_sync, 1)
 
-layout_css = '''\n/* On phones the DOM is already in the exact visual order:\n   Featured card -> Featured content -> Archive card -> Archive content.\n   Use normal flow instead of named grid rows so dynamic card height is\n   committed immediately by WebKit and remains cheaper on low-end devices. */\n@media (max-width: 700px) {\n  .practice-milestones {\n    display: flex !important;\n    flex-direction: column !important;\n    align-items: stretch !important;\n    gap: 0 !important;\n  }\n\n  .practice-milestone-featured,\n  [data-practice-slot="featured"],\n  .practice-milestone-archive,\n  [data-practice-slot="archive"] {\n    grid-area: auto !important;\n  }\n\n  .practice-milestone-archive {\n    margin-top: 12px !important;\n  }\n}\n\n/* Small open-state scroll reserve keeps the lower Archive alignable on compact\n   phone viewports. It disappears immediately when the collection closes. */\n.workshop-view.has-practice-open .workshop-main {\n  padding-bottom: calc(60px + clamp(108px, 15svh, 132px)) !important;\n}\n'''
-if '@media (max-width: 700px) {\n  .practice-milestones {\n    display: flex !important;' not in css:
-    css += layout_css
+reserve_css = '''\n/* Small open-state scroll reserve keeps the lower Archive alignable on compact\n   phone viewports. It disappears immediately when the collection closes. */\n.workshop-view.has-practice-open .workshop-main {\n  padding-bottom: calc(60px + clamp(108px, 15svh, 132px)) !important;\n}\n'''
+if 'has-practice-open .workshop-main' not in css:
+    css += reserve_css
 
 js_path.write_text(js, encoding='utf-8')
 css_path.write_text(css, encoding='utf-8')
