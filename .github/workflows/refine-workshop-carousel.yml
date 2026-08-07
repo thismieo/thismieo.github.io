@@ -21,6 +21,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          sed -i "s/css.index('.practice-explorer-slot-inner,')/css.index('.practice-explorer-slot-inner {')/" .workshop-carousel-patch.py
           python3 .workshop-carousel-patch.py
           node --check workshop-integrated.js
           grep -q 'practice-carousel-viewport' workshop-integrated.css
