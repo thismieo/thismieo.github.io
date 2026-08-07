@@ -34,8 +34,11 @@ jobs:
           grep -q 'flex: 0 0 100% !important' workshop-integrated.css
           ! grep -q 'content-visibility: auto' workshop-integrated.css
           grep -q 'let workshopScrollFrame = 0' workshop-integrated.js
-          grep -q 'const cancelWorkshopScroll' workshop-integrated.js
-          grep -q 'const setWorkshopScrollTop' workshop-integrated.js
+          grep -q 'let workshopAlignTimer = 0' workshop-integrated.js
+          grep -q 'let workshopAlignRequest = 0' workshop-integrated.js
+          grep -q 'const cancelWorkshopMotion' workshop-integrated.js
+          grep -q 'const rangeReady' workshop-integrated.js
+          grep -q 'document.documentElement.scrollHeight - window.innerHeight' workshop-integrated.js
           ! grep -q -- '--practice-slot-height' workshop-integrated.js
           ! grep -q -- '--practice-slot-height' workshop-integrated.css
           ! grep -q 'commitOpenSlotHeight' workshop-integrated.js
@@ -60,7 +63,7 @@ jobs:
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/workshop-http.log 2>&1 &
           echo $! > /tmp/workshop-http.pid
           sleep 1
-      - name: Diagnose WebKit root scroller
+      - name: Repeat WebKit direct-load alignment five times
         run: node .workshop-webkit-scroll-diagnostic.mjs
       - name: Run primary cross-device browser QA
         run: node .workshop-deep-qa.mjs
@@ -69,12 +72,15 @@ jobs:
       - name: Publish verified Workshop fix and clean temporary QA files
         run: |
           set -eu
-          rm -rf .github .workshop-deep-qa.mjs .workshop-archive-first-qa.mjs .workshop-webkit-scroll-diagnostic.mjs .workshop-deep-fix.py .workshop-scroll-fix.py .workshop-final-qa-adjust.py .workshop-direct-prime.py .workshop-qa-adjust.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'Stabilize Workshop carousel and mobile interaction'
-          git push origin HEAD:main
+          ROOT="$GITHUB_WORKSPACE"
+          git -C "$ROOT" config user.name 'github-actions[bot]'
+          git -C "$ROOT" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "$ROOT" rm -r --ignore-unmatch .github .workshop-deep-qa.mjs .workshop-archive-first-qa.mjs .workshop-webkit-scroll-diagnostic.mjs .workshop-deep-fix.py .workshop-scroll-fix.py .workshop-final-qa-adjust.py .workshop-direct-prime.py .workshop-qa-adjust.py .workshop-deep-qa-trigger
+          rm -rf "$ROOT/node_modules" "$ROOT/package.json" "$ROOT/package-lock.json"
+          git -C "$ROOT" add -A
+          git -C "$ROOT" status --short
+          git -C "$ROOT" commit -m 'Stabilize Workshop carousel and mobile interaction'
+          git -C "$ROOT" push origin HEAD:main
       - name: Server log on failure
         if: failure()
         run: cat /tmp/workshop-http.log || true
