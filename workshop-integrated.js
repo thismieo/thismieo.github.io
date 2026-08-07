@@ -8,7 +8,7 @@
     featured: {
       label: "Featured Practice",
       unit: "Program",
-      hint: "Swipe through programs",
+      hint: "Choose a program",
       exercises: [
         {
           title: "Prime Number Analyzer",
@@ -60,7 +60,7 @@
     archive: {
       label: "Learning Archive",
       unit: "Exercise",
-      hint: "Swipe through exercises",
+      hint: "Choose an exercise",
       exercises: [
         {
           title: "Even or Odd",
@@ -127,50 +127,24 @@
   const CONSTANTS = new Set(["True", "False", "None"]);
   const OP2 = new Set(["==", "!=", "<=", ">=", "**", "//", "+=", "-=", "*=", "/=", "%="]);
   const OP1 = new Set(["=", "+", "-", "*", "/", "%", "<", ">"]);
-  const PUNCT = new Set(["(", ")", "[", "]", "{", "}", ":", ",", "."]);
+  const BRACKETS = new Set(["(", ")", "[", "]", "{", "}"]);
+  const PUNCT = new Set([":", ",", "."]);
 
   const buttons = [...root.querySelectorAll("[data-practice-group]")];
-  const slotElements = [...root.querySelectorAll("[data-practice-slot]")];
-  const slots = Object.fromEntries(slotElements.map((slot) => [slot.dataset.practiceSlot, slot]));
+  const slots = Object.fromEntries([...root.querySelectorAll("[data-practice-slot]")].map((slot) => [slot.dataset.practiceSlot, slot]));
   const explorers = Object.fromEntries(Object.keys(groups).map((name) => [name, root.querySelector(`[data-practice-explorer="${name}"]`)]));
   if (Object.values(slots).some((slot) => !slot) || Object.values(explorers).some((explorer) => !explorer)) return;
 
   const activeIndex = { featured: 0, archive: 0 };
-  let openGroupName = "";
-  let copyTimer = 0;
-  let interactionToken = 0;
-  let workshopBackgroundFrozen = false;
-  const carouselState = Object.create(null);
+  const selectorState = Object.create(null);
+  const copyTimers = new WeakMap();
   const workshopView = root.closest(".workshop-view");
-
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  const nextFrame = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
-
-  const smoothScrollTo = (targetY) => {
-    window.scrollTo({
-      top: Math.max(0, targetY),
-      left: 0,
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  };
-
-  const scheduleIdle = (callback) => {
-    if ("requestIdleCallback" in window) {
-      return window.requestIdleCallback(callback, { timeout: 900 });
-    }
-    return window.setTimeout(callback, 120);
-  };
-
-  const stabilizeWorkshopBackground = (force = false) => {
-    if (!workshopView || workshopView.hidden) return;
-    if (workshopBackgroundFrozen && !force) return;
-    const stableHeight = Math.ceil(Math.max(workshopView.scrollHeight, window.innerHeight));
-    workshopView.style.setProperty("--workshop-bg-height", `${stableHeight}px`);
-    workshopBackgroundFrozen = true;
-  };
+  let openGroupName = "";
+  let workshopBackgroundFrozen = false;
 
   const pad = (value) => String(value).padStart(2, "0");
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const actionText = {
     featured: { closed: "Explore programs", open: "Hide programs" },
     archive: { closed: "Open archive", open: "Close archive" },
@@ -178,14 +152,12 @@
   const rightChevron = "m3.5 3 5 7-5 7";
   const leftChevron = "m8.5 3-5 7 5 7";
 
-  const viewFor = (name) => {
-    const explorer = explorers[name];
-    return {
-      explorer,
-      list: explorer.querySelector("[data-practice-list]"),
-      progress: explorer.querySelector("[data-practice-progress]"),
-      detail: explorer.querySelector("[data-practice-detail]"),
-    };
+  const stabilizeWorkshopBackground = (force = false) => {
+    if (!workshopView || workshopView.hidden) return;
+    if (workshopBackgroundFrozen && !force) return;
+    const stableHeight = Math.ceil(Math.max(workshopView.scrollHeight, window.innerHeight));
+    workshopView.style.setProperty("--workshop-bg-height", `${stableHeight}px`);
+    workshopBackgroundFrozen = true;
   };
 
   const addToken = (parent, text, className = "") => {
@@ -237,34 +209,58 @@
       const pair = line.slice(i, i + 2);
       if (OP2.has(pair)) { addToken(row, pair, "tok-operator"); i += 2; continue; }
       if (OP1.has(char)) { addToken(row, char, "tok-operator"); i += 1; continue; }
+      if (BRACKETS.has(char)) { addToken(row, char, "tok-bracket"); i += 1; continue; }
       if (PUNCT.has(char)) { addToken(row, char, "tok-punctuation"); i += 1; continue; }
       addToken(row, char); i += 1;
     }
   };
 
   const setCode = (target, code) => {
-    target.replaceChildren();
+    const fragment = document.createDocumentFragment();
     code.split("\n").forEach((line) => {
       const row = document.createElement("span");
       row.className = "practice-code-line";
       if (line) highlightPythonLine(row, line);
       else row.appendChild(document.createTextNode(" "));
-      target.appendChild(row);
+      fragment.appendChild(row);
     });
+    target.replaceChildren(fragment);
   };
 
-  const populateDetail = (name, detail, index) => {
-    const group = groups[name];
-    const exercise = group.exercises[index];
-    detail.id = `practice-detail-${name}-${index}`;
-    detail.classList.add("practice-carousel-slide");
-    detail.dataset.practiceSlide = String(index);
-    detail.dataset.challenge = String(Boolean(exercise.challenge));
-    detail.setAttribute("role", "group");
-    detail.setAttribute("aria-label", `${group.unit} ${index + 1} of ${group.exercises.length}: ${exercise.title}`);
-    detail.removeAttribute("aria-labelledby");
+  const viewFor = (name) => {
+    const explorer = explorers[name];
+    return {
+      explorer,
+      nav: explorer.querySelector(".practice-exercise-nav"),
+      label: explorer.querySelector("[data-practice-group-label]"),
+      list: explorer.querySelector("[data-practice-list]"),
+      progress: explorer.querySelector("[data-practice-progress]"),
+      detail: explorer.querySelector("[data-practice-detail]"),
+    };
+  };
 
-    detail.querySelector("[data-practice-detail-index]").textContent = `${group.unit} ${pad(index + 1)}`;
+  const animateDetail = (detail) => {
+    if (reduceMotion || typeof detail.animate !== "function") return;
+    detail.animate(
+      [{ opacity: 0.72, transform: "translateY(3px)" }, { opacity: 1, transform: "translateY(0)" }],
+      { duration: 170, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+    );
+  };
+
+  const renderExercise = (name, index, animate = true) => {
+    const group = groups[name];
+    const state = selectorState[name];
+    const exercise = group?.exercises[index];
+    if (!group || !state || !exercise) return;
+
+    const nextIndex = clamp(index, 0, group.exercises.length - 1);
+    activeIndex[name] = nextIndex;
+    const detail = state.detail;
+    const selector = state.tabs[nextIndex];
+    detail.id = `practice-detail-panel-${name}`;
+    detail.dataset.challenge = String(Boolean(exercise.challenge));
+    detail.setAttribute("aria-labelledby", selector.id);
+    detail.querySelector("[data-practice-detail-index]").textContent = `${group.unit} ${pad(nextIndex + 1)}`;
     detail.querySelector("[data-practice-detail-badge]").textContent = exercise.badge;
     detail.querySelector("[data-practice-detail-title]").textContent = exercise.title;
     detail.querySelector("[data-practice-detail-summary]").textContent = exercise.summary;
@@ -272,196 +268,98 @@
     detail.querySelector("[data-practice-code-title]").textContent = exercise.title;
 
     const skills = detail.querySelector("[data-practice-detail-skills]");
-    skills.replaceChildren(...exercise.skills.map((skill) => {
+    const skillFragment = document.createDocumentFragment();
+    exercise.skills.forEach((skill) => {
       const item = document.createElement("li");
       item.textContent = skill;
-      return item;
-    }));
+      skillFragment.appendChild(item);
+    });
+    skills.replaceChildren(skillFragment);
+    setCode(detail.querySelector("[data-practice-code]"), exercise.code);
 
-    const codeTarget = detail.querySelector("[data-practice-code]");
-    codeTarget.replaceChildren();
-    detail.dataset.codeHydrated = "false";
     const copyButton = detail.querySelector("[data-practice-copy]");
     copyButton.dataset.code = exercise.code;
     copyButton.setAttribute("aria-label", `Copy ${exercise.title} code`);
     const status = detail.querySelector("[data-practice-copy-status]");
     if (status) status.textContent = "";
+
+    state.progress.textContent = `${pad(nextIndex + 1)} / ${pad(group.exercises.length)}`;
+    state.tabs.forEach((tab, tabIndex) => {
+      const selected = tabIndex === nextIndex;
+      tab.classList.toggle("is-active", selected);
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+    if (animate) animateDetail(detail);
   };
 
-  const hydrateSlide = (name, index) => {
-    const state = carouselState[name];
-    const group = groups[name];
-    const slide = state?.slides[index];
-    const exercise = group?.exercises[index];
-    if (!slide || !exercise || slide.dataset.codeHydrated === "true") return;
-
-    setCode(slide.querySelector("[data-practice-code]"), exercise.code);
-    slide.dataset.codeHydrated = "true";
+  const centerSelector = (name, index) => {
+    const state = selectorState[name];
+    const tab = state?.tabs[index];
+    const list = state?.list;
+    if (!tab || !list) return;
+    const centered = tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2;
+    const maxLeft = Math.max(0, list.scrollWidth - list.clientWidth);
+    list.scrollTo({ left: clamp(centered, 0, maxLeft), behavior: reduceMotion ? "auto" : "smooth" });
   };
 
-  const warmCarouselAround = (name, index) => {
+  const selectExercise = (name, index, focus = false) => {
     const group = groups[name];
     if (!group) return;
-    [index - 1, index + 1].forEach((nearbyIndex) => {
-      if (nearbyIndex < 0 || nearbyIndex >= group.exercises.length) return;
-      scheduleIdle(() => hydrateSlide(name, nearbyIndex));
-    });
-  };
-
-  const updateCarouselUI = (name, index) => {
-    const group = groups[name];
-    const state = carouselState[name];
-    if (!state) return;
     const nextIndex = clamp(index, 0, group.exercises.length - 1);
-    activeIndex[name] = nextIndex;
-    state.counter.textContent = `${pad(nextIndex + 1)} / ${pad(group.exercises.length)}`;
-    state.dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === nextIndex));
-    state.slides.forEach((slide, slideIndex) => {
-      const active = slideIndex === nextIndex;
-      slide.inert = !active;
-      slide.setAttribute("aria-current", active ? "true" : "false");
-    });
-    state.prev.disabled = nextIndex === 0;
-    state.next.disabled = nextIndex === group.exercises.length - 1;
+    const changed = nextIndex !== activeIndex[name];
+    renderExercise(name, nextIndex, changed);
+    const tab = selectorState[name]?.tabs[nextIndex];
+    if (focus) tab?.focus({ preventScroll: true });
+    centerSelector(name, nextIndex);
   };
 
-  const carouselTargetLeft = (state, index) => {
-    const slide = state?.slides[index];
-    if (!state || !slide) return 0;
-    const centered = slide.offsetLeft - (state.viewport.clientWidth - slide.offsetWidth) / 2;
-    const maxLeft = Math.max(0, state.viewport.scrollWidth - state.viewport.clientWidth);
-    return clamp(centered, 0, maxLeft);
-  };
-
-  const nearestCarouselIndex = (state) => {
-    if (!state || !state.slides.length) return 0;
-    const viewportCenter = state.viewport.scrollLeft + state.viewport.clientWidth / 2;
-    let nearest = 0;
-    let nearestDistance = Number.POSITIVE_INFINITY;
-
-    state.slides.forEach((slide, index) => {
-      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-      const distance = Math.abs(slideCenter - viewportCenter);
-      if (distance < nearestDistance) {
-        nearest = index;
-        nearestDistance = distance;
-      }
-    });
-
-    return nearest;
-  };
-
-  const measureActiveCarousel = (name) => {
-    const state = carouselState[name];
-    if (!state || state.viewport.clientWidth < 2) return;
-    const index = activeIndex[name];
-    hydrateSlide(name, index);
-    const slide = state.slides[index];
-    if (!slide) return;
-    const height = Math.ceil(slide.getBoundingClientRect().height);
-    if (height > 0) state.viewport.style.height = `${height}px`;
-  };
-
-  const settleCarousel = (name) => {
-    const state = carouselState[name];
-    if (!state || state.viewport.clientWidth < 2) return;
-    const index = nearestCarouselIndex(state);
-    updateCarouselUI(name, index);
-    hydrateSlide(name, index);
-    warmCarouselAround(name, index);
-    measureActiveCarousel(name);
-  };
-
-  const goToCarousel = (name, requestedIndex) => {
-    const state = carouselState[name];
-    if (!state || state.viewport.clientWidth < 2) return;
-    const index = clamp(requestedIndex, 0, state.slides.length - 1);
-    hydrateSlide(name, index);
-    warmCarouselAround(name, index);
-    state.viewport.scrollTo({
-      left: carouselTargetLeft(state, index),
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  };
-
-  const buildCarousel = (name) => {
+  const buildSelector = (name) => {
     const group = groups[name];
     const view = viewFor(name);
-    const template = view.detail;
-    view.list?.closest(".practice-exercise-nav")?.setAttribute("aria-hidden", "true");
+    if (!group || !view.nav || !view.list || !view.detail || !view.progress || !view.label) return;
 
-    const controls = document.createElement("div");
-    controls.className = "practice-swipe-controls";
-    controls.setAttribute("aria-label", `${group.label} navigation`);
-    controls.innerHTML = `
-      <button type="button" class="practice-swipe-arrow" data-practice-prev aria-label="Previous ${group.unit.toLowerCase()}">
-        <svg aria-hidden="true" viewBox="0 0 12 20"><path d="m8.5 3-5 7 5 7"></path></svg>
-      </button>
-      <div class="practice-swipe-meta">
-        <span class="practice-swipe-hint">${group.hint}</span>
-        <strong data-practice-swipe-counter>${pad(1)} / ${pad(group.exercises.length)}</strong>
-        <span class="practice-swipe-dots" aria-hidden="true">${group.exercises.map((_, index) => `<i data-practice-dot class="${index === 0 ? "is-active" : ""}"></i>`).join("")}</span>
-      </div>
-      <button type="button" class="practice-swipe-arrow" data-practice-next aria-label="Next ${group.unit.toLowerCase()}">
-        <svg aria-hidden="true" viewBox="0 0 12 20"><path d="m3.5 3 5 7-5 7"></path></svg>
-      </button>`;
+    view.label.textContent = group.label;
+    view.nav.setAttribute("aria-label", `${group.label} selector`);
+    view.list.setAttribute("aria-orientation", "horizontal");
+    view.list.setAttribute("aria-label", group.hint);
 
-    const viewport = document.createElement("div");
-    viewport.className = "practice-carousel-viewport";
-    viewport.tabIndex = 0;
-    viewport.setAttribute("aria-label", `${group.label} carousel`);
-
-    const track = document.createElement("div");
-    track.className = "practice-carousel-track";
-
-    const slides = group.exercises.map((_, index) => {
-      const slide = template.cloneNode(true);
-      populateDetail(name, slide, index);
-      track.appendChild(slide);
-      return slide;
+    const fragment = document.createDocumentFragment();
+    const tabs = group.exercises.map((exercise, index) => {
+      const tab = document.createElement("button");
+      tab.type = "button";
+      tab.className = "practice-selector-card";
+      tab.id = `practice-tab-${name}-${index}`;
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-controls", `practice-detail-panel-${name}`);
+      tab.setAttribute("aria-label", `${group.unit} ${index + 1}: ${exercise.title}`);
+      tab.innerHTML = `<span class="practice-selector-index">${pad(index + 1)}</span><span class="practice-selector-title">${exercise.title}</span><span class="practice-selector-badge">${exercise.badge}</span>`;
+      tab.addEventListener("click", () => selectExercise(name, index));
+      tab.addEventListener("keydown", (event) => {
+        let nextIndex = null;
+        if (event.key === "ArrowRight") nextIndex = index + 1;
+        else if (event.key === "ArrowLeft") nextIndex = index - 1;
+        else if (event.key === "Home") nextIndex = 0;
+        else if (event.key === "End") nextIndex = group.exercises.length - 1;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        selectExercise(name, nextIndex, true);
+      });
+      fragment.appendChild(tab);
+      return tab;
     });
+    view.list.replaceChildren(fragment);
 
-    viewport.appendChild(track);
-    viewport.style.height = "0px";
-    template.before(controls);
-    template.replaceWith(viewport);
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "practice-collection-close";
+    closeButton.dataset.practiceClose = name;
+    closeButton.setAttribute("aria-label", `Close ${group.label}`);
+    closeButton.innerHTML = `<span>Close</span><svg aria-hidden="true" viewBox="0 0 12 20"><path d="m8.5 3-5 7 5 7"></path></svg>`;
+    view.nav.querySelector(".practice-explorer-label")?.appendChild(closeButton);
 
-    const state = {
-      controls,
-      viewport,
-      track,
-      slides,
-      counter: controls.querySelector("[data-practice-swipe-counter]"),
-      dots: [...controls.querySelectorAll("[data-practice-dot]")],
-      prev: controls.querySelector("[data-practice-prev]"),
-      next: controls.querySelector("[data-practice-next]"),
-      settleTimer: 0,
-    };
-
-    carouselState[name] = state;
-    updateCarouselUI(name, 0);
-
-    // Keep the first visible card ready; warm only its neighbour in idle time.
-    hydrateSlide(name, 0);
-    warmCarouselAround(name, 0);
-
-    state.prev.addEventListener("click", () => goToCarousel(name, activeIndex[name] - 1));
-    state.next.addEventListener("click", () => goToCarousel(name, activeIndex[name] + 1));
-
-    viewport.addEventListener("keydown", (event) => {
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-      event.preventDefault();
-      goToCarousel(name, activeIndex[name] + (event.key === "ArrowRight" ? 1 : -1));
-    });
-
-    if ("onscrollend" in viewport) {
-      viewport.addEventListener("scrollend", () => settleCarousel(name), { passive: true });
-    } else {
-      viewport.addEventListener("scroll", () => {
-        window.clearTimeout(state.settleTimer);
-        state.settleTimer = window.setTimeout(() => settleCarousel(name), 130);
-      }, { passive: true });
-    }
+    selectorState[name] = { ...view, tabs };
+    renderExercise(name, 0, false);
   };
 
   const syncCollectionState = () => {
@@ -481,104 +379,45 @@
   const buttonFor = (name) => buttons.find((button) => button.dataset.practiceGroup === name);
   const cardFor = (name) => buttonFor(name)?.closest("[data-practice-card]");
 
-  const setSlotImmediate = (name, open) => {
+  const setSlot = (name, open) => {
     const slot = slots[name];
-    slot.style.removeProperty("height");
-    slot.classList.remove("is-settled", "is-closing", "is-opening");
-    slot.classList.toggle("is-open", open);
+    if (!slot) return;
     slot.hidden = !open;
     slot.inert = !open;
+    slot.classList.toggle("is-open", open);
     slot.setAttribute("aria-hidden", String(!open));
   };
 
   const preserveViewportAnchor = (element, beforeTop) => {
     if (!element || !Number.isFinite(beforeTop)) return;
-    const afterTop = element.getBoundingClientRect().top;
-    const shift = afterTop - beforeTop;
-    if (Math.abs(shift) > 0.5) window.scrollBy(0, shift);
+    const shift = element.getBoundingClientRect().top - beforeTop;
+    if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, left: 0, behavior: "auto" });
   };
 
-  const gentlyAlignOpenContent = (name) => {
-    const controls = carouselState[name]?.controls;
-    if (!controls) return;
-    const desiredTop = window.innerWidth <= 700 ? 18 : 28;
-    const rect = controls.getBoundingClientRect();
-    if (Math.abs(rect.top - desiredTop) < 4) return;
-    smoothScrollTo(window.scrollY + rect.top - desiredTop);
-  };
-
-  const openSlot = async (name, token) => {
-    const slot = slots[name];
-    slot.hidden = false;
-    slot.inert = false;
-    slot.classList.remove("is-closing", "is-settled", "is-opening");
-    slot.classList.add("is-open");
-    slot.setAttribute("aria-hidden", "false");
-    await nextFrame();
-    if (token !== interactionToken) return false;
-    const state = carouselState[name];
-    if (state) state.viewport.scrollLeft = carouselTargetLeft(state, activeIndex[name]);
-    measureActiveCarousel(name);
-    return true;
-  };
-
-  const closeSlot = async (name, token, anchorElement = null, anchorTop = NaN) => {
-    const slot = slots[name];
-    if (slot.hidden) return true;
-    slot.inert = true;
-    slot.setAttribute("aria-hidden", "true");
-    slot.hidden = true;
-    slot.classList.remove("is-open", "is-closing", "is-settled", "is-opening");
-    if (token !== interactionToken) return false;
-    preserveViewportAnchor(anchorElement, anchorTop);
-    return true;
-  };
-
-  const normalizeInterruptedSlots = () => {
-    Object.entries(slots).forEach(([name, slot]) => {
-      if (!slot.classList.contains("is-closing")) return;
-      const shouldBeOpen = name === openGroupName;
-      setSlotImmediate(name, shouldBeOpen);
-    });
-  };
-
-  const toggleGroup = async (name) => {
+  const toggleGroup = (name) => {
     if (!groups[name]) return;
-    const token = ++interactionToken;
-    normalizeInterruptedSlots();
     stabilizeWorkshopBackground();
 
     if (openGroupName === name) {
       openGroupName = "";
+      setSlot(name, false);
       syncCollectionState();
-      await closeSlot(name, token);
       return;
     }
 
     const previous = openGroupName;
     const targetCard = cardFor(name);
     const targetTop = targetCard?.getBoundingClientRect().top ?? NaN;
-    openGroupName = name;
-    syncCollectionState();
-
     if (previous) {
-      const closed = await closeSlot(previous, token, targetCard, targetTop);
-      if (!closed || token !== interactionToken) return;
+      setSlot(previous, false);
+      preserveViewportAnchor(targetCard, targetTop);
     }
 
-    const opened = await openSlot(name, token);
-    if (!opened || token !== interactionToken) return;
-
-    await nextFrame();
-    if (token === interactionToken) gentlyAlignOpenContent(name);
+    openGroupName = name;
+    setSlot(name, true);
+    syncCollectionState();
+    centerSelector(name, activeIndex[name]);
   };
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.stopPropagation();
-      void toggleGroup(button.dataset.practiceGroup);
-    });
-  });
 
   const copyCode = async (button) => {
     const value = button.dataset.code || "";
@@ -603,25 +442,40 @@
       }
     }
 
-    window.clearTimeout(copyTimer);
+    const previousTimer = copyTimers.get(button);
+    if (previousTimer) window.clearTimeout(previousTimer);
     button.classList.add("is-copied");
     button.querySelector("span")?.replaceChildren(document.createTextNode("Copied"));
     if (status) status.textContent = "Code copied to clipboard";
-    copyTimer = window.setTimeout(() => {
+    const timer = window.setTimeout(() => {
       button.classList.remove("is-copied");
       button.querySelector("span")?.replaceChildren(document.createTextNode("Copy code"));
       if (status) status.textContent = "";
+      copyTimers.delete(button);
     }, 1500);
+    copyTimers.set(button, timer);
   };
 
+  buttons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleGroup(button.dataset.practiceGroup);
+    });
+  });
+
   root.addEventListener("click", (event) => {
-    const button = event.target.closest?.("[data-practice-copy]");
-    if (button) void copyCode(button);
+    const closeButton = event.target.closest?.("[data-practice-close]");
+    if (closeButton) {
+      toggleGroup(closeButton.dataset.practiceClose);
+      return;
+    }
+    const copyButton = event.target.closest?.("[data-practice-copy]");
+    if (copyButton) void copyCode(copyButton);
   });
 
   Object.keys(groups).forEach((name) => {
-    setSlotImmediate(name, false);
-    buildCarousel(name);
+    buildSelector(name);
+    setSlot(name, false);
   });
 
   let resizeTimer = 0;
@@ -632,13 +486,7 @@
         workshopBackgroundFrozen = false;
         stabilizeWorkshopBackground(true);
       }
-      Object.keys(groups).forEach((name) => {
-        if (slots[name].hidden) return;
-        const state = carouselState[name];
-        if (state) state.viewport.scrollLeft = carouselTargetLeft(state, activeIndex[name]);
-        measureActiveCarousel(name);
-      });
-    }, 120);
+    }, 140);
   }, { passive: true });
 
   syncCollectionState();
