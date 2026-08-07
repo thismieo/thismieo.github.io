@@ -304,11 +304,6 @@
 .practice-explorer-slot-inner {
   min-width: 0;
   overflow: hidden;
-  padding-top: 0;
-  transition: padding-top 260ms ease;
-}
-
-.practice-explorer-slot.is-open > .practice-explorer-slot-inner {
   padding-top: 16px;
 }
 
@@ -793,7 +788,7 @@
       visibility 0s linear 0s;
   }
 
-  .practice-explorer-slot.is-open > .practice-explorer-slot-inner {
+  .practice-explorer-slot-inner {
     padding-top: 10px;
   }
 
@@ -917,7 +912,6 @@
   .practice-milestone,
   .practice-milestone-action,
   .practice-explorer-slot,
-  .practice-explorer-slot-inner,
   .practice-action-chevron,
   .practice-exercise-tab,
   .practice-copy-button {
