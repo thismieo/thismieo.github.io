@@ -231,17 +231,14 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
   overflow-anchor: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: auto;
-  scroll-padding-inline: 0;
+  scroll-padding-inline: 18px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x pan-y;
-  transition: height 145ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.practice-carousel-viewport.is-sizing-instant {
   transition: none !important;
 }
 
@@ -253,16 +250,19 @@
   width: 100%;
   display: flex;
   align-items: flex-start;
+  gap: 10px;
+  padding-inline: 18px;
 }
 
 .practice-carousel-slide {
-  flex: 0 0 100% !important;
-  width: 100% !important;
+  flex: 0 0 calc(100% - 36px) !important;
+  width: calc(100% - 36px) !important;
   max-width: none !important;
   margin: 0 !important;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
+  scroll-snap-stop: normal;
   touch-action: auto !important;
-  contain: layout paint;
+  content-visibility: auto;
 }
 
 .practice-swipe-arrow:disabled {
