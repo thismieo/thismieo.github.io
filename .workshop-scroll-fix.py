@@ -23,20 +23,9 @@ if old_sync not in js:
     raise SystemExit('syncCollectionState anchor missing')
 js = js.replace(old_sync, new_sync, 1)
 
-old_toggle = '''    const token = ++interactionToken;\n    normalizeInterruptedSlots();\n    stopNativeScroll();\n    stabilizeWorkshopBackground();\n'''
-new_toggle = '''    const token = ++interactionToken;\n    normalizeInterruptedSlots();\n    stopNativeScroll();\n    stabilizeWorkshopBackground();\n'''
-if old_toggle not in js:
-    raise SystemExit('patched toggle anchor missing')
-# Keep this as an explicit guard that the deep base patch contains cancellation.
-
-old_align_call = '''    await nextFrame();\n    if (token === interactionToken) gentlyAlignOpenContent(name);\n  };\n'''
-new_align_call = '''    await nextFrame();\n    if (token === interactionToken) gentlyAlignOpenContent(name);\n  };\n'''
-if old_align_call not in js:
-    raise SystemExit('post-open align anchor missing')
-
-reserve_css = '''\n/* Small open-state scroll reserve keeps the lower Archive alignable on compact\n   phone viewports. It disappears immediately when the collection closes. */\n.workshop-view.has-practice-open .workshop-main {\n  padding-bottom: calc(60px + clamp(108px, 15svh, 132px)) !important;\n}\n'''
-if 'has-practice-open .workshop-main' not in css:
-    css += reserve_css
+layout_css = '''\n/* The Workshop itself must clip decoration without becoming a scroll container.\n   overflow: clip preserves the visual crop while keeping dynamic practice height\n   in the document layout immediately on WebKit. */\n.workshop-view {\n  overflow: clip !important;\n}\n\n/* Small open-state scroll reserve keeps the lower Archive alignable on compact\n   phone viewports. It disappears immediately when the collection closes. */\n.workshop-view.has-practice-open .workshop-main {\n  padding-bottom: calc(60px + clamp(108px, 15svh, 132px)) !important;\n}\n'''
+if 'overflow: clip !important;' not in css:
+    css += layout_css
 
 js_path.write_text(js, encoding='utf-8')
 css_path.write_text(css, encoding='utf-8')
