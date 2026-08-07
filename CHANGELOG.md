@@ -1,3 +1,19 @@
+# Blue Continuum 4.4.0 Preview — Python Practice Archive
+
+1. Created the preview on the isolated `workshop-python-practice-preview` branch; production `main` remains unchanged.
+2. Added a dedicated Python Practice section below the current Python track inside The Workshop.
+3. Added two milestone groups: Python Fundamentals (5 exercises) and Conditions, Logic & Loops (7 exercises).
+4. Added a responsive in-page exercise explorer with keyboard-accessible exercise selection.
+5. Added a code viewer with line numbers, horizontal overflow protection, and a local copy-code interaction with no external library.
+6. Preserved the original exercise logic while removing personal separator comments from the public presentation layer.
+7. Presented the voting-related classroom example as `Eligibility Logic` so it is clearly framed as a programming exercise rather than a legal statement.
+8. Gave Prime Number Checker and Triangle Classification restrained `Logic Challenge` labels to reflect their stronger control-flow structure without overstating difficulty.
+9. Added dedicated `workshop-practice.css` and `workshop-practice.js` modules so the feature can be reviewed or removed without polluting the existing production CSS/JS.
+10. Corrected preview cache references so current contact styling uses `contact-linkedin.css?v=4.3.11` and all preview assets use fresh 4.4.0 preview keys.
+11. Updated visible preview versioning and branch documentation while preserving the existing Workshop transition, history handling, Escape behavior, and touch-scroll system.
+
+---
+
 # Blue Continuum 4.1.9 — Refined Workshop Dividers
 
 1. Removed the `Understood`, `Applied`, and `Upcoming` Workshop legend and its status-dot markup.
