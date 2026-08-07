@@ -1,629 +1,224 @@
 @import url("workshop-base.css?v=5.1.0");
 
-/* Workshop content refinement — August 2026
-   The outer Workshop cards remain untouched. This layer only controls
-   the opened practice content, navigation, code fit and small stability fixes. */
-
+/* Workshop practice UI v5.7 — lightweight selector + one stable detail panel. */
 #workshop-title.workshop-editorial-title::after,
-#current-title.workshop-editorial-title::after {
-  content: none !important;
-  display: none !important;
-}
-
+#current-title.workshop-editorial-title::after { content: none !important; display: none !important; }
 #workshop-title.workshop-editorial-title > .editorial-title-line,
 #current-title.workshop-editorial-title > .editorial-title-line {
-  display: block !important;
-  font-size: 1em !important;
-  line-height: inherit !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+  display: block !important; font-size: 1em !important; line-height: inherit !important;
+  opacity: 1 !important; visibility: visible !important;
 }
-
-.workshop-updated-single .workshop-update-meta {
-  gap: 0.72em !important;
-}
-
-.knowledge-application-merged .workshop-subgroup-applied {
-  margin-top: clamp(64px, 7vw, 88px) !important;
-}
-
-/* Keep the Workshop gradient mapped to its closed-state height so opening content
-   never changes the apparent page luminance on mobile Safari/Chrome. */
+.workshop-updated-single .workshop-update-meta { gap: .72em !important; }
+.knowledge-application-merged .workshop-subgroup-applied { margin-top: clamp(64px,7vw,88px) !important; }
 .workshop-view {
-  background-size: 100% var(--workshop-bg-height, 100%) !important;
-  background-repeat: no-repeat !important;
-  background-position: 0 0 !important;
+  background-size: 100% var(--workshop-bg-height,100%) !important;
+  background-repeat: no-repeat !important; background-position: 0 0 !important;
   background-color: #08151f !important;
 }
 
-/* Unified interaction timing: same calm response for both outer practice cards. */
-.practice-milestone {
-  transition-duration: 250ms !important;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-.practice-milestone-action,
-.practice-action-chevron {
-  transition-duration: 185ms !important;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-/* ==========================================================
-   Practice reveal — no measured height animation
-   ========================================================== */
-.practice-explorer-slot[hidden] {
-  display: none !important;
-}
-
+/* No tall-content animation: opening a collection only reveals normal document flow. */
+.practice-explorer-slot[hidden] { display: none !important; }
 .practice-explorer-slot,
 .practice-explorer-slot.is-open,
 .practice-explorer-slot.is-settled,
-.practice-explorer-slot.is-closing {
-  display: block !important;
-  width: 100% !important;
-  height: auto !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  grid-template-rows: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-  overflow: visible !important;
-  overflow-anchor: none !important;
-  will-change: auto !important;
+.practice-explorer-slot.is-closing,
+.practice-explorer-slot.is-opening {
+  display: block !important; width: 100% !important; height: auto !important;
+  min-width: 0 !important; min-height: 0 !important; grid-template-rows: none !important;
+  opacity: 1 !important; visibility: visible !important; transform: none !important;
+  overflow: visible !important; pointer-events: auto !important; will-change: auto !important;
   transition: none !important;
 }
-
-.practice-explorer-slot {
-  pointer-events: none !important;
-}
-
-.practice-explorer-slot.is-open {
-  pointer-events: auto !important;
-}
-
 .practice-explorer-slot-inner,
-.practice-explorer-slot.is-open > .practice-explorer-slot-inner,
-.practice-explorer-slot.is-closing > .practice-explorer-slot-inner {
-  min-width: 0 !important;
-  min-height: 0 !important;
-  padding-top: 12px !important;
-  overflow: visible !important;
-  opacity: 1 !important;
-  transform: none !important;
+.practice-explorer-slot.is-open > .practice-explorer-slot-inner {
+  min-width: 0 !important; min-height: 0 !important; padding-top: 12px !important;
+  overflow: visible !important; opacity: 1 !important; transform: none !important;
   transition: none !important;
 }
-
 .practice-explorer {
-  --practice-accent: 164, 137, 118;
-  --practice-accent-soft: 95, 77, 68;
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  display: block !important;
-  overflow: visible !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
+  --practice-accent:164,137,118; --practice-accent-soft:95,77,68;
+  width: 100% !important; max-width: none !important; margin: 0 !important;
+  display: block !important; overflow: visible !important; border: 0 !important;
+  border-radius: 0 !important; background: transparent !important; box-shadow: none !important;
 }
+.practice-explorer[data-active-group="archive"] { --practice-accent:139,130,188; --practice-accent-soft:70,65,111; }
 
-.practice-explorer[data-active-group="archive"] {
-  --practice-accent: 139, 130, 188;
-  --practice-accent-soft: 70, 65, 111;
-}
-
-/* The old selector stays in the DOM for semantics/data only. */
+/* Small selector cards carry the horizontal gesture; the long code panel never moves sideways. */
 .practice-exercise-nav {
-  display: none !important;
-}
-
-/* ==========================================================
-   Swipe navigation
-   ========================================================== */
-.practice-swipe-controls {
-  width: min(100%, 760px);
-  margin: 0 auto 10px;
-  padding: 8px 10px;
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) 42px;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(var(--practice-accent), 0.17);
-  border-radius: 15px;
+  width: min(100%,760px) !important; margin: 0 auto 10px !important; padding: 12px !important;
+  display: block !important; overflow: hidden !important;
+  border: 1px solid rgba(var(--practice-accent),.17) !important; border-radius: 18px !important;
   background:
-    radial-gradient(circle at 50% 0%, rgba(var(--practice-accent), 0.055), transparent 58%),
-    linear-gradient(145deg, rgba(20, 26, 32, 0.96), rgba(9, 14, 20, 0.985));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.018);
+    radial-gradient(circle at 92% 0%,rgba(var(--practice-accent),.075),transparent 36%),
+    linear-gradient(145deg,rgba(20,26,32,.97),rgba(9,14,20,.99)) !important;
+  box-shadow: 0 12px 30px rgba(0,5,10,.12), inset 0 1px 0 rgba(255,255,255,.02) !important;
+}
+.practice-explorer-label {
+  min-height: 34px !important; margin: 0 1px 10px !important; padding: 0 !important;
+  display: grid !important; grid-template-columns: minmax(0,1fr) auto auto !important;
+  align-items: center !important; gap: 10px !important; border: 0 !important;
+}
+.practice-explorer-label strong {
+  min-width: 0; overflow: hidden; color: #dbe5e8 !important; font-size: .69rem !important;
+  font-weight: 760 !important; letter-spacing: .035em !important; text-overflow: ellipsis; white-space: nowrap;
+}
+.practice-explorer-label [data-practice-progress] {
+  color: rgb(var(--practice-accent)) !important; font-size: .62rem !important;
+  font-weight: 820 !important; letter-spacing: .1em !important;
+}
+.practice-collection-close {
+  min-height: 30px; padding: 0 9px; display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; color: #8fa0a6; border: 1px solid rgba(var(--practice-accent),.15);
+  border-radius: 9px; background: rgba(var(--practice-accent),.035); font: inherit;
+  font-size: .58rem; font-weight: 720; cursor: pointer; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent; transition: 150ms ease;
+}
+.practice-collection-close svg {
+  width: 7px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.65;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.practice-collection-close:active, .practice-selector-card:active { transform: scale(.98); }
+.practice-collection-close:focus-visible, .practice-selector-card:focus-visible {
+  outline: 2px solid rgba(var(--practice-accent),.55); outline-offset: 2px;
 }
 
-.practice-swipe-arrow {
-  width: 42px;
-  height: 38px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(var(--practice-accent), 0.92);
-  border: 1px solid rgba(var(--practice-accent), 0.19);
-  border-radius: 11px;
-  background: rgba(var(--practice-accent), 0.045);
-  appearance: none;
-  cursor: pointer;
-  touch-action: manipulation;
-  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+.practice-exercise-list {
+  width: 100% !important; min-width: 0 !important; margin: 0 !important; padding: 2px 1px 5px !important;
+  display: flex !important; grid-template-columns: none !important; gap: 8px !important;
+  overflow-x: auto !important; overflow-y: hidden !important; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;
 }
+.practice-exercise-list::-webkit-scrollbar { display: none; }
 
-.practice-swipe-arrow svg {
-  width: 10px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.55;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.practice-selector-card {
+  position: relative; flex: 0 0 176px; min-width: 0; min-height: 82px; padding: 11px 12px 10px;
+  display: grid; grid-template-columns: auto minmax(0,1fr); grid-template-rows: auto 1fr auto;
+  column-gap: 9px; row-gap: 5px; align-items: start; text-align: left; color: #aab8bc;
+  border: 1px solid rgba(151,167,174,.12); border-radius: 13px;
+  background: linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.008)),rgba(8,13,18,.72);
+  appearance: none; cursor: pointer; scroll-snap-align: start; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent; transition: border-color 170ms ease,background 170ms ease,transform 150ms ease;
 }
-
-.practice-swipe-arrow:active {
-  transform: scale(0.97);
-  background: rgba(var(--practice-accent), 0.09);
+.practice-selector-card::after {
+  content:""; position:absolute; right:10px; bottom:9px; width:18px; height:1px; border-radius:999px;
+  background:rgba(142,158,164,.18); transition:width 170ms ease,background 170ms ease;
 }
-
-.practice-swipe-arrow:focus-visible {
-  outline: 2px solid rgba(var(--practice-accent), 0.52);
-  outline-offset: 2px;
+.practice-selector-card.is-active {
+  color:#e8eff1; border-color:rgba(var(--practice-accent),.34);
+  background:radial-gradient(circle at 100% 0%,rgba(var(--practice-accent),.12),transparent 48%),
+             linear-gradient(145deg,rgba(var(--practice-accent),.075),rgba(9,14,20,.92));
 }
-
-.practice-swipe-meta {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  text-align: center;
+.practice-selector-card.is-active::after { width:29px; background:rgba(var(--practice-accent),.74); }
+.practice-selector-index {
+  grid-column:1; grid-row:1/span 2; color:rgba(var(--practice-accent),.83);
+  font-size:.57rem; font-weight:830; letter-spacing:.1em;
 }
-
-.practice-swipe-hint {
-  color: #84979f;
-  font-size: 0.58rem;
-  font-weight: 720;
-  letter-spacing: 0.085em;
-  line-height: 1.25;
-  text-transform: uppercase;
+.practice-selector-title {
+  grid-column:2; grid-row:1/span 2; min-width:0; color:inherit;
+  font-size:.72rem; font-weight:720; letter-spacing:-.015em; line-height:1.35; text-wrap:balance;
 }
-
-.practice-swipe-meta strong {
-  color: rgb(var(--practice-accent));
-  font-size: 0.64rem;
-  font-weight: 820;
-  letter-spacing: 0.11em;
-  line-height: 1.25;
+.practice-selector-badge {
+  grid-column:1/-1; grid-row:3; max-width:calc(100% - 30px); overflow:hidden;
+  color:#687a81; font-size:.52rem; font-weight:690; letter-spacing:.04em;
+  text-overflow:ellipsis; white-space:nowrap;
 }
+.practice-selector-card.is-active .practice-selector-badge { color:#8fa0a6; }
 
-.practice-swipe-dots {
-  min-height: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.practice-swipe-dots i {
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(143, 160, 167, 0.25);
-  transition: width 160ms ease, background 160ms ease;
-}
-
-.practice-swipe-dots i.is-active {
-  width: 13px;
-  background: rgba(var(--practice-accent), 0.78);
-}
-
-/* Native-feeling horizontal rail: finger movement and card movement stay 1:1,
-   then CSS scroll-snap settles on the selected program. */
-.practice-carousel-viewport {
-  width: min(100%, 760px);
-  min-width: 0;
-  margin: 0 auto;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  overscroll-behavior-y: auto;
-  overflow-anchor: none;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: auto;
-  scroll-padding-inline: 18px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x pan-y;
-  transition: none !important;
-}
-
-.practice-carousel-viewport::-webkit-scrollbar {
-  display: none;
-}
-
-.practice-carousel-track {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding-inline: 18px;
-}
-
-.practice-carousel-slide {
-  flex: 0 0 calc(100% - 36px) !important;
-  width: calc(100% - 36px) !important;
-  max-width: none !important;
-  margin: 0 !important;
-  scroll-snap-align: center;
-  scroll-snap-stop: normal;
-  touch-action: auto !important;
-  content-visibility: auto;
-}
-
-.practice-swipe-arrow:disabled {
-  opacity: 0.38;
-  cursor: default;
-  transform: none !important;
-}
-
-/* ==========================================================
-   One exercise = one complete content card
-   ========================================================== */
+/* One content surface only. */
 .practice-detail {
-  position: relative;
-  width: min(100%, 760px) !important;
-  min-width: 0 !important;
-  margin: 0 auto !important;
-  padding: clamp(24px, 3.2vw, 34px) !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(var(--practice-accent), 0.19) !important;
-  border-radius: 21px !important;
-  background:
-    radial-gradient(ellipse 72% 46% at 100% 0%, rgba(var(--practice-accent), 0.085), transparent 76%),
-    radial-gradient(circle at 7% 9%, rgba(var(--practice-accent-soft), 0.09), transparent 30%),
-    linear-gradient(145deg, rgba(25, 31, 37, 0.99), rgba(8, 13, 19, 0.998)) !important;
-  box-shadow:
-    0 20px 48px rgba(0, 5, 10, 0.19),
-    inset 0 1px 0 rgba(255,255,255,0.019) !important;
-  outline: none;
-  touch-action: pan-y;
-  transform-origin: center;
+  position:relative; width:min(100%,760px) !important; min-width:0 !important; margin:0 auto !important;
+  padding:clamp(24px,3.2vw,34px) !important; display:block !important; overflow:hidden !important;
+  border:1px solid rgba(var(--practice-accent),.19) !important; border-radius:21px !important;
+  background:radial-gradient(ellipse 72% 46% at 100% 0%,rgba(var(--practice-accent),.085),transparent 76%),
+             radial-gradient(circle at 7% 9%,rgba(var(--practice-accent-soft),.09),transparent 30%),
+             linear-gradient(145deg,rgba(25,31,37,.99),rgba(8,13,19,.998)) !important;
+  box-shadow:0 20px 48px rgba(0,5,10,.19),inset 0 1px 0 rgba(255,255,255,.019) !important;
+  touch-action:pan-y;
 }
-
-.practice-detail::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background: linear-gradient(130deg, rgba(255,255,255,0.018), transparent 36%, transparent 76%, rgba(var(--practice-accent), 0.022));
-}
-
-.practice-detail > * {
-  position: relative;
-  z-index: 1;
-}
-
-.practice-detail-kicker {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-}
-
-.practice-detail-index {
-  color: rgb(var(--practice-accent)) !important;
-}
-
-.practice-detail-badge {
-  border-color: rgba(var(--practice-accent), 0.24) !important;
-  color: #b5c2c6 !important;
-  background: rgba(var(--practice-accent), 0.055) !important;
-}
-
-.practice-detail h3 {
-  max-width: 18ch;
-  margin-top: 14px !important;
-  color: #e9f0f1 !important;
-  font-size: clamp(1.72rem, 3vw, 2.38rem) !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.045em !important;
-}
-
-.practice-detail-summary {
-  max-width: 66ch;
-  margin-top: 13px !important;
-  color: #9cabb0 !important;
-  font-size: 0.86rem !important;
-  line-height: 1.74 !important;
-}
-
-.practice-concept {
-  margin-top: 23px !important;
-  padding-top: 18px !important;
-  border-top: 1px solid rgba(var(--practice-accent), 0.12) !important;
-}
-
-.practice-concept-label {
-  color: #758991 !important;
-}
-
-.practice-concept p:last-child {
-  max-width: 68ch;
-  margin-top: 7px !important;
-  color: #bcc8cb !important;
-  font-size: 0.81rem !important;
-  line-height: 1.68 !important;
-}
-
-.practice-detail-skills {
-  margin: 0 !important;
-  padding-top: 16px !important;
-  gap: 6px !important;
-}
-
+.practice-detail h3 { max-width:18ch; margin-top:14px !important; font-size:clamp(1.72rem,3vw,2.38rem) !important; }
+.practice-detail-summary { max-width:66ch; margin-top:13px !important; font-size:.86rem !important; line-height:1.74 !important; }
+.practice-concept { margin-top:23px !important; padding-top:18px !important; border-top-color:rgba(var(--practice-accent),.12) !important; }
+.practice-detail-skills { margin:0 !important; padding-top:16px !important; gap:6px !important; }
 .practice-detail-skills li {
-  padding: 5px 8px !important;
-  border-color: rgba(var(--practice-accent), 0.20) !important;
-  color: #bdc9cc !important;
-  background: rgba(var(--practice-accent), 0.045) !important;
-  font-size: 0.63rem !important;
+  padding:5px 8px !important; border-color:rgba(var(--practice-accent),.20) !important;
+  background:rgba(var(--practice-accent),.045) !important; font-size:.63rem !important;
 }
 
-/* ==========================================================
-   Code belongs to the same card and always fits its width
-   ========================================================== */
-.practice-code-viewer {
-  width: 100% !important;
-  min-width: 0 !important;
-  margin-top: 23px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(150, 169, 177, 0.16) !important;
-  border-radius: 16px !important;
-  background:
-    radial-gradient(circle at 96% 0%, rgba(var(--practice-accent), 0.045), transparent 38%),
-    linear-gradient(145deg, #091117, #070c11 78%) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.018) !important;
-}
-
-.practice-code-header {
-  min-height: 48px !important;
-  padding: 0 11px 0 14px !important;
-  gap: 10px !important;
-  border-bottom-color: rgba(153, 173, 181, 0.11) !important;
-}
-
-.practice-code-language {
-  color: rgb(var(--practice-accent)) !important;
-}
-
-.practice-code-title {
-  color: #74878e !important;
-}
-
-.practice-copy-button {
-  flex: 0 0 auto;
-  border-color: rgba(var(--practice-accent), 0.17) !important;
-  background: rgba(var(--practice-accent), 0.035) !important;
-}
-
-.practice-copy-button.is-copied {
-  color: rgb(var(--practice-accent)) !important;
-  border-color: rgba(var(--practice-accent), 0.32) !important;
-  background: rgba(var(--practice-accent), 0.075) !important;
-}
-
+/* Code remains vertically native and wraps inside the card on compact screens. */
+.practice-code-viewer { width:100% !important; min-width:0 !important; margin-top:23px !important; border-radius:16px !important; }
+.practice-code-header { min-height:48px !important; padding:0 11px 0 14px !important; }
 .practice-code-scroll {
-  width: 100% !important;
-  max-width: 100% !important;
-  max-height: none !important;
-  overflow-x: hidden !important;
-  overflow-y: visible !important;
-  overscroll-behavior: auto !important;
-  scrollbar-width: none !important;
+  width:100% !important; max-width:100% !important; max-height:none !important;
+  overflow-x:hidden !important; overflow-y:visible !important; overscroll-behavior:auto !important; scrollbar-width:none !important;
 }
-
 .practice-code {
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 16px 10px 18px 0 !important;
-  font-size: clamp(0.68rem, 1.28vw, 0.77rem) !important;
-  line-height: 1.68 !important;
-  tab-size: 2 !important;
+  width:100% !important; min-width:0 !important; margin:0 !important; padding:16px 10px 18px 0 !important;
+  font-size:clamp(.68rem,1.28vw,.77rem) !important; line-height:1.68 !important; tab-size:2 !important;
 }
-
 .practice-code-line {
-  position: relative;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 1.68em !important;
-  padding: 0 8px 0 4.4em !important;
-  display: block !important;
-  white-space: pre-wrap !important;
-  overflow-wrap: anywhere !important;
-  word-break: normal !important;
+  position:relative; width:100% !important; min-width:0 !important; min-height:1.68em !important;
+  padding:0 8px 0 4.4em !important; display:block !important; white-space:pre-wrap !important;
+  overflow-wrap:anywhere !important; word-break:normal !important;
 }
-
 .practice-code-line::before {
-  position: absolute !important;
-  left: 0 !important;
-  top: 0 !important;
-  width: 3.25em !important;
-  margin: 0 !important;
-  color: #526168 !important;
-  font-size: 0.87em !important;
-  text-align: right !important;
+  position:absolute !important; left:0 !important; top:0 !important; width:3.25em !important;
+  margin:0 !important; color:#4e6067 !important; font-size:.87em !important; text-align:right !important;
 }
 
-.practice-copy-status {
-  min-height: 16px !important;
-  margin: 6px 2px 0 !important;
-}
+/* Calm syntax palette: pink brackets, warm punctuation/numbers, cool keywords. */
+.practice-code .tok-name { color:#d3dee1 !important; }
+.practice-code .tok-keyword { color:#c6a7f2 !important; }
+.practice-code .tok-builtin { color:#7fc7df !important; }
+.practice-code .tok-string { color:#b7d59a !important; }
+.practice-code .tok-number { color:#e6c47a !important; }
+.practice-code .tok-constant { color:#e9a47d !important; }
+.practice-code .tok-operator { color:#8fc9d8 !important; }
+.practice-code .tok-bracket { color:#eda2c8 !important; }
+.practice-code .tok-punctuation { color:#e3c174 !important; }
+.practice-code .tok-comment { color:#63767d !important; font-style:italic; }
 
-/* ==========================================================
-   Mobile
-   ========================================================== */
-@media (max-width: 700px) {
-  .workshop-hero-merged {
-    padding-top: 24px !important;
-  }
-
+@media (max-width:700px) {
+  .workshop-hero-merged { padding-top:24px !important; }
   #workshop-title.workshop-editorial-title-hero {
-    max-width: calc(100vw - 38px) !important;
-    font-size: clamp(1.88rem, 8.2vw, 2.42rem) !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.048em !important;
+    max-width:calc(100vw - 38px) !important; font-size:clamp(1.88rem,8.2vw,2.42rem) !important;
+    line-height:1.08 !important; letter-spacing:-.048em !important;
   }
-
-  #workshop-title.workshop-editorial-title > .editorial-title-line {
-    white-space: normal !important;
-    text-wrap: balance;
-  }
-
-  .workshop-updated-single .workshop-update-meta {
-    gap: 8px !important;
-  }
-
-  .knowledge-application-merged .workshop-subgroup-applied {
-    margin-top: 62px !important;
-  }
-
-  .practice-explorer-slot-inner,
-  .practice-explorer-slot.is-open > .practice-explorer-slot-inner {
-    padding-top: 10px !important;
-  }
-
-  .practice-swipe-controls {
-    width: 100%;
-    margin-bottom: 8px;
-    padding: 7px 8px;
-    grid-template-columns: 39px minmax(0, 1fr) 39px;
-    gap: 7px;
-    border-radius: 14px;
-  }
-
-  .practice-swipe-arrow {
-    width: 39px;
-    height: 37px;
-    border-radius: 10px;
-  }
-
-  .practice-swipe-hint {
-    font-size: 0.54rem;
-    letter-spacing: 0.075em;
-  }
-
-  .practice-swipe-meta strong {
-    font-size: 0.61rem;
-  }
-
-  .practice-detail {
-    width: 100% !important;
-    padding: 20px 15px 15px !important;
-    border-radius: 18px !important;
-  }
-
-  .practice-detail h3 {
-    max-width: 100%;
-    margin-top: 12px !important;
-    font-size: clamp(1.43rem, 7vw, 1.76rem) !important;
-    line-height: 1.12 !important;
-  }
-
-  .practice-detail-summary {
-    margin-top: 11px !important;
-    font-size: 0.80rem !important;
-    line-height: 1.64 !important;
-  }
-
-  .practice-concept {
-    margin-top: 18px !important;
-    padding-top: 15px !important;
-  }
-
-  .practice-concept p:last-child {
-    font-size: 0.77rem !important;
-    line-height: 1.60 !important;
-  }
-
-  .practice-detail-skills {
-    padding-top: 13px !important;
-  }
-
-  .practice-code-viewer {
-    margin-top: 18px !important;
-    border-radius: 14px !important;
-  }
-
-  .practice-code-header {
-    min-height: 45px !important;
-    padding: 0 9px 0 11px !important;
-  }
-
-  .practice-code-title {
-    display: none !important;
-  }
-
-  .practice-copy-button {
-    min-width: 69px !important;
-    min-height: 31px !important;
-    padding-inline: 8px !important;
-    font-size: 0.59rem !important;
-  }
-
-  .practice-code {
-    padding: 14px 7px 16px 0 !important;
-    font-size: clamp(0.55rem, 2.42vw, 0.64rem) !important;
-    line-height: 1.58 !important;
-  }
-
-  .practice-code-line {
-    min-height: 1.58em !important;
-    padding-left: 3.75em !important;
-    padding-right: 5px !important;
-  }
-
-  .practice-code-line::before {
-    width: 2.85em !important;
-  }
+  #workshop-title.workshop-editorial-title > .editorial-title-line { white-space:normal !important; text-wrap:balance; }
+  .workshop-updated-single .workshop-update-meta { gap:8px !important; }
+  .knowledge-application-merged .workshop-subgroup-applied { margin-top:62px !important; }
+  .practice-explorer-slot-inner,.practice-explorer-slot.is-open > .practice-explorer-slot-inner { padding-top:10px !important; }
+  .practice-exercise-nav { width:100% !important; margin-bottom:8px !important; padding:10px !important; border-radius:15px !important; }
+  .practice-explorer-label { min-height:32px !important; margin-bottom:8px !important; gap:8px !important; }
+  .practice-explorer-label strong { font-size:.63rem !important; }
+  .practice-explorer-label [data-practice-progress] { font-size:.58rem !important; }
+  .practice-collection-close { min-height:29px; padding-inline:8px; font-size:.55rem; }
+  .practice-exercise-list { gap:7px !important; padding-bottom:4px !important; }
+  .practice-selector-card { flex-basis:min(70vw,224px); min-height:78px; padding:10px 11px 9px; border-radius:12px; }
+  .practice-selector-title { font-size:.70rem; }
+  .practice-detail { width:100% !important; padding:20px 15px 15px !important; border-radius:18px !important; }
+  .practice-detail h3 { max-width:100%; margin-top:12px !important; font-size:clamp(1.43rem,7vw,1.76rem) !important; line-height:1.12 !important; }
+  .practice-detail-summary { margin-top:11px !important; font-size:.80rem !important; line-height:1.64 !important; }
+  .practice-concept { margin-top:18px !important; padding-top:15px !important; }
+  .practice-concept p:last-child { font-size:.77rem !important; line-height:1.60 !important; }
+  .practice-detail-skills { padding-top:13px !important; }
+  .practice-code-viewer { margin-top:18px !important; border-radius:14px !important; }
+  .practice-code-header { min-height:45px !important; padding:0 9px 0 11px !important; }
+  .practice-code-title { display:none !important; }
+  .practice-copy-button { min-width:69px !important; min-height:31px !important; padding-inline:8px !important; font-size:.59rem !important; }
+  .practice-code { padding:14px 7px 16px 0 !important; font-size:clamp(.55rem,2.42vw,.64rem) !important; line-height:1.58 !important; }
+  .practice-code-line { min-height:1.58em !important; padding-left:3.75em !important; padding-right:5px !important; }
+  .practice-code-line::before { width:2.85em !important; }
 }
-
-@media (max-width: 380px) {
-  .practice-detail {
-    padding-inline: 13px !important;
-  }
-
-  .practice-swipe-hint {
-    font-size: 0.50rem;
-  }
-
-  .practice-code {
-    font-size: 0.54rem !important;
-  }
+@media (max-width:380px) {
+  .practice-detail { padding-inline:13px !important; }
+  .practice-selector-card { flex-basis:min(74vw,214px); }
+  .practice-code { font-size:.54rem !important; }
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .practice-swipe-arrow:hover {
-    border-color: rgba(var(--practice-accent), 0.34);
-    background: rgba(var(--practice-accent), 0.075);
-  }
+@media (hover:hover) and (pointer:fine) {
+  .practice-selector-card:hover { border-color:rgba(var(--practice-accent),.25); }
+  .practice-collection-close:hover { color:#bdc9cc; border-color:rgba(var(--practice-accent),.28); background:rgba(var(--practice-accent),.065); }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .practice-explorer-slot-inner,
-  .practice-carousel-viewport,
-  .practice-milestone,
-  .practice-milestone-action,
-  .practice-action-chevron,
-  .practice-swipe-arrow,
-  .practice-swipe-dots i {
-    transition: none !important;
-  }
+@media (prefers-reduced-motion:reduce) {
+  .practice-selector-card,.practice-selector-card::after,.practice-collection-close { transition:none !important; }
+  .practice-exercise-list { scroll-behavior:auto !important; }
 }
