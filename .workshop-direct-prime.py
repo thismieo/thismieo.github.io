@@ -6,7 +6,7 @@ script = script_path.read_text(encoding='utf-8')
 html = html_path.read_text(encoding='utf-8')
 
 old_init = '''  if (isWorkshopLocation()) renderWorkshop(true, { restoreScroll: false });\n\n  document.addEventListener("keydown", (event) => {\n'''
-new_init = '''  if (isWorkshopLocation()) {\n    renderWorkshop(true, { restoreScroll: false });\n\n    // Direct Workshop URLs enter layout during the initial document render,\n    // unlike normal in-site navigation. Rebind the Workshop once after the\n    // first paint so mobile WebKit owns the same settled layout lifecycle.\n    window.requestAnimationFrame(() => {\n      window.requestAnimationFrame(() => {\n        if (!isWorkshopLocation() || workshopView?.hidden) return;\n        workshopView.hidden = true;\n        void workshopView.offsetHeight;\n        workshopView.hidden = false;\n        void workshopView.offsetHeight;\n        settleScrollPosition(0);\n        workshopView.querySelector("[data-close-workshop]")?.focus({ preventScroll: true });\n      });\n    });\n  }\n\n  document.addEventListener("keydown", (event) => {\n'''
+new_init = '''  if (isWorkshopLocation()) {\n    // The site already owns Workshop/portfolio scroll restoration explicitly.\n    // Disable the browser's initial-entry restoration so mobile WebKit cannot\n    // counteract a later programmatic align after expandable content opens.\n    if ("scrollRestoration" in window.history) {\n      window.history.scrollRestoration = "manual";\n    }\n    renderWorkshop(true, { restoreScroll: false });\n  }\n\n  document.addEventListener("keydown", (event) => {\n'''
 if old_init not in script:
     raise SystemExit('direct Workshop initialization anchor missing')
 script = script.replace(old_init, new_init, 1)
