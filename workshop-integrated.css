@@ -165,16 +165,16 @@
   margin:0 !important; color:#4e6067 !important; font-size:.87em !important; text-align:right !important;
 }
 
-/* Calm syntax palette: pink brackets, warm punctuation/numbers, cool keywords. */
-.practice-code .tok-name { color:#d3dee1 !important; }
-.practice-code .tok-keyword { color:#c6a7f2 !important; }
-.practice-code .tok-builtin { color:#7fc7df !important; }
-.practice-code .tok-string { color:#b7d59a !important; }
-.practice-code .tok-number { color:#e6c47a !important; }
-.practice-code .tok-constant { color:#e9a47d !important; }
-.practice-code .tok-operator { color:#8fc9d8 !important; }
+/* Selective syntax palette: neutral code with restrained accents for structure and meaning. */
+.practice-code .tok-name { color:#d6dee2 !important; }
+.practice-code .tok-keyword { color:#c7a7ee !important; }
+.practice-code .tok-builtin { color:#79bff0 !important; }
+.practice-code .tok-string { color:#e8c58a !important; }
+.practice-code .tok-number { color:#f0a17d !important; }
+.practice-code .tok-constant { color:#f2cf7d !important; }
+.practice-code .tok-operator { color:#86c9dc !important; }
 .practice-code .tok-bracket { color:#eda2c8 !important; }
-.practice-code .tok-punctuation { color:#e3c174 !important; }
+.practice-code .tok-punctuation { color:#9eafb5 !important; }
 .practice-code .tok-comment { color:#63767d !important; font-style:italic; }
 
 @media (max-width:700px) {
