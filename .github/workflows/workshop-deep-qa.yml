@@ -7,7 +7,7 @@ on:
       - .workshop-deep-qa-trigger
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   browser-qa:
@@ -16,6 +16,21 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.55.0-noble
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply deep fix and run static guards
+        run: |
+          set -euo pipefail
+          python3 .workshop-deep-fix.py
+          node --check workshop-integrated.js
+          grep -q 'flex: 0 0 100% !important' workshop-integrated.css
+          ! grep -q 'content-visibility: auto' workshop-integrated.css
+          grep -q 'const stopNativeScroll' workshop-integrated.js
+          grep -q 'const copyTimers = new WeakMap' workshop-integrated.js
+          ! grep -q 'let copyTimer' workshop-integrated.js
+          grep -q 'workshop-integrated.css?v=5.6.0' index.html
+          grep -q 'workshop-integrated.js?v=5.6.0' index.html
       - name: Install Playwright package
         run: |
           npm init -y >/dev/null 2>&1
@@ -27,6 +42,15 @@ jobs:
           sleep 1
       - name: Run deep browser QA
         run: node .workshop-deep-qa.mjs
+      - name: Publish verified Workshop fix and clean temporary QA files
+        run: |
+          set -euo pipefail
+          rm -rf .github .workshop-deep-qa.mjs .workshop-deep-fix.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Stabilize Workshop carousel and mobile interaction'
+          git push origin HEAD:main
       - name: Server log on failure
         if: failure()
         run: cat /tmp/workshop-http.log || true
