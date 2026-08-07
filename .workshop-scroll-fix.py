@@ -11,6 +11,15 @@ if old_scroll not in js:
     raise SystemExit('patched scroll block missing')
 js = js.replace(old_scroll, new_scroll, 1)
 
+# WebKit can defer propagation of an inline child height into the document scroll
+# range when the Workshop was revealed directly from [hidden]. Commit that one
+# layout write immediately after sizing; never do this during touch scrolling.
+old_measure = '''    const height = Math.ceil(slide.getBoundingClientRect().height);\n    if (height > 0) state.viewport.style.height = `${height}px`;\n  };\n'''
+new_measure = '''    const height = Math.ceil(slide.getBoundingClientRect().height);\n    if (height > 0) {\n      state.viewport.style.height = `${height}px`;\n      // One post-write layout commit keeps document scroll metrics current on\n      // direct-load WebKit without adding any per-frame measurement.\n      void state.viewport.offsetHeight;\n      void workshopView?.offsetHeight;\n    }\n  };\n'''
+if old_measure not in js:
+    raise SystemExit('measureActiveCarousel anchor missing')
+js = js.replace(old_measure, new_measure, 1)
+
 old_sync = '''  const syncCollectionState = () => {\n    buttons.forEach((button) => {\n'''
 new_sync = '''  const syncCollectionState = () => {\n    workshopView?.classList.toggle("has-practice-open", Boolean(openGroupName));\n    buttons.forEach((button) => {\n'''
 if old_sync not in js:
