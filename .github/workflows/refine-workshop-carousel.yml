@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - .workshop-carousel-patch.py
+      - .workshop-carousel-trigger
 
 permissions:
   contents: write
@@ -31,7 +31,7 @@ jobs:
           ! grep -q 'renderDetail(name' workshop-integrated.js
           grep -q 'workshop-integrated.css?v=5.3.0' index.html
           grep -q 'workshop-integrated.js?v=5.3.0' index.html
-          rm -rf .github .workshop-carousel-patch.py
+          rm -rf .github .workshop-carousel-patch.py .workshop-carousel-trigger
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
