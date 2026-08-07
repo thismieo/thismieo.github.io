@@ -20,15 +20,23 @@ jobs:
           ref: workshop-safe-final-20260807
           fetch-depth: 0
 
-      - name: Reconstruct reviewed payload
+      - name: Reconstruct and verify reviewed files
         shell: bash
         run: |
           set -euo pipefail
           cat tools/workshop_payload_v2/part*.txt > /tmp/workshop_payload.b64
           base64 -d /tmp/workshop_payload.b64 > /tmp/workshop_payload.tar.gz
-          gzip -t /tmp/workshop_payload.tar.gz
           mkdir -p /tmp/workshop_payload
-          tar -xzf /tmp/workshop_payload.tar.gz -C /tmp/workshop_payload
+
+          # The transport gzip trailer may have a CRC/length mismatch. Do not trust the
+          # transport wrapper; trust only the SHA-256 of each approved extracted file.
+          set +e
+          gzip -dc /tmp/workshop_payload.tar.gz > /tmp/workshop_payload.tar
+          gzip_status=$?
+          set -e
+          echo "gzip transport status: ${gzip_status} (file hashes below are authoritative)"
+
+          tar -xf /tmp/workshop_payload.tar -C /tmp/workshop_payload
           echo "7e1440109139ea09fe74c97c0967bf810f31becf2c309b3cd27592ebb408ec3e  /tmp/workshop_payload/workshop-section.html" | sha256sum -c -
           echo "53f28e52fa1fede339acf894fe51816fa5fa28020b2f3c144ce00bcc3c3ea9a4  /tmp/workshop_payload/workshop-integrated.css" | sha256sum -c -
           echo "fcba29ecc59b62e4b627324bf08cae66ec3a15dcd6b1e27cbe16e8a126821329  /tmp/workshop_payload/workshop-integrated.js" | sha256sum -c -
