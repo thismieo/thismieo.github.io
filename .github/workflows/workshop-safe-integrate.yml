@@ -1,0 +1,128 @@
+name: Workshop Safe Integration
+
+on:
+  push:
+    branches:
+      - workshop-safe-final-20260807
+    paths:
+      - tools/workshop_payload_v2/READY
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: workshop-safe-final-20260807
+          fetch-depth: 0
+
+      - name: Reconstruct reviewed payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/workshop_payload_v2/part*.txt > /tmp/workshop_payload.b64
+          base64 -d /tmp/workshop_payload.b64 > /tmp/workshop_payload.tar.gz
+          echo "1b5331d55335a6951aad886fbb87b343188baad41ac918de5f3256784ffd6c6e  /tmp/workshop_payload.tar.gz" | sha256sum -c -
+          mkdir -p /tmp/workshop_payload
+          tar -xzf /tmp/workshop_payload.tar.gz -C /tmp/workshop_payload
+          echo "7e1440109139ea09fe74c97c0967bf810f31becf2c309b3cd27592ebb408ec3e  /tmp/workshop_payload/workshop-section.html" | sha256sum -c -
+          echo "53f28e52fa1fede339acf894fe51816fa5fa28020b2f3c144ce00bcc3c3ea9a4  /tmp/workshop_payload/workshop-integrated.css" | sha256sum -c -
+          echo "fcba29ecc59b62e4b627324bf08cae66ec3a15dcd6b1e27cbe16e8a126821329  /tmp/workshop_payload/workshop-integrated.js" | sha256sum -c -
+
+      - name: Integrate Workshop only
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          index_path = Path("index.html")
+          html = index_path.read_text(encoding="utf-8")
+          section = Path("/tmp/workshop_payload/workshop-section.html").read_text(encoding="utf-8").strip()
+
+          start_marker = '<section class="workshop-view" data-workshop-view'
+          analytics_marker = '  <!-- Cloudflare Web Analytics -->'
+          start = html.find(start_marker)
+          end = html.find(analytics_marker, start)
+          if start < 0 or end < 0:
+              raise SystemExit("Workshop replacement markers not found")
+
+          # Replace only the existing Workshop view. Portfolio markup and transition shell stay untouched.
+          html = html[:start] + section + "\n" + html[end:]
+
+          css_tag = '  <link rel="stylesheet" href="workshop-integrated.css?v=5.0.0">\n'
+          js_tag = '  <script src="workshop-integrated.js?v=5.0.0" defer></script>\n'
+
+          if 'workshop-integrated.css' not in html:
+              anchor = '  <link rel="stylesheet" href="contact-linkedin.css?v=4.3.8">\n'
+              if anchor not in html:
+                  raise SystemExit("CSS insertion anchor not found")
+              html = html.replace(anchor, anchor + css_tag, 1)
+
+          if 'workshop-integrated.js' not in html:
+              anchor = '  <script src="script.js?v=4.2.0" defer></script>\n'
+              if anchor not in html:
+                  raise SystemExit("JS insertion anchor not found")
+              html = html.replace(anchor, anchor + js_tag, 1)
+
+          index_path.write_text(html, encoding="utf-8")
+          Path("workshop-integrated.css").write_text(Path("/tmp/workshop_payload/workshop-integrated.css").read_text(encoding="utf-8"), encoding="utf-8")
+          Path("workshop-integrated.js").write_text(Path("/tmp/workshop_payload/workshop-integrated.js").read_text(encoding="utf-8"), encoding="utf-8")
+
+      - name: Safety QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check script.js
+          node --check workshop-integrated.js
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          html = Path('index.html').read_text(encoding='utf-8')
+          css = Path('workshop-integrated.css').read_text(encoding='utf-8')
+          js = Path('workshop-integrated.js').read_text(encoding='utf-8')
+
+          ids = re.findall(r'\bid="([^"]+)"', html)
+          dup = sorted({x for x in ids if ids.count(x) > 1})
+          assert not dup, f'Duplicate IDs: {dup}'
+
+          assert html.count('data-workshop-view') == 1
+          assert html.count('data-workshop-transition') == 1
+          assert html.count('data-open-workshop') >= 1
+          assert html.count('data-close-workshop') >= 2
+          assert html.count('data-practice-explorer="featured"') == 1
+          assert html.count('data-practice-explorer="archive"') == 1
+          assert html.count('class="workshop-card ') == 7
+          assert 'Last updated' in html and 'August 2026' in html
+          assert 'workshop-update-single-line' in html
+          assert 'practiceTransitionBusy' not in js
+          assert 'parkExplorer' not in js
+          assert 'appendChild(explorer)' not in js
+          assert css.count('{') == css.count('}')
+
+          # The original transition engine must remain in the original script.
+          original_script = Path('script.js').read_text(encoding='utf-8')
+          for token in ['runWorkshopTransition', 'renderWorkshop', 'workshopTransition.animate', 'data-open-workshop', 'data-close-workshop']:
+              assert token in original_script, f'Missing transition token: {token}'
+
+          print('Workshop structural QA: PASS')
+          PY
+
+          # Critical production files outside the Workshop integration must be byte-identical to main.
+          git diff --exit-code origin/main -- script.js styles.css contact-linkedin.css
+
+      - name: Clean staging helpers and commit reviewed integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf tools/workshop_payload_v2
+          rm -f .github/workflows/workshop-safe-integrate.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Integrate approved Workshop safely"
+          git push origin HEAD:workshop-safe-final-20260807
