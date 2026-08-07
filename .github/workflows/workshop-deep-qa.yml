@@ -1,4 +1,4 @@
-name: Workshop deep browser QA
+name: Workshop production finalize
 
 on:
   push:
@@ -10,77 +10,78 @@ permissions:
   contents: write
 
 jobs:
-  browser-qa:
+  finalize:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.55.0-noble
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
-      - name: Apply production candidate and static guards
+
+      - name: Validate new Workshop architecture
+        shell: bash
         run: |
-          set -eu
-          python3 .workshop-deep-fix.py
-          python3 .workshop-scroll-fix.py
-          python3 .workshop-direct-prime.py
-          python3 .workshop-final-qa-adjust.py
-          node --check script.js
+          set -euo pipefail
           node --check workshop-integrated.js
-          node --check .workshop-deep-qa.mjs
-          node --check .workshop-archive-first-qa.mjs
-          node --check .workshop-webkit-scroll-diagnostic.mjs
-          grep -q 'flex: 0 0 100% !important' workshop-integrated.css
-          ! grep -q 'content-visibility: auto' workshop-integrated.css
-          grep -q 'let workshopScrollFrame = 0' workshop-integrated.js
-          grep -q 'let workshopAlignTimer = 0' workshop-integrated.js
-          grep -q 'let workshopAlignRequest = 0' workshop-integrated.js
-          grep -q 'const cancelWorkshopMotion' workshop-integrated.js
-          grep -q 'const rangeReady' workshop-integrated.js
-          grep -q 'document.documentElement.scrollHeight - window.innerHeight' workshop-integrated.js
-          ! grep -q -- '--practice-slot-height' workshop-integrated.js
-          ! grep -q -- '--practice-slot-height' workshop-integrated.css
-          ! grep -q 'commitOpenSlotHeight' workshop-integrated.js
-          ! grep -q 'retryClampedOpenAlignment' workshop-integrated.js
-          ! grep -q 'workshopScrollGeneration' workshop-integrated.js
-          grep -q 'has-practice-open' workshop-integrated.js
-          grep -q 'has-practice-open .workshop-main' workshop-integrated.css
-          grep -q 'const copyTimers = new WeakMap' workshop-integrated.js
-          grep -q 'document.createDocumentFragment' workshop-integrated.js
-          grep -q 'interacting: false' workshop-integrated.js
-          ! grep -q 'let copyTimer' workshop-integrated.js
-          ! grep -q 'scrollRestoration = "manual"' script.js
-          grep -q 'script.js?v=4.2.0' index.html
-          grep -q 'workshop-integrated.css?v=5.6.0' index.html
-          grep -q 'workshop-integrated.js?v=5.6.0' index.html
-      - name: Install Playwright package
+          grep -q 'className = "practice-selector-card"' workshop-integrated.js
+          grep -q 'const selectorState = Object.create(null)' workshop-integrated.js
+          grep -q 'const BRACKETS = new Set' workshop-integrated.js
+          grep -q 'tok-bracket' workshop-integrated.js
+          grep -q '.practice-selector-card' workshop-integrated.css
+          grep -q '.practice-code .tok-bracket' workshop-integrated.css
+          grep -q '.practice-explorer-slot\[hidden\]' workshop-integrated.css
+          ! grep -q 'carouselState' workshop-integrated.js
+          ! grep -q 'practice-carousel-viewport' workshop-integrated.js
+          ! grep -q 'measureActiveCarousel' workshop-integrated.js
+          ! grep -q 'gentlyAlignOpenContent' workshop-integrated.js
+          ! grep -q 'smoothScrollTo' workshop-integrated.js
+          python3 - <<'PY'
+          from pathlib import Path
+          css = Path('workshop-integrated.css').read_text(encoding='utf-8')
+          if css.count('{') != css.count('}'):
+              raise SystemExit('CSS brace mismatch')
+          js = Path('workshop-integrated.js').read_text(encoding='utf-8')
+          required = [
+              'Prime Number Analyzer', 'Triangle Analyzer', 'Student Grade Analyzer',
+              'Smart Discount Calculator', 'BMI Analyzer', 'Even or Odd',
+              'Age Classification', 'Positive Number Validator', 'Time Converter',
+              'Arithmetic Calculator', 'Eligibility Logic', 'Name & Age'
+          ]
+          missing = [title for title in required if title not in js]
+          if missing:
+              raise SystemExit(f'Missing practice content: {missing}')
+          PY
+
+      - name: Finalize cache version and clean temporary files
+        shell: bash
         run: |
-          npm init -y >/dev/null 2>&1
-          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
-      - name: Start static server
-        run: |
-          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/workshop-http.log 2>&1 &
-          echo $! > /tmp/workshop-http.pid
-          sleep 1
-      - name: Repeat WebKit direct-load alignment five times
-        run: node .workshop-webkit-scroll-diagnostic.mjs
-      - name: Run primary cross-device browser QA
-        run: node .workshop-deep-qa.mjs
-      - name: Run fresh Archive-first touch QA
-        run: node .workshop-archive-first-qa.mjs
-      - name: Publish verified Workshop fix and clean temporary QA files
-        run: |
-          set -eu
-          ROOT="$GITHUB_WORKSPACE"
-          git -C "$ROOT" config user.name 'github-actions[bot]'
-          git -C "$ROOT" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git -C "$ROOT" rm -r --ignore-unmatch .github .workshop-deep-qa.mjs .workshop-archive-first-qa.mjs .workshop-webkit-scroll-diagnostic.mjs .workshop-deep-fix.py .workshop-scroll-fix.py .workshop-final-qa-adjust.py .workshop-direct-prime.py .workshop-qa-adjust.py .workshop-deep-qa-trigger
-          rm -rf "$ROOT/node_modules" "$ROOT/package.json" "$ROOT/package-lock.json"
-          git -C "$ROOT" add -A
-          git -C "$ROOT" status --short
-          git -C "$ROOT" commit -m 'Stabilize Workshop carousel and mobile interaction'
-          git -C "$ROOT" push origin HEAD:main
-      - name: Server log on failure
-        if: failure()
-        run: cat /tmp/workshop-http.log || true
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          html = html.replace('workshop-integrated.css?v=5.5.0', 'workshop-integrated.css?v=5.7.0')
+          html = html.replace('workshop-integrated.css?v=5.6.0', 'workshop-integrated.css?v=5.7.0')
+          html = html.replace('workshop-integrated.js?v=5.5.0', 'workshop-integrated.js?v=5.7.0')
+          html = html.replace('workshop-integrated.js?v=5.6.0', 'workshop-integrated.js?v=5.7.0')
+          if 'workshop-integrated.css?v=5.7.0' not in html or 'workshop-integrated.js?v=5.7.0' not in html:
+              raise SystemExit('Workshop cache version update failed')
+          path.write_text(html, encoding='utf-8')
+          PY
+
+          rm -rf .github
+          rm -f .workshop-archive-first-qa.mjs \
+                .workshop-deep-fix.py \
+                .workshop-deep-qa-trigger \
+                .workshop-deep-qa.mjs \
+                .workshop-direct-prime.py \
+                .workshop-final-qa-adjust.py \
+                .workshop-qa-adjust.py \
+                .workshop-scroll-fix.py \
+                .workshop-webkit-scroll-diagnostic.mjs
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Finalize lightweight Workshop practice experience'
+          git push origin HEAD:main
