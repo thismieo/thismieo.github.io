@@ -34,6 +34,41 @@ const runAttempt = async (browser, attempt) => {
   await page.waitForTimeout(180);
   await positionCard(page);
 
+  await page.evaluate(() => {
+    window.__workshopQATrace = [];
+    const trace = (kind, extra = {}) => {
+      window.__workshopQATrace.push({
+        kind,
+        t: performance.now(),
+        scrollY: window.scrollY,
+        scrollHeight: document.documentElement.scrollHeight,
+        ...extra,
+      });
+    };
+
+    const nativeScrollTo = window.scrollTo.bind(window);
+    window.scrollTo = (...args) => {
+      trace('scrollTo-call', { args: JSON.parse(JSON.stringify(args)) });
+      return nativeScrollTo(...args);
+    };
+
+    const nativeSetTimeout = window.setTimeout.bind(window);
+    window.setTimeout = (callback, delay = 0, ...args) => {
+      if (delay === 32) {
+        trace('align-timeout-scheduled', { delay });
+        return nativeSetTimeout((...callbackArgs) => {
+          trace('align-timeout-fired', { delay });
+          callback(...callbackArgs);
+        }, delay, ...args);
+      }
+      return nativeSetTimeout(callback, delay, ...args);
+    };
+
+    window.addEventListener('touchstart', () => trace('touchstart-seen'), { passive: true });
+    window.addEventListener('wheel', () => trace('wheel-seen'), { passive: true });
+    trace('trace-installed');
+  });
+
   const before = await page.evaluate(() => ({
     scrollY: window.scrollY,
     scrollHeight: document.documentElement.scrollHeight,
@@ -54,6 +89,7 @@ const runAttempt = async (browser, attempt) => {
       scrollHeight: document.documentElement.scrollHeight,
       controlsTop: controls?.getBoundingClientRect().top ?? null,
       viewportHeight: viewport?.getBoundingClientRect().height ?? null,
+      trace: window.__workshopQATrace || [],
     };
   });
 
