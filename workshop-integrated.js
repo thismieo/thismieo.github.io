@@ -140,9 +140,12 @@
   let copyTimer = 0;
   let interactionToken = 0;
   let scrollFrame = 0;
+  let workshopBackgroundFrozen = false;
+  const carouselState = Object.create(null);
+  const workshopView = root.closest(".workshop-view");
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const interactionMotion = Object.freeze({ reveal: 285, close: 225, scroll: 360 });
+  const interactionMotion = Object.freeze({ reveal: 240, close: 190, scroll: 420, carousel: 230 });
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const nextFrame = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
   const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -173,6 +176,14 @@
 
     scrollFrame = window.requestAnimationFrame(step);
   });
+
+  const stabilizeWorkshopBackground = (force = false) => {
+    if (!workshopView || workshopView.hidden) return;
+    if (workshopBackgroundFrozen && !force) return;
+    const stableHeight = Math.ceil(Math.max(workshopView.scrollHeight, window.innerHeight));
+    workshopView.style.setProperty("--workshop-bg-height", `${stableHeight}px`);
+    workshopBackgroundFrozen = true;
+  };
 
   const pad = (value) => String(value).padStart(2, "0");
   const actionText = {
@@ -257,41 +268,17 @@
     });
   };
 
-  const resetCopyFeedback = (detail) => {
-    window.clearTimeout(copyTimer);
-    const button = detail.querySelector("[data-practice-copy]");
-    const status = detail.querySelector("[data-practice-copy-status]");
-    button?.classList.remove("is-copied");
-    button?.querySelector("span")?.replaceChildren(document.createTextNode("Copy code"));
-    if (status) status.textContent = "";
-  };
-
-  const animateDetail = (detail, direction) => {
-    detail.classList.remove("is-slide-next", "is-slide-prev", "is-slide-refresh");
-    void detail.offsetWidth;
-    detail.classList.add(direction > 0 ? "is-slide-next" : direction < 0 ? "is-slide-prev" : "is-slide-refresh");
-  };
-
-  const syncCarousel = (name) => {
-    const group = groups[name];
-    const view = viewFor(name);
-    const index = activeIndex[name];
-    const counter = view.explorer.querySelector("[data-practice-swipe-counter]");
-    const dots = [...view.explorer.querySelectorAll("[data-practice-dot]")];
-    if (counter) counter.textContent = `${pad(index + 1)} / ${pad(group.exercises.length)}`;
-    if (view.progress) view.progress.textContent = `${pad(index + 1)} / ${pad(group.exercises.length)}`;
-    dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === index));
-  };
-
-  const renderDetail = (name, index, direction = 0) => {
+  const populateDetail = (name, detail, index) => {
     const group = groups[name];
     const exercise = group.exercises[index];
-    const view = viewFor(name);
-    const detail = view.detail;
-    activeIndex[name] = index;
-    resetCopyFeedback(detail);
-
+    detail.id = `practice-detail-${name}-${index}`;
+    detail.classList.add("practice-carousel-slide");
+    detail.dataset.practiceSlide = String(index);
     detail.dataset.challenge = String(Boolean(exercise.challenge));
+    detail.setAttribute("role", "group");
+    detail.setAttribute("aria-label", `${group.unit} ${index + 1} of ${group.exercises.length}: ${exercise.title}`);
+    detail.removeAttribute("aria-labelledby");
+
     detail.querySelector("[data-practice-detail-index]").textContent = `${group.unit} ${pad(index + 1)}`;
     detail.querySelector("[data-practice-detail-badge]").textContent = exercise.badge;
     detail.querySelector("[data-practice-detail-title]").textContent = exercise.title;
@@ -307,21 +294,116 @@
     }));
 
     setCode(detail.querySelector("[data-practice-code]"), exercise.code);
-    detail.querySelector("[data-practice-copy]").dataset.code = exercise.code;
-    syncCarousel(name);
-    animateDetail(detail, direction);
+    const copyButton = detail.querySelector("[data-practice-copy]");
+    copyButton.dataset.code = exercise.code;
+    copyButton.setAttribute("aria-label", `Copy ${exercise.title} code`);
+    const status = detail.querySelector("[data-practice-copy-status]");
+    if (status) status.textContent = "";
   };
 
-  const move = (name, direction) => {
-    const total = groups[name].exercises.length;
-    const current = activeIndex[name];
-    const next = (current + direction + total) % total;
-    renderDetail(name, next, direction);
+  const updateCarouselUI = (name, index) => {
+    const group = groups[name];
+    const state = carouselState[name];
+    if (!state) return;
+    const nextIndex = clamp(index, 0, group.exercises.length - 1);
+    activeIndex[name] = nextIndex;
+    state.counter.textContent = `${pad(nextIndex + 1)} / ${pad(group.exercises.length)}`;
+    state.dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === nextIndex));
+    state.slides.forEach((slide, slideIndex) => {
+      const active = slideIndex === nextIndex;
+      slide.inert = !active;
+      slide.setAttribute("aria-current", active ? "true" : "false");
+    });
+    state.prev.disabled = nextIndex === 0;
+    state.next.disabled = nextIndex === group.exercises.length - 1;
   };
 
-  const buildCarouselControls = (name) => {
+  const refreshCarouselMetrics = (name, preservePosition = true) => {
+    const state = carouselState[name];
+    if (!state || state.viewport.clientWidth < 2) return;
+    state.heights = state.slides.map((slide) => Math.ceil(slide.getBoundingClientRect().height));
+    const index = activeIndex[name];
+    if (preservePosition) state.viewport.scrollLeft = index * state.viewport.clientWidth;
+    const height = state.heights[index];
+    if (height > 0) state.viewport.style.height = `${height}px`;
+  };
+
+  const settleCarousel = (name) => {
+    const state = carouselState[name];
+    if (!state || state.viewport.clientWidth < 2) return;
+    const raw = state.viewport.scrollLeft / state.viewport.clientWidth;
+    const index = clamp(Math.round(raw), 0, state.slides.length - 1);
+    updateCarouselUI(name, index);
+    state.viewport.classList.remove("is-scrolling");
+    const height = state.heights[index];
+    if (height > 0) state.viewport.style.height = `${height}px`;
+  };
+
+  const syncCarouselFromScroll = (name) => {
+    const state = carouselState[name];
+    if (!state || state.viewport.clientWidth < 2) return;
+    const width = state.viewport.clientWidth;
+    const raw = clamp(state.viewport.scrollLeft / width, 0, state.slides.length - 1);
+    const lower = Math.floor(raw);
+    const upper = Math.min(state.slides.length - 1, Math.ceil(raw));
+    const mix = raw - lower;
+    const lowerHeight = state.heights[lower] || 0;
+    const upperHeight = state.heights[upper] || lowerHeight;
+    const blendedHeight = lowerHeight + (upperHeight - lowerHeight) * mix;
+
+    state.viewport.classList.add("is-scrolling");
+    if (blendedHeight > 0) state.viewport.style.height = `${Math.round(blendedHeight)}px`;
+    updateCarouselUI(name, Math.round(raw));
+
+    if (!state.programmatic) {
+      window.clearTimeout(state.settleTimer);
+      state.settleTimer = window.setTimeout(() => settleCarousel(name), 105);
+    }
+  };
+
+  const animateCarouselTo = (name, requestedIndex) => {
+    const state = carouselState[name];
+    if (!state || state.viewport.clientWidth < 2) return;
+    const index = clamp(requestedIndex, 0, state.slides.length - 1);
+    const start = state.viewport.scrollLeft;
+    const end = index * state.viewport.clientWidth;
+    const distance = end - start;
+
+    window.cancelAnimationFrame(state.motionFrame);
+    if (reduceMotion || Math.abs(distance) < 2) {
+      state.viewport.scrollLeft = end;
+      updateCarouselUI(name, index);
+      settleCarousel(name);
+      return;
+    }
+
+    state.programmatic = true;
+    state.viewport.style.scrollSnapType = "none";
+    state.viewport.classList.add("is-scrolling");
+    const startedAt = performance.now();
+    const ease = (t) => 1 - Math.pow(1 - t, 4);
+
+    const step = (now) => {
+      const progress = clamp((now - startedAt) / interactionMotion.carousel, 0, 1);
+      state.viewport.scrollLeft = start + distance * ease(progress);
+      if (progress < 1) {
+        state.motionFrame = window.requestAnimationFrame(step);
+      } else {
+        state.viewport.scrollLeft = end;
+        state.viewport.style.removeProperty("scroll-snap-type");
+        state.programmatic = false;
+        updateCarouselUI(name, index);
+        settleCarousel(name);
+      }
+    };
+
+    state.motionFrame = window.requestAnimationFrame(step);
+  };
+
+  const buildCarousel = (name) => {
     const group = groups[name];
     const view = viewFor(name);
+    const template = view.detail;
     view.list?.closest(".practice-exercise-nav")?.setAttribute("aria-hidden", "true");
 
     const controls = document.createElement("div");
@@ -340,39 +422,79 @@
         <svg aria-hidden="true" viewBox="0 0 12 20"><path d="m3.5 3 5 7-5 7"></path></svg>
       </button>`;
 
-    view.detail.before(controls);
-    controls.querySelector("[data-practice-prev]").addEventListener("click", () => move(name, -1));
-    controls.querySelector("[data-practice-next]").addEventListener("click", () => move(name, 1));
+    const viewport = document.createElement("div");
+    viewport.className = "practice-carousel-viewport";
+    viewport.tabIndex = 0;
+    viewport.setAttribute("aria-label", `${group.label} carousel`);
+    const track = document.createElement("div");
+    track.className = "practice-carousel-track";
 
-    let startX = 0;
-    let startY = 0;
-    let tracking = false;
+    const slides = group.exercises.map((_, index) => {
+      const slide = template.cloneNode(true);
+      populateDetail(name, slide, index);
+      track.appendChild(slide);
+      return slide;
+    });
 
-    view.detail.addEventListener("touchstart", (event) => {
-      const touch = event.touches[0];
-      if (!touch || event.target.closest("button")) return;
-      startX = touch.clientX;
-      startY = touch.clientY;
-      tracking = true;
+    viewport.appendChild(track);
+    viewport.style.height = "0px";
+    template.before(controls);
+    template.replaceWith(viewport);
+
+    const state = {
+      controls,
+      viewport,
+      track,
+      slides,
+      counter: controls.querySelector("[data-practice-swipe-counter]"),
+      dots: [...controls.querySelectorAll("[data-practice-dot]")],
+      prev: controls.querySelector("[data-practice-prev]"),
+      next: controls.querySelector("[data-practice-next]"),
+      heights: [],
+      settleTimer: 0,
+      motionFrame: 0,
+      scrollFrame: 0,
+      programmatic: false,
+    };
+    carouselState[name] = state;
+    updateCarouselUI(name, 0);
+
+    state.prev.addEventListener("click", () => animateCarouselTo(name, activeIndex[name] - 1));
+    state.next.addEventListener("click", () => animateCarouselTo(name, activeIndex[name] + 1));
+
+    viewport.addEventListener("scroll", () => {
+      window.cancelAnimationFrame(state.scrollFrame);
+      state.scrollFrame = window.requestAnimationFrame(() => syncCarouselFromScroll(name));
     }, { passive: true });
 
-    view.detail.addEventListener("touchend", (event) => {
-      if (!tracking) return;
-      tracking = false;
-      const touch = event.changedTouches[0];
-      if (!touch) return;
-      const dx = touch.clientX - startX;
-      const dy = touch.clientY - startY;
-      if (Math.abs(dx) < 44 || Math.abs(dx) <= Math.abs(dy) * 1.15) return;
-      move(name, dx < 0 ? 1 : -1);
+    viewport.addEventListener("pointerdown", () => {
+      if (!state.programmatic) return;
+      window.cancelAnimationFrame(state.motionFrame);
+      state.programmatic = false;
+      viewport.style.removeProperty("scroll-snap-type");
     }, { passive: true });
 
-    view.detail.tabIndex = 0;
-    view.detail.addEventListener("keydown", (event) => {
+    viewport.addEventListener("keydown", (event) => {
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
       event.preventDefault();
-      move(name, event.key === "ArrowRight" ? 1 : -1);
+      animateCarouselTo(name, activeIndex[name] + (event.key === "ArrowRight" ? 1 : -1));
     });
+
+    if ("onscrollend" in viewport) {
+      viewport.addEventListener("scrollend", () => {
+        if (!state.programmatic) settleCarousel(name);
+      });
+    }
+
+    if (window.ResizeObserver) {
+      const observer = new ResizeObserver(() => {
+        if (slots[name].hidden) return;
+        window.clearTimeout(state.resizeTimer);
+        state.resizeTimer = window.setTimeout(() => refreshCarouselMetrics(name, false), 40);
+      });
+      slides.forEach((slide) => observer.observe(slide));
+      state.observer = observer;
+    }
   };
 
   const syncCollectionState = () => {
@@ -410,26 +532,25 @@
   };
 
   const gentlyAlignOpenContent = async (name) => {
-    const card = cardFor(name);
-    const controls = explorers[name]?.querySelector(".practice-swipe-controls");
-    if (!card || !controls) return;
+    const controls = carouselState[name]?.controls;
+    if (!controls) return;
 
-    const viewportHeight = window.innerHeight;
-    const cardRect = card.getBoundingClientRect();
-    const controlsRect = controls.getBoundingClientRect();
-    const safeTop = window.innerWidth <= 700 ? 78 : 88;
-    const safeBottom = viewportHeight - (window.innerWidth <= 700 ? 24 : 32);
+    const rect = controls.getBoundingClientRect();
+    const mobile = window.innerWidth <= 700;
     let delta = 0;
 
-    if (cardRect.top < safeTop - 22) {
-      delta = cardRect.top - safeTop;
-    } else if (controlsRect.bottom > safeBottom) {
-      delta = controlsRect.bottom - safeBottom + 8;
+    if (mobile) {
+      const desiredTop = 92;
+      delta = clamp(rect.top - desiredTop, -72, 220);
+    } else {
+      const safeTop = 94;
+      const safeBottom = window.innerHeight - 34;
+      if (rect.top < safeTop - 20) delta = rect.top - safeTop;
+      else if (rect.bottom > safeBottom) delta = rect.bottom - safeBottom + 8;
+      delta = clamp(delta, -96, 132);
     }
 
-    const limit = window.innerWidth <= 700 ? 138 : 112;
-    delta = clamp(delta, -limit, limit);
-    if (Math.abs(delta) >= 10) await smoothScrollTo(window.scrollY + delta);
+    if (Math.abs(delta) >= 6) await smoothScrollTo(window.scrollY + delta, mobile ? 420 : 340);
   };
 
   const gentlySettleClosedCard = async (name) => {
@@ -451,13 +572,18 @@
     const slot = slots[name];
     slot.hidden = false;
     slot.inert = false;
-    slot.classList.remove("is-closing", "is-settled");
-    slot.classList.remove("is-open");
+    slot.classList.remove("is-closing", "is-settled", "is-opening", "is-open");
     slot.setAttribute("aria-hidden", "false");
 
     await nextFrame();
     if (token !== interactionToken) return false;
-    slot.classList.add("is-open");
+    refreshCarouselMetrics(name, true);
+    await nextFrame();
+    if (token !== interactionToken) return false;
+    slot.classList.add("is-open", "is-opening");
+    window.setTimeout(() => {
+      if (token === interactionToken && slot.classList.contains("is-open")) slot.classList.remove("is-opening");
+    }, interactionMotion.reveal + 30);
     return true;
   };
 
@@ -468,7 +594,7 @@
     slot.inert = true;
     slot.setAttribute("aria-hidden", "true");
     slot.classList.add("is-closing");
-    slot.classList.remove("is-open", "is-settled");
+    slot.classList.remove("is-open", "is-settled", "is-opening");
 
     if (!reduceMotion) await wait(interactionMotion.close);
     if (token !== interactionToken) return false;
@@ -491,6 +617,7 @@
     if (!groups[name]) return;
     const token = ++interactionToken;
     normalizeInterruptedSlots();
+    stabilizeWorkshopBackground();
 
     if (openGroupName === name) {
       openGroupName = "";
@@ -511,11 +638,10 @@
       if (!closed || token !== interactionToken) return;
     }
 
-    renderDetail(name, activeIndex[name], 0);
     const opened = await openSlot(name, token);
     if (!opened || token !== interactionToken) return;
 
-    if (!reduceMotion) await wait(36);
+    await nextFrame();
     if (token === interactionToken) await gentlyAlignOpenContent(name);
   };
 
@@ -567,8 +693,22 @@
 
   Object.keys(groups).forEach((name) => {
     setSlotImmediate(name, false);
-    buildCarouselControls(name);
-    renderDetail(name, 0, 0);
+    buildCarousel(name);
   });
+
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      if (!openGroupName) {
+        workshopBackgroundFrozen = false;
+        stabilizeWorkshopBackground(true);
+      }
+      Object.keys(groups).forEach((name) => {
+        if (!slots[name].hidden) refreshCarouselMetrics(name, true);
+      });
+    }, 120);
+  }, { passive: true });
+
   syncCollectionState();
 })();

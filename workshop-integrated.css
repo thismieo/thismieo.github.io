@@ -27,6 +27,15 @@
   margin-top: clamp(64px, 7vw, 88px) !important;
 }
 
+/* Keep the Workshop gradient mapped to its closed-state height so opening content
+   never changes the apparent page luminance on mobile Safari/Chrome. */
+.workshop-view {
+  background-size: 100% var(--workshop-bg-height, 100%) !important;
+  background-repeat: no-repeat !important;
+  background-position: 0 0 !important;
+  background-color: #08151f !important;
+}
+
 /* Unified interaction timing: same calm response for both outer practice cards. */
 .practice-milestone {
   transition-duration: 250ms !important;
@@ -73,27 +82,36 @@
   pointer-events: auto !important;
 }
 
-.practice-explorer-slot-inner {
+.practice-explorer-slot-inner,
+.practice-explorer-slot.is-open > .practice-explorer-slot-inner,
+.practice-explorer-slot.is-closing > .practice-explorer-slot-inner {
   min-width: 0 !important;
   min-height: 0 !important;
   padding-top: 12px !important;
   overflow: visible !important;
-  opacity: 0;
-  transform: translate3d(0, -6px, 0);
-  transition:
-    opacity 250ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 285ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
 }
 
-.practice-explorer-slot.is-open > .practice-explorer-slot-inner {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+.practice-explorer-slot.is-opening .practice-swipe-controls,
+.practice-explorer-slot.is-opening .practice-carousel-viewport {
+  animation: practice-surface-open 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.practice-explorer-slot.is-closing > .practice-explorer-slot-inner {
-  opacity: 0;
-  transform: translate3d(0, -4px, 0);
-  transition-duration: 205ms, 225ms !important;
+.practice-explorer-slot.is-closing .practice-swipe-controls,
+.practice-explorer-slot.is-closing .practice-carousel-viewport {
+  animation: practice-surface-close 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes practice-surface-open {
+  from { transform: translate3d(0, -4px, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes practice-surface-close {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -3px, 0); }
 }
 
 .practice-explorer {
@@ -224,6 +242,54 @@
   background: rgba(var(--practice-accent), 0.78);
 }
 
+/* Native-feeling horizontal rail: finger movement and card movement stay 1:1,
+   then CSS scroll-snap settles on the selected program. */
+.practice-carousel-viewport {
+  width: min(100%, 760px);
+  min-width: 0;
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  overflow-anchor: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  transition: height 175ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.practice-carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.practice-carousel-viewport.is-scrolling {
+  transition: none;
+}
+
+.practice-carousel-track {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.practice-carousel-slide {
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  touch-action: pan-x pan-y !important;
+}
+
+.practice-swipe-arrow:disabled {
+  opacity: 0.38;
+  cursor: default;
+  transform: none !important;
+}
+
 /* ==========================================================
    One exercise = one complete content card
    ========================================================== */
@@ -260,33 +326,6 @@
 .practice-detail > * {
   position: relative;
   z-index: 1;
-}
-
-.practice-detail.is-slide-next {
-  animation: practice-card-from-right 235ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.practice-detail.is-slide-prev {
-  animation: practice-card-from-left 235ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.practice-detail.is-slide-refresh {
-  animation: practice-card-soft-in 210ms ease-out;
-}
-
-@keyframes practice-card-from-right {
-  from { opacity: 0.48; transform: translateX(8px) scale(0.995); }
-  to { opacity: 1; transform: translateX(0) scale(1); }
-}
-
-@keyframes practice-card-from-left {
-  from { opacity: 0.48; transform: translateX(-8px) scale(0.995); }
-  to { opacity: 1; transform: translateX(0) scale(1); }
-}
-
-@keyframes practice-card-soft-in {
-  from { opacity: 0.62; transform: translateY(2px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .practice-detail-kicker {
@@ -597,15 +636,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .practice-detail.is-slide-next,
-  .practice-detail.is-slide-prev,
-  .practice-detail.is-slide-refresh {
-    animation: none !important;
-  }
-
   .practice-explorer-slot-inner,
   .practice-explorer-slot.is-open > .practice-explorer-slot-inner,
   .practice-explorer-slot.is-closing > .practice-explorer-slot-inner,
+  .practice-carousel-viewport,
   .practice-milestone,
   .practice-milestone-action,
   .practice-action-chevron,
