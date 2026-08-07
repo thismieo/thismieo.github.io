@@ -127,53 +127,41 @@
   const OP1 = new Set(["=", "+", "-", "*", "/", "%", "<", ">"]);
   const PUNCT = new Set(["(", ")", "[", "]", "{", "}", ":", ",", "."]);
 
-  const milestones = root.querySelector(".practice-milestones");
-  const milestoneButtons = [...root.querySelectorAll("[data-practice-group]")];
-  const milestoneCards = [...root.querySelectorAll("[data-practice-card]")];
+  const buttons = [...root.querySelectorAll("[data-practice-group]")];
   const slotElements = [...root.querySelectorAll("[data-practice-slot]")];
   const slots = Object.fromEntries(slotElements.map((item) => [item.dataset.practiceSlot, item]));
   const explorers = {
     featured: root.querySelector('[data-practice-explorer="featured"]'),
     archive: root.querySelector('[data-practice-explorer="archive"]'),
   };
-
-  let slot = slots.featured;
-  let explorer = explorers.featured;
-  let groupLabel = explorer?.querySelector("[data-practice-group-label]");
-  let progress = explorer?.querySelector("[data-practice-progress]");
-  let list = explorer?.querySelector("[data-practice-list]");
-  let detail = explorer?.querySelector("[data-practice-detail]");
-
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (
-    !milestones ||
-    slotElements.length !== 2 ||
-    !slots.featured ||
-    !slots.archive ||
-    !explorers.featured ||
-    !explorers.archive
-  ) return;
+  if (!slots.featured || !slots.archive || !explorers.featured || !explorers.archive) return;
 
   let activeGroup = "featured";
   let activeExercise = 0;
+  let openGroupName = "";
   let copyTimer = 0;
+  let transitionToken = 0;
+
   const pad = (value) => String(value).padStart(2, "0");
   const tabId = (groupName, index) => `practice-tab-${groupName}-${index}`;
+  const actionText = {
+    featured: { closed: "Explore programs", open: "Hide programs" },
+    archive: { closed: "Open archive", open: "Close archive" },
+  };
+  const rightChevron = "m3.5 3 5 7-5 7";
+  const leftChevron = "m8.5 3-5 7 5 7";
 
-  const bindExplorer = (name) => {
-    const nextExplorer = explorers[name];
-    const nextSlot = slots[name];
-    if (!nextExplorer || !nextSlot) return false;
-
-    explorer = nextExplorer;
-    slot = nextSlot;
-    groupLabel = explorer.querySelector("[data-practice-group-label]");
-    progress = explorer.querySelector("[data-practice-progress]");
-    list = explorer.querySelector("[data-practice-list]");
-    detail = explorer.querySelector("[data-practice-detail]");
-
-    return Boolean(groupLabel && progress && list && detail);
+  const viewFor = (name) => {
+    const explorer = explorers[name];
+    return {
+      explorer,
+      label: explorer.querySelector("[data-practice-group-label]"),
+      progress: explorer.querySelector("[data-practice-progress]"),
+      list: explorer.querySelector("[data-practice-list]"),
+      detail: explorer.querySelector("[data-practice-detail]"),
+    };
   };
 
   const addToken = (parent, text, className = "") => {
@@ -196,7 +184,7 @@
       }
 
       const prefix = line.slice(i).match(/^(?:[rRuUbBfF]{1,2})(?=["'])/);
-      let quoteIndex = i + (prefix ? prefix[0].length : 0);
+      const quoteIndex = i + (prefix ? prefix[0].length : 0);
       if (line[quoteIndex] === '"' || line[quoteIndex] === "'") {
         const quote = line[quoteIndex];
         let j = quoteIndex + 1;
@@ -219,11 +207,11 @@
 
       if (/[A-Za-z_]/.test(char)) {
         const value = line.slice(i).match(/^[A-Za-z_][A-Za-z0-9_]*/)[0];
-        let cls = "tok-name";
-        if (KEYWORDS.has(value)) cls = "tok-keyword";
-        else if (BUILTINS.has(value)) cls = "tok-builtin";
-        else if (CONSTANTS.has(value)) cls = "tok-constant";
-        addToken(row, value, cls); i += value.length; continue;
+        let className = "tok-name";
+        if (KEYWORDS.has(value)) className = "tok-keyword";
+        else if (BUILTINS.has(value)) className = "tok-builtin";
+        else if (CONSTANTS.has(value)) className = "tok-constant";
+        addToken(row, value, className); i += value.length; continue;
       }
 
       const pair = line.slice(i, i + 2);
@@ -235,7 +223,7 @@
   };
 
   const setCode = (target, code) => {
-    target.textContent = "";
+    target.replaceChildren();
     code.split("\n").forEach((line) => {
       const row = document.createElement("span");
       row.className = "practice-code-line";
@@ -245,9 +233,8 @@
     });
   };
 
-  const resetCopyFeedback = () => {
+  const resetCopyFeedback = (detail) => {
     window.clearTimeout(copyTimer);
-    if (!detail) return;
     const button = detail.querySelector("[data-practice-copy]");
     const status = detail.querySelector("[data-practice-copy-status]");
     button?.classList.remove("is-copied");
@@ -255,341 +242,229 @@
     if (status) status.textContent = "";
   };
 
-  const renderDetail = () => {
-    const group = groups[activeGroup];
-    const exercise = group.exercises[activeExercise];
-    resetCopyFeedback();
-    detail.setAttribute("aria-labelledby", tabId(activeGroup, activeExercise));
+  const renderDetail = (name, index) => {
+    const group = groups[name];
+    const exercise = group.exercises[index];
+    const view = viewFor(name);
+    const detail = view.detail;
+
+    resetCopyFeedback(detail);
+    detail.setAttribute("aria-labelledby", tabId(name, index));
     detail.dataset.challenge = String(Boolean(exercise.challenge));
-    detail.querySelector("[data-practice-detail-index]").textContent = `${group.unit} ${pad(activeExercise + 1)}`;
+    detail.querySelector("[data-practice-detail-index]").textContent = `${group.unit} ${pad(index + 1)}`;
     detail.querySelector("[data-practice-detail-badge]").textContent = exercise.badge;
     detail.querySelector("[data-practice-detail-title]").textContent = exercise.title;
     detail.querySelector("[data-practice-detail-summary]").textContent = exercise.summary;
     detail.querySelector("[data-practice-detail-concept]").textContent = exercise.concept;
     detail.querySelector("[data-practice-code-title]").textContent = exercise.title;
-    progress.textContent = `${pad(activeExercise + 1)} / ${pad(group.exercises.length)}`;
+    view.progress.textContent = `${pad(index + 1)} / ${pad(group.exercises.length)}`;
 
     const skills = detail.querySelector("[data-practice-detail-skills]");
-    skills.textContent = "";
-    exercise.skills.forEach((skill) => {
+    skills.replaceChildren(...exercise.skills.map((skill) => {
       const item = document.createElement("li");
       item.textContent = skill;
-      skills.appendChild(item);
-    });
+      return item;
+    }));
 
     setCode(detail.querySelector("[data-practice-code]"), exercise.code);
     detail.querySelector("[data-practice-copy]").dataset.code = exercise.code;
   };
 
-  const syncTabs = () => {
-    [...list.querySelectorAll(".practice-exercise-tab")].forEach((item, index) => {
-      const selected = index === activeExercise;
+  const syncTabs = (name, index) => {
+    const view = viewFor(name);
+    [...view.list.querySelectorAll(".practice-exercise-tab")].forEach((item, itemIndex) => {
+      const selected = itemIndex === index;
       item.classList.toggle("is-active", selected);
       item.setAttribute("aria-selected", String(selected));
       item.tabIndex = selected ? 0 : -1;
     });
   };
 
-  const renderList = () => {
-    const group = groups[activeGroup];
-    list.textContent = "";
-    groupLabel.textContent = group.label;
-    explorer.dataset.activeGroup = activeGroup;
+  const selectExercise = (name, index, { focus = false } = {}) => {
+    activeGroup = name;
+    activeExercise = index;
+    syncTabs(name, index);
+    renderDetail(name, index);
+    if (focus) viewFor(name).list.querySelectorAll(".practice-exercise-tab")[index]?.focus({ preventScroll: true });
+  };
+
+  const renderList = (name) => {
+    const group = groups[name];
+    const view = viewFor(name);
+    view.label.textContent = group.label;
+    view.explorer.dataset.activeGroup = name;
+    view.list.replaceChildren();
 
     group.exercises.forEach((exercise, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.id = tabId(activeGroup, index);
+      button.id = tabId(name, index);
       button.className = "practice-exercise-tab";
       button.setAttribute("role", "tab");
-      button.setAttribute("aria-controls", detail.id);
-      button.setAttribute("aria-selected", String(index === activeExercise));
-      button.tabIndex = index === activeExercise ? 0 : -1;
-      button.classList.toggle("is-active", index === activeExercise);
+      button.setAttribute("aria-controls", view.detail.id);
+      button.setAttribute("aria-selected", String(index === 0));
+      button.tabIndex = index === 0 ? 0 : -1;
+      button.classList.toggle("is-active", index === 0);
       button.innerHTML = `<span class="practice-exercise-tab-index">${pad(index + 1)}</span><span class="practice-exercise-tab-label"></span>`;
       button.querySelector(".practice-exercise-tab-label").textContent = exercise.title;
 
-      button.addEventListener("click", () => {
-        if (index === activeExercise) return;
-        activeExercise = index; syncTabs(); renderDetail();
-      });
-
+      button.addEventListener("click", () => selectExercise(name, index));
       button.addEventListener("keydown", (event) => {
         if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
         event.preventDefault();
         const max = group.exercises.length - 1;
-        if (event.key === "Home") activeExercise = 0;
-        else if (event.key === "End") activeExercise = max;
-        else if (event.key === "ArrowDown" || event.key === "ArrowRight") activeExercise = activeExercise >= max ? 0 : activeExercise + 1;
-        else activeExercise = activeExercise <= 0 ? max : activeExercise - 1;
-        syncTabs(); renderDetail();
-        list.querySelectorAll(".practice-exercise-tab")[activeExercise]?.focus();
+        let next = index;
+        if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = max;
+        else if (event.key === "ArrowDown" || event.key === "ArrowRight") next = index >= max ? 0 : index + 1;
+        else next = index <= 0 ? max : index - 1;
+        selectExercise(name, next, { focus: true });
       });
-      list.appendChild(button);
+
+      view.list.appendChild(button);
     });
-    renderDetail();
-  };
 
-  let explorerOpen = false;
-  let interactionToken = 0;
-  let scrollFrame = 0;
-
-  const actionText = {
-    featured: { closed: "Explore programs", open: "Hide programs" },
-    archive: { closed: "Open archive", open: "Close archive" },
-  };
-
-  const rightChevron = "m3.5 3 5 7-5 7";
-  const leftChevron = "m8.5 3-5 7 5 7";
-  const wait = (ms) => ms > 0 ? new Promise((resolve) => window.setTimeout(resolve, ms)) : Promise.resolve();
-
-  const restartClass = (element, className, duration) => {
-    if (!element) return;
-    element.classList.remove(className);
-    void element.offsetWidth;
-    element.classList.add(className);
-    window.setTimeout(() => element.classList.remove(className), reduceMotion ? 0 : duration);
+    renderDetail(name, 0);
   };
 
   const syncCollectionState = () => {
-    milestoneButtons.forEach((button) => {
-      const selected = explorerOpen && button.dataset.practiceGroup === activeGroup;
+    buttons.forEach((button) => {
+      const name = button.dataset.practiceGroup;
+      const selected = openGroupName === name;
       const card = button.closest("[data-practice-card]");
       const label = button.querySelector("[data-practice-action-label]");
       const path = button.querySelector("[data-practice-chevron-path]");
       card?.classList.toggle("is-active", selected);
       button.setAttribute("aria-expanded", String(selected));
-      if (label) label.textContent = selected ? actionText[button.dataset.practiceGroup].open : actionText[button.dataset.practiceGroup].closed;
+      if (label) label.textContent = selected ? actionText[name].open : actionText[name].closed;
       if (path) path.setAttribute("d", selected ? leftChevron : rightChevron);
     });
   };
 
-  let practiceScrollFrame = 0;
-
-  const cancelPracticeScroll = () => {
-    if (!practiceScrollFrame) return;
-    window.cancelAnimationFrame(practiceScrollFrame);
-    practiceScrollFrame = 0;
-  };
-
-  const practiceScrollEase = (progressValue) => {
-    return progressValue * progressValue * progressValue *
-      (progressValue * (progressValue * 6 - 15) + 10);
-  };
-
-  const scrollToOpenedPanel = (name, token) => {
-    const targetSlot = slots[name];
-    if (!targetSlot || token !== interactionToken) return;
-
-    cancelPracticeScroll();
-
-    const viewport = Math.max(window.innerHeight, 1);
-    const offset = window.innerWidth <= 700 ? 68 : 90;
-    const targetTop = Math.max(
-      0,
-      targetSlot.getBoundingClientRect().top + window.scrollY - offset
-    );
-    const startTop = window.scrollY;
-    const distance = targetTop - startTop;
-
-    if (reduceMotion || Math.abs(distance) < 3) {
-      if (token === interactionToken) {
-        window.scrollTo({ top: targetTop, left: 0, behavior: "auto" });
-      }
-      return;
-    }
-
-    const screenDistance = Math.min(2.6, Math.abs(distance) / viewport);
-    const duration = Math.round(
-      (window.innerWidth <= 700 ? 1560 : 1440) + screenDistance * 250
-    );
-    const startedAt = performance.now();
-
-    const step = (now) => {
-      if (token !== interactionToken || !targetSlot.classList.contains("is-open")) {
-        practiceScrollFrame = 0;
-        return;
-      }
-
-      const progressValue = Math.min(1, (now - startedAt) / duration);
-      const eased = practiceScrollEase(progressValue);
-
-      window.scrollTo({
-        top: startTop + distance * eased,
-        left: 0,
-        behavior: "auto",
-      });
-
-      if (progressValue < 1) {
-        practiceScrollFrame = window.requestAnimationFrame(step);
-      } else {
-        practiceScrollFrame = 0;
-      }
+  const waitForHeightTransition = (slot, token) => new Promise((resolve) => {
+    if (reduceMotion) { resolve(); return; }
+    const fallback = window.setTimeout(resolve, 560);
+    const onEnd = (event) => {
+      if (event.target !== slot || event.propertyName !== "height") return;
+      slot.removeEventListener("transitionend", onEnd);
+      window.clearTimeout(fallback);
+      if (token === transitionToken) resolve();
+      else resolve();
     };
-
-    practiceScrollFrame = window.requestAnimationFrame(step);
-  };
-
-  window.addEventListener("wheel", cancelPracticeScroll, { passive: true });
-  window.addEventListener("touchstart", cancelPracticeScroll, { passive: true });
-  window.addEventListener("keydown", (event) => {
-    if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key)) {
-      cancelPracticeScroll();
-    }
+    slot.addEventListener("transitionend", onEnd);
   });
 
-  const nextPaint = () => new Promise((resolve) => {
-    window.requestAnimationFrame(() => window.requestAnimationFrame(resolve));
-  });
-
-  const setSlotOpen = (name, open) => {
-    const targetSlot = slots[name];
-    if (!targetSlot) return;
-    targetSlot.classList.toggle("is-open", open);
-    targetSlot.setAttribute("aria-hidden", String(!open));
+  const openSlot = async (name, token) => {
+    const slot = slots[name];
+    slot.classList.remove("is-settled");
+    slot.classList.add("is-open");
+    slot.setAttribute("aria-hidden", "false");
+    slot.style.height = "0px";
+    void slot.offsetHeight;
+    slot.style.height = `${slot.scrollHeight}px`;
+    await waitForHeightTransition(slot, token);
+    if (token !== transitionToken || openGroupName !== name) return;
+    slot.classList.add("is-settled");
+    slot.style.removeProperty("height");
   };
 
-  const closeOtherSlots = (exceptName = "") => {
-    Object.keys(slots).forEach((name) => {
-      if (name !== exceptName) setSlotOpen(name, false);
-    });
+  const closeSlot = async (name, token) => {
+    const slot = slots[name];
+    if (!slot.classList.contains("is-open")) return;
+    const startHeight = slot.scrollHeight;
+    slot.classList.remove("is-settled");
+    slot.style.height = `${startHeight}px`;
+    void slot.offsetHeight;
+    slot.classList.remove("is-open");
+    slot.style.height = "0px";
+    await waitForHeightTransition(slot, token);
+    if (token !== transitionToken || slot.classList.contains("is-open")) return;
+    slot.setAttribute("aria-hidden", "true");
+    slot.style.removeProperty("height");
   };
 
-  const openGroup = async (name) => {
-    if (!groups[name] || !slots[name] || !explorers[name]) return;
+  const toggleGroup = async (name) => {
+    if (!groups[name]) return;
+    const token = ++transitionToken;
 
-    cancelPracticeScroll();
-    const token = ++interactionToken;
-
-    const targetAlreadyOpen =
-      explorerOpen &&
-      activeGroup === name &&
-      slots[name].classList.contains("is-open");
-
-    if (targetAlreadyOpen) {
-      explorerOpen = false;
+    if (openGroupName === name) {
+      openGroupName = "";
       syncCollectionState();
-      setSlotOpen(name, false);
+      await closeSlot(name, token);
       return;
     }
 
-    /* Close the other permanent panel first. No DOM element is moved. */
-    closeOtherSlots(name);
-
+    const previous = openGroupName;
+    openGroupName = name;
     activeGroup = name;
     activeExercise = 0;
-
-    if (!bindExplorer(name)) return;
-    renderList();
-
-    await nextPaint();
-    if (token !== interactionToken) return;
-
-    /* A short compositional pause makes both cards feel identical. */
-    await wait(reduceMotion ? 0 : 150);
-    if (token !== interactionToken) return;
-
-    explorerOpen = true;
     syncCollectionState();
-    setSlotOpen(name, true);
 
-    /* Let expansion clearly start, then synchronize the slower scroll. */
-    await wait(reduceMotion ? 0 : (window.innerWidth <= 700 ? 520 : 450));
+    if (previous) await closeSlot(previous, token);
+    if (token !== transitionToken) return;
 
-    if (
-      token !== interactionToken ||
-      !slots[name].classList.contains("is-open")
-    ) return;
-
-    scrollToOpenedPanel(name, token);
+    selectExercise(name, 0);
+    await openSlot(name, token);
   };
 
-  milestoneButtons.forEach((button) => {
+  buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
-      restartClass(button, "is-button-pressed", 460);
-      openGroup(button.dataset.practiceGroup);
+      void toggleGroup(button.dataset.practiceGroup);
     });
   });
 
-  root.addEventListener("click", async (event) => {
-    const button = event.target.closest?.("[data-practice-copy]");
-    if (!button) return;
-
-    const ownerExplorer = button.closest("[data-practice-explorer]");
-    const status = ownerExplorer?.querySelector("[data-practice-copy-status]");
+  const copyCode = async (button) => {
     const value = button.dataset.code || "";
+    const owner = button.closest("[data-practice-explorer]");
+    const status = owner?.querySelector("[data-practice-copy-status]");
+
     try {
-      await navigator.clipboard.writeText(value);
-      button.classList.add("is-copied");
-      button.querySelector("span")?.replaceChildren(document.createTextNode("Copied"));
-      if (status) status.textContent = "Code copied to clipboard";
-      copyTimer = window.setTimeout(resetCopyFeedback, 1800);
+      if (navigator.clipboard?.writeText && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        throw new Error("Clipboard API unavailable");
+      }
     } catch {
       const textarea = document.createElement("textarea");
       textarea.value = value;
+      textarea.setAttribute("readonly", "");
       textarea.style.position = "fixed";
       textarea.style.left = "-9999px";
       document.body.appendChild(textarea);
       textarea.select();
       const copied = document.execCommand("copy");
       textarea.remove();
-      if (status) status.textContent = copied ? "Code copied to clipboard" : "Copy failed — select the code manually";
+      if (!copied) {
+        if (status) status.textContent = "Copy failed — select the code manually";
+        return;
+      }
     }
-  });
 
-  /* Workshop-wide shimmer prototype:
-     same timing on Foundation, Applied, Python Programming and both practice cards.
-     Nested action buttons keep their own independent press feedback. */
-  const workshopSweepCards = [
-    ...document.querySelectorAll(".workshop-card"),
-    ...document.querySelectorAll(".current-track-card"),
-    ...document.querySelectorAll(".practice-milestone"),
-  ];
-
-  const sweepTimers = new WeakMap();
-
-  const runUnifiedSweep = (card) => {
-    const previous = sweepTimers.get(card);
-    if (previous) window.clearTimeout(previous);
-
-    card.classList.remove("is-unified-sweeping");
-    void card.offsetWidth;
-    card.classList.add("is-unified-sweeping");
-
-    const timer = window.setTimeout(() => {
-      card.classList.remove("is-unified-sweeping");
-      sweepTimers.delete(card);
-    }, reduceMotion ? 0 : 680);
-
-    sweepTimers.set(card, timer);
+    window.clearTimeout(copyTimer);
+    button.classList.add("is-copied");
+    button.querySelector("span")?.replaceChildren(document.createTextNode("Copied"));
+    if (status) status.textContent = "Code copied to clipboard";
+    copyTimer = window.setTimeout(() => {
+      button.classList.remove("is-copied");
+      button.querySelector("span")?.replaceChildren(document.createTextNode("Copy code"));
+      if (status) status.textContent = "";
+    }, 1600);
   };
 
-  workshopSweepCards.forEach((card) => {
-    card.classList.add("workshop-unified-sweep");
-    card.addEventListener("click", (event) => {
-      if (event.target.closest?.("button, a")) return;
-      runUnifiedSweep(card);
-    });
+  root.addEventListener("click", (event) => {
+    const button = event.target.closest?.("[data-practice-copy]");
+    if (!button) return;
+    void copyCode(button);
   });
 
-  slotElements.forEach((item) => {
-    item.classList.remove("is-open");
-    item.setAttribute("aria-hidden", "true");
+  slotElements.forEach((slot) => {
+    slot.classList.remove("is-open", "is-settled");
+    slot.setAttribute("aria-hidden", "true");
+    slot.style.height = "0px";
   });
 
-  /* Pre-render both permanent explorer instances once.
-     This avoids first-open layout surprises on either card. */
-  ["featured", "archive"].forEach((name) => {
-    activeGroup = name;
-    activeExercise = 0;
-    if (bindExplorer(name)) renderList();
-  });
-
-  activeGroup = "featured";
-  activeExercise = 0;
-  bindExplorer("featured");
-  explorerOpen = false;
+  renderList("featured");
+  renderList("archive");
   syncCollectionState();
-
 })();
