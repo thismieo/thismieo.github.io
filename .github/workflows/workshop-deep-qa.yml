@@ -24,23 +24,23 @@ jobs:
           set -eu
           python3 .workshop-deep-fix.py
           python3 .workshop-scroll-fix.py
-          python3 .workshop-direct-prime.py
           node --check script.js
           node --check workshop-integrated.js
           node --check .workshop-deep-qa.mjs
           grep -q 'flex: 0 0 100% !important' workshop-integrated.css
           ! grep -q 'content-visibility: auto' workshop-integrated.css
           grep -q 'let workshopScrollFrame = 0' workshop-integrated.js
+          grep -q 'let workshopScrollGeneration = 0' workshop-integrated.js
           grep -q 'const cancelWorkshopScroll' workshop-integrated.js
           grep -q 'const setWorkshopScrollTop' workshop-integrated.js
+          grep -q 'retryClampedOpenAlignment' workshop-integrated.js
           grep -q 'has-practice-open' workshop-integrated.js
           grep -q 'has-practice-open .workshop-main' workshop-integrated.css
           grep -q 'const copyTimers = new WeakMap' workshop-integrated.js
           grep -q 'document.createDocumentFragment' workshop-integrated.js
           grep -q 'interacting: false' workshop-integrated.js
           ! grep -q 'let copyTimer' workshop-integrated.js
-          grep -q 'Direct Workshop URLs skip the full-screen entry transition' script.js
-          grep -q 'script.js?v=4.2.1' index.html
+          grep -q 'script.js?v=4.2.0' index.html
           grep -q 'workshop-integrated.css?v=5.6.0' index.html
           grep -q 'workshop-integrated.js?v=5.6.0' index.html
       - name: Install Playwright package
