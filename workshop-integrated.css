@@ -468,21 +468,53 @@
   grid-row: 3 !important;
 }
 
-/* Full-card hover / press feedback for Featured Practice and Learning Archive. */
-.practice-milestone {
-  transition: transform 220ms var(--ease), border-color 220ms ease, box-shadow 260ms ease !important;
+/* One tactile language for every primary Workshop card. */
+.practice-milestone,
+.current-track-card,
+.knowledge-application-merged .knowledge-card {
   transform-origin: center;
+  transition:
+    transform 230ms cubic-bezier(.22, 1, .36, 1),
+    border-color 220ms ease,
+    box-shadow 260ms ease !important;
 }
 
 .practice-milestone:active,
-.practice-milestone:has(.practice-milestone-action:active) {
-  transform: translateY(1px) scale(.995);
-  border-color: rgba(var(--practice-accent), .38) !important;
+.practice-milestone:has(.practice-milestone-action:active),
+.current-track-card:active,
+.knowledge-application-merged .knowledge-card:active {
+  transform: translateY(2px) scale(.992);
+}
+
+/* Featured / Archive use the same 560ms Silk Sweep timing as the shared site press system. */
+.practice-milestone::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  top: 1px;
+  bottom: 1px;
+  left: -44%;
+  width: 42%;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    104deg,
+    transparent 0%,
+    rgba(255, 255, 255, .025) 22%,
+    rgba(var(--practice-accent), .10) 43%,
+    rgba(255, 255, 255, .15) 53%,
+    rgba(var(--practice-accent), .055) 65%,
+    transparent 100%
+  );
+  transform: translate3d(-175%, 0, 0) skewX(-12deg);
+  will-change: transform, opacity;
 }
 
 .practice-milestone:active::after,
 .practice-milestone:has(.practice-milestone-action:active)::after {
-  animation: practice-card-silk-sweep 640ms var(--ease) both;
+  opacity: 1;
+  animation: silk-sweep 560ms var(--ease) both;
 }
 
 /* Workshop intro reveal. */
@@ -599,11 +631,14 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
   line-height: 1.72 !important;
 }
 
+/* Topic rows absorb spare desktop height instead of leaving a dead gap above the footer. */
 .knowledge-card-topics {
+  flex: 1 1 auto;
   list-style: none;
   margin: 22px 0 18px;
   padding: 0;
   display: grid;
+  grid-template-rows: repeat(3, minmax(60px, 1fr));
   gap: 10px;
 }
 
@@ -666,7 +701,7 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
 
 .knowledge-card-foot {
   min-height: 46px;
-  margin-top: auto;
+  margin-top: 0;
   padding: 11px 12px;
   display: flex;
   align-items: center;
@@ -705,18 +740,23 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
     background: rgba(var(--practice-accent), .065);
   }
 
-  .practice-milestone:hover {
+  .practice-milestone:hover,
+  .current-track-card:hover,
+  .knowledge-card:hover {
     transform: translateY(-2px);
+  }
+
+  .practice-milestone:hover {
     border-color: rgba(var(--practice-accent), .34) !important;
     box-shadow: 0 18px 42px rgba(0, 5, 10, .22), inset 0 1px 0 rgba(255, 255, 255, .025) !important;
   }
 
-  .knowledge-card {
-    transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease !important;
+  .current-track-card:hover {
+    border-color: rgba(var(--accent-rgb), .30) !important;
+    box-shadow: 0 23px 52px rgba(4, 8, 18, .28), inset 0 1px 0 rgba(235, 234, 241, .035) !important;
   }
 
   .knowledge-card:hover {
-    transform: translateY(-2px);
     border-color: rgba(var(--accent-rgb), .31) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03), 0 22px 48px rgba(0, 5, 10, .17) !important;
   }
@@ -730,6 +770,7 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
 @media (max-width: 900px) {
   .workshop-grid-featured { grid-template-columns: 1fr !important; }
   .knowledge-application-merged .workshop-grid-featured > .knowledge-card { min-height: 0 !important; }
+  .workshop-grid-featured .knowledge-card-topics { flex: none; grid-template-rows: none; }
 }
 
 @media (max-width: 700px) {
@@ -892,6 +933,8 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
   }
 
   .knowledge-card-topics {
+    flex: none;
+    grid-template-rows: none;
     margin-top: 19px;
     margin-bottom: 17px;
     gap: 9px;
@@ -924,6 +967,7 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
 
   .knowledge-card-foot {
     min-height: 48px;
+    margin-top: 0;
     padding: 11px 12px;
     gap: 12px;
   }
@@ -951,13 +995,20 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
   .practice-milestone-action,
   .practice-milestone-action .practice-action-chevron,
   .practice-milestone,
+  .current-track-card,
   .knowledge-card {
     transition: none !important;
   }
 
   .practice-exercise-list { scroll-behavior: auto !important; }
   .practice-milestone:hover,
-  .knowledge-card:hover { transform: none !important; }
+  .current-track-card:hover,
+  .knowledge-card:hover,
+  .practice-milestone:active,
+  .current-track-card:active,
+  .knowledge-card:active { transform: none !important; }
+
+  .practice-milestone::after { animation: none !important; opacity: 0 !important; }
 
   body.workshop-open .workshop-hero-merged > .eyebrow,
   body.workshop-open .workshop-hero-merged > #workshop-title,
