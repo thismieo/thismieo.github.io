@@ -3,7 +3,6 @@ import { chromium, webkit } from 'playwright';
 const engines = [['chromium', chromium], ['webkit', webkit]];
 const results = [];
 let failed = false;
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 for (const [name, engine] of engines) {
   const browser = await engine.launch({ headless: true });
@@ -13,7 +12,6 @@ for (const [name, engine] of engines) {
     hasTouch: true,
     deviceScaleFactor: 2,
   });
-  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: 'http://127.0.0.1:4173' }).catch(() => {});
   const page = await context.newPage();
   const consoleErrors = [];
   const pageErrors = [];
@@ -104,7 +102,7 @@ for (const [name, engine] of engines) {
     check(report.afterNext.activeCurrent === 'true' && report.afterNext.activeHidden === 'false', `${name}: active slide ARIA state is inconsistent`);
     check(report.afterNext.viewportHeight > 400, `${name}: second slide height collapsed to ${report.afterNext.viewportHeight}px`);
 
-    // Vertical scrolling must remain natural while the pointer is over the tall carousel.
+    // Vertical page scrolling must remain natural while the pointer is over the carousel.
     const box = await page.locator('[data-practice-explorer="featured"] .practice-carousel-viewport').boundingBox();
     const beforeVertical = await page.evaluate(() => window.scrollY);
     await page.mouse.move(box.x + Math.min(120, box.width / 2), Math.max(10, Math.min(760, box.y + 180)));
@@ -114,7 +112,15 @@ for (const [name, engine] of engines) {
     report.verticalWheelDelta = afterVertical - beforeVertical;
     check(report.verticalWheelDelta > 80, `${name}: vertical scroll over carousel moved only ${report.verticalWheelDelta}px`);
 
-    // Copy feedback must belong to the currently visible slide, not the first hidden slide.
+    // Mock only the clipboard transport so this test isolates feedback ownership.
+    await page.evaluate(() => {
+      try {
+        Object.defineProperty(navigator, 'clipboard', {
+          configurable: true,
+          value: { writeText: () => Promise.resolve() },
+        });
+      } catch {}
+    });
     const secondCopy = page.locator('[data-practice-explorer="featured"] .practice-carousel-slide').nth(1).locator('[data-practice-copy]');
     await secondCopy.click();
     await page.waitForTimeout(100);
@@ -125,7 +131,7 @@ for (const [name, engine] of engines) {
     check(report.copyStatus[1] === 'Code copied to clipboard', `${name}: visible slide did not receive copy feedback`);
     check(report.copyStatus[0] === '', `${name}: copy feedback leaked to the first slide`);
 
-    // Close from the current state and verify the outer card remains anchored.
+    // Close and verify the outer card remains anchored.
     await openButton.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
     const beforeCloseTop = await openButton.evaluate((el) => el.closest('[data-practice-card]')?.getBoundingClientRect().top ?? 0);
