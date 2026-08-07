@@ -46,7 +46,7 @@ jobs:
           grep -q 'document.createDocumentFragment' workshop-integrated.js
           grep -q 'interacting: false' workshop-integrated.js
           ! grep -q 'let copyTimer' workshop-integrated.js
-          grep -q 'workshopView.hidden = true' script.js
+          grep -q 'scrollRestoration = "manual"' script.js
           grep -q 'script.js?v=4.2.1' index.html
           grep -q 'workshop-integrated.css?v=5.6.0' index.html
           grep -q 'workshop-integrated.js?v=5.6.0' index.html
