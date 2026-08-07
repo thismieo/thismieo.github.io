@@ -118,10 +118,13 @@ jobs:
           # These production files must remain byte-identical to main.
           git diff --exit-code origin/main -- script.js styles.css contact-linkedin.css
 
-          # Only the Workshop HTML plus the two new integration files may differ.
-          changed="$(git diff --name-only origin/main | sort)"
-          printf '%s\n' "$changed"
-          test "$changed" = $'index.html\nworkshop-integrated.css\nworkshop-integrated.js'
+          # Validate the complete working-tree change set, including untracked integration files.
+          git status --porcelain
+          unexpected="$(git status --porcelain | awk '{print $2}' | grep -Ev '^(index\.html|workshop-integrated\.css|workshop-integrated\.js|\.github/workflows/workshop-safe-v4\.yml|tools/workshop_payload_v4/.*)$' || true)"
+          test -z "$unexpected"
+          git status --porcelain -- index.html | grep -q .
+          git status --porcelain -- workshop-integrated.css | grep -q .
+          git status --porcelain -- workshop-integrated.js | grep -q .
 
       - name: Commit tested staging integration
         shell: bash
