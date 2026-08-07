@@ -27,6 +27,18 @@
   margin-top: clamp(64px, 7vw, 88px) !important;
 }
 
+/* Unified interaction timing: same calm response for both outer practice cards. */
+.practice-milestone {
+  transition-duration: 250ms !important;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.practice-milestone-action,
+.practice-action-chevron {
+  transition-duration: 185ms !important;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
 /* ==========================================================
    Practice reveal — no measured height animation
    ========================================================== */
@@ -36,7 +48,8 @@
 
 .practice-explorer-slot,
 .practice-explorer-slot.is-open,
-.practice-explorer-slot.is-settled {
+.practice-explorer-slot.is-settled,
+.practice-explorer-slot.is-closing {
   display: block !important;
   width: 100% !important;
   height: auto !important;
@@ -45,20 +58,42 @@
   grid-template-rows: none !important;
   opacity: 1 !important;
   visibility: visible !important;
-  pointer-events: auto !important;
   transform: none !important;
   overflow: visible !important;
+  overflow-anchor: none !important;
   will-change: auto !important;
   transition: none !important;
 }
 
-.practice-explorer-slot-inner,
-.practice-explorer-slot.is-open > .practice-explorer-slot-inner {
+.practice-explorer-slot {
+  pointer-events: none !important;
+}
+
+.practice-explorer-slot.is-open {
+  pointer-events: auto !important;
+}
+
+.practice-explorer-slot-inner {
   min-width: 0 !important;
   min-height: 0 !important;
   padding-top: 12px !important;
   overflow: visible !important;
-  transition: none !important;
+  opacity: 0;
+  transform: translate3d(0, -6px, 0);
+  transition:
+    opacity 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 285ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.practice-explorer-slot.is-open > .practice-explorer-slot-inner {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.practice-explorer-slot.is-closing > .practice-explorer-slot-inner {
+  opacity: 0;
+  transform: translate3d(0, -4px, 0);
+  transition-duration: 205ms, 225ms !important;
 }
 
 .practice-explorer {
@@ -132,7 +167,7 @@
 }
 
 .practice-swipe-arrow:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
   background: rgba(var(--practice-accent), 0.09);
 }
 
@@ -228,29 +263,29 @@
 }
 
 .practice-detail.is-slide-next {
-  animation: practice-card-from-right 190ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: practice-card-from-right 235ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .practice-detail.is-slide-prev {
-  animation: practice-card-from-left 190ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: practice-card-from-left 235ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .practice-detail.is-slide-refresh {
-  animation: practice-card-soft-in 160ms ease-out;
+  animation: practice-card-soft-in 210ms ease-out;
 }
 
 @keyframes practice-card-from-right {
-  from { opacity: 0.48; transform: translateX(12px) scale(0.995); }
+  from { opacity: 0.48; transform: translateX(8px) scale(0.995); }
   to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 @keyframes practice-card-from-left {
-  from { opacity: 0.48; transform: translateX(-12px) scale(0.995); }
+  from { opacity: 0.48; transform: translateX(-8px) scale(0.995); }
   to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 @keyframes practice-card-soft-in {
-  from { opacity: 0.62; transform: translateY(3px); }
+  from { opacity: 0.62; transform: translateY(2px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -568,6 +603,12 @@
     animation: none !important;
   }
 
+  .practice-explorer-slot-inner,
+  .practice-explorer-slot.is-open > .practice-explorer-slot-inner,
+  .practice-explorer-slot.is-closing > .practice-explorer-slot-inner,
+  .practice-milestone,
+  .practice-milestone-action,
+  .practice-action-chevron,
   .practice-swipe-arrow,
   .practice-swipe-dots i {
     transition: none !important;

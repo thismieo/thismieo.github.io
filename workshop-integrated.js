@@ -138,6 +138,41 @@
   const activeIndex = { featured: 0, archive: 0 };
   let openGroupName = "";
   let copyTimer = 0;
+  let interactionToken = 0;
+  let scrollFrame = 0;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const interactionMotion = Object.freeze({ reveal: 285, close: 225, scroll: 360 });
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const nextFrame = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
+  const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+  const smoothScrollTo = (targetY, maxDuration = interactionMotion.scroll) => new Promise((resolve) => {
+    window.cancelAnimationFrame(scrollFrame);
+    const startY = window.scrollY;
+    const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const endY = clamp(targetY, 0, maxY);
+    const distance = endY - startY;
+
+    if (reduceMotion || Math.abs(distance) < 2) {
+      window.scrollTo(0, endY);
+      resolve();
+      return;
+    }
+
+    const duration = clamp(Math.abs(distance) * 1.15, 220, maxDuration);
+    const startedAt = performance.now();
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+    const step = (now) => {
+      const progress = clamp((now - startedAt) / duration, 0, 1);
+      window.scrollTo(0, startY + distance * easeOut(progress));
+      if (progress < 1) scrollFrame = window.requestAnimationFrame(step);
+      else resolve();
+    };
+
+    scrollFrame = window.requestAnimationFrame(step);
+  });
 
   const pad = (value) => String(value).padStart(2, "0");
   const actionText = {
@@ -354,35 +389,140 @@
     });
   };
 
-  const setSlot = (name, open) => {
+  const buttonFor = (name) => buttons.find((button) => button.dataset.practiceGroup === name);
+  const cardFor = (name) => buttonFor(name)?.closest("[data-practice-card]");
+
+  const setSlotImmediate = (name, open) => {
     const slot = slots[name];
     slot.style.removeProperty("height");
     slot.classList.remove("is-settled", "is-closing");
     slot.classList.toggle("is-open", open);
     slot.hidden = !open;
+    slot.inert = !open;
     slot.setAttribute("aria-hidden", String(!open));
   };
 
-  const toggleGroup = (name) => {
+  const preserveViewportAnchor = (element, beforeTop) => {
+    if (!element || !Number.isFinite(beforeTop)) return;
+    const afterTop = element.getBoundingClientRect().top;
+    const shift = afterTop - beforeTop;
+    if (Math.abs(shift) > 0.5) window.scrollBy(0, shift);
+  };
+
+  const gentlyAlignOpenContent = async (name) => {
+    const card = cardFor(name);
+    const controls = explorers[name]?.querySelector(".practice-swipe-controls");
+    if (!card || !controls) return;
+
+    const viewportHeight = window.innerHeight;
+    const cardRect = card.getBoundingClientRect();
+    const controlsRect = controls.getBoundingClientRect();
+    const safeTop = window.innerWidth <= 700 ? 78 : 88;
+    const safeBottom = viewportHeight - (window.innerWidth <= 700 ? 24 : 32);
+    let delta = 0;
+
+    if (cardRect.top < safeTop - 22) {
+      delta = cardRect.top - safeTop;
+    } else if (controlsRect.bottom > safeBottom) {
+      delta = controlsRect.bottom - safeBottom + 8;
+    }
+
+    const limit = window.innerWidth <= 700 ? 138 : 112;
+    delta = clamp(delta, -limit, limit);
+    if (Math.abs(delta) >= 10) await smoothScrollTo(window.scrollY + delta);
+  };
+
+  const gentlySettleClosedCard = async (name) => {
+    const card = cardFor(name);
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const safeTop = window.innerWidth <= 700 ? 72 : 82;
+    const lowerBound = window.innerHeight * 0.72;
+    let delta = 0;
+
+    if (rect.top < safeTop - 24) delta = rect.top - safeTop;
+    else if (rect.top > lowerBound) delta = rect.top - lowerBound;
+
+    delta = clamp(delta, -84, 84);
+    if (Math.abs(delta) >= 12) await smoothScrollTo(window.scrollY + delta, 300);
+  };
+
+  const openSlot = async (name, token) => {
+    const slot = slots[name];
+    slot.hidden = false;
+    slot.inert = false;
+    slot.classList.remove("is-closing", "is-settled");
+    slot.classList.remove("is-open");
+    slot.setAttribute("aria-hidden", "false");
+
+    await nextFrame();
+    if (token !== interactionToken) return false;
+    slot.classList.add("is-open");
+    return true;
+  };
+
+  const closeSlot = async (name, token, anchorElement = null, anchorTop = NaN) => {
+    const slot = slots[name];
+    if (slot.hidden) return true;
+
+    slot.inert = true;
+    slot.setAttribute("aria-hidden", "true");
+    slot.classList.add("is-closing");
+    slot.classList.remove("is-open", "is-settled");
+
+    if (!reduceMotion) await wait(interactionMotion.close);
+    if (token !== interactionToken) return false;
+
+    slot.hidden = true;
+    slot.classList.remove("is-closing");
+    preserveViewportAnchor(anchorElement, anchorTop);
+    return true;
+  };
+
+  const normalizeInterruptedSlots = () => {
+    Object.entries(slots).forEach(([name, slot]) => {
+      if (!slot.classList.contains("is-closing")) return;
+      const shouldBeOpen = name === openGroupName;
+      setSlotImmediate(name, shouldBeOpen);
+    });
+  };
+
+  const toggleGroup = async (name) => {
     if (!groups[name]) return;
+    const token = ++interactionToken;
+    normalizeInterruptedSlots();
+
     if (openGroupName === name) {
-      setSlot(name, false);
       openGroupName = "";
       syncCollectionState();
+      const closed = await closeSlot(name, token);
+      if (closed && token === interactionToken) await gentlySettleClosedCard(name);
       return;
     }
 
-    if (openGroupName) setSlot(openGroupName, false);
+    const previous = openGroupName;
+    const targetCard = cardFor(name);
+    const targetTop = targetCard?.getBoundingClientRect().top ?? NaN;
     openGroupName = name;
-    setSlot(name, true);
-    renderDetail(name, activeIndex[name], 0);
     syncCollectionState();
+
+    if (previous) {
+      const closed = await closeSlot(previous, token, targetCard, targetTop);
+      if (!closed || token !== interactionToken) return;
+    }
+
+    renderDetail(name, activeIndex[name], 0);
+    const opened = await openSlot(name, token);
+    if (!opened || token !== interactionToken) return;
+
+    if (!reduceMotion) await wait(36);
+    if (token === interactionToken) await gentlyAlignOpenContent(name);
   };
 
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
-      toggleGroup(button.dataset.practiceGroup);
+      void toggleGroup(button.dataset.practiceGroup);
     });
   });
 
@@ -426,7 +566,7 @@
   });
 
   Object.keys(groups).forEach((name) => {
-    setSlot(name, false);
+    setSlotImmediate(name, false);
     buildCarouselControls(name);
     renderDetail(name, 0, 0);
   });
