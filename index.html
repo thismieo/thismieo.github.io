@@ -33,9 +33,9 @@
   <title>Mohammed Muayad | AI Engineering &amp; Applied AI</title>
   <link rel="stylesheet" href="styles.css?v=4.4.0-preview">
   <link rel="stylesheet" href="contact-linkedin.css?v=4.3.11">
-  <link rel="stylesheet" href="workshop-practice.css?v=4.4.0-preview">
+  <link rel="stylesheet" href="workshop-practice.css?v=4.4.0-preview-2">
   <script src="script.js?v=4.4.0-preview" defer></script>
-  <script src="workshop-practice.js?v=4.4.0-preview" defer></script>
+  <script src="workshop-practice.js?v=4.4.0-preview-2" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -485,20 +485,20 @@
           <p class="workshop-block-description python-practice-intro">A growing archive of exercises I complete as each new Python concept becomes something I can build, test and explain</p>
         </div>
 
-        <div class="practice-milestones" role="list" aria-label="Python practice milestones">
-          <button class="practice-milestone is-active" type="button" data-practice-group="fundamentals" aria-controls="practice-explorer">
+        <div class="practice-milestones" aria-label="Python practice milestones">
+          <button class="practice-milestone is-active" type="button" data-practice-group="fundamentals" aria-controls="practice-explorer" aria-label="Explore Python Fundamentals, 5 exercises">
             <span class="practice-milestone-top"><span class="practice-milestone-number">01 · Foundation</span><span class="practice-milestone-count">5 exercises</span></span>
-            <h3>Python Fundamentals</h3>
-            <p>Working with user input, variables, numeric operations, formatting and small real-world calculations</p>
-            <ul class="practice-skill-list" aria-label="Topics"><li>Input</li><li>Variables</li><li>Arithmetic</li><li>Type Conversion</li><li>f-strings</li></ul>
+            <span class="practice-milestone-title">Python Fundamentals</span>
+            <span class="practice-milestone-copy">Working with user input, variables, numeric operations, formatting and small real-world calculations</span>
+            <span class="practice-skill-list" aria-hidden="true"><span>Input</span><span>Variables</span><span>Arithmetic</span><span>Type Conversion</span><span>f-strings</span></span>
             <span class="practice-milestone-action">Explore exercises <svg viewBox="0 0 12 20" aria-hidden="true"><path d="m3.5 3 5 7-5 7"/></svg></span>
           </button>
 
-          <button class="practice-milestone" type="button" data-practice-group="logic" aria-controls="practice-explorer">
+          <button class="practice-milestone" type="button" data-practice-group="logic" aria-controls="practice-explorer" aria-label="Explore Conditions, Logic and Loops, 7 exercises">
             <span class="practice-milestone-top"><span class="practice-milestone-number">02 · Logic</span><span class="practice-milestone-count">7 exercises</span></span>
-            <h3>Conditions, Logic &amp; Loops</h3>
-            <p>Applying conditions, logical operators, validation and loops to increasingly structured programming problems</p>
-            <ul class="practice-skill-list" aria-label="Topics"><li>if / elif / else</li><li>Logical Operators</li><li>Validation</li><li>while</li><li>break</li></ul>
+            <span class="practice-milestone-title">Conditions, Logic &amp; Loops</span>
+            <span class="practice-milestone-copy">Applying conditions, logical operators, validation and loops to increasingly structured programming problems</span>
+            <span class="practice-skill-list" aria-hidden="true"><span>if / elif / else</span><span>Logical Operators</span><span>Validation</span><span>while</span><span>break</span></span>
             <span class="practice-milestone-action">Explore exercises <svg viewBox="0 0 12 20" aria-hidden="true"><path d="m3.5 3 5 7-5 7"/></svg></span>
           </button>
         </div>
@@ -509,7 +509,7 @@
             <div class="practice-exercise-list" role="tablist" aria-orientation="vertical" data-practice-list></div>
           </aside>
 
-          <article class="practice-detail" role="tabpanel" data-practice-detail>
+          <article class="practice-detail" id="practice-detail-panel" role="tabpanel" data-practice-detail>
             <div class="practice-detail-kicker"><span class="practice-detail-index" data-practice-detail-index>Exercise 01</span><span class="practice-detail-badge" data-practice-detail-badge>Input exercise</span></div>
             <h3 data-practice-detail-title>Name &amp; Age</h3>
             <p class="practice-detail-summary" data-practice-detail-summary></p>
