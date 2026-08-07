@@ -21,13 +21,15 @@ jobs:
           fetch-depth: 0
       - name: Apply deep fix and run static guards
         run: |
-          set -euo pipefail
+          set -eu
           python3 .workshop-deep-fix.py
           node --check workshop-integrated.js
           grep -q 'flex: 0 0 100% !important' workshop-integrated.css
           ! grep -q 'content-visibility: auto' workshop-integrated.css
           grep -q 'const stopNativeScroll' workshop-integrated.js
           grep -q 'const copyTimers = new WeakMap' workshop-integrated.js
+          grep -q 'document.createDocumentFragment' workshop-integrated.js
+          grep -q 'interacting: false' workshop-integrated.js
           ! grep -q 'let copyTimer' workshop-integrated.js
           grep -q 'workshop-integrated.css?v=5.6.0' index.html
           grep -q 'workshop-integrated.js?v=5.6.0' index.html
@@ -44,7 +46,7 @@ jobs:
         run: node .workshop-deep-qa.mjs
       - name: Publish verified Workshop fix and clean temporary QA files
         run: |
-          set -euo pipefail
+          set -eu
           rm -rf .github .workshop-deep-qa.mjs .workshop-deep-fix.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
