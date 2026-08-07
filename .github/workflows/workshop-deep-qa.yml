@@ -19,14 +19,20 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Apply deep fix and run static guards
+      - name: Apply deep fixes and run static guards
         run: |
           set -eu
           python3 .workshop-deep-fix.py
+          python3 .workshop-scroll-fix.py
+          python3 .workshop-qa-adjust.py
           node --check workshop-integrated.js
+          node --check .workshop-deep-qa.mjs
           grep -q 'flex: 0 0 100% !important' workshop-integrated.css
           ! grep -q 'content-visibility: auto' workshop-integrated.css
-          grep -q 'const stopNativeScroll' workshop-integrated.js
+          grep -q 'let workshopScrollFrame = 0' workshop-integrated.js
+          grep -q 'const cancelWorkshopScroll' workshop-integrated.js
+          grep -q 'has-practice-open' workshop-integrated.js
+          grep -q 'has-practice-open .workshop-main' workshop-integrated.css
           grep -q 'const copyTimers = new WeakMap' workshop-integrated.js
           grep -q 'document.createDocumentFragment' workshop-integrated.js
           grep -q 'interacting: false' workshop-integrated.js
@@ -47,7 +53,7 @@ jobs:
       - name: Publish verified Workshop fix and clean temporary QA files
         run: |
           set -eu
-          rm -rf .github .workshop-deep-qa.mjs .workshop-deep-fix.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
+          rm -rf .github .workshop-deep-qa.mjs .workshop-deep-fix.py .workshop-scroll-fix.py .workshop-qa-adjust.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
