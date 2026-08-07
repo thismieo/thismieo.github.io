@@ -19,29 +19,31 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Apply deep fixes and run static guards
+      - name: Apply production candidate and static guards
         run: |
           set -eu
           python3 .workshop-deep-fix.py
           python3 .workshop-scroll-fix.py
+          python3 .workshop-final-qa-adjust.py
           node --check script.js
           node --check workshop-integrated.js
           node --check .workshop-deep-qa.mjs
+          node --check .workshop-archive-first-qa.mjs
           grep -q 'flex: 0 0 100% !important' workshop-integrated.css
           ! grep -q 'content-visibility: auto' workshop-integrated.css
           grep -q 'let workshopScrollFrame = 0' workshop-integrated.js
           grep -q 'const cancelWorkshopScroll' workshop-integrated.js
           grep -q 'const setWorkshopScrollTop' workshop-integrated.js
-          grep -q 'const commitOpenSlotHeight' workshop-integrated.js
-          grep -q -- '--practice-slot-height' workshop-integrated.js
-          grep -q -- '--practice-slot-height' workshop-integrated.css
+          ! grep -q -- '--practice-slot-height' workshop-integrated.js
+          ! grep -q -- '--practice-slot-height' workshop-integrated.css
+          ! grep -q 'retryClampedOpenAlignment' workshop-integrated.js
+          ! grep -q 'workshopScrollGeneration' workshop-integrated.js
           grep -q 'has-practice-open' workshop-integrated.js
           grep -q 'has-practice-open .workshop-main' workshop-integrated.css
           grep -q 'const copyTimers = new WeakMap' workshop-integrated.js
           grep -q 'document.createDocumentFragment' workshop-integrated.js
           grep -q 'interacting: false' workshop-integrated.js
           ! grep -q 'let copyTimer' workshop-integrated.js
-          ! grep -q 'retryClampedOpenAlignment' workshop-integrated.js
           grep -q 'script.js?v=4.2.0' index.html
           grep -q 'workshop-integrated.css?v=5.6.0' index.html
           grep -q 'workshop-integrated.js?v=5.6.0' index.html
@@ -54,12 +56,14 @@ jobs:
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/workshop-http.log 2>&1 &
           echo $! > /tmp/workshop-http.pid
           sleep 1
-      - name: Run deep browser QA
+      - name: Run primary cross-device browser QA
         run: node .workshop-deep-qa.mjs
+      - name: Run fresh Archive-first touch QA
+        run: node .workshop-archive-first-qa.mjs
       - name: Publish verified Workshop fix and clean temporary QA files
         run: |
           set -eu
-          rm -rf .github .workshop-deep-qa.mjs .workshop-deep-fix.py .workshop-scroll-fix.py .workshop-direct-prime.py .workshop-qa-adjust.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
+          rm -rf .github .workshop-deep-qa.mjs .workshop-archive-first-qa.mjs .workshop-deep-fix.py .workshop-scroll-fix.py .workshop-final-qa-adjust.py .workshop-direct-prime.py .workshop-qa-adjust.py .workshop-deep-qa-trigger package.json package-lock.json node_modules
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
