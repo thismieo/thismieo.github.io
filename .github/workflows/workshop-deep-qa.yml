@@ -34,8 +34,9 @@ jobs:
           grep -q 'let workshopScrollFrame = 0' workshop-integrated.js
           grep -q 'const cancelWorkshopScroll' workshop-integrated.js
           grep -q 'const setWorkshopScrollTop' workshop-integrated.js
-          ! grep -q -- '--practice-slot-height' workshop-integrated.js
-          ! grep -q -- '--practice-slot-height' workshop-integrated.css
+          grep -q 'const commitOpenSlotHeight' workshop-integrated.js
+          grep -q -- '--practice-slot-height' workshop-integrated.js
+          grep -q -- '--practice-slot-height' workshop-integrated.css
           ! grep -q 'retryClampedOpenAlignment' workshop-integrated.js
           ! grep -q 'workshopScrollGeneration' workshop-integrated.js
           grep -q 'has-practice-open' workshop-integrated.js
