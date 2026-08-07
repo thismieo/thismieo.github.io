@@ -376,9 +376,6 @@
     });
   };
 
-  const buttonFor = (name) => buttons.find((button) => button.dataset.practiceGroup === name);
-  const cardFor = (name) => buttonFor(name)?.closest("[data-practice-card]");
-
   const setSlot = (name, open) => {
     const slot = slots[name];
     if (!slot) return;
@@ -386,12 +383,6 @@
     slot.inert = !open;
     slot.classList.toggle("is-open", open);
     slot.setAttribute("aria-hidden", String(!open));
-  };
-
-  const preserveViewportAnchor = (element, beforeTop) => {
-    if (!element || !Number.isFinite(beforeTop)) return;
-    const shift = element.getBoundingClientRect().top - beforeTop;
-    if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, left: 0, behavior: "auto" });
   };
 
   const toggleGroup = (name) => {
@@ -406,12 +397,7 @@
     }
 
     const previous = openGroupName;
-    const targetCard = cardFor(name);
-    const targetTop = targetCard?.getBoundingClientRect().top ?? NaN;
-    if (previous) {
-      setSlot(previous, false);
-      preserveViewportAnchor(targetCard, targetTop);
-    }
+    if (previous) setSlot(previous, false);
 
     openGroupName = name;
     setSlot(name, true);
