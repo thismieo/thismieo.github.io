@@ -1,17 +1,14 @@
-# Mohammed Muayad Portfolio — Blue Continuum 4.1.9
+# Mohammed Muayad Portfolio — Blue Continuum 4.4.0 Preview
 
-Certified responsive portfolio build with the framed Hero portrait, independently rebuilt Hero call-to-action buttons, and refined Workshop card separators.
+Experimental Workshop build for the Python Practice archive. This preview branch is isolated from `main` so the production portfolio remains unchanged while the new feature is designed, tested, and reviewed.
 
-## Release 4.1.9
+## Preview goals
 
-- Keeps the approved 1024×1024 WebP portrait and the offset frame behind it.
-- Preserves the independent Hero buttons and inline SVG chevrons introduced in 4.1.8.
-- Removes the Workshop status legend and all repeated `Understood` / `Applied` card labels.
-- Replaces those labels with neutral steel separators and restrained teal/indigo background glows between Workshop cards.
-- Keeps the divider line itself neutral so the color remains atmospheric rather than becoming a hard section break.
-- Uses explicit divider elements with no interactive behavior and no inherited press effects.
-- Removes obsolete status-dot rules, status-legend markup, and superseded responsive grid declarations.
-- Preserves touch-scroll safety, responsive layouts, contact interactions, and the framed portrait treatment.
-- Contains only the production files required by the site.
+- Add a dedicated Python Practice archive beneath the current Python track in The Workshop.
+- Document real exercises from Python fundamentals through conditions, validation, loops, and structured logic.
+- Preserve the original learning code while presenting it through a clean, responsive exercise explorer.
+- Keep the feature modular through `workshop-practice.css` and `workshop-practice.js` during review.
+- Preserve the existing Workshop navigation, transition behavior, touch-scroll protection, and production layout.
+- Use cache-busted asset references consistently before any preview is promoted to `main`.
 
-After replacing an older build, refresh once with `Ctrl + F5`.
+The production branch is intentionally not modified by this preview work.
