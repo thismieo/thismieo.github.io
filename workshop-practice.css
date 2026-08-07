@@ -42,6 +42,7 @@
   box-shadow: 0 20px 48px rgba(0, 7, 12, 0.18);
   cursor: pointer;
   appearance: none;
+  touch-action: manipulation;
   transition:
     border-color 220ms ease,
     background 260ms ease,
@@ -121,19 +122,23 @@
   color: #718892;
 }
 
-.practice-milestone h3 {
+.practice-milestone-title {
   margin: 25px 0 0;
+  display: block;
   color: #e3ecef;
   font-size: clamp(1.32rem, 2vw, 1.65rem);
+  font-weight: 780;
   line-height: 1.18;
   letter-spacing: -0.035em;
 }
 
-.practice-milestone > p {
+.practice-milestone-copy {
   max-width: 49ch;
   margin: 12px 0 0;
+  display: block;
   color: #95a8b0;
   font-size: 0.84rem;
+  font-weight: 500;
   line-height: 1.72;
 }
 
@@ -147,7 +152,7 @@
   list-style: none;
 }
 
-.practice-skill-list li,
+.practice-skill-list > span,
 .practice-detail-skills li {
   padding: 6px 9px;
   border: 1px solid rgba(var(--practice-accent), 0.15);
@@ -237,6 +242,7 @@
   background: transparent;
   cursor: pointer;
   appearance: none;
+  touch-action: manipulation;
   transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
@@ -296,6 +302,12 @@
   color: #8fa5ad;
   background: rgba(var(--practice-accent), 0.05);
   letter-spacing: 0.08em;
+}
+
+.practice-detail[data-challenge="true"] .practice-detail-badge {
+  color: #aebbc9;
+  border-color: rgba(var(--practice-accent), 0.29);
+  background: rgba(var(--practice-accent), 0.085);
 }
 
 .practice-detail h3 {
@@ -399,6 +411,7 @@
   font-weight: 770;
   cursor: pointer;
   appearance: none;
+  touch-action: manipulation;
   transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
@@ -510,7 +523,7 @@
     border-radius: 19px;
   }
 
-  .practice-milestone h3 {
+  .practice-milestone-title {
     margin-top: 20px;
     font-size: 1.35rem;
   }
@@ -525,16 +538,30 @@
   }
 
   .practice-exercise-nav {
-    padding: 15px;
+    padding: 15px 12px 13px;
+  }
+
+  .practice-explorer-label {
+    padding-inline: 3px;
   }
 
   .practice-exercise-list {
-    grid-template-columns: 1fr;
-    gap: 4px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(137, 159, 168, 0.24) transparent;
   }
 
   .practice-exercise-tab {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 152px;
     min-height: 50px;
+    grid-template-columns: 29px minmax(0, 1fr);
+    scroll-snap-align: start;
   }
 
   .practice-detail {
