@@ -85,3 +85,89 @@
   .workshop-subgroup-applied .workshop-card>p::after{width:118px;height:36px;flex-basis:36px;padding-top:15px;background-size:36px 36px;background-position:0 0,41px 0,82px 0;}
   .workshop-grid-featured>.workshop-card{min-height:242px!important;padding:22px 19px 20px!important;}
 }
+
+/* Final card rhythm polish */
+.knowledge-application-merged .workshop-subgroup-foundation .workshop-card,
+.knowledge-application-merged .workshop-subgroup-applied .workshop-card{
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+}
+.knowledge-application-merged .workshop-subgroup-foundation .workshop-card>h3,
+.knowledge-application-merged .workshop-subgroup-applied .workshop-card>h3{
+  color:rgb(var(--accent-rgb))!important;
+  letter-spacing:-.025em!important;
+}
+.knowledge-application-merged .workshop-subgroup-foundation .workshop-card>h3::before,
+.knowledge-application-merged .workshop-subgroup-applied .workshop-card>h3::before{
+  width:52px!important;
+  height:52px!important;
+  margin-bottom:21px!important;
+  border-color:rgba(var(--accent-rgb),.42)!important;
+  background-color:rgba(var(--accent-rgb),.105)!important;
+  background-size:26px 26px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 10px 24px rgba(0,5,10,.14),0 0 26px rgba(var(--accent-rgb),.075)!important;
+}
+.knowledge-application-merged .workshop-subgroup-foundation .workshop-card>p,
+.knowledge-application-merged .workshop-subgroup-applied .workshop-card>p{
+  margin-top:15px!important;
+  color:#9cadb4!important;
+  line-height:1.72!important;
+}
+.knowledge-application-merged .workshop-subgroup-foundation .workshop-card>p::before,
+.knowledge-application-merged .workshop-subgroup-applied .workshop-card>p::before{
+  content:none!important;
+  display:none!important;
+}
+.knowledge-application-merged .workshop-subgroup-foundation .workshop-card>p::after,
+.knowledge-application-merged .workshop-subgroup-applied .workshop-card>p::after{
+  width:136px!important;
+  height:40px!important;
+  flex:0 0 40px!important;
+  margin-top:auto!important;
+  padding-top:28px!important;
+  background-size:40px 40px!important;
+  background-position:0 0,48px 0,96px 0!important;
+  opacity:1!important;
+  filter:saturate(1.08) brightness(1.07);
+}
+.knowledge-application-merged .workshop-grid-foundation>.workshop-card{
+  min-height:326px!important;
+  padding:27px 22px 24px!important;
+}
+.knowledge-application-merged .workshop-grid-featured>.workshop-card{
+  min-height:286px!important;
+  padding:26px 22px 24px!important;
+}
+@media (max-width:900px){
+  .knowledge-application-merged .workshop-grid-foundation>.workshop-card,
+  .knowledge-application-merged .workshop-grid-featured>.workshop-card{
+    min-height:262px!important;
+  }
+}
+@media (max-width:700px){
+  .knowledge-application-merged .workshop-subgroup-foundation .workshop-card>h3::before,
+  .knowledge-application-merged .workshop-subgroup-applied .workshop-card>h3::before{
+    width:47px!important;
+    height:47px!important;
+    margin-bottom:18px!important;
+    background-size:23px 23px!important;
+  }
+  .knowledge-application-merged .workshop-subgroup-foundation .workshop-card>p,
+  .knowledge-application-merged .workshop-subgroup-applied .workshop-card>p{
+    margin-top:12px!important;
+  }
+  .knowledge-application-merged .workshop-subgroup-foundation .workshop-card>p::after,
+  .knowledge-application-merged .workshop-subgroup-applied .workshop-card>p::after{
+    width:126px!important;
+    height:37px!important;
+    flex-basis:37px!important;
+    padding-top:24px!important;
+    background-size:37px 37px!important;
+    background-position:0 0,44px 0,88px 0!important;
+  }
+  .knowledge-application-merged .workshop-grid-foundation>.workshop-card,
+  .knowledge-application-merged .workshop-grid-featured>.workshop-card{
+    min-height:252px!important;
+    padding:22px 19px 21px!important;
+  }
+}
