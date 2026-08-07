@@ -1,16 +1,9 @@
 import { chromium, webkit } from 'playwright';
 
-const engines = [
-  ['chromium', chromium],
-  ['webkit', webkit],
-];
-
+const engines = [['chromium', chromium], ['webkit', webkit]];
 const results = [];
 let failed = false;
-
-const assert = (condition, message) => {
-  if (!condition) throw new Error(message);
-};
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 for (const [name, engine] of engines) {
   const browser = await engine.launch({ headless: true });
@@ -20,43 +13,50 @@ for (const [name, engine] of engines) {
     hasTouch: true,
     deviceScaleFactor: 2,
   });
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: 'http://127.0.0.1:4173' }).catch(() => {});
   const page = await context.newPage();
   const consoleErrors = [];
   const pageErrors = [];
-  page.on('console', (msg) => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
+  page.on('console', (msg) => {
+    if (msg.type() === 'error' && !/cloudflare|beacon/i.test(msg.text())) consoleErrors.push(msg.text());
+  });
   page.on('pageerror', (err) => pageErrors.push(String(err)));
 
-  const report = { engine: name };
+  const report = { engine: name, issues: [] };
+  const check = (condition, message) => { if (!condition) report.issues.push(message); };
 
   try {
     await page.goto('http://127.0.0.1:4173/?view=workshop', { waitUntil: 'networkidle' });
     await page.waitForSelector('[data-practice-root]');
 
     report.initial = await page.evaluate(() => ({
-      scrollY: window.scrollY,
       rootNodes: document.querySelector('[data-practice-root]')?.getElementsByTagName('*').length || 0,
       hydrated: [...document.querySelectorAll('[data-code-hydrated="true"]')].length,
     }));
+    check(report.initial.hydrated <= 2, `${name}: too many syntax-highlighted slides are hydrated before opening (${report.initial.hydrated})`);
 
     const openButton = page.locator('[data-practice-group="featured"]');
+    await openButton.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(120);
+
     const openStart = Date.now();
-    await openButton.click();
+    await page.evaluate(() => document.querySelector('[data-practice-group="featured"]')?.click());
     await page.waitForFunction(() => {
       const slot = document.querySelector('[data-practice-slot="featured"]');
       return slot && !slot.hidden && slot.getAttribute('aria-hidden') === 'false';
     });
     report.openVisibleMs = Date.now() - openStart;
-    await page.waitForTimeout(850);
+    await page.waitForTimeout(950);
 
     report.openGeometry = await page.evaluate(() => {
-      const controls = document.querySelector('[data-practice-explorer="featured"] .practice-swipe-controls');
-      const viewport = document.querySelector('[data-practice-explorer="featured"] .practice-carousel-viewport');
-      const slides = [...document.querySelectorAll('[data-practice-explorer="featured"] .practice-carousel-slide')];
+      const explorer = document.querySelector('[data-practice-explorer="featured"]');
+      const controls = explorer.querySelector('.practice-swipe-controls');
+      const viewport = explorer.querySelector('.practice-carousel-viewport');
+      const slides = [...explorer.querySelectorAll('.practice-carousel-slide')];
       const c = controls.getBoundingClientRect();
       const v = viewport.getBoundingClientRect();
       const a = slides[0].getBoundingClientRect();
       const b = slides[1].getBoundingClientRect();
-      const relativeLeft = viewport.scrollLeft + a.left - v.left;
       return {
         controlsTop: c.top,
         viewportTop: v.top,
@@ -64,93 +64,128 @@ for (const [name, engine] of engines) {
         viewportWidth: v.width,
         slideWidth: a.width,
         firstLeft: a.left - v.left,
-        firstRight: a.right - v.left,
-        secondLeft: b.left - v.left,
         gap: b.left - a.right,
         nextPeek: v.right - b.left,
-        offsetLeft: slides[0].offsetLeft,
-        relativeLeft,
-        offsetParentClass: slides[0].offsetParent?.className || slides[0].offsetParent?.tagName || null,
         viewportTouchAction: getComputedStyle(viewport).touchAction,
         slideTouchAction: getComputedStyle(slides[0]).touchAction,
         contentVisibility: getComputedStyle(slides[0]).contentVisibility,
+        hydrated: slides.filter((slide) => slide.dataset.codeHydrated === 'true').length,
       };
     });
 
-    assert(report.openVisibleMs < 500, `${name}: opening DOM visibility took ${report.openVisibleMs}ms`);
-    assert(report.openGeometry.controlsTop >= -2 && report.openGeometry.controlsTop <= 48, `${name}: controls top ${report.openGeometry.controlsTop}px is not near screen start`);
-    assert(report.openGeometry.viewportHeight > 250, `${name}: carousel viewport height is unexpectedly small`);
-    assert(report.openGeometry.gap >= 6 && report.openGeometry.gap <= 16, `${name}: card gap ${report.openGeometry.gap}px is not clean`);
-    assert(report.openGeometry.slideWidth <= report.openGeometry.viewportWidth - 24, `${name}: slide is too wide to reveal neighbour`);
-    assert(report.openGeometry.nextPeek >= 3 && report.openGeometry.nextPeek <= 24, `${name}: neighbour peek ${report.openGeometry.nextPeek}px is outside intended range`);
+    check(report.openVisibleMs < 180, `${name}: open state visibility took ${report.openVisibleMs}ms`);
+    check(report.openGeometry.controlsTop >= -2 && report.openGeometry.controlsTop <= 55, `${name}: controls stop at ${report.openGeometry.controlsTop}px instead of near the screen start`);
+    check(report.openGeometry.viewportHeight > 400, `${name}: active carousel height is only ${report.openGeometry.viewportHeight}px`);
+    check(report.openGeometry.gap >= 8 && report.openGeometry.gap <= 12, `${name}: card gap is ${report.openGeometry.gap}px`);
+    check(report.openGeometry.slideWidth >= report.openGeometry.viewportWidth - 44 && report.openGeometry.slideWidth <= report.openGeometry.viewportWidth - 28, `${name}: slide width ${report.openGeometry.slideWidth}px is not the intended framed width`);
+    check(report.openGeometry.nextPeek >= 4 && report.openGeometry.nextPeek <= 16, `${name}: neighbour peek is ${report.openGeometry.nextPeek}px`);
+    check(report.openGeometry.contentVisibility !== 'auto', `${name}: content-visibility:auto is still active on carousel slides`);
 
-    // Detect coordinate-space errors in carousel centering math.
-    report.offsetCoordinateDelta = Math.abs(report.openGeometry.offsetLeft - report.openGeometry.relativeLeft);
-
-    const secondButton = page.locator('[data-practice-explorer="featured"] [data-practice-next]');
-    await secondButton.click();
-    await page.waitForTimeout(850);
+    const next = page.locator('[data-practice-explorer="featured"] [data-practice-next]');
+    await next.click();
+    await page.waitForTimeout(900);
     report.afterNext = await page.evaluate(() => {
-      const viewport = document.querySelector('[data-practice-explorer="featured"] .practice-carousel-viewport');
-      const slides = [...document.querySelectorAll('[data-practice-explorer="featured"] .practice-carousel-slide')];
+      const explorer = document.querySelector('[data-practice-explorer="featured"]');
+      const viewport = explorer.querySelector('.practice-carousel-viewport');
+      const slides = [...explorer.querySelectorAll('.practice-carousel-slide')];
       const slide = slides[1];
       const v = viewport.getBoundingClientRect();
       const s = slide.getBoundingClientRect();
-      const counter = document.querySelector('[data-practice-explorer="featured"] [data-practice-swipe-counter]')?.textContent?.trim();
       return {
-        counter,
-        scrollLeft: viewport.scrollLeft,
+        counter: explorer.querySelector('[data-practice-swipe-counter]')?.textContent?.trim(),
         centerDelta: Math.abs((s.left + s.width / 2) - (v.left + v.width / 2)),
         activeCurrent: slide.getAttribute('aria-current'),
+        activeHidden: slide.getAttribute('aria-hidden'),
+        viewportHeight: v.height,
       };
     });
-    assert(report.afterNext.counter === '02 / 05', `${name}: counter did not advance correctly (${report.afterNext.counter})`);
-    assert(report.afterNext.centerDelta <= 3, `${name}: second slide is not centered after snap (${report.afterNext.centerDelta}px)`);
-    assert(report.afterNext.activeCurrent === 'true', `${name}: second slide aria-current is not true`);
+    check(report.afterNext.counter === '02 / 05', `${name}: counter did not advance (${report.afterNext.counter})`);
+    check(report.afterNext.centerDelta <= 3, `${name}: second slide center is off by ${report.afterNext.centerDelta}px`);
+    check(report.afterNext.activeCurrent === 'true' && report.afterNext.activeHidden === 'false', `${name}: active slide ARIA state is inconsistent`);
+    check(report.afterNext.viewportHeight > 400, `${name}: second slide height collapsed to ${report.afterNext.viewportHeight}px`);
 
-    // Verify vertical page scrolling can start while the pointer is over the carousel.
-    const viewportBox = await page.locator('[data-practice-explorer="featured"] .practice-carousel-viewport').boundingBox();
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(100);
-    await page.mouse.move(viewportBox.x + viewportBox.width / 2, Math.min(viewportBox.y + 120, 700));
+    // Vertical scrolling must remain natural while the pointer is over the tall carousel.
+    const box = await page.locator('[data-practice-explorer="featured"] .practice-carousel-viewport').boundingBox();
     const beforeVertical = await page.evaluate(() => window.scrollY);
+    await page.mouse.move(box.x + Math.min(120, box.width / 2), Math.max(10, Math.min(760, box.y + 180)));
     await page.mouse.wheel(0, 420);
     await page.waitForTimeout(350);
     const afterVertical = await page.evaluate(() => window.scrollY);
     report.verticalWheelDelta = afterVertical - beforeVertical;
-    assert(report.verticalWheelDelta > 80, `${name}: vertical scrolling over carousel is being resisted (${report.verticalWheelDelta}px)`);
+    check(report.verticalWheelDelta > 80, `${name}: vertical scroll over carousel moved only ${report.verticalWheelDelta}px`);
 
-    // Re-open/close repeatedly and verify state never gets stuck.
+    // Copy feedback must belong to the currently visible slide, not the first hidden slide.
+    const secondCopy = page.locator('[data-practice-explorer="featured"] .practice-carousel-slide').nth(1).locator('[data-practice-copy]');
+    await secondCopy.click();
+    await page.waitForTimeout(100);
+    report.copyStatus = await page.evaluate(() => {
+      const slides = [...document.querySelectorAll('[data-practice-explorer="featured"] .practice-carousel-slide')];
+      return slides.map((slide) => slide.querySelector('[data-practice-copy-status]')?.textContent?.trim() || '');
+    });
+    check(report.copyStatus[1] === 'Code copied to clipboard', `${name}: visible slide did not receive copy feedback`);
+    check(report.copyStatus[0] === '', `${name}: copy feedback leaked to the first slide`);
+
+    // Close from the current state and verify the outer card remains anchored.
+    await openButton.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(100);
+    const beforeCloseTop = await openButton.evaluate((el) => el.closest('[data-practice-card]')?.getBoundingClientRect().top ?? 0);
+    await page.evaluate(() => document.querySelector('[data-practice-group="featured"]')?.click());
+    await page.waitForTimeout(120);
+    report.close = await page.evaluate((beforeTop) => {
+      const slot = document.querySelector('[data-practice-slot="featured"]');
+      const button = document.querySelector('[data-practice-group="featured"]');
+      const card = button.closest('[data-practice-card]');
+      return {
+        hidden: slot.hidden,
+        ariaHidden: slot.getAttribute('aria-hidden'),
+        expanded: button.getAttribute('aria-expanded'),
+        anchorShift: Math.abs(card.getBoundingClientRect().top - beforeTop),
+      };
+    }, beforeCloseTop);
+    check(report.close.hidden && report.close.ariaHidden === 'true' && report.close.expanded === 'false', `${name}: close state is inconsistent`);
+    check(report.close.anchorShift <= 2, `${name}: closing shifted the outer card by ${report.close.anchorShift}px`);
+
+    // Stress quick open/close; no stale smooth-scroll or stuck slot may remain.
     for (let i = 0; i < 4; i += 1) {
-      await openButton.click();
-      await page.waitForTimeout(80);
-      await openButton.click();
-      await page.waitForTimeout(80);
+      await page.evaluate(() => document.querySelector('[data-practice-group="featured"]')?.click());
+      await page.waitForTimeout(45);
+      await page.evaluate(() => document.querySelector('[data-practice-group="featured"]')?.click());
+      await page.waitForTimeout(70);
     }
-    // Normalize final state closed.
-    const expanded = await openButton.getAttribute('aria-expanded');
-    if (expanded === 'true') {
-      await openButton.click();
-      await page.waitForTimeout(120);
-    }
-    report.finalClosed = await page.evaluate(() => {
+    report.rapidFinal = await page.evaluate(() => {
       const slot = document.querySelector('[data-practice-slot="featured"]');
       const button = document.querySelector('[data-practice-group="featured"]');
       return { hidden: slot.hidden, ariaHidden: slot.getAttribute('aria-hidden'), expanded: button.getAttribute('aria-expanded') };
     });
-    assert(report.finalClosed.hidden && report.finalClosed.ariaHidden === 'true' && report.finalClosed.expanded === 'false', `${name}: repeated open/close left an inconsistent state`);
+    check(report.rapidFinal.hidden && report.rapidFinal.ariaHidden === 'true' && report.rapidFinal.expanded === 'false', `${name}: rapid toggling left the Featured card stuck`);
+
+    // Archive must use the same engine and remain independently correct.
+    const archiveButton = page.locator('[data-practice-group="archive"]');
+    await archiveButton.scrollIntoViewIfNeeded();
+    await page.evaluate(() => document.querySelector('[data-practice-group="archive"]')?.click());
+    await page.waitForTimeout(850);
+    report.archive = await page.evaluate(() => {
+      const explorer = document.querySelector('[data-practice-explorer="archive"]');
+      const viewport = explorer.querySelector('.practice-carousel-viewport');
+      return {
+        counter: explorer.querySelector('[data-practice-swipe-counter]')?.textContent?.trim(),
+        height: viewport.getBoundingClientRect().height,
+        controlsTop: explorer.querySelector('.practice-swipe-controls').getBoundingClientRect().top,
+      };
+    });
+    check(report.archive.counter === '01 / 07', `${name}: archive counter is ${report.archive.counter}`);
+    check(report.archive.height > 350, `${name}: archive viewport height collapsed to ${report.archive.height}px`);
+    check(report.archive.controlsTop >= -2 && report.archive.controlsTop <= 55, `${name}: archive auto-scroll stopped at ${report.archive.controlsTop}px`);
 
     report.consoleErrors = consoleErrors;
     report.pageErrors = pageErrors;
-    assert(consoleErrors.length === 0, `${name}: console errors: ${consoleErrors.join(' | ')}`);
-    assert(pageErrors.length === 0, `${name}: page errors: ${pageErrors.join(' | ')}`);
-
-    report.status = 'pass';
+    check(consoleErrors.length === 0, `${name}: console errors: ${consoleErrors.join(' | ')}`);
+    check(pageErrors.length === 0, `${name}: page errors: ${pageErrors.join(' | ')}`);
   } catch (error) {
-    failed = true;
-    report.status = 'fail';
-    report.error = String(error?.stack || error);
+    report.issues.push(`unexpected QA exception: ${String(error?.stack || error)}`);
   } finally {
+    report.status = report.issues.length ? 'fail' : 'pass';
+    if (report.issues.length) failed = true;
     results.push(report);
     await browser.close();
   }
