@@ -1,0 +1,32 @@
+name: Workshop deep browser QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .workshop-deep-qa-trigger
+
+permissions:
+  contents: read
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Playwright package
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/workshop-http.log 2>&1 &
+          echo $! > /tmp/workshop-http.pid
+          sleep 1
+      - name: Run deep browser QA
+        run: node .workshop-deep-qa.mjs
+      - name: Server log on failure
+        if: failure()
+        run: cat /tmp/workshop-http.log || true
