@@ -123,11 +123,14 @@
 
   if (!explorer || !list || !detail) return;
 
+  detail.id = detail.id || "practice-detail-panel";
+
   let activeGroup = "fundamentals";
   let activeExercise = 0;
   let copyTimer = 0;
 
   const pad = (value) => String(value).padStart(2, "0");
+  const tabId = (groupName, index) => `practice-tab-${groupName}-${index}`;
 
   const setCode = (target, code) => {
     target.textContent = "";
@@ -143,9 +146,11 @@
     const textarea = document.createElement("textarea");
     textarea.value = value;
     textarea.setAttribute("readonly", "");
+    textarea.setAttribute("aria-hidden", "true");
     textarea.style.position = "fixed";
     textarea.style.left = "-9999px";
     textarea.style.opacity = "0";
+    textarea.style.fontSize = "16px";
     document.body.appendChild(textarea);
     textarea.select();
     const copied = document.execCommand("copy");
@@ -166,6 +171,18 @@
     fallbackCopy(value);
   };
 
+  const resetCopyFeedback = () => {
+    window.clearTimeout(copyTimer);
+    copyTimer = 0;
+    const copyButton = detail.querySelector("[data-practice-copy]");
+    const copyStatus = detail.querySelector("[data-practice-copy-status]");
+    if (copyButton) {
+      copyButton.classList.remove("is-copied");
+      copyButton.querySelector("span")?.replaceChildren(document.createTextNode("Copy code"));
+    }
+    if (copyStatus) copyStatus.textContent = "";
+  };
+
   const renderDetail = () => {
     const group = groups[activeGroup];
     const exercise = group.exercises[activeExercise];
@@ -178,7 +195,11 @@
     const codeTitle = detail.querySelector("[data-practice-code-title]");
     const code = detail.querySelector("[data-practice-code]");
     const copyButton = detail.querySelector("[data-practice-copy]");
-    const copyStatus = detail.querySelector("[data-practice-copy-status]");
+
+    resetCopyFeedback();
+
+    detail.setAttribute("aria-labelledby", tabId(activeGroup, activeExercise));
+    detail.dataset.challenge = String(exercise.badge === "Logic challenge");
 
     if (index) index.textContent = `Exercise ${pad(activeExercise + 1)}`;
     if (badge) badge.textContent = exercise.badge;
@@ -198,13 +219,16 @@
     }
 
     if (code) setCode(code, exercise.code);
+    if (copyButton) copyButton.dataset.code = exercise.code;
+  };
 
-    if (copyButton) {
-      copyButton.dataset.code = exercise.code;
-      copyButton.classList.remove("is-copied");
-      copyButton.querySelector("span")?.replaceChildren(document.createTextNode("Copy code"));
-    }
-    if (copyStatus) copyStatus.textContent = "";
+  const syncTabState = () => {
+    [...list.querySelectorAll(".practice-exercise-tab")].forEach((item, itemIndex) => {
+      const selected = itemIndex === activeExercise;
+      item.classList.toggle("is-active", selected);
+      item.setAttribute("aria-selected", String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
   };
 
   const renderList = () => {
@@ -216,9 +240,12 @@
     group.exercises.forEach((exercise, index) => {
       const button = document.createElement("button");
       button.type = "button";
+      button.id = tabId(activeGroup, index);
       button.className = "practice-exercise-tab";
       button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", detail.id);
       button.setAttribute("aria-selected", String(index === activeExercise));
+      button.tabIndex = index === activeExercise ? 0 : -1;
       button.classList.toggle("is-active", index === activeExercise);
       button.innerHTML = `<span class="practice-exercise-tab-index">${pad(index + 1)}</span><span class="practice-exercise-tab-label"></span>`;
       button.querySelector(".practice-exercise-tab-label").textContent = exercise.title;
@@ -226,11 +253,7 @@
       button.addEventListener("click", () => {
         if (index === activeExercise) return;
         activeExercise = index;
-        [...list.querySelectorAll(".practice-exercise-tab")].forEach((item, itemIndex) => {
-          const selected = itemIndex === activeExercise;
-          item.classList.toggle("is-active", selected);
-          item.setAttribute("aria-selected", String(selected));
-        });
+        syncTabState();
         renderDetail();
       });
 
@@ -242,7 +265,8 @@
         else if (event.key === "End") activeExercise = max;
         else if (event.key === "ArrowDown" || event.key === "ArrowRight") activeExercise = activeExercise >= max ? 0 : activeExercise + 1;
         else activeExercise = activeExercise <= 0 ? max : activeExercise - 1;
-        renderList();
+        syncTabState();
+        renderDetail();
         list.querySelectorAll(".practice-exercise-tab")[activeExercise]?.focus();
       });
 
