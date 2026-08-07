@@ -17,6 +17,12 @@ if old_align not in js:
     raise SystemExit('gentlyAlignOpenContent anchor missing')
 js = js.replace(old_align, new_align, 1)
 
+old_toggle_tail = '''    const opened = await openSlot(name, token);\n    if (!opened || token !== interactionToken) return;\n\n    await nextFrame();\n    if (token === interactionToken) gentlyAlignOpenContent(name);\n'''
+new_toggle_tail = '''    const opened = await openSlot(name, token);\n    if (!opened || token !== interactionToken) return;\n    gentlyAlignOpenContent(name);\n'''
+if old_toggle_tail not in js:
+    raise SystemExit('toggleGroup post-open frame anchor missing')
+js = js.replace(old_toggle_tail, new_toggle_tail, 1)
+
 old_sync = '''  const syncCollectionState = () => {\n    buttons.forEach((button) => {\n'''
 new_sync = '''  const syncCollectionState = () => {\n    workshopView?.classList.toggle("has-practice-open", Boolean(openGroupName));\n    buttons.forEach((button) => {\n'''
 if old_sync not in js:
