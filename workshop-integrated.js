@@ -8,6 +8,7 @@
     featured: {
       label: "Featured Practice",
       unit: "Program",
+      hint: "Swipe through programs",
       exercises: [
         {
           title: "Prime Number Analyzer",
@@ -59,6 +60,7 @@
     archive: {
       label: "Learning Archive",
       unit: "Exercise",
+      hint: "Swipe through exercises",
       exercises: [
         {
           title: "Even or Odd",
@@ -129,23 +131,15 @@
 
   const buttons = [...root.querySelectorAll("[data-practice-group]")];
   const slotElements = [...root.querySelectorAll("[data-practice-slot]")];
-  const slots = Object.fromEntries(slotElements.map((item) => [item.dataset.practiceSlot, item]));
-  const explorers = {
-    featured: root.querySelector('[data-practice-explorer="featured"]'),
-    archive: root.querySelector('[data-practice-explorer="archive"]'),
-  };
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const slots = Object.fromEntries(slotElements.map((slot) => [slot.dataset.practiceSlot, slot]));
+  const explorers = Object.fromEntries(Object.keys(groups).map((name) => [name, root.querySelector(`[data-practice-explorer="${name}"]`)]));
+  if (Object.values(slots).some((slot) => !slot) || Object.values(explorers).some((explorer) => !explorer)) return;
 
-  if (!slots.featured || !slots.archive || !explorers.featured || !explorers.archive) return;
-
-  let activeGroup = "featured";
-  let activeExercise = 0;
+  const activeIndex = { featured: 0, archive: 0 };
   let openGroupName = "";
   let copyTimer = 0;
-  let transitionToken = 0;
 
   const pad = (value) => String(value).padStart(2, "0");
-  const tabId = (groupName, index) => `practice-tab-${groupName}-${index}`;
   const actionText = {
     featured: { closed: "Explore programs", open: "Hide programs" },
     archive: { closed: "Open archive", open: "Close archive" },
@@ -157,9 +151,8 @@
     const explorer = explorers[name];
     return {
       explorer,
-      label: explorer.querySelector("[data-practice-group-label]"),
-      progress: explorer.querySelector("[data-practice-progress]"),
       list: explorer.querySelector("[data-practice-list]"),
+      progress: explorer.querySelector("[data-practice-progress]"),
       detail: explorer.querySelector("[data-practice-detail]"),
     };
   };
@@ -182,7 +175,6 @@
         while (j < line.length && /\s/.test(line[j])) j += 1;
         addToken(row, line.slice(i, j)); i = j; continue;
       }
-
       const prefix = line.slice(i).match(/^(?:[rRuUbBfF]{1,2})(?=["'])/);
       const quoteIndex = i + (prefix ? prefix[0].length : 0);
       if (line[quoteIndex] === '"' || line[quoteIndex] === "'") {
@@ -198,13 +190,11 @@
         }
         addToken(row, line.slice(i, j), "tok-string"); i = j; continue;
       }
-
       if (/\d/.test(char) || (char === "." && /\d/.test(line[i + 1] || ""))) {
         const match = line.slice(i).match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/);
         const value = match ? match[0] : char;
         addToken(row, value, "tok-number"); i += value.length; continue;
       }
-
       if (/[A-Za-z_]/.test(char)) {
         const value = line.slice(i).match(/^[A-Za-z_][A-Za-z0-9_]*/)[0];
         let className = "tok-name";
@@ -213,7 +203,6 @@
         else if (CONSTANTS.has(value)) className = "tok-constant";
         addToken(row, value, className); i += value.length; continue;
       }
-
       const pair = line.slice(i, i + 2);
       if (OP2.has(pair)) { addToken(row, pair, "tok-operator"); i += 2; continue; }
       if (OP1.has(char)) { addToken(row, char, "tok-operator"); i += 1; continue; }
@@ -242,14 +231,31 @@
     if (status) status.textContent = "";
   };
 
-  const renderDetail = (name, index) => {
+  const animateDetail = (detail, direction) => {
+    detail.classList.remove("is-slide-next", "is-slide-prev", "is-slide-refresh");
+    void detail.offsetWidth;
+    detail.classList.add(direction > 0 ? "is-slide-next" : direction < 0 ? "is-slide-prev" : "is-slide-refresh");
+  };
+
+  const syncCarousel = (name) => {
+    const group = groups[name];
+    const view = viewFor(name);
+    const index = activeIndex[name];
+    const counter = view.explorer.querySelector("[data-practice-swipe-counter]");
+    const dots = [...view.explorer.querySelectorAll("[data-practice-dot]")];
+    if (counter) counter.textContent = `${pad(index + 1)} / ${pad(group.exercises.length)}`;
+    if (view.progress) view.progress.textContent = `${pad(index + 1)} / ${pad(group.exercises.length)}`;
+    dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === index));
+  };
+
+  const renderDetail = (name, index, direction = 0) => {
     const group = groups[name];
     const exercise = group.exercises[index];
     const view = viewFor(name);
     const detail = view.detail;
-
+    activeIndex[name] = index;
     resetCopyFeedback(detail);
-    detail.setAttribute("aria-labelledby", tabId(name, index));
+
     detail.dataset.challenge = String(Boolean(exercise.challenge));
     detail.querySelector("[data-practice-detail-index]").textContent = `${group.unit} ${pad(index + 1)}`;
     detail.querySelector("[data-practice-detail-badge]").textContent = exercise.badge;
@@ -257,7 +263,6 @@
     detail.querySelector("[data-practice-detail-summary]").textContent = exercise.summary;
     detail.querySelector("[data-practice-detail-concept]").textContent = exercise.concept;
     detail.querySelector("[data-practice-code-title]").textContent = exercise.title;
-    view.progress.textContent = `${pad(index + 1)} / ${pad(group.exercises.length)}`;
 
     const skills = detail.querySelector("[data-practice-detail-skills]");
     skills.replaceChildren(...exercise.skills.map((skill) => {
@@ -268,63 +273,71 @@
 
     setCode(detail.querySelector("[data-practice-code]"), exercise.code);
     detail.querySelector("[data-practice-copy]").dataset.code = exercise.code;
+    syncCarousel(name);
+    animateDetail(detail, direction);
   };
 
-  const syncTabs = (name, index) => {
-    const view = viewFor(name);
-    [...view.list.querySelectorAll(".practice-exercise-tab")].forEach((item, itemIndex) => {
-      const selected = itemIndex === index;
-      item.classList.toggle("is-active", selected);
-      item.setAttribute("aria-selected", String(selected));
-      item.tabIndex = selected ? 0 : -1;
-    });
+  const move = (name, direction) => {
+    const total = groups[name].exercises.length;
+    const current = activeIndex[name];
+    const next = (current + direction + total) % total;
+    renderDetail(name, next, direction);
   };
 
-  const selectExercise = (name, index, { focus = false } = {}) => {
-    activeGroup = name;
-    activeExercise = index;
-    syncTabs(name, index);
-    renderDetail(name, index);
-    if (focus) viewFor(name).list.querySelectorAll(".practice-exercise-tab")[index]?.focus({ preventScroll: true });
-  };
-
-  const renderList = (name) => {
+  const buildCarouselControls = (name) => {
     const group = groups[name];
     const view = viewFor(name);
-    view.label.textContent = group.label;
-    view.explorer.dataset.activeGroup = name;
-    view.list.replaceChildren();
+    view.list?.closest(".practice-exercise-nav")?.setAttribute("aria-hidden", "true");
 
-    group.exercises.forEach((exercise, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.id = tabId(name, index);
-      button.className = "practice-exercise-tab";
-      button.setAttribute("role", "tab");
-      button.setAttribute("aria-controls", view.detail.id);
-      button.setAttribute("aria-selected", String(index === 0));
-      button.tabIndex = index === 0 ? 0 : -1;
-      button.classList.toggle("is-active", index === 0);
-      button.innerHTML = `<span class="practice-exercise-tab-index">${pad(index + 1)}</span><span class="practice-exercise-tab-label"></span>`;
-      button.querySelector(".practice-exercise-tab-label").textContent = exercise.title;
+    const controls = document.createElement("div");
+    controls.className = "practice-swipe-controls";
+    controls.setAttribute("aria-label", `${group.label} navigation`);
+    controls.innerHTML = `
+      <button type="button" class="practice-swipe-arrow" data-practice-prev aria-label="Previous ${group.unit.toLowerCase()}">
+        <svg aria-hidden="true" viewBox="0 0 12 20"><path d="m8.5 3-5 7 5 7"></path></svg>
+      </button>
+      <div class="practice-swipe-meta">
+        <span class="practice-swipe-hint">${group.hint}</span>
+        <strong data-practice-swipe-counter>${pad(1)} / ${pad(group.exercises.length)}</strong>
+        <span class="practice-swipe-dots" aria-hidden="true">${group.exercises.map((_, index) => `<i data-practice-dot class="${index === 0 ? "is-active" : ""}"></i>`).join("")}</span>
+      </div>
+      <button type="button" class="practice-swipe-arrow" data-practice-next aria-label="Next ${group.unit.toLowerCase()}">
+        <svg aria-hidden="true" viewBox="0 0 12 20"><path d="m3.5 3 5 7-5 7"></path></svg>
+      </button>`;
 
-      button.addEventListener("click", () => selectExercise(name, index));
-      button.addEventListener("keydown", (event) => {
-        if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
-        event.preventDefault();
-        const max = group.exercises.length - 1;
-        let next = index;
-        if (event.key === "Home") next = 0;
-        else if (event.key === "End") next = max;
-        else if (event.key === "ArrowDown" || event.key === "ArrowRight") next = index >= max ? 0 : index + 1;
-        else next = index <= 0 ? max : index - 1;
-        selectExercise(name, next, { focus: true });
-      });
+    view.detail.before(controls);
+    controls.querySelector("[data-practice-prev]").addEventListener("click", () => move(name, -1));
+    controls.querySelector("[data-practice-next]").addEventListener("click", () => move(name, 1));
 
-      view.list.appendChild(button);
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+
+    view.detail.addEventListener("touchstart", (event) => {
+      const touch = event.touches[0];
+      if (!touch || event.target.closest("button")) return;
+      startX = touch.clientX;
+      startY = touch.clientY;
+      tracking = true;
+    }, { passive: true });
+
+    view.detail.addEventListener("touchend", (event) => {
+      if (!tracking) return;
+      tracking = false;
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - startX;
+      const dy = touch.clientY - startY;
+      if (Math.abs(dx) < 44 || Math.abs(dx) <= Math.abs(dy) * 1.15) return;
+      move(name, dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    view.detail.tabIndex = 0;
+    view.detail.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      move(name, event.key === "ArrowRight" ? 1 : -1);
     });
-
-    renderDetail(name, 0);
   };
 
   const syncCollectionState = () => {
@@ -341,76 +354,35 @@
     });
   };
 
-  const waitForHeightTransition = (slot, token) => new Promise((resolve) => {
-    if (reduceMotion) { resolve(); return; }
-    const fallback = window.setTimeout(resolve, 560);
-    const onEnd = (event) => {
-      if (event.target !== slot || event.propertyName !== "height") return;
-      slot.removeEventListener("transitionend", onEnd);
-      window.clearTimeout(fallback);
-      if (token === transitionToken) resolve();
-      else resolve();
-    };
-    slot.addEventListener("transitionend", onEnd);
-  });
-
-  const openSlot = async (name, token) => {
+  const setSlot = (name, open) => {
     const slot = slots[name];
-    slot.classList.remove("is-settled");
-    slot.classList.add("is-open");
-    slot.setAttribute("aria-hidden", "false");
-    slot.style.height = "0px";
-    void slot.offsetHeight;
-    slot.style.height = `${slot.scrollHeight}px`;
-    await waitForHeightTransition(slot, token);
-    if (token !== transitionToken || openGroupName !== name) return;
-    slot.classList.add("is-settled");
     slot.style.removeProperty("height");
+    slot.classList.remove("is-settled", "is-closing");
+    slot.classList.toggle("is-open", open);
+    slot.hidden = !open;
+    slot.setAttribute("aria-hidden", String(!open));
   };
 
-  const closeSlot = async (name, token) => {
-    const slot = slots[name];
-    if (!slot.classList.contains("is-open")) return;
-    const startHeight = slot.scrollHeight;
-    slot.classList.remove("is-settled");
-    slot.style.height = `${startHeight}px`;
-    void slot.offsetHeight;
-    slot.classList.remove("is-open");
-    slot.style.height = "0px";
-    await waitForHeightTransition(slot, token);
-    if (token !== transitionToken || slot.classList.contains("is-open")) return;
-    slot.setAttribute("aria-hidden", "true");
-    slot.style.removeProperty("height");
-  };
-
-  const toggleGroup = async (name) => {
+  const toggleGroup = (name) => {
     if (!groups[name]) return;
-    const token = ++transitionToken;
-
     if (openGroupName === name) {
+      setSlot(name, false);
       openGroupName = "";
       syncCollectionState();
-      await closeSlot(name, token);
       return;
     }
 
-    const previous = openGroupName;
+    if (openGroupName) setSlot(openGroupName, false);
     openGroupName = name;
-    activeGroup = name;
-    activeExercise = 0;
+    setSlot(name, true);
+    renderDetail(name, activeIndex[name], 0);
     syncCollectionState();
-
-    if (previous) await closeSlot(previous, token);
-    if (token !== transitionToken) return;
-
-    selectExercise(name, 0);
-    await openSlot(name, token);
   };
 
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
-      void toggleGroup(button.dataset.practiceGroup);
+      toggleGroup(button.dataset.practiceGroup);
     });
   });
 
@@ -418,13 +390,9 @@
     const value = button.dataset.code || "";
     const owner = button.closest("[data-practice-explorer]");
     const status = owner?.querySelector("[data-practice-copy-status]");
-
     try {
-      if (navigator.clipboard?.writeText && window.isSecureContext) {
-        await navigator.clipboard.writeText(value);
-      } else {
-        throw new Error("Clipboard API unavailable");
-      }
+      if (navigator.clipboard?.writeText && window.isSecureContext) await navigator.clipboard.writeText(value);
+      else throw new Error("Clipboard API unavailable");
     } catch {
       const textarea = document.createElement("textarea");
       textarea.value = value;
@@ -449,22 +417,18 @@
       button.classList.remove("is-copied");
       button.querySelector("span")?.replaceChildren(document.createTextNode("Copy code"));
       if (status) status.textContent = "";
-    }, 1600);
+    }, 1500);
   };
 
   root.addEventListener("click", (event) => {
     const button = event.target.closest?.("[data-practice-copy]");
-    if (!button) return;
-    void copyCode(button);
+    if (button) void copyCode(button);
   });
 
-  slotElements.forEach((slot) => {
-    slot.classList.remove("is-open", "is-settled");
-    slot.setAttribute("aria-hidden", "true");
-    slot.style.height = "0px";
+  Object.keys(groups).forEach((name) => {
+    setSlot(name, false);
+    buildCarouselControls(name);
+    renderDetail(name, 0, 0);
   });
-
-  renderList("featured");
-  renderList("archive");
   syncCollectionState();
 })();
