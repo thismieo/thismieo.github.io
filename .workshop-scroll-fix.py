@@ -15,10 +15,16 @@ js = js.replace(old_scroll, new_scroll, 1)
 # range when the Workshop was revealed directly from [hidden]. Commit that one
 # layout write immediately after sizing; never do this during touch scrolling.
 old_measure = '''    const height = Math.ceil(slide.getBoundingClientRect().height);\n    if (height > 0) state.viewport.style.height = `${height}px`;\n  };\n'''
-new_measure = '''    const height = Math.ceil(slide.getBoundingClientRect().height);\n    if (height > 0) {\n      state.viewport.style.height = `${height}px`;\n      // One post-write layout commit keeps document scroll metrics current on\n      // direct-load WebKit without adding any per-frame measurement.\n      void state.viewport.offsetHeight;\n      void workshopView?.offsetHeight;\n    }\n  };\n'''
+new_measure = '''    const height = Math.ceil(slide.getBoundingClientRect().height);\n    if (height > 0) {\n      state.viewport.style.height = `${height}px`;\n      void state.viewport.offsetHeight;\n      void workshopView?.offsetHeight;\n    }\n  };\n'''
 if old_measure not in js:
     raise SystemExit('measureActiveCarousel anchor missing')
 js = js.replace(old_measure, new_measure, 1)
+
+old_align = '''  const gentlyAlignOpenContent = (name) => {\n    const controls = carouselState[name]?.controls;\n    if (!controls) return;\n    const desiredTop = window.innerWidth <= 700 ? 18 : 28;\n    const rect = controls.getBoundingClientRect();\n    if (Math.abs(rect.top - desiredTop) < 4) return;\n    smoothScrollTo(window.scrollY + rect.top - desiredTop);\n  };\n'''
+new_align = '''  const waitForWorkshopScrollRange = async (targetY, token) => {\n    const startedAt = performance.now();\n    while (token === interactionToken) {\n      const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);\n      if (maxY >= targetY - 2) return true;\n      if (performance.now() - startedAt >= 520) return true;\n      await new Promise((resolve) => window.setTimeout(resolve, 32));\n    }\n    return false;\n  };\n\n  const gentlyAlignOpenContent = async (name, token) => {\n    const controls = carouselState[name]?.controls;\n    if (!controls) return;\n    const desiredTop = window.innerWidth <= 700 ? 18 : 28;\n    const rect = controls.getBoundingClientRect();\n    if (Math.abs(rect.top - desiredTop) < 4) return;\n    const targetY = Math.max(0, window.scrollY + rect.top - desiredTop);\n    const ready = await waitForWorkshopScrollRange(targetY, token);\n    if (!ready || token !== interactionToken || openGroupName !== name) return;\n    smoothScrollTo(targetY);\n  };\n'''
+if old_align not in js:
+    raise SystemExit('gentlyAlignOpenContent anchor missing')
+js = js.replace(old_align, new_align, 1)
 
 old_sync = '''  const syncCollectionState = () => {\n    buttons.forEach((button) => {\n'''
 new_sync = '''  const syncCollectionState = () => {\n    workshopView?.classList.toggle("has-practice-open", Boolean(openGroupName));\n    buttons.forEach((button) => {\n'''
@@ -27,7 +33,7 @@ if old_sync not in js:
 js = js.replace(old_sync, new_sync, 1)
 
 old_align_call = '''    await nextFrame();\n    if (token === interactionToken) gentlyAlignOpenContent(name);\n  };\n'''
-new_align_call = '''    await nextFrame();\n    await new Promise((resolve) => window.setTimeout(resolve, 48));\n    if (token === interactionToken) gentlyAlignOpenContent(name);\n  };\n'''
+new_align_call = '''    await nextFrame();\n    if (token === interactionToken) void gentlyAlignOpenContent(name, token);\n  };\n'''
 if old_align_call not in js:
     raise SystemExit('post-open align anchor missing')
 js = js.replace(old_align_call, new_align_call, 1)
