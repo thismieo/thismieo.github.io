@@ -222,3 +222,81 @@
   .practice-selector-card,.practice-selector-card::after,.practice-collection-close { transition:none !important; }
   .practice-exercise-list { scroll-behavior:auto !important; }
 }
+
+/* Horizontal rail polish: every settled card stays fully inside the selector frame. */
+.practice-exercise-list {
+  --selector-safe-inset: 7px;
+  box-sizing: border-box !important;
+  padding-left: var(--selector-safe-inset) !important;
+  padding-right: var(--selector-safe-inset) !important;
+  scroll-padding-inline: var(--selector-safe-inset) !important;
+  scroll-snap-type: x mandatory !important;
+}
+.practice-selector-card {
+  flex-shrink: 0 !important;
+  scroll-snap-align: start !important;
+  scroll-snap-stop: always;
+}
+
+/* Calm collection reveal: opacity/position only, never height and never page auto-scroll. */
+.practice-explorer-slot,
+.practice-explorer-slot.is-open,
+.practice-explorer-slot.is-settled,
+.practice-explorer-slot.is-closing,
+.practice-explorer-slot.is-opening {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition:
+    opacity 220ms cubic-bezier(.22,1,.36,1),
+    transform 260ms cubic-bezier(.16,1,.3,1),
+    display 260ms !important;
+  transition-behavior: allow-discrete !important;
+}
+.practice-explorer-slot[hidden] {
+  display: none !important;
+  opacity: 0 !important;
+  transform: translateY(-4px) !important;
+  pointer-events: none !important;
+}
+@starting-style {
+  .practice-explorer-slot:not([hidden]) {
+    opacity: 0 !important;
+    transform: translateY(4px) !important;
+  }
+}
+
+/* Make the collection controls feel deliberate instead of instant. */
+.practice-milestone-action {
+  transition:
+    color 260ms ease,
+    border-color 260ms ease,
+    background 260ms ease,
+    box-shadow 260ms ease !important;
+}
+.practice-milestone-action .practice-action-chevron {
+  transition: transform 280ms cubic-bezier(.22,1,.36,1) !important;
+}
+.practice-collection-close {
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease,
+    transform 180ms ease !important;
+}
+
+@media (max-width:700px) {
+  .practice-exercise-list { --selector-safe-inset: 6px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .practice-explorer-slot,
+  .practice-explorer-slot.is-open,
+  .practice-explorer-slot.is-settled,
+  .practice-explorer-slot.is-closing,
+  .practice-explorer-slot.is-opening,
+  .practice-milestone-action,
+  .practice-milestone-action .practice-action-chevron,
+  .practice-collection-close {
+    transition: none !important;
+  }
+}
