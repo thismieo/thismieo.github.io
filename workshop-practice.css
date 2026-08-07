@@ -1,0 +1,573 @@
+/* Workshop Python Practice — 4.4.0 Preview */
+
+.python-practice-block {
+  padding-top: clamp(82px, 9vw, 122px);
+}
+
+.python-practice-block .workshop-block-heading {
+  max-width: 860px;
+}
+
+.python-practice-block .workshop-block-heading h2 {
+  text-wrap: balance;
+}
+
+.python-practice-intro {
+  max-width: 690px;
+}
+
+.practice-milestones {
+  margin-top: 38px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.practice-milestone {
+  --practice-accent: var(--palette-steel);
+  position: relative;
+  min-height: 252px;
+  padding: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  color: var(--ink);
+  border: 1px solid rgba(var(--practice-accent), 0.19);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse 70% 90% at 94% 0%, rgba(var(--practice-accent), 0.09), transparent 72%),
+    linear-gradient(145deg, rgba(20, 39, 49, 0.94), rgba(8, 18, 25, 0.97));
+  box-shadow: 0 20px 48px rgba(0, 7, 12, 0.18);
+  cursor: pointer;
+  appearance: none;
+  transition:
+    border-color 220ms ease,
+    background 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.practice-milestone[data-practice-group="fundamentals"] {
+  --practice-accent: var(--palette-teal);
+}
+
+.practice-milestone[data-practice-group="logic"] {
+  --practice-accent: var(--palette-indigo);
+}
+
+.practice-milestone::after {
+  content: "";
+  position: absolute;
+  right: -44px;
+  bottom: -58px;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(var(--practice-accent), 0.09);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.practice-milestone.is-active {
+  border-color: rgba(var(--practice-accent), 0.43);
+  background:
+    radial-gradient(ellipse 72% 92% at 94% 0%, rgba(var(--practice-accent), 0.15), transparent 72%),
+    linear-gradient(145deg, rgba(23, 46, 55, 0.96), rgba(8, 18, 25, 0.98));
+  box-shadow: 0 23px 55px rgba(0, 7, 12, 0.25);
+}
+
+.practice-milestone:focus-visible {
+  outline: 2px solid rgba(var(--practice-accent), 0.66);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .practice-milestone:hover {
+    border-color: rgba(var(--practice-accent), 0.36);
+    background:
+      radial-gradient(ellipse 72% 92% at 94% 0%, rgba(var(--practice-accent), 0.13), transparent 72%),
+      linear-gradient(145deg, rgba(22, 44, 53, 0.96), rgba(8, 18, 25, 0.98));
+  }
+}
+
+.practice-milestone-top,
+.practice-detail-kicker,
+.practice-explorer-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.practice-milestone-number,
+.practice-milestone-count,
+.practice-detail-index,
+.practice-detail-badge,
+.practice-explorer-label,
+.practice-code-language,
+.practice-code-title {
+  font-size: 0.61rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.practice-milestone-number {
+  color: rgb(var(--practice-accent));
+}
+
+.practice-milestone-count {
+  color: #718892;
+}
+
+.practice-milestone h3 {
+  margin: 25px 0 0;
+  color: #e3ecef;
+  font-size: clamp(1.32rem, 2vw, 1.65rem);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+}
+
+.practice-milestone > p {
+  max-width: 49ch;
+  margin: 12px 0 0;
+  color: #95a8b0;
+  font-size: 0.84rem;
+  line-height: 1.72;
+}
+
+.practice-skill-list,
+.practice-detail-skills {
+  margin: auto 0 0;
+  padding: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+}
+
+.practice-skill-list li,
+.practice-detail-skills li {
+  padding: 6px 9px;
+  border: 1px solid rgba(var(--practice-accent), 0.15);
+  border-radius: 999px;
+  color: #a9bbc2;
+  background: rgba(var(--practice-accent), 0.045);
+  font-size: 0.65rem;
+  font-weight: 710;
+  line-height: 1.3;
+}
+
+.practice-milestone-action {
+  margin-top: 21px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #c9d7dc;
+  font-size: 0.68rem;
+  font-weight: 780;
+  letter-spacing: 0.03em;
+}
+
+.practice-milestone-action svg {
+  width: 11px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.practice-explorer {
+  --practice-accent: var(--palette-teal);
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: minmax(250px, 0.36fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid rgba(var(--practice-accent), 0.2);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse 58% 48% at 100% 0%, rgba(var(--practice-accent), 0.065), transparent 78%),
+    linear-gradient(145deg, rgba(12, 27, 35, 0.98), rgba(7, 16, 23, 0.99));
+  box-shadow: 0 24px 62px rgba(0, 6, 11, 0.22);
+}
+
+.practice-explorer[data-active-group="logic"] {
+  --practice-accent: var(--palette-indigo);
+}
+
+.practice-exercise-nav {
+  min-width: 0;
+  padding: 20px 14px 20px 20px;
+  border-right: 1px solid rgba(151, 174, 183, 0.11);
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.practice-explorer-label {
+  min-height: 34px;
+  padding: 0 7px 13px;
+  color: #778d96;
+}
+
+.practice-explorer-label strong {
+  color: rgb(var(--practice-accent));
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.practice-exercise-list {
+  display: grid;
+  gap: 5px;
+}
+
+.practice-exercise-tab {
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 11px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  color: #8fa3ab;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.practice-exercise-tab-index {
+  color: #607780;
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.practice-exercise-tab-label {
+  min-width: 0;
+  font-size: 0.75rem;
+  font-weight: 730;
+  line-height: 1.35;
+}
+
+.practice-exercise-tab.is-active {
+  color: #d8e4e8;
+  border-color: rgba(var(--practice-accent), 0.22);
+  background: rgba(var(--practice-accent), 0.075);
+}
+
+.practice-exercise-tab.is-active .practice-exercise-tab-index {
+  color: rgb(var(--practice-accent));
+}
+
+.practice-exercise-tab:focus-visible {
+  outline: 2px solid rgba(var(--practice-accent), 0.58);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .practice-exercise-tab:hover:not(.is-active) {
+    color: #bfced3;
+    background: rgba(255, 255, 255, 0.025);
+  }
+}
+
+.practice-detail {
+  min-width: 0;
+  padding: clamp(24px, 3.2vw, 38px);
+}
+
+.practice-detail-kicker {
+  justify-content: flex-start;
+}
+
+.practice-detail-index {
+  color: rgb(var(--practice-accent));
+}
+
+.practice-detail-badge {
+  padding: 5px 8px;
+  border: 1px solid rgba(var(--practice-accent), 0.19);
+  border-radius: 999px;
+  color: #8fa5ad;
+  background: rgba(var(--practice-accent), 0.05);
+  letter-spacing: 0.08em;
+}
+
+.practice-detail h3 {
+  margin: 15px 0 0;
+  color: #e5eef1;
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.practice-detail-summary {
+  max-width: 66ch;
+  margin: 14px 0 0;
+  color: #98aab1;
+  font-size: 0.86rem;
+  line-height: 1.75;
+}
+
+.practice-concept {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(153, 176, 184, 0.11);
+}
+
+.practice-concept-label {
+  margin: 0;
+  color: #718790;
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.practice-concept p:last-child {
+  max-width: 68ch;
+  margin: 8px 0 0;
+  color: #bac8cd;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.practice-detail-skills {
+  --practice-accent: inherit;
+  margin-top: 0;
+  padding-top: 17px;
+}
+
+.practice-code-viewer {
+  margin-top: 26px;
+  overflow: hidden;
+  border: 1px solid rgba(151, 174, 183, 0.14);
+  border-radius: 18px;
+  background: #07121a;
+}
+
+.practice-code-header {
+  min-height: 48px;
+  padding: 0 12px 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid rgba(151, 174, 183, 0.1);
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.practice-code-meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.practice-code-language {
+  color: rgb(var(--practice-accent));
+}
+
+.practice-code-title {
+  max-width: 42ch;
+  overflow: hidden;
+  color: #6f858e;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+}
+
+.practice-copy-button {
+  min-width: 74px;
+  min-height: 34px;
+  padding: 0 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #a7b8be;
+  border: 1px solid rgba(151, 174, 183, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  font: inherit;
+  font-size: 0.64rem;
+  font-weight: 770;
+  cursor: pointer;
+  appearance: none;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.practice-copy-button svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.practice-copy-button.is-copied {
+  color: rgb(var(--practice-accent));
+  border-color: rgba(var(--practice-accent), 0.3);
+  background: rgba(var(--practice-accent), 0.07);
+}
+
+.practice-copy-button:focus-visible {
+  outline: 2px solid rgba(var(--practice-accent), 0.58);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .practice-copy-button:hover {
+    color: #d4e0e4;
+    border-color: rgba(var(--practice-accent), 0.27);
+  }
+}
+
+.practice-code-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(137, 159, 168, 0.3) transparent;
+}
+
+.practice-code {
+  min-width: max-content;
+  margin: 0;
+  padding: 17px 0 19px;
+  counter-reset: practice-line;
+  color: #c8d5da;
+  background: transparent;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.76rem;
+  line-height: 1.72;
+  tab-size: 4;
+}
+
+.practice-code-line {
+  min-height: 1.72em;
+  display: block;
+  padding: 0 20px 0 0;
+  white-space: pre;
+}
+
+.practice-code-line::before {
+  counter-increment: practice-line;
+  content: counter(practice-line);
+  width: 42px;
+  margin-right: 17px;
+  display: inline-block;
+  color: #405762;
+  text-align: right;
+  user-select: none;
+}
+
+.practice-copy-status {
+  min-height: 20px;
+  margin: 8px 0 0;
+  color: #738992;
+  font-size: 0.64rem;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .practice-explorer {
+    grid-template-columns: 1fr;
+  }
+
+  .practice-exercise-nav {
+    padding: 18px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(151, 174, 183, 0.11);
+  }
+
+  .practice-exercise-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .python-practice-block {
+    padding-top: 74px;
+  }
+
+  .practice-milestones {
+    margin-top: 32px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .practice-milestone {
+    min-height: 0;
+    padding: 20px;
+    border-radius: 19px;
+  }
+
+  .practice-milestone h3 {
+    margin-top: 20px;
+    font-size: 1.35rem;
+  }
+
+  .practice-skill-list {
+    padding-top: 18px;
+  }
+
+  .practice-explorer {
+    margin-top: 14px;
+    border-radius: 20px;
+  }
+
+  .practice-exercise-nav {
+    padding: 15px;
+  }
+
+  .practice-exercise-list {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .practice-exercise-tab {
+    min-height: 50px;
+  }
+
+  .practice-detail {
+    padding: 22px 17px 20px;
+  }
+
+  .practice-detail h3 {
+    font-size: 1.7rem;
+  }
+
+  .practice-code-header {
+    min-height: 52px;
+    padding-inline: 12px;
+  }
+
+  .practice-code-title {
+    display: none;
+  }
+
+  .practice-code {
+    font-size: 0.72rem;
+  }
+
+  .practice-code-line::before {
+    width: 35px;
+    margin-right: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practice-milestone,
+  .practice-exercise-tab,
+  .practice-copy-button {
+    transition: none;
+  }
+}
