@@ -33,6 +33,11 @@
     const practiceAction = target.closest("[data-practice-group]");
     if (practiceAction) return practiceAction.closest("[data-practice-card]");
 
+    // Contact actions keep their Copy/Visit behavior while the parent card
+    // owns the shared sheen, so mobile feedback remains visually consistent.
+    const contactAction = target.closest(".contact-card-action");
+    if (contactAction) return contactAction.closest(".contact-card");
+
     const directControl = target.closest(directControlSelector);
     if (directControl) return directControl;
 

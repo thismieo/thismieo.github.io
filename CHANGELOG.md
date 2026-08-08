@@ -1,3 +1,12 @@
+# Blue Continuum 4.5.12 — Press Sheen Edge & Visibility Refinement
+
+1. Moved the shared sheen travel beyond both card edges (`125%` to `-25%`) so its visible band enters from the true left edge and fully exits the right edge.
+2. Widened and strengthened the restrained highlight band so compact About and Contact surfaces no longer make the click feedback appear to begin near the middle or disappear into the card surface.
+3. Routed Contact `Copy` and `Visit` taps to the parent Contact card sheen while preserving their original copy/link actions.
+4. Preserved the full-surface background-position engine, prewarmed layers, card geometry, colors and reduced-motion behavior.
+
+---
+
 # Blue Continuum 4.5.11 — Mobile Press Sheen Rebuild
 
 1. Rebuilt the shared card-click sheen as a full-surface gradient animated by background position instead of a skewed 48% child translated with `translate3d` through an overflow clip.
