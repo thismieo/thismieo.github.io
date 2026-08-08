@@ -2,9 +2,17 @@
    One DOM-backed layer, one activation state, no pseudo-element ownership. */
 
 .press-fx-surface {
-  position: relative;
-  isolation: isolate;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Position is added only when JavaScript confirms that a layered surface was
+   originally static. Fixed/sticky/absolute controls keep their native layout. */
+.press-fx-positioned {
+  position: relative;
+}
+
+.press-fx-layered {
+  isolation: isolate;
 }
 
 .press-fx-layer {
@@ -56,8 +64,12 @@
   animation: press-fx-knowledge 250ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
-/* Controls that immediately navigate or swap views use tactile feedback only;
-   a long sheen would be visually interrupted by the transition itself. */
+/* Controls that immediately navigate, swap views or act as compact buttons use
+   a brightness pulse only. No transform can interfere with fixed/translated UI. */
+.press-fx-tactile-only.is-press-fx {
+  animation: press-fx-control 220ms ease both !important;
+}
+
 .press-fx-tactile-only > .press-fx-layer {
   display: none;
 }
@@ -66,6 +78,12 @@
   0% { transform: translate3d(0, 0, 0) scale(1); }
   38% { transform: translate3d(0, 1px, 0) scale(.994); }
   100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes press-fx-control {
+  0% { filter: brightness(1); }
+  42% { filter: brightness(1.07); }
+  100% { filter: brightness(1); }
 }
 
 @keyframes press-fx-knowledge {
@@ -183,6 +201,7 @@
 @media (prefers-reduced-motion: reduce) {
   .press-fx-surface.is-press-fx,
   .knowledge-card.press-fx-surface.is-press-fx,
+  .press-fx-tactile-only.is-press-fx,
   .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
     animation: none !important;
     transform: none !important;
