@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.10 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.13 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -724,22 +724,25 @@ main { position: relative; background: transparent; }
 .workshop-entry-action-shine {
   position: absolute;
   z-index: 1;
-  top: -45%;
-  left: 0;
-  width: 42%;
-  height: 190%;
+  inset: 1px;
   pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
   opacity: 0;
-  transform: translateX(-220%) skewX(-18deg);
-  background: linear-gradient(100deg, transparent, rgba(239, 247, 249, .32), transparent);
-  animation: workshop-entry-action-sweep 3s cubic-bezier(.22, 1, .36, 1) infinite;
+  background-image: var(--press-fx-sheen-image);
+  background-repeat: no-repeat;
+  background-size: var(--press-fx-sheen-size);
+  background-position: var(--press-fx-sheen-start);
+  contain: paint;
+  isolation: isolate;
+  animation: workshop-entry-action-sweep 3s var(--press-fx-sheen-ease) infinite;
 }
 
 @keyframes workshop-entry-action-sweep {
-  0%, 54% { opacity: 0; transform: translateX(-220%) skewX(-18deg); }
-  62% { opacity: .72; }
-  84% { opacity: .18; transform: translateX(360%) skewX(-18deg); }
-  85%, 100% { opacity: 0; transform: translateX(360%) skewX(-18deg); }
+  0%, 54% { opacity: 0; background-position: var(--press-fx-sheen-start); }
+  60% { opacity: .58; }
+  81% { opacity: .18; background-position: var(--press-fx-sheen-end); }
+  82%, 100% { opacity: 0; background-position: var(--press-fx-sheen-end); }
 }
 
 @media (hover: hover) and (pointer: fine) {

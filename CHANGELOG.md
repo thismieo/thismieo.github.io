@@ -1,3 +1,15 @@
+# Blue Continuum 4.5.13 — Site-wide Sheen Unification & Deep Audit
+
+1. Promoted the restrained About-card click sheen into one canonical Pearl/Mist feedback language for every sheen-bearing card across Portfolio and Workshop.
+2. Removed per-card accent tinting from the click sheen so About, Journey, Projects, Workshop and Contact now share the same highlight color, width, timing and easing while retaining their authored card palettes.
+3. Made the feedback layer self-contained with its own paint containment, isolation and rounded clipping so cards with different overflow/containment strategies render the sheen through the same compositing path.
+4. Added explicit `.workshop-card` ownership to the shared interaction selector while preserving the existing prewarmed layer architecture and dynamic fallback.
+5. Rebuilt the remaining periodic Open Workshop shine with the canonical background-position gradient, removing the legacy translated/skewed child animation that could diverge on real mobile rendering.
+6. Preserved tactile-only feedback for compact controls, reduced-motion behavior, card geometry and all existing card content and colors.
+7. Added desktop and 390px phone browser audits that compare the computed sheen image, size, start position, animation name, duration, easing and layer containment for every card family against the About benchmark.
+
+---
+
 # Blue Continuum 4.5.12 — Press Sheen Edge & Visibility Refinement
 
 1. Moved the shared sheen travel beyond both card edges (`125%` to `-25%`) so its visible band enters from the true left edge and fully exits the right edge.

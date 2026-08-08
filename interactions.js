@@ -12,6 +12,7 @@
     ".current-track-card",
     ".practice-milestone",
     ".knowledge-card",
+    ".workshop-card",
     ".contact-card",
   ].join(", ");
 
