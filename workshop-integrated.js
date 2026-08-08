@@ -126,7 +126,7 @@
   const BUILTINS = new Set(["input", "print", "int", "float", "str", "round", "len", "range", "min", "max", "sum"]);
   const CONSTANTS = new Set(["True", "False", "None"]);
   const OP2 = new Set(["==", "!=", "<=", ">=", "**", "//", "+=", "-=", "*=", "/=", "%="]);
-  const OP1 = new Set(["=", "+", "-", "*", "/", "%", "<", ">");
+  const OP1 = new Set(["=", "+", "-", "*", "/", "%", "<", ">"]);
   const BRACKETS = new Set(["(", ")", "[", "]", "{", "}"]);
   const PUNCT = new Set([":", ",", "."]);
 
