@@ -1,15 +1,11 @@
 /* Workshop centered masthead + simplified section rhythm
-   One clear opening, one signature light line, and no decorative separator clutter. */
+   Desktop keeps the primary statement; mobile uses a quieter descriptive composition. */
 
 .workshop-main {
   padding-top: clamp(18px, 2.4vw, 28px) !important;
 }
 
-/*
-   Workshop masthead
-   Visual hierarchy: title -> supporting line -> update meta -> signature light.
-   The header above already names The Workshop, so the repeated eyebrow stays hidden.
-*/
+/* Workshop masthead */
 .workshop-main > .workshop-masthead {
   position: relative;
   isolation: isolate;
@@ -30,7 +26,6 @@
   text-align: center !important;
 }
 
-/* Quiet atmospheric glow only — not a line or card surface. */
 .workshop-main > .workshop-masthead::before {
   content: "";
   position: absolute;
@@ -55,7 +50,6 @@
   display: none !important;
 }
 
-/* DOM order is meta/title/copy; flex order creates the intended visual order. */
 #workshop-title.workshop-masthead-title {
   order: 1;
   width: auto !important;
@@ -100,7 +94,6 @@
   text-align: center !important;
 }
 
-/* The page header already says The Workshop; avoid a fourth text layer. */
 .workshop-masthead-meta .eyebrow {
   display: none !important;
 }
@@ -118,7 +111,7 @@
   white-space: nowrap;
 }
 
-/* Static hairline under the date. */
+/* One signature line under the update date. */
 .workshop-masthead-updated::after {
   content: "";
   position: absolute;
@@ -139,7 +132,6 @@
   );
 }
 
-/* Single moving glint — the only animated separator in the Workshop. */
 .workshop-masthead-updated::before {
   content: "";
   position: absolute;
@@ -169,22 +161,15 @@
     opacity: 0;
     transform: translateX(-112px);
   }
-  25% {
-    opacity: .92;
-  }
-  55% {
-    opacity: .62;
-  }
+  25% { opacity: .92; }
+  55% { opacity: .62; }
   72%, 100% {
     opacity: 0;
     transform: translateX(78px);
   }
 }
 
-/*
-   Python Development
-   Two text layers only: eyebrow + section title. The card begins immediately after.
-*/
+/* Python Development: eyebrow + one concise title. */
 .python-development-block {
   padding-top: clamp(24px, 2.8vw, 34px) !important;
 }
@@ -229,15 +214,11 @@
   display: none !important;
 }
 
-/* Remove the third Python text layer. */
 .python-development-block > .python-section-heading .python-section-copy {
   display: none !important;
 }
 
-/*
-   Section rhythm
-   Cards and whitespace do the separating. No decorative lines compete with the masthead signature.
-*/
+/* Cards and whitespace do the separating; no decorative line clutter. */
 .practice-milestones::before,
 .practice-milestones::after,
 .knowledge-application-merged::before,
@@ -265,7 +246,6 @@
 }
 
 @media (max-width: 700px) {
-  /* Move the whole mobile composition slightly lower while reclaiming the dead space below it. */
   .workshop-main {
     padding-top: 26px !important;
   }
@@ -273,7 +253,7 @@
   .workshop-main > .workshop-masthead {
     width: 100% !important;
     max-width: none !important;
-    padding: 27px 4px 8px !important;
+    padding: 30px 6px 8px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: none !important;
@@ -282,18 +262,18 @@
   }
 
   .workshop-main > .workshop-masthead::before {
-    top: 43%;
+    top: 46%;
     width: 92vw;
-    height: 150px;
-    opacity: .40;
+    height: 145px;
+    opacity: .38;
   }
 
-  /* Mobile-only concept rail: concise, centered and tied directly to the Workshop content. */
+  /* Compact visual index for the three Workshop content families. */
   .workshop-main > .workshop-masthead::after {
     content: "PRACTICE  ·  FOUNDATIONS  ·  APPLIED WORK" !important;
     order: 0;
     width: 100%;
-    margin: 0 auto 13px;
+    margin: 0 auto 15px;
     display: block !important;
     color: transparent;
     background: linear-gradient(90deg, rgba(182, 148, 124, .92), #9fb1b8 48%, rgba(159, 149, 207, .94));
@@ -302,36 +282,47 @@
     font-size: .53rem;
     font-weight: 800;
     line-height: 1.35;
-    letter-spacing: .105em;
+    letter-spacing: .10em;
     text-align: center;
     white-space: nowrap;
   }
 
-  /* Keep the semantic desktop H1 in the DOM, but give mobile its own compact visual statement. */
+  /* Keep the real H1 for document semantics without letting a display headline dominate the phone layout. */
   #workshop-title.workshop-masthead-title {
-    max-width: 100% !important;
-    font-size: 0 !important;
-    line-height: 0 !important;
-    letter-spacing: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    max-width: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
   }
 
+  #workshop-title.workshop-masthead-title::before,
   #workshop-title.workshop-masthead-title::after {
-    content: "Python and AI learning,\A documented as it grows." !important;
-    width: 100%;
-    max-width: 15ch;
-    margin: 0 auto;
-    display: block !important;
-    color: #edf2f3;
-    font-size: clamp(1.46rem, 6.8vw, 1.68rem);
-    font-weight: 745;
-    line-height: 1.16;
-    letter-spacing: -.038em;
-    text-align: center;
-    white-space: pre-line;
+    content: none !important;
+    display: none !important;
   }
 
+  /* The supporting copy becomes the mobile hero statement: quiet, readable and naturally 2–3 lines. */
   .workshop-masthead-copy {
-    display: none !important;
+    order: 2;
+    display: block !important;
+    width: 100%;
+    max-width: 32ch !important;
+    margin: 0 auto !important;
+    padding: 0 3px !important;
+    color: #aebdc2 !important;
+    font-size: .90rem !important;
+    font-weight: 540 !important;
+    line-height: 1.66 !important;
+    letter-spacing: -.008em;
+    text-align: center !important;
+    text-wrap: pretty;
   }
 
   .workshop-masthead-meta {
@@ -340,10 +331,10 @@
 
   .workshop-masthead-updated {
     padding-bottom: 22px;
-    color: #81949c;
-    font-size: .61rem;
+    color: #879aa2;
+    font-size: .64rem;
     font-weight: 790;
-    letter-spacing: .075em;
+    letter-spacing: .065em;
   }
 
   .workshop-masthead-updated::after {
@@ -363,19 +354,15 @@
       opacity: 0;
       transform: translateX(-103px);
     }
-    25% {
-      opacity: .92;
-    }
-    55% {
-      opacity: .62;
-    }
+    25% { opacity: .92; }
+    55% { opacity: .62; }
     72%, 100% {
       opacity: 0;
       transform: translateX(69px);
     }
   }
 
-  /* 8px masthead tail + 18px section lead = a deliberate 26px break after the light line. */
+  /* 8px masthead tail + 18px section lead = a deliberate 26px break after the signature line. */
   .python-development-block {
     padding-top: 18px !important;
   }
@@ -418,7 +405,7 @@
     animation: workshop-mobile-copy-reveal 480ms cubic-bezier(.22, 1, .36, 1) 90ms both;
   }
 
-  body.workshop-open #workshop-title.workshop-masthead-title::after {
+  body.workshop-open .workshop-masthead-copy {
     animation: workshop-mobile-copy-reveal 540ms cubic-bezier(.22, 1, .36, 1) 160ms both;
   }
 }
@@ -431,15 +418,16 @@
 @media (max-width: 380px) {
   .workshop-main > .workshop-masthead::after {
     font-size: .49rem;
-    letter-spacing: .085em;
+    letter-spacing: .082em;
   }
 
-  #workshop-title.workshop-masthead-title::after {
-    font-size: 1.42rem;
+  .workshop-masthead-copy {
+    max-width: 30ch !important;
+    font-size: .86rem !important;
   }
 
   .workshop-masthead-updated {
-    font-size: .58rem;
+    font-size: .61rem;
   }
 
   #current-title.python-section-title {
@@ -447,10 +435,7 @@
   }
 }
 
-/*
-   Featured Practice / Learning Archive
-   One click-confirmed card sweep only. Pointer-down can move the card, but it never starts a competing shine.
-*/
+/* Featured Practice / Learning Archive: one click-confirmed sweep only. */
 .practice-milestone:active::after,
 .practice-milestone:has(.practice-milestone-action:active)::after,
 .practice-milestone:focus-within::after {
@@ -486,7 +471,7 @@
   }
 
   body.workshop-open .workshop-main > .workshop-masthead::after,
-  body.workshop-open #workshop-title.workshop-masthead-title::after {
+  body.workshop-open .workshop-masthead-copy {
     animation: none !important;
   }
 }
