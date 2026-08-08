@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.9 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.10 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -528,9 +528,6 @@ main { position: relative; background: transparent; }
 }
 
 /* Workshop entry */
-
-
-
 .workshop-entry {
   --entry-garnet-rgb: 157, 96, 128;
   --entry-indigo-rgb: 121, 120, 174;
@@ -762,9 +759,6 @@ main { position: relative; background: transparent; }
 }
 
 @media (max-width: 700px) {
-
-
-
   .workshop-entry {
     min-height: 0;
     padding: 22px 18px 20px;
@@ -1556,11 +1550,6 @@ body.workshop-open { overflow-x: hidden; }
   .portrait-frame { border-radius: 22px; }
   .portrait-stage::after { inset: 14% -7% -6% 16%; border-radius: 26px; }
   .closing-note h2, .workshop-block-heading h2 { font-size: clamp(2.18rem, 11vw, 3.35rem); }
-  .contact-links { grid-template-columns: 1fr; gap: 10px; }
-  .contact-card { min-height: 78px; }
-  .contact-card-main { grid-template-columns: 39px minmax(0, 1fr); padding: 11px 9px 11px 12px; }
-  .contact-icon { width: 39px; height: 39px; border-radius: 11px; }
-  .contact-card-action { min-width: 92px; padding: 0 8px 0 12px; margin-block: 7px; margin-right: 7px; }
   .closing-note h2 span { display: block; }
   .closing-message { max-width: 38ch; gap: 12px; }
   .closing-message p { max-width: 100%; font-size: 0.9rem; line-height: 1.82; }
@@ -1581,7 +1570,7 @@ body.workshop-open { overflow-x: hidden; }
   .error-card { border-radius: 22px; }
 }
 
-@media (max-width: 420px) { .header-inner { padding-inline: 10px; } .wordmark { font-size: 0.74rem; } .site-nav { gap: 3px; } .site-nav a { font-size: 0.64rem; } .hero { padding-top: 88px; } .contact-card-purpose { font-size: 0.64rem; } .contact-card-action { min-width: 88px; } }
+@media (max-width: 420px) { .header-inner { padding-inline: 10px; } .wordmark { font-size: 0.74rem; } .site-nav { gap: 3px; } .site-nav a { font-size: 0.64rem; } .hero { padding-top: 88px; } .contact-card-purpose { font-size: 0.64rem; } }
 @media (max-width: 1339px) { .section-stepper { display: none !important; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 @media (max-width: 350px) { .header-inner { padding-inline: 8px; gap: 6px; } .wordmark { font-size: 0.69rem; } .site-nav { gap: 2px; } .site-nav a { font-size: 0.59rem; padding-inline: 0; } .hero-copy { min-width: 0; } .hero-intro { font-size: 0.68rem; letter-spacing: -0.028em; } .hero-intro span { max-width: 100%; } .contact-action-label { display: none; } .contact-card-action { min-width: 48px; padding-inline: 8px; } .contact-action-icon { margin-inline: auto; } }
@@ -1646,7 +1635,7 @@ body.workshop-open { overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce) { .workshop-updated-divider::after { animation: none; opacity: 0; } }
 
 /* Mobile vertical rhythm refinement */
-@media (max-width: 700px) { :root { --section-space: 34px; } .hero { gap: 36px; padding-bottom: 24px; }    .contact, .closing-note { padding-block: 34px; } }
+@media (max-width: 700px) { :root { --section-space: 34px; } .hero { gap: 36px; padding-bottom: 24px; } }
 
 /* Desktop Workshop divider simplification */
 @media (min-width: 901px) { .workshop-entry-separator { display: none; } .workshop-entry { margin-top: 34px; } }
