@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.1.4
+/* Blue Continuum — Shared Visual System 1.1.5
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -120,13 +120,13 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .about-summary {
-  max-width: 940px;
+  max-width: 1040px;
   margin: 0 auto;
-  color: #aeb8c7;
-  font-size: .92rem;
-  font-weight: 480;
-  line-height: 1.76;
-  letter-spacing: -.012em;
+  color: #b4bdca;
+  font-size: 1rem;
+  font-weight: 490;
+  line-height: 1.68;
+  letter-spacing: -.014em;
   text-align: center;
   text-wrap: balance;
 }
@@ -136,23 +136,25 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .about-summary-line:first-child {
-  color: #e0e5eb;
-  font-size: 1rem;
-  font-weight: 560;
+  color: #e2e7ec;
+  font-size: 1.07rem;
+  font-weight: 590;
 }
 
 .portfolio-panel .about-summary-line:first-child strong {
-  color: #f2f4f7;
+  color: #f3f5f7;
   font-weight: 760;
 }
 
-.portfolio-panel .about-summary-line:nth-child(2),
-.portfolio-panel .about-summary-line:nth-child(3) {
-  color: #bbc3cf;
+.portfolio-panel .about-summary-line:nth-child(2) {
+  color: #c5ccd6;
 }
 
-.portfolio-panel .about-summary-line:nth-child(4),
-.portfolio-panel .about-summary-line:nth-child(5) {
+.portfolio-panel .about-summary-line:nth-child(3) {
+  color: #adb7c5;
+}
+
+.portfolio-panel .about-summary-line:nth-child(4) {
   color: #9faabc;
 }
 
@@ -285,10 +287,14 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .about-summary {
-    max-width: 940px;
+    max-width: 1040px;
     margin-inline: auto;
-    font-size: .91rem;
-    line-height: 1.72;
+    font-size: 1.02rem;
+    line-height: 1.68;
+  }
+
+  .portfolio-panel .about-summary-line {
+    white-space: nowrap;
   }
 
   .portfolio-panel .facts {
@@ -443,24 +449,28 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .about-summary {
-    max-width: 35ch;
+    max-width: 36ch;
     margin: 0 auto;
-    padding-inline: 4px;
-    font-size: clamp(.78rem, 3.24vw, .85rem);
-    line-height: 1.68;
+    padding-inline: 2px;
+    font-size: clamp(.84rem, 3.55vw, .92rem);
+    line-height: 1.62;
     text-align: center;
     text-wrap: pretty;
   }
 
   .portfolio-panel .about-summary-line {
-    display: inline;
+    display: block;
+    white-space: normal;
+  }
+
+  .portfolio-panel .about-summary-line + .about-summary-line {
+    margin-top: 2px;
   }
 
   .portfolio-panel .about-summary-line:first-child {
-    display: block;
-    margin-bottom: 7px;
-    font-size: clamp(.89rem, 3.70vw, .97rem);
-    line-height: 1.56;
+    margin-bottom: 1px;
+    font-size: clamp(.91rem, 3.80vw, .99rem);
+    line-height: 1.55;
   }
 
   .portfolio-panel .facts {
