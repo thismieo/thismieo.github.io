@@ -45,37 +45,22 @@
   --press-fx-rgb: var(--practice-accent);
 }
 
-.press-fx-surface.is-press-fx:not(.press-fx-tactile-only):not(.knowledge-card) {
-  animation: press-fx-tactile 250ms cubic-bezier(.22, 1, .36, 1) both;
-}
-
+/* Whole cards keep their authored geometry during a click. The sheen is the
+   feedback; scale/translate animations here would fight hover transforms and
+   make Journey/Project cards appear to jump or grow on mouse and touch. */
 .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
   animation: press-fx-sheen 520ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
-.knowledge-card.press-fx-surface.is-press-fx {
-  animation: press-fx-knowledge 250ms cubic-bezier(.22, 1, .36, 1) both;
-}
-
+/* Compact controls do not receive a sheen layer. A brightness pulse keeps
+   them tactile without changing their size or position. */
 .press-fx-tactile-only.is-press-fx {
   animation: press-fx-control 220ms ease both;
-}
-
-@keyframes press-fx-tactile {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  38% { transform: translate3d(0, 1px, 0) scale(.994); }
-  100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 @keyframes press-fx-control {
   0% { filter: brightness(1); }
   42% { filter: brightness(1.07); }
-  100% { filter: brightness(1); }
-}
-
-@keyframes press-fx-knowledge {
-  0% { filter: brightness(1); }
-  42% { filter: brightness(1.035); }
   100% { filter: brightness(1); }
 }
 
