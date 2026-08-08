@@ -1,3 +1,15 @@
+# Blue Continuum 4.5.5 — Workshop Intro & Focus Tag Refinement
+
+1. Moved the two-line Workshop prelude outside the gateway card and promoted it into the shared homepage section-intro hierarchy under a new `Learning in practice` eyebrow.
+2. Replaced the moved in-card prelude with a shorter, distinct card note and tightened the Workshop body copy to avoid repeating the external introduction.
+3. Removed the separate blurred symbol tiles inside Workshop focus pills; symbols now sit directly inside the same clear pill surface as their labels.
+4. Increased focus-pill border/background clarity while retaining the restrained Blue Continuum palette.
+5. Added two new Workshop focus pills — `Σ Data` and `ML Models` — with garnet and moonstone/periwinkle-derived accents.
+6. Preserved the Workshop gateway gradient, Living archive badge, periodic CTA shine and compact transition into Project Roadmap.
+7. Refreshed Portfolio and shared visual-system cache metadata to 4.5.5 / 1.2.6.
+
+---
+
 # Blue Continuum 4.5.4 — Journey Index & Workshop Prelude Refinement
 
 1. Reworked all five Journey stage headers into the same compact editorial index language used by Workshop practice cards: `01 · Programming foundation` through `05 · Language systems`.

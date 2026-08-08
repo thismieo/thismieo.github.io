@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.2.5
+/* Blue Continuum — Shared Visual System 1.2.6
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -354,6 +354,7 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel #journey .section-intro { --intro-start: #9fb3c2; --intro-end: #aaa0c2; }
+.portfolio-panel #journey .section-intro-workshop { --intro-start: #b6a1b2; --intro-end: #92b0bb; }
 .portfolio-panel #projects .section-intro { --intro-start: #b5a792; --intro-end: #a89aba; }
 .portfolio-panel #contact .section-intro { --intro-start: #9db5b5; --intro-end: #a99cba; }
 
