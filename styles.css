@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.3 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.4 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -286,31 +286,12 @@ main { position: relative; background: transparent; }
   gap: 14px;
 }
 
-.timeline-stage-meta {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.timeline-number {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  flex: none;
-  color: rgba(var(--accent-rgb), .98);
-  font-size: .76rem;
-  font-weight: 850;
-  line-height: 1;
-  letter-spacing: .12em;
-}
-
-.timeline-kicker {
+.timeline-index {
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  color: rgba(211, 222, 225, .78);
-  font-size: .58rem;
+  color: rgba(var(--accent-rgb), .98);
+  font-size: .61rem;
   font-weight: 800;
   line-height: 1.3;
   letter-spacing: .12em;
@@ -525,9 +506,7 @@ main { position: relative; background: transparent; }
   }
 
   .timeline-card-head { gap: 10px; }
-  .timeline-stage-meta { gap: 8px; }
-  .timeline-number { gap: 0; font-size: .72rem; }
-  .timeline-kicker { font-size: .54rem; letter-spacing: .105em; }
+  .timeline-index { font-size: .59rem; letter-spacing: .105em; }
   .timeline-state { padding: 6px 8px; font-size: .53rem; letter-spacing: .065em; }
 
   .timeline-item h3 {
@@ -601,13 +580,34 @@ main { position: relative; background: transparent; }
   gap: 16px;
 }
 
-.workshop-entry-label {
-  color: #a8b7be;
-  font-size: .61rem;
-  font-weight: 820;
-  line-height: 1.3;
-  letter-spacing: .135em;
-  text-transform: uppercase;
+.workshop-entry-prelude {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.workshop-entry-prelude > span { display: block; }
+
+.workshop-entry-prelude-primary {
+  color: #d2dade;
+  font-size: .72rem;
+  font-weight: 690;
+  line-height: 1.42;
+  letter-spacing: -.010em;
+}
+
+.workshop-entry-prelude-secondary {
+  width: fit-content;
+  max-width: 58ch;
+  color: #a4aabd;
+  font-size: .62rem;
+  font-weight: 590;
+  line-height: 1.45;
+  letter-spacing: .008em;
+  background-image: linear-gradient(96deg, #b8a0b1 0%, #a5a6c2 48%, #91b0ba 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .workshop-entry-badge {
@@ -784,7 +784,9 @@ main { position: relative; background: transparent; }
   }
 
   .workshop-entry-topline { align-items: flex-start; gap: 10px; }
-  .workshop-entry-label { max-width: 24ch; font-size: .56rem; line-height: 1.45; }
+  .workshop-entry-prelude { gap: 2px; }
+  .workshop-entry-prelude-primary { font-size: .68rem; line-height: 1.42; }
+  .workshop-entry-prelude-secondary { max-width: 30ch; font-size: .58rem; line-height: 1.46; }
   .workshop-entry-badge { padding: 5px 8px; font-size: .50rem; }
   .workshop-entry-title { margin-top: 15px; font-size: clamp(2.05rem, 10vw, 2.65rem); }
   .workshop-entry-copy { margin-top: 11px; font-size: .80rem; line-height: 1.70; }

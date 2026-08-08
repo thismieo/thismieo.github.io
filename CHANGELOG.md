@@ -1,3 +1,13 @@
+# Blue Continuum 4.5.4 — Journey Index & Workshop Prelude Refinement
+
+1. Reworked all five Journey stage headers into the same compact editorial index language used by Workshop practice cards: `01 · Programming foundation` through `05 · Language systems`.
+2. Removed the split Journey number/kicker styling so each stage now has one stable, consistently positioned metadata line beside its status badge on desktop and mobile.
+3. Replaced the Workshop gateway's single uppercase label with a two-line prelude above `The Workshop`: a pearl primary line and a restrained garnet-to-steel gradient secondary line.
+4. Preserved the `Living archive` badge, Workshop focus signals, periodic CTA shine, gateway gradient and the tightened transition into Project Roadmap.
+5. Refreshed the Portfolio stylesheet cache key and visible release metadata to 4.5.4.
+
+---
+
 # Blue Continuum 4.5.3 — Workshop Gateway Polish
 
 1. Rebuilt the homepage Workshop entry as a dedicated gateway card rather than a generic section card.
