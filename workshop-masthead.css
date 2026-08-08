@@ -388,8 +388,40 @@
   }
 }
 
+/*
+   Featured Practice / Learning Archive
+   One click-confirmed card sweep only. Pointer-down can move the card, but it never starts a competing shine.
+*/
+.practice-milestone:active::after,
+.practice-milestone:has(.practice-milestone-action:active)::after,
+.practice-milestone:focus-within::after {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+.practice-milestone.press-surface.is-pressed::after,
+.practice-milestone.is-pressed::after {
+  opacity: 1 !important;
+  animation: practice-click-sweep 560ms var(--ease) both !important;
+}
+
+@keyframes practice-click-sweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(-175%, 0, 0) skewX(-12deg);
+  }
+  12% { opacity: .88; }
+  72% { opacity: .68; }
+  100% {
+    opacity: 0;
+    transform: translate3d(265%, 0, 0) skewX(-12deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .workshop-masthead-updated::before {
+  .workshop-masthead-updated::before,
+  .practice-milestone.press-surface.is-pressed::after,
+  .practice-milestone.is-pressed::after {
     display: none !important;
     animation: none !important;
   }
