@@ -1,3 +1,18 @@
+# Blue Continuum 4.4.0 — Production Consolidation
+
+1. Consolidated all live Workshop styling into `workshop-integrated.css` and removed the obsolete `workshop-base.css` and `workshop-masthead.css` layers.
+2. Removed the historical pointer-down press engine from `script.js` and the duplicate Featured/Archive press pulse from `workshop-integrated.js`.
+3. Rebuilt click feedback around one click-confirmed DOM sheen layer so structural card separators never share pseudo-element ownership with interaction effects.
+4. Kept navigation and compact controls tactile-only so transitions cannot cut a long shimmer in half.
+5. Corrected the Learning Archive static fallback content and horizontal selector ARIA orientation before JavaScript hydration.
+6. Preserved natural vertical page scrolling: opening, closing and selecting Featured Practice or Learning Archive never moves the page vertically.
+7. Fixed knowledge-card containment so Foundation separators can render outside card bounds without clipping.
+8. Normalized visible release metadata and cache keys to Portfolio 4.4.0, Workshop 6.0.0 and Interaction Engine 1.1.0.
+9. Validated JavaScript syntax, CSS parsing and responsive Workshop behavior in Chromium at 350, 390, 700, 900, 1024 and 1440 px viewports.
+10. Verified no horizontal overflow in the tested viewports and confirmed whole-card feedback for Featured Practice / Learning Archive.
+
+---
+
 # Blue Continuum 4.1.9 — Refined Workshop Dividers
 
 1. Removed the `Understood`, `Applied`, and `Upcoming` Workshop legend and its status-dot markup.
