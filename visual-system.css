@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.0
+/* Blue Continuum — Shared Visual System 1.5.1
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -200,8 +200,8 @@ body:not(.workshop-open)::before {
   --surface-b-rgb: 12, 27, 35;
   position: relative;
   min-width: 0;
-  min-height: 90px;
-  padding: 15px 18px 15px 62px;
+  min-height: 96px;
+  padding: 16px 18px 16px 82px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -259,9 +259,9 @@ body:not(.workshop-open)::before {
 .portfolio-panel .facts dt {
   position: static;
   width: fit-content;
-  min-height: 26px;
+  min-height: 28px;
   margin: 0;
-  padding: 5px 9px;
+  padding: 6px 10px;
   display: inline-flex;
   align-items: center;
   border: 1px solid rgba(var(--accent-rgb), .18);
@@ -279,9 +279,9 @@ body:not(.workshop-open)::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: 18px;
-  width: 28px;
-  height: 28px;
+  left: 28px;
+  width: 22px;
+  height: 22px;
   background: rgb(var(--accent-rgb));
   transform: translateY(-50%);
   opacity: .95;
@@ -291,6 +291,37 @@ body:not(.workshop-open)::before {
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
+  z-index: 2;
+}
+
+.portfolio-panel .facts dt::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 16px;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(var(--accent-rgb), .20);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(var(--accent-rgb), .135), rgba(var(--accent-rgb), .045));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.028),
+    0 8px 18px rgba(0, 6, 12, .10);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.portfolio-panel .facts > div::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 69px;
+  width: 1px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, rgba(var(--accent-rgb), .20) 25%, rgba(var(--accent-rgb), .12) 75%, transparent);
+  pointer-events: none;
 }
 
 .portfolio-panel .facts > div:nth-child(1) dt::before {
@@ -668,23 +699,36 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .facts > div {
-    min-height: 82px;
-    padding: 13px 14px 13px 57px;
+    min-height: 92px;
+    padding: 14px 14px 14px 76px;
     border-radius: 17px;
     gap: 5px;
   }
 
   .portfolio-panel .facts dt {
-    min-height: 25px;
-    padding: 5px 8px;
-    font-size: .57rem;
+    min-height: 27px;
+    padding: 6px 9px;
+    font-size: .58rem;
     letter-spacing: .12em;
   }
 
   .portfolio-panel .facts dt::before {
-    left: 15px;
-    width: 26px;
-    height: 26px;
+    left: 25px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .portfolio-panel .facts dt::after {
+    left: 13px;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+
+  .portfolio-panel .facts > div::after {
+    top: 17px;
+    bottom: 17px;
+    left: 65px;
   }
 
   .portfolio-panel .facts dd {
@@ -731,8 +775,10 @@ body:not(.workshop-open)::before {
 }
 
 @media (max-width: 380px) {
-  .portfolio-panel .facts > div { padding-left: 54px; padding-right: 12px; }
-  .portfolio-panel .facts dt::before { left: 14px; width: 25px; height: 25px; }
+  .portfolio-panel .facts > div { padding-left: 72px; padding-right: 12px; }
+  .portfolio-panel .facts dt::before { left: 23px; width: 19px; height: 19px; }
+  .portfolio-panel .facts dt::after { left: 12px; width: 42px; height: 42px; border-radius: 12px; }
+  .portfolio-panel .facts > div::after { left: 61px; }
   .portfolio-panel .facts dt { font-size: .55rem; }
   .portfolio-panel .facts dd { font-size: .74rem; }
   .portfolio-panel .about-education-value { font-size: .70rem; }

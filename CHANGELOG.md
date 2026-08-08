@@ -1,3 +1,12 @@
+# Blue Continuum 4.5.21 — About Icon Hierarchy Polish
+
+1. Refined the four About cards without changing their contact-derived layout or content.
+2. Added a restrained icon holder and a short internal accent divider so the icon rail feels intentional instead of visually floating.
+3. Increased badge presence and card breathing room while preserving safe wrapping for the Education value on phone widths.
+4. Kept the clean interaction baseline intact: no press-fx, sheen, shine or shimmer runtime was reintroduced.
+
+---
+
 # Blue Continuum 4.5.20 — Clean Interaction Baseline & Contact-Derived About
 
 1. Removed the site-wide click sheen system completely so the production baseline contains no injected sheen layers, press-fx runtime, legacy compatibility branch or click-highlight animation.
