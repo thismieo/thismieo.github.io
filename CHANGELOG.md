@@ -1,3 +1,15 @@
+# Blue Continuum 4.5.14 — Workshop-Derived Press Stack Rebuild
+
+1. Made The Workshop gateway the canonical interaction reference for every sheen-bearing card across the homepage and Workshop.
+2. Consolidated decorative root layers behind card content with one isolated paint stack, leaving the shared press sheen as the only animated full-card highlight.
+3. Corrected About, Current Track, Practice and Knowledge card stacking so their static `::before` treatments no longer sit in a competing foreground layer.
+4. Rebuilt Knowledge cards around `overflow: hidden`, `contain: paint` and `isolation: isolate` to match The Workshop rendering path on desktop and phone.
+5. Removed legacy card lift transforms from Practice, Current Track and Knowledge hover behavior so card geometry remains fixed while feedback runs.
+6. Replaced Foundation card-owned separator pseudos with three explicit grid separators, eliminating responsive rules that repurposed `::before` / `::after` differently across desktop, tablet and phone.
+7. Preserved the existing card palettes, content, spacing intent and the canonical 520ms press sheen while reducing conflicting render layers instead of adding another override.
+
+---
+
 # Blue Continuum 4.5.13 — Site-wide Sheen Unification & Deep Audit
 
 1. Promoted the restrained About-card click sheen into one canonical Pearl/Mist feedback language for every sheen-bearing card across Portfolio and Workshop.
