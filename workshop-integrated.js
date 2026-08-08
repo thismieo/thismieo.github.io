@@ -126,7 +126,7 @@
   const BUILTINS = new Set(["input", "print", "int", "float", "str", "round", "len", "range", "min", "max", "sum"]);
   const CONSTANTS = new Set(["True", "False", "None"]);
   const OP2 = new Set(["==", "!=", "<=", ">=", "**", "//", "+=", "-=", "*=", "/=", "%="]);
-  const OP1 = new Set(["=", "+", "-", "*", "/", "%", "<", ">"]);
+  const OP1 = new Set(["=", "+", "-", "*", "/", "%", "<", ">");
   const BRACKETS = new Set(["(", ")", "[", "]", "{", "}"]);
   const PUNCT = new Set([":", ",", "."]);
 
@@ -138,6 +138,7 @@
   const activeIndex = { featured: 0, archive: 0 };
   const selectorState = Object.create(null);
   const copyTimers = new WeakMap();
+  const practicePressTimers = new WeakMap();
   const workshopView = root.closest(".workshop-view");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let openGroupName = "";
@@ -158,6 +159,25 @@
     const stableHeight = Math.ceil(Math.max(workshopView.scrollHeight, window.innerHeight));
     workshopView.style.setProperty("--workshop-bg-height", `${stableHeight}px`);
     workshopBackgroundFrozen = true;
+  };
+
+  const pulsePracticeCard = (button) => {
+    const card = button.closest("[data-practice-card]");
+    if (!card) return;
+
+    const previousTimer = practicePressTimers.get(card);
+    if (previousTimer) window.clearTimeout(previousTimer);
+
+    card.classList.add("press-surface");
+    card.classList.remove("is-pressed");
+    void card.offsetWidth;
+    card.classList.add("is-pressed");
+
+    const timer = window.setTimeout(() => {
+      card.classList.remove("is-pressed");
+      practicePressTimers.delete(card);
+    }, reduceMotion ? 120 : 590);
+    practicePressTimers.set(card, timer);
   };
 
   const addToken = (parent, text, className = "") => {
@@ -445,6 +465,8 @@
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
+      if (event.detail > 0) button.blur();
+      pulsePracticeCard(button);
       toggleGroup(button.dataset.practiceGroup);
     });
   });
