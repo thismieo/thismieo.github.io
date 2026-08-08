@@ -45,6 +45,15 @@
 
   const isTactileOnly = (surface) => surface.matches(directControlSelector);
 
+  const insertFeedbackLayer = (surface, layer) => {
+    // Keep the authored first and last children intact. Some card layouts use
+    // structural selectors such as :last-child, so the visual feedback layer
+    // must never become the first or last semantic child of those components.
+    const anchor = surface.children.length > 1 ? surface.children[1] : null;
+    if (anchor) surface.insertBefore(layer, anchor);
+    else surface.appendChild(layer);
+  };
+
   const prepareSurface = (surface) => {
     const tactileOnly = isTactileOnly(surface);
     surface.classList.add("press-fx-surface");
@@ -62,7 +71,7 @@
     const sheen = document.createElement("span");
     sheen.className = "press-fx-sheen";
     layer.appendChild(sheen);
-    surface.appendChild(layer);
+    insertFeedbackLayer(surface, layer);
   };
 
   const pulse = (surface) => {
