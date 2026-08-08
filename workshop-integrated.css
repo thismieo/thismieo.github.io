@@ -1,4 +1,4 @@
-/* Workshop 6.0.5 — consolidated production stylesheet.
+/* Workshop 6.0.6 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -1146,8 +1146,9 @@ body.workshop-open .workshop-masthead-copy {
 }
 
 .workshop-grid-featured {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 28px !important;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) 1px minmax(0, 1fr) !important;
+  column-gap: var(--continuum-card-divider-gap, 14px) !important;
+  row-gap: 0 !important;
 }
 
 .knowledge-application-merged .knowledge-card {
@@ -1172,7 +1173,14 @@ body.workshop-open .workshop-masthead-copy {
 }
 
 .knowledge-application-merged .workshop-grid-foundation > .knowledge-card { min-height: 510px !important; }
-.knowledge-application-merged .workshop-grid-featured > .knowledge-card { min-height: 456px !important; }
+.knowledge-application-merged .workshop-grid-featured > .knowledge-card {
+  min-height: 456px !important;
+  border-color: rgba(var(--accent-rgb), .19) !important;
+  background:
+    linear-gradient(146deg, rgba(var(--accent-rgb), .032), transparent 43%),
+    linear-gradient(150deg, rgba(14, 26, 35, .992), rgba(7, 17, 25, .998)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.018), 0 11px 25px rgba(0, 5, 10, .085) !important;
+}
 
 .knowledge-card-head {
   display: flex;
@@ -1329,20 +1337,20 @@ body.workshop-open .workshop-masthead-copy {
 .workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 106, 157, 190; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Ccircle%20cx%3D'10'%20cy%3D'10'%20r%3D'6'%2F%3E%3Cpath%20d%3D'M10%206v4l3%202'%2F%3E%3C%2Fsvg%3E"); }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 182, 125, 145; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M10%202.8%2016%205v4.4c0%203.6-2.5%206.2-6%207.8-3.5-1.6-6-4.2-6-7.8V5l6-2.2Z'%2F%3E%3Cpath%20d%3D'M10%206.5v4M10%2013.5h.01'%2F%3E%3C%2Fsvg%3E"); }
 
-.workshop-grid-featured > .knowledge-card:nth-child(1) { --main-icon-rgb: 177, 127, 160; }
-.workshop-grid-featured > .knowledge-card:nth-child(1) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 196, 151, 106; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'4'%20y%3D'3'%20width%3D'12'%20height%3D'14'%20rx%3D'2'%2F%3E%3Cpath%20d%3D'M7%207h6M7%2010h4M7%2013h5'%2F%3E%3C%2Fsvg%3E"); }
-.workshop-grid-featured > .knowledge-card:nth-child(1) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 103, 155, 201; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M3%205.5c2.3-.9%204.6-.7%207%20.7v9c-2.4-1.4-4.7-1.6-7-.7v-9ZM17%205.5c-2.3-.9-4.6-.7-7%20.7v9c2.4-1.4%204.7-1.6%207-.7v-9Z'%2F%3E%3C%2Fsvg%3E"); }
-.workshop-grid-featured > .knowledge-card:nth-child(1) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 151, 136, 199; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M4%206h12M4%2010h12M4%2014h12'%2F%3E%3Ccircle%20cx%3D'7'%20cy%3D'6'%20r%3D'1.4'%2F%3E%3Ccircle%20cx%3D'12'%20cy%3D'10'%20r%3D'1.4'%2F%3E%3Ccircle%20cx%3D'9'%20cy%3D'14'%20r%3D'1.4'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --main-icon-rgb: 177, 127, 160; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 196, 151, 106; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'4'%20y%3D'3'%20width%3D'12'%20height%3D'14'%20rx%3D'2'%2F%3E%3Cpath%20d%3D'M7%207h6M7%2010h4M7%2013h5'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 103, 155, 201; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M3%205.5c2.3-.9%204.6-.7%207%20.7v9c-2.4-1.4-4.7-1.6-7-.7v-9ZM17%205.5c-2.3-.9-4.6-.7-7%20.7v9c2.4-1.4%204.7-1.6%207-.7v-9Z'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 151, 136, 199; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M4%206h12M4%2010h12M4%2014h12'%2F%3E%3Ccircle%20cx%3D'7'%20cy%3D'6'%20r%3D'1.4'%2F%3E%3Ccircle%20cx%3D'12'%20cy%3D'10'%20r%3D'1.4'%2F%3E%3Ccircle%20cx%3D'9'%20cy%3D'14'%20r%3D'1.4'%2F%3E%3C%2Fsvg%3E"); }
 
-.workshop-grid-featured > .knowledge-card:nth-child(2) { --main-icon-rgb: 99, 176, 164; }
-.workshop-grid-featured > .knowledge-card:nth-child(2) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 98, 184, 177; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Ccircle%20cx%3D'5'%20cy%3D'5'%20r%3D'2'%2F%3E%3Ccircle%20cx%3D'15'%20cy%3D'10'%20r%3D'2'%2F%3E%3Ccircle%20cx%3D'5'%20cy%3D'15'%20r%3D'2'%2F%3E%3Cpath%20d%3D'M7%205h3a3%203%200%200%201%203%203M7%2015h3a3%203%200%200%200%203-3'%2F%3E%3C%2Fsvg%3E"); }
-.workshop-grid-featured > .knowledge-card:nth-child(2) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 105, 158, 201; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'm8.2%2012.8-1.5%201.5a3%203%200%200%201-4.2-4.2L5%207.6a3%203%200%200%201%204.2%200M11.8%207.2l1.5-1.5a3%203%200%201%201%204.2%204.2L15%2012.4a3%203%200%200%201-4.2%200M7.5%2012.5l5-5'%2F%3E%3C%2Fsvg%3E"); }
-.workshop-grid-featured > .knowledge-card:nth-child(2) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 193, 150, 106; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M15.5%206A6%206%200%200%200%205%205l-2%202M4.5%2014A6%206%200%200%200%2015%2015l2-2'%2F%3E%3Cpath%20d%3D'M3%203v4h4M17%2017v-4h-4'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --main-icon-rgb: 99, 176, 164; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 98, 184, 177; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Ccircle%20cx%3D'5'%20cy%3D'5'%20r%3D'2'%2F%3E%3Ccircle%20cx%3D'15'%20cy%3D'10'%20r%3D'2'%2F%3E%3Ccircle%20cx%3D'5'%20cy%3D'15'%20r%3D'2'%2F%3E%3Cpath%20d%3D'M7%205h3a3%203%200%200%201%203%203M7%2015h3a3%203%200%200%200%203-3'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 105, 158, 201; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'm8.2%2012.8-1.5%201.5a3%203%200%200%201-4.2-4.2L5%207.6a3%203%200%200%201%204.2%200M11.8%207.2l1.5-1.5a3%203%200%201%201%204.2%204.2L15%2012.4a3%203%200%200%201-4.2%200M7.5%2012.5l5-5'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 193, 150, 106; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M15.5%206A6%206%200%200%200%205%205l-2%202M4.5%2014A6%206%200%200%200%2015%2015l2-2'%2F%3E%3Cpath%20d%3D'M3%203v4h4M17%2017v-4h-4'%2F%3E%3C%2Fsvg%3E"); }
 
-.workshop-grid-featured > .knowledge-card:nth-child(3) { --main-icon-rgb: 143, 132, 202; }
-.workshop-grid-featured > .knowledge-card:nth-child(3) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 101, 159, 204; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'2.5'%20y%3D'3.5'%20width%3D'15'%20height%3D'13'%20rx%3D'2'%2F%3E%3Cpath%20d%3D'M2.5%207h15M6%205.3h.01M8.5%205.3h.01'%2F%3E%3C%2Fsvg%3E"); }
-.workshop-grid-featured > .knowledge-card:nth-child(3) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 181, 128, 158; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'3'%20y%3D'4'%20width%3D'14'%20height%3D'12'%20rx%3D'2'%2F%3E%3Ccircle%20cx%3D'7'%20cy%3D'8'%20r%3D'1.4'%2F%3E%3Cpath%20d%3D'm5%2014%203.5-3.5%202.4%202.2%202.1-2.1%202%203.4'%2F%3E%3C%2Fsvg%3E"); }
-.workshop-grid-featured > .knowledge-card:nth-child(3) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 196, 152, 107; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M15.5%206A6%206%200%200%200%205.2%204.8L3%207M4.5%2014A6%206%200%200%200%2014.8%2015.2L17%2013'%2F%3E%3Cpath%20d%3D'M3%203v4h4M17%2017v-4h-4'%2F%3E%3Cpath%20d%3D'm8%2010%201.5%201.5L12.5%208'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --main-icon-rgb: 143, 132, 202; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 101, 159, 204; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'2.5'%20y%3D'3.5'%20width%3D'15'%20height%3D'13'%20rx%3D'2'%2F%3E%3Cpath%20d%3D'M2.5%207h15M6%205.3h.01M8.5%205.3h.01'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 181, 128, 158; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20x%3D'3'%20y%3D'4'%20width%3D'14'%20height%3D'12'%20rx%3D'2'%2F%3E%3Ccircle%20cx%3D'7'%20cy%3D'8'%20r%3D'1.4'%2F%3E%3Cpath%20d%3D'm5%2014%203.5-3.5%202.4%202.2%202.1-2.1%202%203.4'%2F%3E%3C%2Fsvg%3E"); }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 196, 152, 107; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M15.5%206A6%206%200%200%200%205.2%204.8L3%207M4.5%2014A6%206%200%200%200%2014.8%2015.2L17%2013'%2F%3E%3Cpath%20d%3D'M3%203v4h4M17%2017v-4h-4'%2F%3E%3Cpath%20d%3D'm8%2010%201.5%201.5L12.5%208'%2F%3E%3C%2Fsvg%3E"); }
 
 /* Foundation separators are independent grid elements, never card pseudos. */
 @media (min-width: 1051px) {
@@ -1408,7 +1416,23 @@ body.workshop-open .workshop-masthead-copy {
 }
 
 @media (max-width: 900px) {
-  .workshop-grid-featured { grid-template-columns: 1fr !important; }
+  .workshop-grid-featured {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto 40px auto 40px auto !important;
+    gap: 0 !important;
+  }
+  .workshop-grid-featured > .knowledge-card:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+  .workshop-grid-featured > .applied-card-separator-1 { grid-column: 1; grid-row: 2; }
+  .workshop-grid-featured > .knowledge-card:nth-of-type(2) { grid-column: 1; grid-row: 3; }
+  .workshop-grid-featured > .applied-card-separator-2 { grid-column: 1; grid-row: 4; }
+  .workshop-grid-featured > .knowledge-card:nth-of-type(3) { grid-column: 1; grid-row: 5; }
+  .workshop-grid-featured > .applied-card-separator {
+    width: 76%;
+    height: 1px;
+    align-self: center;
+    justify-self: center;
+    background: linear-gradient(90deg, transparent, rgba(142, 160, 166, .10) 14%, rgba(164, 173, 177, .34) 48%, rgba(151, 143, 166, .16) 80%, transparent);
+  }
   .knowledge-application-merged .workshop-grid-featured > .knowledge-card { min-height: 0 !important; }
   .workshop-grid-featured .knowledge-card-topics { flex: none; grid-template-rows: none; }
   .python-development-block .current-track-card { grid-template-columns: 1fr; gap: 28px; }
@@ -1540,7 +1564,11 @@ body.workshop-open .workshop-masthead-copy {
     align-self: center;
     background: linear-gradient(90deg, transparent, rgba(142, 160, 166, .10) 14%, rgba(164, 173, 177, .34) 48%, rgba(151, 143, 166, .16) 80%, transparent);
   }
-  .workshop-grid-featured { gap: 18px !important; }
+  .workshop-grid-featured {
+    grid-template-rows: auto calc(var(--continuum-divider-space-mobile, 22px) * 2) auto calc(var(--continuum-divider-space-mobile, 22px) * 2) auto !important;
+    gap: 0 !important;
+  }
+  .workshop-grid-featured > .applied-card-separator { width: 72%; }
   .knowledge-application-merged .knowledge-card { min-height: 0 !important; padding: 23px 19px 20px !important; border-radius: 17px !important; }
   .knowledge-card-head { margin-bottom: 19px; }
   .knowledge-card-icon { width: 54px; height: 54px; flex-basis: 54px; border-radius: 15px; }

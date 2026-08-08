@@ -1,3 +1,13 @@
+# Blue Continuum 4.5.22 — Applied Practice Dividers & Final Stability Pass
+
+1. Added explicit separators between the three Applied practice cards, matching the Workshop divider language on desktop, tablet and phone.
+2. Standardized Applied practice card-to-divider spacing to the same card rhythm used elsewhere: centered vertical dividers on desktop and balanced horizontal breathing room on narrow screens.
+3. Replaced Applied practice card `nth-child()` ownership with `nth-of-type()` so the new separator elements can never disturb semantic icon and topic-mask assignment.
+4. Reduced the Applied practice surface haze with a more opaque base, softer accent wash and tighter shadow spread while preserving each card's palette and content.
+5. Ran a final regression and hygiene pass covering Home, About, Journey, Projects, Contact, Workshop, divider geometry, Knowledge masks, responsive overflow, JavaScript syntax and the removed click-shine baseline.
+
+---
+
 # Blue Continuum 4.5.21 — About Icon Hierarchy Polish
 
 1. Refined the four About cards without changing their contact-derived layout or content.
