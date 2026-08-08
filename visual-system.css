@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.1.3
+/* Blue Continuum — Shared Visual System 1.1.4
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -98,27 +98,19 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .about-grid {
-  gap: clamp(20px, 2vw, 26px);
+  gap: clamp(10px, 1.2vw, 14px);
 }
 
 .portfolio-panel .about .section-heading {
   width: 100%;
   max-width: 1080px;
   margin-inline: auto;
+  text-align: center;
 }
 
 .portfolio-panel .about .eyebrow {
+  margin: 0;
   color: #aaa8c2;
-}
-
-.portfolio-panel #about-title {
-  color: #eef2f5;
-  background-image: linear-gradient(96deg, #f0f4f6 8%, #d9dce9 52%, #c4cde0 78%, #d7c8d5 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 15px 34px rgba(7, 9, 22, .12);
-  text-transform: none;
 }
 
 .portfolio-panel .about-content {
@@ -261,7 +253,7 @@ body:not(.workshop-open)::before {
   letter-spacing: -.012em;
 }
 
-/* Education copy — two-part reading rhythm. */
+/* Education copy — fixed two-line reading rhythm. */
 .portfolio-panel .about-education-value {
   color: #c8cbd4;
   font-size: .70rem;
@@ -272,25 +264,22 @@ body:not(.workshop-open)::before {
 
 .portfolio-panel .about-education-value > span {
   display: block;
-}
-
-@media (min-width: 381px) {
-  .portfolio-panel .about-education-value > span { white-space: nowrap; }
+  white-space: nowrap;
 }
 
 @media (max-width: 700px) {
-  .portfolio-panel .about-education-value { font-size: .66rem; }
+  .portfolio-panel .facts > div:nth-child(2) {
+    grid-template-columns: minmax(0, 88px) minmax(0, 1fr);
+  }
+
+  .portfolio-panel .about-education-value {
+    font-size: .62rem;
+    letter-spacing: -.024em;
+  }
 }
 
 
 @media (min-width: 901px) {
-  .portfolio-panel #about-title {
-    width: 100%;
-    max-width: 1080px !important;
-    font-size: clamp(2.2rem, 2.6vw, 2.7rem) !important;
-    white-space: nowrap !important;
-  }
-
   .portfolio-panel .about-content {
     display: block;
   }
@@ -435,11 +424,6 @@ body:not(.workshop-open)::before {
   }
 
   /* Homepage About typography and compact information rows. */
-  #about-title {
-    --mobile-title-copy: "Learning with direction\A Building through practice";
-    --mobile-title-size: 7.45vw;
-  }
-
   .portfolio-panel .about {
     background: transparent !important;
     background-image: none !important;
@@ -449,15 +433,8 @@ body:not(.workshop-open)::before {
     width: var(--continuum-divider-width-mobile) !important;
   }
 
-  .portfolio-panel #about-title::after {
-    background-image: linear-gradient(96deg, #f0f4f6 8%, #d9dce9 52%, #c4cde0 78%, #d7c8d5 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
   .portfolio-panel .about-grid {
-    gap: 19px;
+    gap: 9px;
   }
 
   .portfolio-panel .about-content {
@@ -547,10 +524,6 @@ body:not(.workshop-open)::before {
 }
 
 @media (max-width: 380px) {
-  .portfolio-panel #about-title {
-    --mobile-title-size: 7.20vw;
-  }
-
   .portfolio-panel .facts > div {
     grid-template-columns: minmax(0, 106px) minmax(0, 1fr);
     gap: 8px;
