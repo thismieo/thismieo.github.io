@@ -5,14 +5,16 @@
   const iosMatch = navigator.userAgent.match(/(?:iPhone|iPad|iPod).*OS\s(\d+)[_\.]/i);
   const legacyWebKit = Boolean(iosMatch && Number(iosMatch[1]) <= 16);
   document.documentElement.classList.toggle("press-fx-legacy-webkit", legacyWebKit);
-  const cardSelector = [".facts > div", ".timeline-item", ".project-card", ".workshop-entry", ".current-track-card", ".practice-milestone", ".knowledge-card", ".workshop-card", ".contact-card"].join(", ");
-  const directControlSelector = [".hero-cta", ".workshop-entry-action", ".workshop-back", ".workshop-closing .button", ".contact-card-action", ".section-stepper", ".practice-selector-card", ".practice-collection-close", ".practice-copy-button"].join(", ");
+  const cardSelector = [".facts > div", ".timeline-item", ".project-card", ".workshop-entry", ".current-track-card", ".practice-milestone", ".practice-selector-card", ".knowledge-card", ".workshop-card", ".contact-card"].join(", ");
+  const directControlSelector = [".hero-cta", ".workshop-entry-action", ".workshop-back", ".workshop-closing .button", ".contact-card-action", ".section-stepper", ".practice-collection-close", ".practice-copy-button"].join(", ");
   const resolveSurface = (target) => {
     if (!(target instanceof Element)) return null;
     const practiceAction = target.closest("[data-practice-group]");
     if (practiceAction) return practiceAction.closest("[data-practice-card]");
     const contactAction = target.closest(".contact-card-action");
     if (contactAction) return contactAction.closest(".contact-card");
+    const workshopEntryAction = target.closest(".workshop-entry-action");
+    if (workshopEntryAction) return workshopEntryAction.closest(".workshop-entry");
     const directControl = target.closest(directControlSelector);
     if (directControl) return directControl;
     const card = target.closest(cardSelector);

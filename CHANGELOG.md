@@ -1,3 +1,13 @@
+# Blue Continuum 4.5.18 — Regression Repair & Visual Integrity Audit
+
+1. Restored the actual 1px Project roadmap separator stroke on phone; the 44px separator container was present in 4.5.17 but its inner span had lost visible geometry.
+2. Repaired Foundation semantic icon ownership by changing interleaved-card selectors from nth-child() to nth-of-type(), preventing missing masks from rendering as solid squares.
+3. Removed the superseded Foundation card pseudo-divider rule so independent separator elements remain the only card-to-card divider owner.
+4. Routed The Workshop CTA and Practice selector cards through the canonical card sheen path, keeping card-like interactions on the same 520ms timing language.
+5. Added deep browser regression checks for visible divider strokes, Foundation icon masks, card sheen timing/targets, overflow and responsive integrity.
+
+---
+
 # Blue Continuum 4.5.17 — Divider & Spacing Rhythm Audit
 
 1. Restored the Journey → Workshop divider on desktop and gave it the same symmetric section spacing used across the homepage.

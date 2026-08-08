@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.3.0
+/* Blue Continuum — Shared Visual System 1.3.1
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -551,6 +551,13 @@ body:not(.workshop-open)::before {
   box-shadow: var(--continuum-divider-shadow) !important;
 }
 
+.portfolio-panel .project-mobile-separator > span {
+  height: 1px !important;
+  display: block !important;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
 .portfolio-panel .project-separator {
   background: var(--continuum-divider-line-vertical) !important;
   box-shadow: var(--continuum-divider-shadow) !important;
@@ -631,15 +638,6 @@ body:not(.workshop-open)::before {
 
   .workshop-closing {
     padding-top: var(--continuum-section-space-mobile) !important;
-  }
-
-  .workshop-grid-foundation > .knowledge-card:not(:last-child)::after {
-    left: 50% !important;
-    bottom: -9px !important;
-    width: var(--continuum-divider-width-mobile) !important;
-    transform: translateX(-50%) !important;
-    background: var(--continuum-divider-line) !important;
-    box-shadow: var(--continuum-divider-shadow) !important;
   }
 
   /* Homepage About typography and compact information rows. */
