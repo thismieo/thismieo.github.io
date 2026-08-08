@@ -1,12 +1,8 @@
-/* Canonical click feedback system — August 2026.
-   One DOM-backed layer, one activation state, no pseudo-element ownership. */
-
+/* Canonical click feedback — one click-confirmed engine for mouse, touch, pen and keyboard. */
 .press-fx-surface {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Position is added only when JavaScript confirms that a layered surface was
-   originally static. Fixed/sticky/absolute controls keep their native layout. */
 .press-fx-positioned {
   position: relative;
 }
@@ -22,7 +18,6 @@
   overflow: hidden;
   pointer-events: none;
   border-radius: inherit;
-  opacity: 1;
 }
 
 .press-fx-sheen {
@@ -50,7 +45,7 @@
   --press-fx-rgb: var(--practice-accent);
 }
 
-.press-fx-surface.is-press-fx {
+.press-fx-surface.is-press-fx:not(.press-fx-tactile-only):not(.knowledge-card) {
   animation: press-fx-tactile 250ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
@@ -58,20 +53,12 @@
   animation: press-fx-sheen 520ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
-/* Structural knowledge-card dividers stay perfectly still while the visual
-   feedback layer animates inside the card. */
 .knowledge-card.press-fx-surface.is-press-fx {
   animation: press-fx-knowledge 250ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
-/* Controls that immediately navigate, swap views or act as compact buttons use
-   a brightness pulse only. No transform can interfere with fixed/translated UI. */
 .press-fx-tactile-only.is-press-fx {
-  animation: press-fx-control 220ms ease both !important;
-}
-
-.press-fx-tactile-only > .press-fx-layer {
-  display: none;
+  animation: press-fx-control 220ms ease both;
 }
 
 @keyframes press-fx-tactile {
@@ -93,115 +80,14 @@
 }
 
 @keyframes press-fx-sheen {
-  0% {
-    opacity: 0;
-    transform: translate3d(-125%, 0, 0) skewX(-13deg);
-  }
+  0% { opacity: 0; transform: translate3d(-125%, 0, 0) skewX(-13deg); }
   14% { opacity: .90; }
   72% { opacity: .62; }
-  100% {
-    opacity: 0;
-    transform: translate3d(220%, 0, 0) skewX(-13deg);
-  }
-}
-
-/* -------------------------------------------------------------------------
-   Legacy interaction reset
-   -------------------------------------------------------------------------
-   Older files still contain historical press experiments. They are now inert
-   and cannot own a shimmer, transform, or button-local sweep. This preserves
-   the frozen Workshop foundation while removing every competing live path. */
-
-.press-surface::after,
-.press-surface.is-pressed::after,
-.practice-milestone::after,
-.practice-milestone:active::after,
-.practice-milestone:has(.practice-milestone-action:active)::after,
-.practice-milestone:focus-within::after,
-.practice-milestone.is-card-pressed::after,
-.practice-milestone-action::before,
-.practice-milestone-action.is-button-pressed::before {
-  content: none !important;
-  display: none !important;
-  opacity: 0 !important;
-  animation: none !important;
-}
-
-.press-surface.is-pressing,
-.press-surface.is-pressed,
-.practice-milestone:active,
-.practice-milestone:has(.practice-milestone-action:active),
-.current-track-card:active,
-.current-track-card.is-pressing,
-.knowledge-application-merged .knowledge-card:active,
-.knowledge-application-merged .knowledge-card.is-pressing,
-.practice-selector-card:active,
-.practice-collection-close:active {
-  transform: none !important;
-}
-
-.practice-milestone-action.is-button-pressed {
-  box-shadow: none !important;
-}
-
-/* Preserve Foundation separators: they use ::after structurally, so restore
-   them after the broad legacy reset. */
-@media (min-width: 1051px) {
-  .workshop-grid-foundation > .knowledge-card:not(:last-child)::after {
-    content: "" !important;
-    display: block !important;
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-@media (min-width: 701px) and (max-width: 1050px) {
-  .workshop-grid-foundation > .knowledge-card:nth-child(odd)::after {
-    content: "" !important;
-    display: block !important;
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-@media (max-width: 700px) {
-  .workshop-grid-foundation > .knowledge-card:not(:last-child)::after {
-    content: "" !important;
-    display: block !important;
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-/* Hero CTA's former short-lived activated class is made visually neutral.
-   The canonical engine supplies its tactile pulse instead. */
-.hero-cta.is-activated {
-  transform: none !important;
-  animation: none !important;
-}
-
-.hero-cta-primary.is-activated {
-  background: linear-gradient(135deg, #dde6e8 0%, #b1c1c6 48%, #879da6 100%) !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.16),
-    inset 0 -1px 0 rgba(16,34,43,.12),
-    0 16px 38px rgba(48,70,79,.22) !important;
-}
-
-.hero-cta-secondary.is-activated {
-  background: linear-gradient(135deg, rgba(255,255,255,.052), rgba(255,255,255,.022)) !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(204,220,227,.16),
-    0 12px 30px rgba(0,6,11,.14) !important;
+  100% { opacity: 0; transform: translate3d(220%, 0, 0) skewX(-13deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .press-fx-surface.is-press-fx,
-  .knowledge-card.press-fx-surface.is-press-fx,
-  .press-fx-tactile-only.is-press-fx,
   .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
     animation: none !important;
     transform: none !important;
