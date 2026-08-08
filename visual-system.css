@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.1.5
+/* Blue Continuum — Shared Visual System 1.1.6
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -255,7 +255,7 @@ body:not(.workshop-open)::before {
   letter-spacing: -.012em;
 }
 
-/* Education copy — fixed two-line reading rhythm. */
+/* Education copy — same value alignment, fixed two-line rhythm. */
 .portfolio-panel .about-education-value {
   color: #c8cbd4;
   font-size: .70rem;
@@ -270,13 +270,8 @@ body:not(.workshop-open)::before {
 }
 
 @media (max-width: 700px) {
-  .portfolio-panel .facts > div:nth-child(2) {
-    grid-template-columns: minmax(0, 88px) minmax(0, 1fr);
-  }
-
   .portfolio-panel .about-education-value {
-    font-size: .62rem;
-    letter-spacing: -.024em;
+    font-size: .66rem;
   }
 }
 
@@ -302,12 +297,42 @@ body:not(.workshop-open)::before {
     max-width: 560px;
     margin: clamp(24px, 2.2vw, 30px) auto 0;
     padding: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     align-items: start;
+    gap: 8px;
   }
 
-  .portfolio-panel .facts > div:nth-child(n) {
-    grid-column: auto;
+  .portfolio-panel .facts > div {
+    min-height: 66px;
+    padding: 11px 13px;
+    display: grid;
+    grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .portfolio-panel .facts dt {
+    min-height: 18px;
+    padding-left: 23px;
+    font-size: .53rem;
+    letter-spacing: .135em;
+  }
+
+  .portfolio-panel .facts dt::before {
+    width: 15px;
+    height: 15px;
+  }
+
+  .portfolio-panel .facts dd {
+    max-width: none;
+    font-size: .75rem;
+    line-height: 1.45;
+  }
+
+  .portfolio-panel .about-education-value {
+    font-size: .70rem;
+    line-height: 1.48;
   }
 }
 
