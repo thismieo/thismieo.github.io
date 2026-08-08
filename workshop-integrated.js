@@ -17,7 +17,7 @@
           summary: "A fuller version of the prime-number exercise that validates the input, counts divisor checks, reports the first factor found and allows repeated analysis from one run.",
           concept: "Builds directly on the original prime checker: Boolean state, modulo, while, break and the square-root stopping condition are kept, then organized into a clearer program flow.",
           skills: ["while", "Boolean", "%", "break", "Validation", "Program Flow"],
-          code: `print("=" * 46)\nprint("          PRIME NUMBER ANALYZER")\nprint("=" * 46)\nprint("Enter 0 whenever you want to exit.\\n")\n\nwhile True:\n    number = int(input("Enter an integer: "))\n\n    if number == 0:\n        print("\\nAnalyzer closed. Thank you!")\n        break\n\n    if number < 2:\n        print(f"{number} is not a prime number.")\n        print("Reason: prime numbers start from 2.\\n")\n    else:\n        divisor = 2\n        checks = 0\n        first_divisor = 0\n        is_prime = True\n\n        while divisor <= number ** 0.5:\n            checks = checks + 1\n\n            if number % divisor == 0:\n                is_prime = False\n                first_divisor = divisor\n                break\n\n            divisor = divisor + 1\n\n        print("\\n" + "-" * 46)\n        print("ANALYSIS RESULT")\n        print("-" * 46)\n        print(f"Number checked : {number}")\n        print(f"Divisor checks : {checks}")\n\n        if is_prime:\n            print("Status         : PRIME")\n            print(f"Conclusion     : {number} has no divisors other than 1 and itself.")\n        else:\n            quotient = number // first_divisor\n            print("Status         : NOT PRIME")\n            print(f"First factor   : {first_divisor}")\n            print(f"Factor pair    : {first_divisor} x {quotient} = {number}")\n\n        print("-" * 46 + "\\n")`,
+          code: `print("=" * 46)\nprint("            PRIME NUMBER ANALYZER")\nprint("=" * 46)\nprint("Enter 0 whenever you want to exit.\\n")\n\nwhile True:\n    number = int(input("Enter an integer: "))\n\n    if number == 0:\n        print("\\nAnalyzer closed. Thank you!")\n        break\n\n    if number < 2:\n        print(f"{number} is not a prime number.")\n        print("Reason: prime numbers start from 2.\\n")\n    else:\n        divisor = 2\n        checks = 0\n        first_divisor = 0\n        is_prime = True\n\n        while divisor <= number ** 0.5:\n            checks = checks + 1\n\n            if number % divisor == 0:\n                is_prime = False\n                first_divisor = divisor\n                break\n\n            divisor = divisor + 1\n\n        print("\\n" + "-" * 46)\n        print("ANALYSIS RESULT")\n        print("-" * 46)\n        print(f"Number checked : {number}")\n        print(f"Divisor checks : {checks}")\n\n        if is_prime:\n            print("Status         : PRIME")\n            print(f"Conclusion     : {number} has no divisors other than 1 and itself.")\n        else:\n            quotient = number // first_divisor\n            print("Status         : NOT PRIME")\n            print(f"First factor   : {first_divisor}")\n            print(f"Factor pair    : {first_divisor} x {quotient} = {number}")\n\n        print("-" * 46 + "\\n")`,
         },
         {
           title: "Triangle Analyzer",
@@ -35,7 +35,7 @@
           summary: "Expands the grade-range exercise into a repeatable student analyzer with validation, detailed grade bands and a session average when the user finishes.",
           concept: "Builds on ordered if/elif ranges while adding a loop, input boundaries and running totals to make the exercise behave more like a complete console program.",
           skills: ["if / elif / else", "while", "Ranges", "Validation", "Average"],
-          code: `print("=" * 48)\nprint("           STUDENT GRADE ANALYZER")\nprint("=" * 48)\nprint("Enter -1 to finish and view the session summary.\\n")\n\nstudent_count = 0\ntotal_percentage = 0\n\nwhile True:\n    percentage = float(input("Enter student percentage: "))\n\n    if percentage == -1:\n        break\n\n    if percentage < 0 or percentage > 100:\n        print("Invalid percentage. Enter a value from 0 to 100.\\n")\n    else:\n        if percentage >= 90:\n            grade = "A+"\n            message = "Excellent performance"\n        elif percentage >= 80:\n            grade = "A"\n            message = "Very good performance"\n        elif percentage >= 70:\n            grade = "B"\n            message = "Good performance"\n        elif percentage >= 60:\n            grade = "C"\n            message = "Passed — keep improving"\n        elif percentage >= 50:\n            grade = "D"\n            message = "Passed — more practice is recommended"\n        else:\n            grade = "F"\n            message = "Needs more practice"\n\n        student_count = student_count + 1\n        total_percentage = total_percentage + percentage\n\n        print("\\n" + "-" * 48)\n        print(f"Percentage : {percentage:.2f}%")\n        print(f"Grade      : {grade}")\n        print(f"Feedback   : {message}")\n        print("-" * 48 + "\\n")\n\nprint("\\n" + "=" * 48)\nprint("SESSION SUMMARY")\nprint("=" * 48)\n\nif student_count > 0:\n    average = total_percentage / student_count\n    print(f"Students analyzed : {student_count}")\n    print(f"Session average   : {average:.2f}%")\nelse:\n    print("No valid student percentages were entered.")`,
+          code: `print("=" * 48)\nprint("             STUDENT GRADE ANALYZER")\nprint("=" * 48)\nprint("Enter -1 to finish and view the session summary.\\n")\n\nstudent_count = 0\ntotal_percentage = 0\n\nwhile True:\n    percentage = float(input("Enter student percentage: "))\n\n    if percentage == -1:\n        break\n\n    if percentage < 0 or percentage > 100:\n        print("Invalid percentage. Enter a value from 0 to 100.\\n")\n    else:\n        if percentage >= 90:\n            grade = "A+"\n            message = "Excellent performance"\n        elif percentage >= 80:\n            grade = "A"\n            message = "Very good performance"\n        elif percentage >= 70:\n            grade = "B"\n            message = "Good performance"\n        elif percentage >= 60:\n            grade = "C"\n            message = "Passed — keep improving"\n        elif percentage >= 50:\n            grade = "D"\n            message = "Passed — more practice is recommended"\n        else:\n            grade = "F"\n            message = "Needs more practice"\n\n        student_count = student_count + 1\n        total_percentage = total_percentage + percentage\n\n        print("\\n" + "-" * 48)\n        print(f"Percentage : {percentage:.2f}%")\n        print(f"Grade      : {grade}")\n        print(f"Feedback   : {message}")\n        print("-" * 48 + "\\n")\n\nprint("\\n" + "=" * 48)\nprint("SESSION SUMMARY")\nprint("=" * 48)\n\nif student_count > 0:\n    average = total_percentage / student_count\n    print(f"Students analyzed : {student_count}")\n    print(f"Session average   : {average:.2f}%")\nelse:\n    print("No valid student percentages were entered.")`,
         },
         {
           title: "Smart Discount Calculator",
@@ -53,7 +53,7 @@
           summary: "Builds on the original BMI formula by validating measurements and classifying the result into numeric ranges before printing a concise report.",
           concept: "Keeps the float input and BMI calculation from the first exercise set, then adds condition ranges and formatted output to turn one calculation into a complete analyzer.",
           skills: ["float", "Formula", "if / elif / else", "Validation", ".2f"],
-          code: `print("=" * 44)\nprint("              BMI ANALYZER")\nprint("=" * 44)\n\nheight = float(input("Enter height in meters   : "))\nweight = float(input("Enter weight in kilograms: "))\n\nif height <= 0 or weight <= 0:\n    print("\\nInvalid measurements. Height and weight must be positive.")\nelse:\n    bmi = weight / (height * height)\n\n    if bmi < 18.5:\n        category = "Underweight"\n    elif bmi < 25:\n        category = "Normal range"\n    elif bmi < 30:\n        category = "Overweight"\n    else:\n        category = "High BMI range"\n\n    print("\\n" + "-" * 44)\n    print("BMI REPORT")\n    print("-" * 44)\n    print(f"Height   : {height:.2f} m")\n    print(f"Weight   : {weight:.2f} kg")\n    print(f"BMI      : {bmi:.2f}")\n    print(f"Category : {category}")\n    print("-" * 44)`,
+          code: `print("=" * 44)\nprint("                BMI ANALYZER")\nprint("=" * 44)\n\nheight = float(input("Enter height in meters   : "))\nweight = float(input("Enter weight in kilograms: "))\n\nif height <= 0 or weight <= 0:\n    print("\\nInvalid measurements. Height and weight must be positive.")\nelse:\n    bmi = weight / (height * height)\n\n    if bmi < 18.5:\n        category = "Underweight"\n    elif bmi < 25:\n        category = "Normal range"\n    elif bmi < 30:\n        category = "Overweight"\n    else:\n        category = "High BMI range"\n\n    print("\\n" + "-" * 44)\n    print("BMI REPORT")\n    print("-" * 44)\n    print(f"Height   : {height:.2f} m")\n    print(f"Weight   : {weight:.2f} kg")\n    print(f"BMI      : {bmi:.2f}")\n    print(f"Category : {category}")\n    print("-" * 44)`,
         },
       ],
     },
@@ -290,7 +290,14 @@
     if (!tab || !list) return;
     const centered = tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2;
     const maxLeft = Math.max(0, list.scrollWidth - list.clientWidth);
-    list.scrollTo({ left: clamp(centered, 0, maxLeft), behavior: reduceMotion ? "auto" : "smooth" });
+    list.scrollTo({ left: clamp(centered, 0, maxLeft), behavior: "auto" });
+  };
+
+  const resetGroup = (name) => {
+    const state = selectorState[name];
+    if (!state) return;
+    renderExercise(name, 0, false);
+    state.list.scrollTo({ left: 0, behavior: "auto" });
   };
 
   const selectExercise = (name, index, focus = false) => {
@@ -340,6 +347,21 @@
     });
     view.list.replaceChildren(fragment);
 
+    view.list.addEventListener("wheel", (event) => {
+      const maxLeft = Math.max(0, view.list.scrollWidth - view.list.clientWidth);
+      if (maxLeft <= 1) return;
+
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      if (Math.abs(delta) < 1) return;
+
+      const atStart = view.list.scrollLeft <= 1;
+      const atEnd = view.list.scrollLeft >= maxLeft - 1;
+      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
+
+      event.preventDefault();
+      view.list.scrollBy({ left: delta, behavior: "auto" });
+    }, { passive: false });
+
     const closeButton = document.createElement("button");
     closeButton.type = "button";
     closeButton.className = "practice-collection-close";
@@ -379,6 +401,7 @@
     if (!groups[name]) return;
 
     if (openGroupName === name) {
+      resetGroup(name);
       openGroupName = "";
       setSlot(name, false);
       syncCollectionState();
@@ -386,12 +409,18 @@
     }
 
     const previous = openGroupName;
-    if (previous) setSlot(previous, false);
+    if (previous) {
+      resetGroup(previous);
+      setSlot(previous, false);
+    }
 
     openGroupName = name;
+    resetGroup(name);
     setSlot(name, true);
     syncCollectionState();
-    centerSelector(name, activeIndex[name]);
+    window.requestAnimationFrame(() => {
+      selectorState[name]?.list.scrollTo({ left: 0, behavior: "auto" });
+    });
   };
 
   const copyCode = async (button) => {

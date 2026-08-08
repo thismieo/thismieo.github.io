@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.1
+/* Blue Continuum — Shared Visual System 1.5.2
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -596,7 +596,7 @@ body:not(.workshop-open)::before {
   }
 
   .practice-milestones {
-    margin-top: var(--continuum-section-space-mobile) !important;
+    margin-top: var(--continuum-divider-space-mobile) !important;
     padding-top: 0 !important;
     row-gap: 0 !important;
   }
@@ -606,7 +606,7 @@ body:not(.workshop-open)::before {
     grid-column: 1 !important;
     grid-row: 1 !important;
     width: var(--continuum-divider-width-mobile) !important;
-    margin: 0 auto var(--continuum-section-space-mobile) !important;
+    margin: 0 auto var(--continuum-divider-space-mobile) !important;
     transform: none !important;
     background: var(--continuum-divider-line) !important;
     box-shadow: var(--continuum-divider-shadow) !important;

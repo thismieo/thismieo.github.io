@@ -1,4 +1,4 @@
-/* Workshop 6.0.7 — consolidated production stylesheet.
+/* Workshop 6.0.8 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -404,9 +404,10 @@ body.workshop-open .workshop-masthead-copy {
 
 /* ---------- Featured Practice / Learning Archive ---------- */
 .practice-milestones {
+  --practice-divider-gap: var(--continuum-card-divider-gap, 14px);
   position: relative;
-  margin-top: var(--workshop-divider-space) !important;
-  padding-top: var(--workshop-divider-space) !important;
+  margin-top: var(--practice-divider-gap) !important;
+  padding-top: var(--practice-divider-gap) !important;
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) !important;
   grid-template-rows: auto auto auto !important;
@@ -1546,8 +1547,6 @@ body.workshop-open .workshop-masthead-copy {
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-rows: auto auto auto auto auto auto !important;
     row-gap: 14px !important;
-    margin-top: var(--workshop-divider-space) !important;
-    padding-top: var(--workshop-divider-space) !important;
   }
 
   .practice-milestones::before {

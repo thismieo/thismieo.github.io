@@ -1,3 +1,13 @@
+# Blue Continuum 4.5.24 — Practice Explorer Navigation & Code Alignment
+
+1. Added mouse-wheel and trackpad-friendly horizontal navigation to the Featured Practice and Learning Archive selectors while preserving native phone swipe behavior.
+2. Reset every practice collection to item 01 and scroll position zero whenever it opens, closes or yields to the other collection, with deterministic selector positioning that cannot race against a previous smooth-scroll animation.
+3. Corrected Featured Practice console-banner alignment for Prime Number Analyzer, Student Grade Analyzer and BMI Analyzer, and verified all five featured headers against their declared rule widths.
+4. Normalized the divider below Python Programming to the canonical card-divider rhythm: 14px per side on desktop and 22px per side on phone, with phone spacing owned by the Shared Visual System rather than competing Workshop overrides.
+5. Added responsive regression checks for desktop, iPhone 13 and iPhone X covering selector return navigation, reset state, code-viewer geometry, divider rhythm, overflow and the clean no-shine baseline.
+
+---
+
 # Blue Continuum 4.5.23 — Workshop Chromatic Hierarchy & Editorial Copy
 
 1. Added concise editorial descriptions beneath Practice in progress, Foundation and Applied practice so the Workshop hierarchy reads with the same clarity as the portfolio sections.
