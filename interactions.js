@@ -10,6 +10,7 @@
     ".project-card",
     ".workshop-entry",
     ".current-track-card",
+    ".practice-milestone",
     ".knowledge-card",
     ".contact-card",
   ].join(", ");
