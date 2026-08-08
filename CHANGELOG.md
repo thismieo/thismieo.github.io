@@ -1,3 +1,15 @@
+# Blue Continuum 4.5.2 — Journey Surface Refinement
+
+1. Darkened the five Journey card surfaces by one visual step while preserving distinct Jade, Steel, Cobalt, Amethyst and Copper identities.
+2. Rebuilt Journey card backgrounds around the Workshop visual language: a restrained radial accent over a chromatic Navy/Slate linear gradient rather than a flat dark or black interior.
+3. Removed the decorative line attached to the stage number and removed the full-width internal footer divider.
+4. Reworked each Journey footer to mirror the Workshop card-foot composition, with the contextual label aligned left and the stage progression phrase aligned right on the same baseline.
+5. Preserved the external pearl/continuum separators between Journey cards and rows, keeping section rhythm separate from internal card decoration.
+6. Retained the existing badges, topic chips, responsive card layout and neutral non-glowing shadows.
+7. Refreshed the Portfolio stylesheet cache key and visible release metadata to 4.5.2.
+
+---
+
 # Blue Continuum 4.4.1 — Fresh Production Audit & Ownership Cleanup
 
 1. Re-audited the production repository from the current `main` tree instead of relying on the previous cleanup pass.
@@ -33,7 +45,7 @@
 
 1. Fixed the canonical click-feedback layer so it no longer becomes the last semantic child of cards and cannot break structural selectors such as `.timeline-item > p:last-child` after the first interaction.
 2. Hardened Workshop navigation across browsers by taking explicit ownership of history scroll restoration instead of racing native browser restoration with the site's own Workshop and section-navigation logic.
-3. Re-checked the production tree, referenced assets, manifest, robots file, sitemap, 404 page and live DOM hooks; no missing production asset or orphaned top-level runtime file was found.
+3. Re-checked the production tree, referenced assets, manifest, robots file, sitemap and live DOM hooks; no missing production asset or orphaned top-level runtime file was found.
 4. Re-checked the post-consolidation Workshop architecture without restoring the removed legacy press engine, duplicate Workshop pulse, obsolete base stylesheet or obsolete masthead stylesheet.
 5. Kept the existing release identifiers at Portfolio 4.4.0, Workshop 6.0.0 and Interaction Engine 1.1.0 because this pass stabilizes the current production release rather than introducing a new visual release.
 6. Triggered a fresh GitHub Pages build from the stabilized `main` branch so the runtime fixes are deployed together.
