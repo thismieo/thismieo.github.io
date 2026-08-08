@@ -72,10 +72,16 @@
   const isTactileOnly = (surface) => surface.matches(tactileOnlySelector);
 
   const ensureLayer = (surface) => {
+    const tactileOnly = isTactileOnly(surface);
     surface.classList.add("press-fx-surface");
-    surface.classList.toggle("press-fx-tactile-only", isTactileOnly(surface));
+    surface.classList.toggle("press-fx-tactile-only", tactileOnly);
 
-    if (isTactileOnly(surface)) return null;
+    if (tactileOnly) return null;
+
+    surface.classList.add("press-fx-layered");
+    if (window.getComputedStyle(surface).position === "static") {
+      surface.classList.add("press-fx-positioned");
+    }
 
     let layer = [...surface.children].find((child) => child.classList?.contains("press-fx-layer"));
     if (layer) return layer;
