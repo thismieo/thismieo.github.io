@@ -1,10 +1,10 @@
 /* Workshop masthead, section rhythm and interaction polish.
-   One responsive composition with restrained, purposeful separators. */
+   One responsive composition with a single divider language. */
 
 .workshop-main {
-  --workshop-section-gap: clamp(36px, 4vw, 44px);
-  --workshop-section-half-gap: clamp(18px, 2vw, 22px);
-  --workshop-divider-width: 148px;
+  --workshop-section-gap: clamp(34px, 3.8vw, 40px);
+  --workshop-section-half-gap: clamp(17px, 1.9vw, 20px);
+  --workshop-divider-width: 188px;
   padding-top: clamp(18px, 2.4vw, 28px) !important;
 }
 
@@ -29,7 +29,6 @@
   text-align: center !important;
 }
 
-/* Quiet atmosphere only; the masthead itself is not a card. */
 .workshop-main > .workshop-masthead::before {
   content: "";
   position: absolute;
@@ -49,7 +48,7 @@
   );
 }
 
-/* Visual index for the three Workshop content families. */
+/* Compact index for the three Workshop content families. */
 .workshop-main > .workshop-masthead::after {
   content: "PRACTICE  ·  FOUNDATIONS  ·  APPLIED WORK" !important;
   order: 0;
@@ -73,7 +72,7 @@
   white-space: nowrap;
 }
 
-/* Keep the document H1 for semantics without using it as visual display copy. */
+/* Keep the document H1 for semantics without using it as display copy. */
 #workshop-title.workshop-masthead-title {
   position: absolute !important;
   width: 1px !important;
@@ -94,38 +93,34 @@
   display: none !important;
 }
 
-/* The description is the masthead's primary visible statement. */
+/* Desktop: one continuous sentence, one tone, one scale. */
 .workshop-masthead-copy {
   order: 1;
   display: block !important;
   width: 100%;
-  max-width: 50ch !important;
+  max-width: 760px !important;
   margin: 0 auto !important;
   padding: 0 4px !important;
   color: #aebdc2 !important;
   font-size: clamp(.94rem, 1.08vw, 1.04rem) !important;
-  font-weight: 535 !important;
+  font-weight: 550 !important;
   line-height: 1.58 !important;
   letter-spacing: -.009em;
   text-align: center !important;
-  text-wrap: pretty;
+  white-space: nowrap;
 }
 
 .workshop-masthead-copy-main,
 .workshop-masthead-copy-growth {
-  display: block;
+  display: inline;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
 }
 
-.workshop-masthead-copy-main {
-  color: #b6c4c9;
-  font-weight: 585;
-}
-
-.workshop-masthead-copy-growth {
-  margin-top: 2px;
-  color: #91a5ac;
-  font-size: .94em;
-  font-weight: 505;
+.workshop-masthead-copy-main::after {
+  content: " — ";
 }
 
 .workshop-masthead-meta {
@@ -155,7 +150,7 @@
   white-space: nowrap;
 }
 
-/* Signature transition: the only continuously animated divider. */
+/* Animated signature line under the update date. */
 .workshop-masthead-updated::after {
   content: "";
   position: absolute;
@@ -286,8 +281,8 @@ body.workshop-open .workshop-masthead-copy {
   margin-top: clamp(24px, 2.8vw, 32px) !important;
 }
 
-/* ---------- Major section transitions ----------
-   Same compact rhythm; color identifies the section being entered. */
+/* ---------- Shared section divider ----------
+   Same quiet signature language everywhere; spacing carries the hierarchy. */
 .knowledge-application-merged {
   padding-top: var(--workshop-section-half-gap) !important;
 }
@@ -302,23 +297,22 @@ body.workshop-open .workshop-masthead-copy {
   border-radius: 999px;
   pointer-events: none;
   animation: none !important;
-}
-
-/* Python → Foundation: cool teal. */
-.knowledge-application-merged::before {
-  margin: 0 auto var(--workshop-section-half-gap);
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(92, 177, 169, .22) 18%,
-    rgba(105, 199, 188, .72) 50%,
-    rgba(92, 177, 169, .22) 82%,
+    rgba(126, 149, 157, .10) 16%,
+    rgba(161, 173, 178, .42) 44%,
+    rgba(170, 151, 139, .34) 56%,
+    rgba(139, 132, 172, .16) 78%,
     transparent
   );
-  box-shadow: 0 0 9px rgba(105, 199, 188, .07);
+  box-shadow: 0 0 9px rgba(157, 173, 178, .055);
 }
 
-/* Foundation → Applied Practice: restrained warm bronze. */
+.knowledge-application-merged::before {
+  margin: 0 auto var(--workshop-section-half-gap);
+}
+
 .knowledge-application-merged .workshop-subgroup-applied {
   margin-top: 0 !important;
   padding-top: var(--workshop-section-half-gap) !important;
@@ -326,29 +320,10 @@ body.workshop-open .workshop-masthead-copy {
 
 .knowledge-application-merged .workshop-subgroup-applied::before {
   margin: 0 auto var(--workshop-section-half-gap);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(176, 126, 91, .20) 18%,
-    rgba(205, 151, 111, .68) 50%,
-    rgba(176, 126, 91, .20) 82%,
-    transparent
-  );
-  box-shadow: 0 0 9px rgba(205, 151, 111, .065);
 }
 
-/* Applied Practice → closing action: quiet indigo. */
 .knowledge-application-merged::after {
   margin: var(--workshop-section-half-gap) auto 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(132, 118, 183, .20) 18%,
-    rgba(158, 143, 215, .66) 50%,
-    rgba(132, 118, 183, .20) 82%,
-    transparent
-  );
-  box-shadow: 0 0 9px rgba(158, 143, 215, .06);
 }
 
 .workshop-closing {
@@ -360,7 +335,7 @@ body.workshop-open .workshop-masthead-copy {
   .workshop-main {
     --workshop-section-gap: 34px;
     --workshop-section-half-gap: 17px;
-    --workshop-divider-width: 124px;
+    --workshop-divider-width: 154px;
     padding-top: 26px !important;
   }
 
@@ -384,15 +359,25 @@ body.workshop-open .workshop-masthead-copy {
     letter-spacing: .075em;
   }
 
+  /* Phone: deliberate two-line composition, still one visual style. */
   .workshop-masthead-copy {
     max-width: 43ch !important;
     padding-inline: 3px !important;
     font-size: .90rem !important;
     line-height: 1.56 !important;
+    white-space: normal;
   }
 
+  .workshop-masthead-copy-main,
   .workshop-masthead-copy-growth {
-    margin-top: 1px;
+    display: block;
+    margin: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  .workshop-masthead-copy-main::after {
+    content: none;
   }
 
   .workshop-masthead-meta {
