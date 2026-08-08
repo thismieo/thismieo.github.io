@@ -4,12 +4,12 @@ Production portfolio for Mohammed Muayad, including the main portfolio experienc
 
 ## Current production architecture
 
-- `styles.css` — shared portfolio foundation and responsive layout.
+- `styles.css` — shared portfolio foundation, reusable primitives and responsive homepage layout.
 - `contact-linkedin.css` — contact-card icon refinement.
-- `workshop-integrated.css` — primary Workshop component stylesheet for masthead, Python practice, explorer, knowledge cards and responsive behavior.
+- `workshop-integrated.css` — canonical Workshop visual layer: Workshop shell, masthead, Python practice, explorer, knowledge cards, dividers, responsive behavior and reduced-motion rules.
 - `script.js` — portfolio navigation, Workshop transitions, history and copy behavior.
 - `workshop-integrated.js` — Python practice data, selectors, code rendering and collection state without page-scroll or background-height forcing.
-- `interactions.css` / `interactions.js` — click-confirmed interaction engine plus the final dynamic-view stability overrides required after interaction and Workshop state changes.
+- `interactions.css` / `interactions.js` — one click-confirmed interaction engine for mouse, touch, pen and keyboard; it contains no Workshop layout or visual overrides.
 
 ## Release 4.4.1
 
@@ -19,9 +19,10 @@ Production portfolio for Mohammed Muayad, including the main portfolio experienc
 - Reorders the Workshop DOM to match its visual reading order: masthead, Python Development, Foundation, Applied Practice and closing action.
 - Makes the Workshop a real `main` landmark while it is open and removes the hidden-portfolio skip-link mismatch.
 - Removes the obsolete Workshop background-height freezing runtime and lets the background follow dynamic content naturally.
+- Consolidates the final Workshop visual runtime into `workshop-integrated.css` 6.0.2 instead of carrying Workshop overrides in the interaction layer.
 - Refines Workshop divider rhythm with consistent breathing room before and after major section separators.
 - Rebuilds the `Updated · Aug 2026` line animation inside one clipped line so its sweep finishes cleanly at both edges.
 - Reduces diffuse Workshop glow and fog while retaining local card accents and depth.
-- Corrects the 32px favicon MIME declaration and aligns production cache keys and visible release metadata.
+- Corrects the 32px favicon MIME declaration and uses content-specific cache keys for changed production assets.
 
 The site is deployed through GitHub Pages from the `main` branch.
