@@ -1,3 +1,11 @@
+# Blue Continuum 4.5.7 — Journey Tag Alignment
+
+1. Anchored all Journey topic tags to one consistent lower content baseline instead of letting description length shift them vertically.
+2. Replaced the footer's flexible spacer with a fixed 18px tag-to-footer rhythm, preserving the existing card geometry, colors and separators.
+3. Applied the same alignment logic on phone layouts with a compact 15px breathing space above the tag row.
+
+---
+
 # Blue Continuum 4.5.6 — Project Roadmap Refinement
 
 1. Preserved the five-project roadmap while introducing two restrained card scales: three compact cards followed by two slightly wider medium cards, without oversized surfaces.
