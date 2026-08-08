@@ -1,3 +1,14 @@
+# Blue Continuum 4.5.19 — Unified Sheen & About Rebuild
+
+1. Replaced the split modern/legacy sheen engines with one transform-and-opacity compositor path for desktop, modern mobile and iOS 16-era devices.
+2. Removed the iOS <=16 `left` animation fallback and all UA-specific sheen branching that could start mid-card or stutter on iPhone X.
+3. Rebuilt About metadata as one cohesive profile panel with four structured information cells instead of four independent press surfaces.
+4. Enlarged About labels/icons, improved internal hierarchy and gave the Education value safe wrapping and right-edge breathing room on narrow phones.
+5. Kept the established 520ms Pearl/Mist visual language while reducing active DOM/compositor layers to one lazily warmed sheen per touched surface.
+6. Added regression checks for one-path sheen ownership, About edge clearance, one About press layer, card timing consistency and phone overflow.
+
+---
+
 # Blue Continuum 4.5.18 — Regression Repair & Visual Integrity Audit
 
 1. Restored the actual 1px Project roadmap separator stroke on phone; the 44px separator container was present in 4.5.17 but its inner span had lost visible geometry.

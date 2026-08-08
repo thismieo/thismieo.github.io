@@ -1,33 +1,86 @@
-/* Canonical click feedback 1.3.1 — one Workshop-derived Pearl/Mist sheen with a low-cost legacy WebKit path. */
+/* Canonical click feedback 1.4.0 — one compositor-friendly Pearl/Mist sheen on every device. */
 :root {
-  --press-fx-sheen-image: linear-gradient(
-    102deg,
-    transparent 0%,
-    transparent 31%,
-    rgba(158, 173, 183, .034) 38%,
-    rgba(181, 193, 201, .13) 45%,
-    rgba(255, 255, 255, .17) 50%,
-    rgba(187, 198, 205, .075) 57%,
-    transparent 67%,
-    transparent 100%
-  );
-  --press-fx-sheen-size: 220% 100%;
-  --press-fx-sheen-start: 125% 0;
-  --press-fx-sheen-end: -25% 0;
   --press-fx-sheen-duration: 520ms;
   --press-fx-sheen-ease: cubic-bezier(.22, 1, .36, 1);
 }
-.press-fx-surface { -webkit-tap-highlight-color: transparent; }
-.press-fx-positioned { position: relative; }
-.press-fx-layered { isolation: isolate; }
-.press-fx-layer { position:absolute; z-index:30; inset:0; overflow:hidden; pointer-events:none; border-radius:inherit; contain:paint; isolation:isolate; }
-.press-fx-sheen { position:absolute; inset:1px; border-radius:inherit; opacity:0; background-image:var(--press-fx-sheen-image); background-repeat:no-repeat; background-size:var(--press-fx-sheen-size); background-position:var(--press-fx-sheen-start); }
-.press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen { animation:press-fx-sheen var(--press-fx-sheen-duration) var(--press-fx-sheen-ease) both; }
-.press-fx-legacy-webkit .press-fx-layer { contain:none; isolation:auto; }
-.press-fx-legacy-webkit .press-fx-sheen { top:1px; bottom:1px; left:-82%; right:auto; width:82%; border-radius:0; background-image:linear-gradient(102deg, transparent 0%, rgba(158,173,183,.034) 22%, rgba(181,193,201,.13) 39%, rgba(255,255,255,.17) 51%, rgba(187,198,205,.075) 65%, transparent 100%); background-size:100% 100%; background-position:0 0; }
-.press-fx-legacy-webkit .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen { animation-name:press-fx-sheen-legacy; }
-.press-fx-tactile-only.is-press-fx { animation:press-fx-control 220ms ease both; }
-@keyframes press-fx-control { 0%{filter:brightness(1)} 42%{filter:brightness(1.07)} 100%{filter:brightness(1)} }
-@keyframes press-fx-sheen { 0%{opacity:0;background-position:var(--press-fx-sheen-start)} 9%{opacity:.96} 72%{opacity:.72} 100%{opacity:0;background-position:var(--press-fx-sheen-end)} }
-@keyframes press-fx-sheen-legacy { 0%{opacity:0;left:-82%} 9%{opacity:.96} 72%{opacity:.72} 100%{opacity:0;left:100%} }
-@media (prefers-reduced-motion: reduce) { .press-fx-surface.is-press-fx,.press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen{animation:none!important;filter:none!important}.press-fx-layer{display:none!important} }
+
+.press-fx-surface {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.press-fx-positioned {
+  position: relative;
+}
+
+.press-fx-layered {
+  isolation: isolate;
+}
+
+.press-fx-layer {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.press-fx-sheen {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 0;
+  width: 68%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-112%);
+  transform-origin: center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(158, 173, 183, .026) 18%,
+    rgba(181, 193, 201, .12) 38%,
+    rgba(255, 255, 255, .17) 51%,
+    rgba(187, 198, 205, .070) 66%,
+    transparent 100%
+  );
+}
+
+.press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
+  animation: press-fx-sheen var(--press-fx-sheen-duration) var(--press-fx-sheen-ease) both;
+}
+
+.press-fx-tactile-only.is-press-fx {
+  animation: press-fx-control 220ms ease both;
+}
+
+@keyframes press-fx-control {
+  0% { filter: brightness(1); }
+  42% { filter: brightness(1.07); }
+  100% { filter: brightness(1); }
+}
+
+/* The first visible frame is still outside/at the left edge. This prevents
+   older WebKit from appearing to start the sweep in the middle if it drops
+   one of the opening frames. Only transform + opacity animate. */
+@keyframes press-fx-sheen {
+  0%   { opacity: 0;   transform: translateX(-112%); }
+  10%  { opacity: .90; transform: translateX(-100%); }
+  72%  { opacity: .72; transform: translateX(100%); }
+  100% { opacity: 0;   transform: translateX(180%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press-fx-surface.is-press-fx,
+  .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .press-fx-layer {
+    display: none !important;
+  }
+}
