@@ -447,6 +447,9 @@ body.workshop-open .workshop-masthead-copy {
     height: 74%;
     pointer-events: none;
     border-radius: 999px;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
     background: linear-gradient(
       180deg,
       transparent,
@@ -475,6 +478,9 @@ body.workshop-open .workshop-masthead-copy {
     height: 74%;
     display: block;
     pointer-events: none;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
     background: linear-gradient(180deg, transparent, rgba(151, 166, 171, .10), rgba(164, 173, 177, .32), rgba(151, 143, 166, .14), transparent);
   }
 
@@ -614,6 +620,9 @@ body.workshop-open .workshop-masthead-copy {
     display: block;
     pointer-events: none;
     border-radius: 999px;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
     background: linear-gradient(
       90deg,
       transparent,
@@ -646,69 +655,161 @@ body.workshop-open .workshop-masthead-copy {
   }
 }
 
-/* ---------- Featured Practice / Learning Archive ----------
-   One button-triggered sweep with explicit geometry on every input mode. */
-.practice-milestone.press-surface::after {
-  content: "" !important;
-  position: absolute !important;
-  z-index: 6 !important;
-  top: 1px !important;
-  right: auto !important;
-  bottom: 1px !important;
-  left: 0 !important;
-  width: 44% !important;
-  height: auto !important;
-  pointer-events: none !important;
-  border-radius: inherit !important;
-  opacity: 0 !important;
-  transform: translate3d(-145%, 0, 0) skewX(-14deg);
-  background: linear-gradient(
-    98deg,
-    transparent 0%,
-    rgba(var(--practice-accent), .018) 20%,
-    rgba(var(--practice-accent), .115) 45%,
-    rgba(255, 255, 255, .060) 56%,
-    rgba(var(--practice-accent), .045) 72%,
-    transparent 100%
-  ) !important;
-  filter: opacity(0);
-  will-change: transform, filter;
-}
+/* ---------- Interaction reset + rebuilt press language ----------
+   Legacy pointer/focus shimmer paths are inert. One click-confirmed surface
+   animation remains, using the same geometry on mouse, touch and keyboard. */
 
-/* Old :active/focus animations are explicitly inert; the JS click pulse is the only trigger. */
+/* Kill every old Workshop shimmer trigger and its button-local sweep. */
+.practice-milestone::after,
 .practice-milestone:active::after,
 .practice-milestone:has(.practice-milestone-action:active)::after,
 .practice-milestone:focus-within::after,
-.practice-milestone.is-card-pressed::after {
+.practice-milestone.is-card-pressed::after,
+.practice-milestone-action::before,
+.practice-milestone-action.is-button-pressed::before {
   opacity: 0 !important;
   animation: none !important;
 }
 
-.practice-milestone.press-surface.is-pressed::after,
-.practice-milestone.is-pressed::after {
-  opacity: 1 !important;
-  animation: practice-click-sweep 560ms var(--ease) both !important;
+.practice-milestone-action.is-button-pressed {
+  color: inherit !important;
+  box-shadow: none !important;
 }
 
-@keyframes practice-click-sweep {
+/* Old pointer-down transforms are disabled. Feedback happens only after a
+   confirmed activation, so normal scrolling never looks like a press. */
+.practice-milestone:active,
+.practice-milestone:has(.practice-milestone-action:active),
+.current-track-card:active,
+.current-track-card.is-pressing,
+.knowledge-application-merged .knowledge-card:active,
+.knowledge-application-merged .knowledge-card.is-pressing,
+.practice-selector-card:active,
+.practice-collection-close:active,
+.press-surface.is-pressing {
+  transform: none !important;
+}
+
+/* Rebuilt shared sheen. Knowledge cards are excluded because Foundation uses
+   ::after for its structural separators; they still receive the tactile pulse. */
+.press-surface:not(.knowledge-card)::after,
+.hero-cta.is-activated::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 7 !important;
+  top: 1px !important;
+  right: auto !important;
+  bottom: 1px !important;
+  left: 0 !important;
+  width: 52% !important;
+  height: auto !important;
+  display: block !important;
+  pointer-events: none !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  opacity: 0 !important;
+  transform: translate3d(-112%, 0, 0) skewX(-13deg);
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(var(--sweep-rgb, var(--accent-rgb, 152, 164, 172)), .018) 23%,
+    rgba(var(--sweep-rgb, var(--accent-rgb, 152, 164, 172)), .095) 43%,
+    rgba(255, 255, 255, .085) 52%,
+    rgba(var(--sweep-rgb, var(--accent-rgb, 152, 164, 172)), .044) 64%,
+    transparent 82%
+  ) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  will-change: transform, opacity;
+}
+
+.practice-milestone.press-surface {
+  --sweep-rgb: var(--practice-accent);
+}
+
+.press-surface.is-pressed {
+  animation: workshop-press-tactile 260ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.press-surface.is-pressed:not(.knowledge-card)::after,
+.hero-cta.is-activated::after {
+  opacity: 1 !important;
+  animation: workshop-press-sheen 540ms cubic-bezier(.22, 1, .36, 1) both !important;
+}
+
+/* Knowledge cards: tactile feedback only. Their ::after remains exclusively
+   available to the Foundation separator system above. */
+.knowledge-card.press-surface.is-pressed {
+  animation: workshop-press-tactile 260ms cubic-bezier(.22, 1, .36, 1) both !important;
+}
+
+.workshop-grid-featured > .knowledge-card.press-surface::after {
+  content: none !important;
+  display: none !important;
+  animation: none !important;
+}
+
+/* Keep Foundation separator pseudo-elements structural even while the card is
+   pressed; no animation may capture them. */
+.workshop-grid-foundation > .knowledge-card.press-surface::after,
+.workshop-grid-foundation > .knowledge-card.press-surface.is-pressed::after {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Hero CTA old activated styling is neutralized; the class now only triggers
+   the same rebuilt press language. */
+.hero-cta.is-activated {
+  animation: workshop-press-tactile 260ms cubic-bezier(.22, 1, .36, 1) both !important;
+}
+
+.hero-cta-primary.is-activated {
+  background: linear-gradient(135deg, #dde6e8 0%, #b1c1c6 48%, #879da6 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.16),
+    inset 0 -1px 0 rgba(16, 34, 43, 0.12),
+    0 16px 38px rgba(48, 70, 79, 0.22) !important;
+}
+
+.hero-cta-secondary.is-activated {
+  background: linear-gradient(135deg, rgba(255,255,255,0.052), rgba(255,255,255,0.022)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(204, 220, 227, 0.16),
+    0 12px 30px rgba(0, 6, 11, 0.14) !important;
+}
+
+@keyframes workshop-press-tactile {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  38% { transform: translate3d(0, 1px, 0) scale(.994); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes workshop-press-sheen {
   0% {
-    transform: translate3d(-145%, 0, 0) skewX(-14deg);
-    filter: opacity(0);
+    opacity: 0;
+    transform: translate3d(-112%, 0, 0) skewX(-13deg);
   }
-  14% { filter: opacity(.92); }
-  74% { filter: opacity(.64); }
+  14% { opacity: .90; }
+  72% { opacity: .62; }
   100% {
-    transform: translate3d(245%, 0, 0) skewX(-14deg);
-    filter: opacity(0);
+    opacity: 0;
+    transform: translate3d(205%, 0, 0) skewX(-13deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .workshop-masthead-updated::before,
-  .practice-milestone.press-surface.is-pressed::after,
-  .practice-milestone.is-pressed::after {
+  .press-surface.is-pressed:not(.knowledge-card)::after,
+  .hero-cta.is-activated::after {
     display: none !important;
     animation: none !important;
+  }
+
+  .press-surface.is-pressed,
+  .knowledge-card.press-surface.is-pressed,
+  .hero-cta.is-activated {
+    animation: none !important;
+    transform: none !important;
   }
 
   body.workshop-open .workshop-main > .workshop-masthead::after,
