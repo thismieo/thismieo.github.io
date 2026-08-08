@@ -1,4 +1,4 @@
-/* Canonical click feedback — one click-confirmed engine for mouse, touch, pen and keyboard. */
+/* Canonical click feedback 1.2.0 — mobile-safe full-surface sheen for mouse, touch, pen and keyboard. */
 .press-fx-surface {
   -webkit-tap-highlight-color: transparent;
 }
@@ -20,34 +20,36 @@
   border-radius: inherit;
 }
 
+/* The sheen occupies the card itself instead of moving a skewed child through
+   an overflow clip. Animating the gradient position keeps every painted pixel
+   inside one stable rounded layer, avoiding mobile GPU tile/clipping seams. */
 .press-fx-sheen {
   position: absolute;
-  top: 1px;
-  bottom: 1px;
-  left: 0;
-  width: 48%;
+  inset: 1px;
   border-radius: inherit;
   opacity: 0;
-  transform: translate3d(-125%, 0, 0) skewX(-13deg);
-  background: linear-gradient(
-    100deg,
+  background-image: linear-gradient(
+    103deg,
     transparent 0%,
-    rgba(var(--press-fx-rgb, var(--accent-rgb, 152, 164, 172)), .018) 20%,
-    rgba(var(--press-fx-rgb, var(--accent-rgb, 152, 164, 172)), .10) 42%,
-    rgba(255, 255, 255, .085) 52%,
-    rgba(var(--press-fx-rgb, var(--accent-rgb, 152, 164, 172)), .045) 66%,
-    transparent 84%
+    transparent 35%,
+    rgba(var(--press-fx-rgb, var(--accent-rgb, 152, 164, 172)), .022) 41%,
+    rgba(var(--press-fx-rgb, var(--accent-rgb, 152, 164, 172)), .095) 47%,
+    rgba(255, 255, 255, .11) 50%,
+    rgba(var(--press-fx-rgb, var(--accent-rgb, 152, 164, 172)), .052) 55%,
+    transparent 64%,
+    transparent 100%
   );
-  will-change: transform, opacity;
+  background-repeat: no-repeat;
+  background-size: 240% 100%;
+  background-position: 100% 0;
 }
 
 .practice-milestone.press-fx-surface {
   --press-fx-rgb: var(--practice-accent);
 }
 
-/* Whole cards keep their authored geometry during a click. The sheen is the
-   feedback; scale/translate animations here would fight hover transforms and
-   make cards appear to jump or grow on mouse and touch. */
+/* Whole cards keep their authored geometry during a click. Only the gradient
+   position and opacity animate; card geometry and compositor transforms stay untouched. */
 .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
   animation: press-fx-sheen 520ms cubic-bezier(.22, 1, .36, 1) both;
 }
@@ -65,17 +67,16 @@
 }
 
 @keyframes press-fx-sheen {
-  0% { opacity: 0; transform: translate3d(-125%, 0, 0) skewX(-13deg); }
-  14% { opacity: .90; }
-  72% { opacity: .62; }
-  100% { opacity: 0; transform: translate3d(220%, 0, 0) skewX(-13deg); }
+  0% { opacity: 0; background-position: 100% 0; }
+  12% { opacity: .92; }
+  72% { opacity: .66; }
+  100% { opacity: 0; background-position: 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .press-fx-surface.is-press-fx,
   .press-fx-surface.is-press-fx > .press-fx-layer > .press-fx-sheen {
     animation: none !important;
-    transform: none !important;
     filter: none !important;
   }
 

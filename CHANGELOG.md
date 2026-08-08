@@ -1,3 +1,13 @@
+# Blue Continuum 4.5.11 — Mobile Press Sheen Rebuild
+
+1. Rebuilt the shared card-click sheen as a full-surface gradient animated by background position instead of a skewed 48% child translated with `translate3d` through an overflow clip.
+2. Removed the shared sheen's `skewX`, `translate3d` and `will-change` compositor path that could produce broken or incomplete highlights on real mobile GPUs despite looking correct in desktop device emulation.
+3. Prewarmed inert press-feedback layers for all authored cards after page parsing, preventing first-tap DOM insertion and compositor setup from competing with the click animation on phones.
+4. Preserved the same left-to-right 520ms click language, authored card geometry, colors and direct-control tactile pulse.
+5. Kept reduced-motion behavior intact and retained click-time preparation as a fallback for any dynamically introduced card surface.
+
+---
+
 # Blue Continuum 4.5.10 — Final Audit Cleanup
 
 1. Removed superseded mobile Contact rules that were overriding the canonical chromatic bare-action layout.

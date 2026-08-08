@@ -75,6 +75,11 @@
     insertFeedbackLayer(surface, layer);
   };
 
+  // The script is deferred, so the static portfolio/workshop card tree is ready here.
+  // Prebuilding the inert feedback layers keeps the first real phone tap from
+  // combining DOM insertion, layout, compositor setup and animation in one frame.
+  document.querySelectorAll(cardSelector).forEach(prepareSurface);
+
   const pulse = (surface) => {
     if (!surface?.isConnected) return;
     prepareSurface(surface);
