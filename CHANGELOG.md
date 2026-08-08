@@ -1,3 +1,14 @@
+# Blue Continuum 4.4.0 — Post-Cleanup Runtime Audit
+
+1. Fixed the canonical click-feedback layer so it no longer becomes the last semantic child of cards and cannot break structural selectors such as `.timeline-item > p:last-child` after the first interaction.
+2. Hardened Workshop navigation across browsers by taking explicit ownership of history scroll restoration instead of racing native browser restoration with the site's own Workshop and section-navigation logic.
+3. Re-checked the production tree, referenced assets, manifest, robots file, sitemap, 404 page and live DOM hooks; no missing production asset or orphaned top-level runtime file was found.
+4. Re-checked the post-consolidation Workshop architecture without restoring the removed legacy press engine, duplicate Workshop pulse, obsolete base stylesheet or obsolete masthead stylesheet.
+5. Kept the existing release identifiers at Portfolio 4.4.0, Workshop 6.0.0 and Interaction Engine 1.1.0 because this pass stabilizes the current production release rather than introducing a new visual release.
+6. Triggered a fresh GitHub Pages build from the stabilized `main` branch so the runtime fixes are deployed together.
+
+---
+
 # Blue Continuum 4.4.0 — Production Consolidation
 
 1. Consolidated all live Workshop styling into `workshop-integrated.css` and removed the obsolete `workshop-base.css` and `workshop-masthead.css` layers.
