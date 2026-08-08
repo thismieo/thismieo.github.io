@@ -26,6 +26,25 @@
     ".practice-copy-button",
   ].join(", ");
 
+  /* These are the exact surfaces owned by the historical pointer-down engine
+     in script.js. Blocking pointerdown only here leaves every other native
+     control and the horizontal selector rail completely untouched. */
+  const legacyPointerSelector = [
+    ".facts > div",
+    ".timeline-item",
+    ".project-card",
+    ".workshop-entry",
+    ".workshop-card",
+    ".current-track-card",
+    ".contact-card",
+    ".workshop-entry-action",
+    ".workshop-back",
+    ".workshop-closing .button",
+    ".contact-card-action",
+    ".contact-link-action",
+    ".section-stepper",
+  ].join(", ");
+
   const tactileOnlySelector = directControlSelector;
 
   const resolveSurface = (target) => {
@@ -91,13 +110,13 @@
     timers.set(surface, timer);
   };
 
-  /* The historical pointer engine lives in older production files. Stop its
-     pointer-down phase before it reaches those surfaces. We do not cancel the
-     event or the click, so native activation, scrolling and accessibility stay
-     untouched. */
+  /* The historical pointer engine lives in older production files. Stop only
+     its pointer-down phase on the surfaces it actually owns. We never prevent
+     default behavior, so click activation, focus, scrolling and accessibility
+     remain native. */
   document.addEventListener("pointerdown", (event) => {
     const surface = resolveSurface(event.target);
-    if (!surface) return;
+    if (!surface || !surface.matches(legacyPointerSelector)) return;
     event.stopPropagation();
   }, { capture: true, passive: true });
 
