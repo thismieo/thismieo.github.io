@@ -1,3 +1,19 @@
+# Blue Continuum 4.4.1 — Interaction & Workshop Stabilization
+
+1. Removed scale and translate feedback from whole-card clicks so Journey, Project and other cards no longer appear to grow or jump on mouse, touch or pen input.
+2. Preserved the click sheen without changing authored card geometry and kept the feedback DOM layer away from structural first/last-child positions.
+3. Hardened Workshop navigation by setting browser history scroll restoration to manual, matching the site's own section and Workshop restoration logic.
+4. Reordered Workshop markup to match the visible reading order: masthead → Python Development → Foundation → Applied Practice → closing action.
+5. Promoted the Workshop container to a real `main` landmark and hides the portfolio skip link while the portfolio main is not visible.
+6. Removed the obsolete JavaScript background-height freeze and resize recalculation path; Workshop backgrounds now expand naturally with Featured Practice and Learning Archive content.
+7. Rebuilt the `Updated · Aug 2026` shimmer as a clipped two-layer background on the line itself so the moving highlight enters and exits cleanly at both edges.
+8. Normalized major Workshop section spacing around one divider rhythm, with balanced space above and below Python, Foundation, Applied Practice and the closing action.
+9. Reduced diffuse Workshop background/card glow, explorer bloom and detail-panel haze while retaining local accent colors and readable depth.
+10. Corrected the 32px favicon MIME declaration, synchronized visible release metadata and cache keys to Portfolio 4.4.1, Workshop 6.0.1 and Interaction Engine 1.1.1, and refreshed repository documentation.
+11. Confirmed GitHub Pages successfully built the stabilized production branch after the runtime and visual fixes.
+
+---
+
 # Blue Continuum 4.4.0 — Post-Cleanup Runtime Audit
 
 1. Fixed the canonical click-feedback layer so it no longer becomes the last semantic child of cards and cannot break structural selectors such as `.timeline-item > p:last-child` after the first interaction.
