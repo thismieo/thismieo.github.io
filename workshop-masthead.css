@@ -59,16 +59,16 @@
   color: transparent;
   background: linear-gradient(
     90deg,
-    rgba(182, 148, 124, .92),
-    #9fb1b8 48%,
-    rgba(159, 149, 207, .94)
+    rgba(182, 148, 124, .94),
+    #a7b9bf 48%,
+    rgba(164, 153, 214, .96)
   );
   -webkit-background-clip: text;
   background-clip: text;
-  font-size: .58rem;
-  font-weight: 800;
+  font-size: .66rem;
+  font-weight: 820;
   line-height: 1.35;
-  letter-spacing: .115em;
+  letter-spacing: .095em;
   text-align: center;
   white-space: nowrap;
 }
@@ -99,16 +99,33 @@
   order: 1;
   display: block !important;
   width: 100%;
-  max-width: 46ch !important;
+  max-width: 50ch !important;
   margin: 0 auto !important;
   padding: 0 4px !important;
   color: #aebdc2 !important;
   font-size: clamp(.94rem, 1.08vw, 1.04rem) !important;
   font-weight: 535 !important;
-  line-height: 1.68 !important;
+  line-height: 1.58 !important;
   letter-spacing: -.009em;
   text-align: center !important;
   text-wrap: pretty;
+}
+
+.workshop-masthead-copy-main,
+.workshop-masthead-copy-growth {
+  display: block;
+}
+
+.workshop-masthead-copy-main {
+  color: #b6c4c9;
+  font-weight: 585;
+}
+
+.workshop-masthead-copy-growth {
+  margin-top: 2px;
+  color: #91a5ac;
+  font-size: .94em;
+  font-weight: 505;
 }
 
 .workshop-masthead-meta {
@@ -362,15 +379,20 @@ body.workshop-open .workshop-masthead-copy {
 
   .workshop-main > .workshop-masthead::after {
     margin-bottom: 15px;
-    font-size: .53rem;
-    letter-spacing: .10em;
+    font-size: .61rem;
+    font-weight: 820;
+    letter-spacing: .075em;
   }
 
   .workshop-masthead-copy {
-    max-width: 31ch !important;
+    max-width: 43ch !important;
     padding-inline: 3px !important;
     font-size: .90rem !important;
-    line-height: 1.66 !important;
+    line-height: 1.56 !important;
+  }
+
+  .workshop-masthead-copy-growth {
+    margin-top: 1px;
   }
 
   .workshop-masthead-meta {
@@ -422,12 +444,12 @@ body.workshop-open .workshop-masthead-copy {
 
 @media (max-width: 380px) {
   .workshop-main > .workshop-masthead::after {
-    font-size: .49rem;
-    letter-spacing: .082em;
+    font-size: .56rem;
+    letter-spacing: .06em;
   }
 
   .workshop-masthead-copy {
-    max-width: 29ch !important;
+    max-width: 39ch !important;
     font-size: .86rem !important;
   }
 
