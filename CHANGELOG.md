@@ -1,3 +1,11 @@
+# Blue Continuum 4.5.15 — Workshop Icon Clarity
+
+1. Replaced the box-heavy Algorithms glyph with a clear circular flow/logic diagram while preserving the existing card icon system.
+2. Refined the LLMs & Chatbots glyph into a distinct conversational symbol with message dots and a small language-model sparkle, avoiding a square reading at phone size.
+3. Left the site-wide press sheen, rendering stack, card surfaces, colors and responsive layout unchanged.
+
+---
+
 # Blue Continuum 4.5.14 — Workshop-Derived Press Stack Rebuild
 
 1. Made The Workshop gateway the canonical interaction reference for every sheen-bearing card across the homepage and Workshop.
