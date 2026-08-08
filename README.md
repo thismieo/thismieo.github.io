@@ -1,17 +1,25 @@
-# Mohammed Muayad Portfolio — Blue Continuum 4.1.9
+# Mohammed Muayad Portfolio — Blue Continuum 4.4.0
 
-Certified responsive portfolio build with the framed Hero portrait, independently rebuilt Hero call-to-action buttons, and refined Workshop card separators.
+Production portfolio for Mohammed Muayad, including the main portfolio experience and The Workshop learning archive.
 
-## Release 4.1.9
+## Current production architecture
 
-- Keeps the approved 1024×1024 WebP portrait and the offset frame behind it.
-- Preserves the independent Hero buttons and inline SVG chevrons introduced in 4.1.8.
-- Removes the Workshop status legend and all repeated `Understood` / `Applied` card labels.
-- Replaces those labels with neutral steel separators and restrained teal/indigo background glows between Workshop cards.
-- Keeps the divider line itself neutral so the color remains atmospheric rather than becoming a hard section break.
-- Uses explicit divider elements with no interactive behavior and no inherited press effects.
-- Removes obsolete status-dot rules, status-legend markup, and superseded responsive grid declarations.
-- Preserves touch-scroll safety, responsive layouts, contact interactions, and the framed portrait treatment.
-- Contains only the production files required by the site.
+- `styles.css` — shared portfolio foundation and responsive layout.
+- `contact-linkedin.css` — contact-card icon refinement.
+- `workshop-integrated.css` — the single Workshop stylesheet; masthead, Python practice, explorer, knowledge cards and responsive behavior are consolidated here.
+- `script.js` — portfolio navigation, Workshop transitions, history and copy behavior.
+- `workshop-integrated.js` — Python practice data, selectors, code rendering and collection state.
+- `interactions.css` / `interactions.js` — one click-confirmed interaction engine for mouse, touch, pen and keyboard.
 
-After replacing an older build, refresh once with `Ctrl + F5`.
+## Release 4.4.0
+
+- Consolidates the previous Workshop CSS layers into one production file.
+- Removes the legacy Workshop base and masthead stylesheets.
+- Removes the old pointer-based press engine and duplicate Workshop press pulse.
+- Keeps one DOM-backed sheen layer, avoiding pseudo-element conflicts with structural separators.
+- Preserves natural vertical page scrolling; Featured Practice and Learning Archive never auto-scroll the page.
+- Normalizes production cache versions and the visible release number.
+- Validates responsive Workshop behavior in Chromium at 350, 390, 700, 900, 1024 and 1440 px viewports.
+- Keeps reduced-motion behavior and keyboard-accessible controls.
+
+The site is deployed through GitHub Pages from the `main` branch.
