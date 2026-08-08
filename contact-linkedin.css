@@ -1,37 +1,18 @@
-/* Contact card refinement — Version 4.4.0 */
+/* Contact icon masks & LinkedIn placement — Version 4.5.8 */
 
 .contact-card-linkedin {
-  --accent-rgb: var(--palette-steel);
   grid-column: 1 / -1;
-  width: calc(50% - 6px);
+  width: calc(50% - 5.5px);
   justify-self: center;
 }
 
-/* Clean, unified contact icons */
 .contact-icon {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  border-color: rgba(var(--accent-rgb), 0.34);
-  color: rgb(var(--accent-rgb));
-  background: linear-gradient(
-    145deg,
-    rgba(var(--accent-rgb), 0.13),
-    rgba(var(--accent-rgb), 0.055) 62%,
-    rgba(7, 15, 22, 0.34)
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    0 7px 16px rgba(0, 6, 11, 0.14);
-  transition:
-    border-color 260ms ease,
-    background 280ms ease,
-    box-shadow 280ms ease;
+  overflow: visible;
 }
 
-.contact-icon::after {
-  content: none;
-}
+.contact-icon::after { content: none; }
 
 .contact-card:not(.contact-card-private) .contact-icon svg {
   display: none;
@@ -39,11 +20,11 @@
 
 .contact-card-private .contact-icon svg {
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 23px;
+  height: 23px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.65;
+  stroke-width: 1.55;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -87,39 +68,10 @@
   --contact-icon-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='3.1'/%3E%3Cpath d='M8 10v7M8 7.2v.1M11.7 17v-7M11.7 13c0-1.8 1.05-3 2.75-3 1.72 0 2.55 1.12 2.55 3.1V17'/%3E%3C/svg%3E");
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .contact-card:hover .contact-icon {
-    border-color: rgba(var(--accent-rgb), 0.48);
-    background: linear-gradient(
-      145deg,
-      rgba(var(--accent-rgb), 0.18),
-      rgba(var(--accent-rgb), 0.075) 62%,
-      rgba(7, 15, 22, 0.3)
-    );
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.045),
-      0 9px 19px rgba(0, 6, 11, 0.17);
-  }
-}
-
-.contact-card:focus-within .contact-icon {
-  border-color: rgba(var(--accent-rgb), 0.48);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 0 3px rgba(var(--accent-rgb), 0.065),
-    0 8px 18px rgba(0, 6, 11, 0.16);
-}
-
 @media (max-width: 700px) {
   .contact-card-linkedin {
     grid-column: auto;
     width: 100%;
     justify-self: stretch;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contact-icon {
-    transition: none;
   }
 }

@@ -1,3 +1,16 @@
+# Blue Continuum 4.5.8 — Contact Chromatic Refinement
+
+1. Rebuilt Let’s connect around five newly derived accents: Rainsteel Blue, Cinder Rose, Graphite Iris, Mineral Tide and Storm Periwinkle.
+2. Gave every Contact card its own restrained Slate/Navy chromatic gradient while keeping the existing compact card footprint and 2 + 2 + centered layout.
+3. Removed framed icon tiles and framed Copy/Visit controls; icons and actions now sit directly in the card as clean typographic elements.
+4. Preserved all copy and outbound-link behavior, with understated hover/focus feedback that does not shift geometry.
+5. Simplified contact-linkedin.css to icon masks and LinkedIn placement only, removing its obsolete visual-surface overrides.
+6. Removed Contact cards from the shared visual-system surface normalization so styles.css owns their gradients without cascade conflicts.
+7. Polished GitHub, Kaggle and Gmail purpose copy for a more balanced reading rhythm across the five cards.
+8. Refreshed Portfolio, Contact and shared visual-system cache metadata to 4.5.8 / 4.5.8 / 1.2.8.
+
+---
+
 # Blue Continuum 4.5.7 — Journey Tag Alignment
 
 1. Anchored all Journey topic tags to one consistent lower content baseline instead of letting description length shift them vertically.

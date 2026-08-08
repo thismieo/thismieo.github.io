@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.2.7
+/* Blue Continuum — Shared Visual System 1.2.8
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -58,14 +58,14 @@ body:not(.workshop-open)::before {
   background: radial-gradient(ellipse, rgba(100, 136, 151, .065), transparent 79%);
 }
 
-.portfolio-panel :is(.facts > div, .contact-card) {
+.portfolio-panel .facts > div {
   background:
     radial-gradient(ellipse 82% 112% at 0% 0%, rgba(var(--accent-rgb), .10), transparent 68%),
     radial-gradient(ellipse 58% 82% at 100% 100%, rgba(var(--accent-rgb), .024), transparent 75%),
     linear-gradient(145deg, rgba(21, 35, 46, .95), rgba(8, 17, 25, .98));
 }
 
-.portfolio-panel :is(.facts > div, .contact-card)::before {
+.portfolio-panel .facts > div::before {
   background:
     linear-gradient(132deg, rgba(255,255,255,.028), transparent 31%, transparent 72%, rgba(255,255,255,.009)),
     radial-gradient(circle at 16% 14%, rgba(var(--accent-rgb), .045), transparent 36%);
