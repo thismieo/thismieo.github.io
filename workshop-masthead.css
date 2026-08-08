@@ -1,116 +1,72 @@
-/* Workshop open masthead + section rhythm
-   The opening belongs to the page itself; cards remain the visual objects. */
+/* Workshop centered masthead + simplified section rhythm
+   One clear opening, one signature light line, and no decorative separator clutter. */
 
 .workshop-main {
-  padding-top: clamp(22px, 2.8vw, 34px) !important;
+  padding-top: clamp(18px, 2.4vw, 28px) !important;
 }
 
-/* Open masthead: no card shell, no rounded container, no competing surface. */
+/*
+   Workshop masthead
+   Visual hierarchy: title -> supporting line -> update meta -> signature light.
+   The header above already names The Workshop, so the repeated eyebrow stays hidden.
+*/
 .workshop-main > .workshop-masthead {
   position: relative;
   isolation: isolate;
-  width: min(100%, 900px) !important;
-  max-width: 900px !important;
+  width: min(100%, 940px) !important;
+  max-width: 940px !important;
   min-height: 0 !important;
-  margin: 0 !important;
-  padding: clamp(30px, 3.5vw, 42px) 0 clamp(28px, 3.2vw, 38px) clamp(22px, 2.4vw, 30px) !important;
+  margin: 0 auto !important;
+  padding: clamp(34px, 4vw, 50px) 12px clamp(31px, 3.8vw, 46px) !important;
   overflow: visible !important;
-  display: block !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
   color: var(--ink);
   border: 0 !important;
   border-radius: 0 !important;
   background: none !important;
   box-shadow: none !important;
-  text-align: left !important;
+  text-align: center !important;
 }
 
-/* One restrained signature line anchors the opening without turning it into a card. */
+/* Quiet atmospheric glow only — not a line or card surface. */
 .workshop-main > .workshop-masthead::before {
   content: "";
   position: absolute;
-  z-index: 1;
-  left: 0;
-  top: clamp(31px, 3.6vw, 43px);
-  bottom: clamp(29px, 3.3vw, 39px);
-  width: 1px;
+  z-index: -1;
+  left: 50%;
+  top: 42%;
+  width: min(720px, 80vw);
+  height: 190px;
   pointer-events: none;
-  border-radius: 999px;
-  background: linear-gradient(
-    180deg,
-    rgba(110, 166, 160, .10),
-    rgba(110, 166, 160, .54) 24%,
-    rgba(164, 137, 118, .48) 58%,
-    rgba(139, 130, 188, .40) 82%,
-    rgba(139, 130, 188, .06)
+  opacity: .46;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(91, 139, 148, .052),
+    rgba(118, 116, 157, .020) 47%,
+    transparent 74%
   );
-  box-shadow: 0 0 16px rgba(127, 160, 162, .07);
 }
 
 .workshop-main > .workshop-masthead::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: -7%;
-  top: 7%;
-  width: min(660px, 72vw);
-  height: 170px;
-  pointer-events: none;
-  opacity: .58;
-  background: radial-gradient(ellipse at center, rgba(87, 139, 145, .055), transparent 70%);
-  filter: blur(2px);
+  content: none !important;
+  display: none !important;
 }
 
-.workshop-masthead-meta {
-  margin: 0 0 clamp(14px, 1.7vw, 19px);
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  flex-wrap: wrap;
-  gap: 9px 14px;
-  text-align: left !important;
-}
-
-.workshop-masthead-meta .eyebrow {
-  margin: 0 !important;
-  color: #9eb4bb !important;
-}
-
-.workshop-masthead-updated {
-  position: relative;
-  margin: 0;
-  padding-left: 15px;
-  color: #71858d;
-  font-size: .56rem;
-  font-weight: 770;
-  line-height: 1.2;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.workshop-masthead-updated::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 3px;
-  height: 3px;
-  margin-top: -1.5px;
-  border-radius: 50%;
-  background: rgba(164, 137, 118, .62);
-  box-shadow: 0 0 9px rgba(164, 137, 118, .15);
-}
-
+/* DOM order is meta/title/copy; flex order creates the intended visual order. */
 #workshop-title.workshop-masthead-title {
+  order: 1;
   width: auto !important;
-  max-width: 720px !important;
-  margin: 0 !important;
+  max-width: 820px !important;
+  margin: 0 auto !important;
   color: #edf2f3 !important;
-  font-size: clamp(2.35rem, 4.15vw, 3.75rem) !important;
+  font-size: clamp(2.35rem, 4vw, 3.55rem) !important;
   font-weight: 750 !important;
-  line-height: 1.015 !important;
+  line-height: 1.025 !important;
   letter-spacing: -.052em !important;
-  text-align: left !important;
+  text-align: center !important;
   text-wrap: balance;
 }
 
@@ -121,274 +77,306 @@
 }
 
 .workshop-masthead-copy {
-  max-width: 620px;
-  margin: clamp(13px, 1.5vw, 17px) 0 0 !important;
+  order: 2;
+  width: 100%;
+  max-width: 650px;
+  margin: clamp(13px, 1.5vw, 17px) auto 0 !important;
   padding: 0 !important;
   color: #94a8af !important;
   font-size: clamp(.82rem, .92vw, .90rem) !important;
   font-weight: 500 !important;
-  line-height: 1.68 !important;
-  text-align: left !important;
+  line-height: 1.65 !important;
+  text-align: center !important;
   text-wrap: pretty;
 }
 
-/* Python is a section header, deliberately quieter than the Workshop masthead. */
+.workshop-masthead-meta {
+  order: 3;
+  width: 100%;
+  margin: clamp(17px, 2vw, 22px) 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* The page header already says The Workshop; avoid a fourth text layer. */
+.workshop-masthead-meta .eyebrow {
+  display: none !important;
+}
+
+.workshop-masthead-updated {
+  position: relative;
+  margin: 0;
+  padding: 0 0 22px;
+  color: #71858d;
+  font-size: .56rem;
+  font-weight: 780;
+  line-height: 1.2;
+  letter-spacing: .105em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Static hairline under the date. */
+.workshop-masthead-updated::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 3px);
+  width: 190px;
+  height: 1px;
+  pointer-events: none;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(127, 150, 158, .10) 18%,
+    rgba(164, 137, 118, .22) 48%,
+    rgba(139, 130, 188, .18) 72%,
+    transparent
+  );
+}
+
+/* Single moving glint — the only animated separator in the Workshop. */
+.workshop-masthead-updated::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: calc(100% - 5px);
+  width: 34px;
+  height: 5px;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(129, 188, 193, .18),
+    rgba(224, 198, 163, .72) 48%,
+    rgba(173, 159, 222, .34),
+    transparent
+  );
+  filter: blur(.35px);
+  box-shadow: 0 0 10px rgba(201, 180, 157, .12);
+  animation: workshop-date-glint 4.4s cubic-bezier(.22, 1, .36, 1) infinite;
+}
+
+@keyframes workshop-date-glint {
+  0%, 18% {
+    opacity: 0;
+    transform: translateX(-112px);
+  }
+  25% {
+    opacity: .92;
+  }
+  55% {
+    opacity: .62;
+  }
+  72%, 100% {
+    opacity: 0;
+    transform: translateX(78px);
+  }
+}
+
+/*
+   Python Development
+   Two text layers only: eyebrow + section title. The card begins immediately after.
+*/
 .python-development-block {
-  padding-top: clamp(25px, 3vw, 36px) !important;
+  padding-top: clamp(24px, 2.8vw, 34px) !important;
 }
 
 .python-development-block > .python-section-heading {
   width: 100% !important;
-  max-width: 700px !important;
-  margin: 0 0 clamp(20px, 2.4vw, 27px) !important;
+  max-width: 720px !important;
+  margin: 0 auto clamp(21px, 2.5vw, 28px) !important;
   display: block !important;
-  text-align: left !important;
+  text-align: center !important;
 }
 
 .python-development-block > .python-section-heading .eyebrow {
   margin: 0 0 8px !important;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-align: left !important;
+  display: block !important;
+  text-align: center !important;
 }
 
+.python-development-block > .python-section-heading .eyebrow::before,
 .python-development-block > .python-section-heading .eyebrow::after {
-  content: "";
-  width: 42px;
-  height: 1px;
-  flex: 0 0 42px;
-  border-radius: 999px;
-  opacity: .64;
-  background: linear-gradient(90deg, rgba(164, 137, 118, .48), rgba(139, 130, 188, .18), transparent);
+  content: none !important;
+  display: none !important;
 }
 
 #current-title.python-section-title {
   width: auto !important;
   max-width: 560px !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
   color: #e7edef !important;
-  font-size: clamp(1.58rem, 2.25vw, 2.02rem) !important;
+  font-size: clamp(1.52rem, 2.1vw, 1.92rem) !important;
   font-weight: 735 !important;
   line-height: 1.11 !important;
   letter-spacing: -.038em !important;
-  text-align: left !important;
+  text-align: center !important;
   text-transform: none !important;
   white-space: normal !important;
 }
 
-/* Old responsive title experiments must never inject alternate copy. */
 #current-title.python-section-title::before,
 #current-title.python-section-title::after {
   content: none !important;
   display: none !important;
 }
 
+/* Remove the third Python text layer. */
 .python-development-block > .python-section-heading .python-section-copy {
-  max-width: 560px !important;
-  margin: 8px 0 0 !important;
-  color: #8ea1a8 !important;
-  font-size: .80rem !important;
-  font-weight: 500 !important;
-  line-height: 1.62 !important;
-  text-align: left !important;
+  display: none !important;
 }
 
-/* Python Programming → collections: one functional separator only. */
-.practice-milestones::before {
-  width: min(68%, 680px) !important;
-  height: 1px !important;
-  margin: 9px auto 8px !important;
-  opacity: .66;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(164, 183, 190, .10) 18%,
-    rgba(164, 137, 118, .22) 50%,
-    rgba(139, 130, 188, .15) 78%,
-    transparent
-  ) !important;
-}
-
-/* Desktop divider between the two Python collections stays quiet. */
-.practice-milestones::after {
-  opacity: .52;
-}
-
-/* No line after Featured Practice / Learning Archive.
-   Whitespace is the transition into wider foundations. */
-.knowledge-application-merged {
-  padding-top: clamp(50px, 5.7vw, 68px) !important;
-}
-
-.knowledge-application-merged::before {
+/*
+   Section rhythm
+   Cards and whitespace do the separating. No decorative lines compete with the masthead signature.
+*/
+.practice-milestones::before,
+.practice-milestones::after,
+.knowledge-application-merged::before,
+.knowledge-application-merged::after,
+.knowledge-application-merged .workshop-subgroup-applied::before {
   content: none !important;
   display: none !important;
   animation: none !important;
 }
 
-/* Foundation → Applied Practice gets one short, low-contrast divider. */
+.practice-milestones {
+  margin-top: clamp(24px, 2.8vw, 32px) !important;
+}
+
+.knowledge-application-merged {
+  padding-top: clamp(54px, 6vw, 72px) !important;
+}
+
 .knowledge-application-merged .workshop-subgroup-applied {
-  margin-top: clamp(48px, 5.5vw, 64px) !important;
-}
-
-.knowledge-application-merged .workshop-subgroup-applied::before {
-  width: min(36%, 330px) !important;
-  height: 1px !important;
-  margin: 0 auto clamp(30px, 3.4vw, 38px) !important;
-  opacity: .70;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(164, 183, 190, .12) 20%,
-    rgba(154, 139, 160, .21) 50%,
-    rgba(164, 183, 190, .12) 80%,
-    transparent
-  ) !important;
-}
-
-/* End cleanly — no decorative line before Continue the journey. */
-.knowledge-application-merged::after {
-  content: none !important;
-  display: none !important;
+  margin-top: clamp(54px, 6vw, 70px) !important;
 }
 
 .workshop-closing {
-  padding-top: clamp(32px, 3.8vw, 44px) !important;
+  padding-top: clamp(34px, 4vw, 46px) !important;
 }
 
 @media (max-width: 700px) {
   .workshop-main {
-    padding-top: 12px !important;
+    padding-top: 10px !important;
   }
 
   .workshop-main > .workshop-masthead {
     width: 100% !important;
     max-width: none !important;
-    padding: 23px 0 22px 16px !important;
+    padding: 27px 4px 30px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: none !important;
     box-shadow: none !important;
+    text-align: center !important;
   }
 
   .workshop-main > .workshop-masthead::before {
-    top: 23px;
-    bottom: 22px;
-  }
-
-  .workshop-main > .workshop-masthead::after {
-    left: -18%;
-    top: 11%;
+    top: 43%;
     width: 92vw;
-    height: 145px;
-    opacity: .46;
-  }
-
-  .workshop-masthead-meta {
-    margin-bottom: 12px;
-    gap: 8px 11px;
-  }
-
-  .workshop-masthead-meta .eyebrow {
-    font-size: .58rem !important;
-  }
-
-  .workshop-masthead-updated {
-    padding-left: 12px;
-    font-size: .50rem;
-    letter-spacing: .075em;
+    height: 150px;
+    opacity: .40;
   }
 
   #workshop-title.workshop-masthead-title {
-    max-width: 14ch !important;
-    font-size: clamp(1.82rem, 8.1vw, 2.18rem) !important;
-    line-height: 1.035 !important;
-    letter-spacing: -.045em !important;
+    max-width: 15ch !important;
+    font-size: clamp(1.88rem, 8.3vw, 2.18rem) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -.046em !important;
+    text-align: center !important;
   }
 
   .workshop-masthead-copy {
     max-width: 31rem;
     margin-top: 10px !important;
+    padding-inline: 5px !important;
     font-size: .78rem !important;
     line-height: 1.58 !important;
+    text-align: center !important;
+  }
+
+  .workshop-masthead-meta {
+    margin-top: 15px !important;
+  }
+
+  .workshop-masthead-updated {
+    padding-bottom: 20px;
+    font-size: .50rem;
+    letter-spacing: .082em;
+  }
+
+  .workshop-masthead-updated::after {
+    width: 146px;
+  }
+
+  @keyframes workshop-date-glint {
+    0%, 18% {
+      opacity: 0;
+      transform: translateX(-90px);
+    }
+    25% {
+      opacity: .90;
+    }
+    55% {
+      opacity: .60;
+    }
+    72%, 100% {
+      opacity: 0;
+      transform: translateX(56px);
+    }
   }
 
   .python-development-block {
-    padding-top: 24px !important;
+    padding-top: 19px !important;
   }
 
   .python-development-block > .python-section-heading {
     max-width: none !important;
-    margin-bottom: 18px !important;
-    text-align: left !important;
+    margin-bottom: 19px !important;
+    text-align: center !important;
   }
 
   .python-development-block > .python-section-heading .eyebrow {
     margin-bottom: 7px !important;
-    gap: 10px;
-  }
-
-  .python-development-block > .python-section-heading .eyebrow::after {
-    width: 32px;
-    flex-basis: 32px;
+    text-align: center !important;
   }
 
   #current-title.python-section-title {
     max-width: 100% !important;
-    font-size: clamp(1.38rem, 6.2vw, 1.62rem) !important;
+    font-size: clamp(1.36rem, 6vw, 1.56rem) !important;
     line-height: 1.11 !important;
-    letter-spacing: -.035em !important;
-    text-align: left !important;
+    text-align: center !important;
   }
 
-  .python-development-block > .python-section-heading .python-section-copy {
-    max-width: 31rem !important;
-    margin-top: 7px !important;
-    font-size: .76rem !important;
-    line-height: 1.56 !important;
-    text-align: left !important;
-  }
-
-  .practice-milestones::before {
-    width: 72% !important;
-    margin-block: 5px 5px !important;
-    opacity: .58;
-  }
-
-  /* On mobile the cards already stack; the separator is deliberately subtle. */
-  .practice-milestones::after {
-    width: 66% !important;
-    margin-inline: auto !important;
-    opacity: .34;
+  .practice-milestones {
+    margin-top: 24px !important;
   }
 
   .knowledge-application-merged {
-    padding-top: 43px !important;
+    padding-top: 46px !important;
   }
 
   .knowledge-application-merged .workshop-subgroup-applied {
-    margin-top: 43px !important;
-  }
-
-  .knowledge-application-merged .workshop-subgroup-applied::before {
-    width: 42% !important;
-    margin-bottom: 27px !important;
-    opacity: .62;
+    margin-top: 47px !important;
   }
 
   .workshop-closing {
-    padding-top: 28px !important;
+    padding-top: 29px !important;
   }
 }
 
 @media (max-width: 380px) {
-  .workshop-main > .workshop-masthead {
-    padding-left: 14px !important;
-  }
-
   #workshop-title.workshop-masthead-title {
-    font-size: 1.76rem !important;
+    font-size: 1.80rem !important;
   }
 
   .workshop-masthead-copy {
@@ -396,13 +384,13 @@
   }
 
   #current-title.python-section-title {
-    font-size: 1.36rem !important;
+    font-size: 1.34rem !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .workshop-main > .workshop-masthead,
-  .python-development-block > .python-section-heading {
+  .workshop-masthead-updated::before {
+    display: none !important;
     animation: none !important;
   }
 }
