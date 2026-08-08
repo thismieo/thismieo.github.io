@@ -265,14 +265,15 @@
 }
 
 @media (max-width: 700px) {
+  /* Move the whole mobile composition slightly lower while reclaiming the dead space below it. */
   .workshop-main {
-    padding-top: 10px !important;
+    padding-top: 26px !important;
   }
 
   .workshop-main > .workshop-masthead {
     width: 100% !important;
     max-width: none !important;
-    padding: 27px 4px 30px !important;
+    padding: 27px 4px 8px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: none !important;
@@ -287,56 +288,96 @@
     opacity: .40;
   }
 
+  /* Mobile-only concept rail: concise, centered and tied directly to the Workshop content. */
+  .workshop-main > .workshop-masthead::after {
+    content: "PRACTICE  ·  FOUNDATIONS  ·  APPLIED WORK" !important;
+    order: 0;
+    width: 100%;
+    margin: 0 auto 13px;
+    display: block !important;
+    color: transparent;
+    background: linear-gradient(90deg, rgba(182, 148, 124, .92), #9fb1b8 48%, rgba(159, 149, 207, .94));
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: .53rem;
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: .105em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Keep the semantic desktop H1 in the DOM, but give mobile its own compact visual statement. */
   #workshop-title.workshop-masthead-title {
-    max-width: 15ch !important;
-    font-size: clamp(1.88rem, 8.3vw, 2.18rem) !important;
-    line-height: 1.04 !important;
-    letter-spacing: -.046em !important;
-    text-align: center !important;
+    max-width: 100% !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  #workshop-title.workshop-masthead-title::after {
+    content: "Python and AI learning,\A documented as it grows." !important;
+    width: 100%;
+    max-width: 15ch;
+    margin: 0 auto;
+    display: block !important;
+    color: #edf2f3;
+    font-size: clamp(1.46rem, 6.8vw, 1.68rem);
+    font-weight: 745;
+    line-height: 1.16;
+    letter-spacing: -.038em;
+    text-align: center;
+    white-space: pre-line;
   }
 
   .workshop-masthead-copy {
-    max-width: 31rem;
-    margin-top: 10px !important;
-    padding-inline: 5px !important;
-    font-size: .78rem !important;
-    line-height: 1.58 !important;
-    text-align: center !important;
+    display: none !important;
   }
 
   .workshop-masthead-meta {
-    margin-top: 15px !important;
+    margin-top: 18px !important;
   }
 
   .workshop-masthead-updated {
-    padding-bottom: 20px;
-    font-size: .50rem;
-    letter-spacing: .082em;
+    padding-bottom: 22px;
+    color: #81949c;
+    font-size: .61rem;
+    font-weight: 790;
+    letter-spacing: .075em;
   }
 
   .workshop-masthead-updated::after {
-    width: 146px;
+    width: 172px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(127, 150, 158, .12) 15%,
+      rgba(164, 137, 118, .25) 45%,
+      rgba(139, 130, 188, .21) 76%,
+      transparent
+    );
   }
 
   @keyframes workshop-date-glint {
     0%, 18% {
       opacity: 0;
-      transform: translateX(-90px);
+      transform: translateX(-103px);
     }
     25% {
-      opacity: .90;
+      opacity: .92;
     }
     55% {
-      opacity: .60;
+      opacity: .62;
     }
     72%, 100% {
       opacity: 0;
-      transform: translateX(56px);
+      transform: translateX(69px);
     }
   }
 
+  /* 8px masthead tail + 18px section lead = a deliberate 26px break after the light line. */
   .python-development-block {
-    padding-top: 19px !important;
+    padding-top: 18px !important;
   }
 
   .python-development-block > .python-section-heading {
@@ -372,15 +413,33 @@
   .workshop-closing {
     padding-top: 29px !important;
   }
+
+  body.workshop-open .workshop-main > .workshop-masthead::after {
+    animation: workshop-mobile-copy-reveal 480ms cubic-bezier(.22, 1, .36, 1) 90ms both;
+  }
+
+  body.workshop-open #workshop-title.workshop-masthead-title::after {
+    animation: workshop-mobile-copy-reveal 540ms cubic-bezier(.22, 1, .36, 1) 160ms both;
+  }
+}
+
+@keyframes workshop-mobile-copy-reveal {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 380px) {
-  #workshop-title.workshop-masthead-title {
-    font-size: 1.80rem !important;
+  .workshop-main > .workshop-masthead::after {
+    font-size: .49rem;
+    letter-spacing: .085em;
   }
 
-  .workshop-masthead-copy {
-    font-size: .75rem !important;
+  #workshop-title.workshop-masthead-title::after {
+    font-size: 1.42rem;
+  }
+
+  .workshop-masthead-updated {
+    font-size: .58rem;
   }
 
   #current-title.python-section-title {
@@ -423,6 +482,11 @@
   .practice-milestone.press-surface.is-pressed::after,
   .practice-milestone.is-pressed::after {
     display: none !important;
+    animation: none !important;
+  }
+
+  body.workshop-open .workshop-main > .workshop-masthead::after,
+  body.workshop-open #workshop-title.workshop-masthead-title::after {
     animation: none !important;
   }
 }
