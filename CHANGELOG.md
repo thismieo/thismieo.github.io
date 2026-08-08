@@ -1,3 +1,17 @@
+# Blue Continuum 4.5.6 — Project Roadmap Refinement
+
+1. Preserved the five-project roadmap while introducing two restrained card scales: three compact cards followed by two slightly wider medium cards, without oversized surfaces.
+2. Reworked project numbering into the shared editorial index language (`01 · Classification` through `05 · Knowledge systems`) and kept status badges aligned opposite the index.
+3. Polished the Project Roadmap introduction, project descriptions, domains and technology tags for shorter, more consistent reading rhythm.
+4. Introduced five new derived project accents — Sage Mineral, Ice Slate, Heather Indigo, Rosewood Garnet and Antique Sand — with quiet chromatic Slate/Navy surfaces.
+5. Coordinated every project tag palette with its card while preserving subtle cross-card color variation.
+6. Gave Project cards canonical ownership of their backgrounds by removing them from the shared homepage surface normalization layer.
+7. Retained linear continuum separators on desktop and added explicit pearl separators between every project card on mobile.
+8. Refined desktop, tablet and phone dimensions so the two size tiers remain visible without making the cards visually large.
+9. Refreshed Portfolio and shared visual-system cache metadata to 4.5.6 / 1.2.7.
+
+---
+
 # Blue Continuum 4.5.5 — Workshop Intro & Focus Tag Refinement
 
 1. Moved the two-line Workshop prelude outside the gateway card and promoted it into the shared homepage section-intro hierarchy under a new `Learning in practice` eyebrow.
