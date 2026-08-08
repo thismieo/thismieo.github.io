@@ -17,6 +17,10 @@
   const contactLinkActions = [...document.querySelectorAll(".contact-link-action")];
   const copyToast = document.querySelector("[data-copy-toast]");
 
+  if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
+
   let portfolioScroll = 0;
   let workshopTransitioning = false;
   let workshopScrollTarget = null;
