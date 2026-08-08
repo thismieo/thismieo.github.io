@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.2.2
+/* Blue Continuum — Shared Visual System 1.2.3
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -509,14 +509,6 @@ body:not(.workshop-open)::before {
   box-shadow: var(--continuum-divider-shadow) !important;
 }
 
-/* Journey spectrum — each connector blends one learning stage into the next. */
-.portfolio-panel #journey .journey-divider-01 { --journey-divider-from: 132, 169, 158; --journey-divider-to: 124, 153, 181; }
-.portfolio-panel #journey .journey-divider-02 { --journey-divider-from: 124, 153, 181; --journey-divider-to: 112, 123, 177; }
-.portfolio-panel #journey .journey-divider-03 { --journey-divider-from: 112, 123, 177; --journey-divider-to: 145, 124, 164; }
-.portfolio-panel #journey .journey-divider-04 { --journey-divider-from: 145, 124, 164; --journey-divider-to: 176, 143, 119; }
-.portfolio-panel #journey .timeline-divider-line { background: linear-gradient(180deg, transparent, rgba(var(--journey-divider-from), .16) 14%, rgba(var(--journey-divider-from), .48) 38%, rgba(var(--journey-divider-to), .44) 64%, rgba(var(--journey-divider-to), .14) 86%, transparent) !important; box-shadow: 0 0 12px rgba(var(--journey-divider-from), .055), 0 0 12px rgba(var(--journey-divider-to), .045) !important; }
-
-.portfolio-panel .timeline-divider,
 .portfolio-panel .workshop-entry-separator {
   background: none !important;
 }
@@ -669,9 +661,7 @@ body:not(.workshop-open)::before {
     box-shadow: var(--continuum-divider-shadow) !important;
   }
 
-  .portfolio-panel #journey .timeline-divider-line { width: var(--continuum-divider-width-mobile) !important; background: linear-gradient(90deg, transparent, rgba(var(--journey-divider-from), .16) 14%, rgba(var(--journey-divider-from), .48) 38%, rgba(var(--journey-divider-to), .44) 64%, rgba(var(--journey-divider-to), .14) 86%, transparent) !important; box-shadow: 0 0 12px rgba(var(--journey-divider-from), .055), 0 0 12px rgba(var(--journey-divider-to), .045) !important; }
 
-  .portfolio-panel .timeline-divider,
   .portfolio-panel .workshop-entry-separator,
   .portfolio-panel .project-mobile-separator {
     min-height: calc(var(--continuum-divider-space-mobile) * 2) !important;
