@@ -1,3 +1,14 @@
+# Blue Continuum 4.5.9 — Unified Homepage Rhythm
+
+1. Unified About, Journey, Project Roadmap, Let’s connect and Closing to one literal vertical spacing level.
+2. Set one canonical section edge spacing: 36px on desktop/tablet and 26px on phone.
+3. Matched the internal Journey → Workshop gateway divider to the same two-sided rhythm, keeping its line centered between equal spaces.
+4. Removed legacy plain-section padding overrides from styles.css so no homepage section can sit higher or lower than the others.
+5. Kept Hero outside the shared rhythm because its viewport composition has dedicated spacing.
+6. Preserved all card geometry, colors, dividers and interactions unchanged.
+
+---
+
 # Blue Continuum 4.5.8 — Contact Chromatic Refinement
 
 1. Rebuilt Let’s connect around five newly derived accents: Rainsteel Blue, Cinder Rose, Graphite Iris, Mineral Tide and Storm Periwinkle.

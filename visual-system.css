@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.2.8
+/* Blue Continuum — Shared Visual System 1.2.9
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -24,6 +24,8 @@
     transparent
   );
   --continuum-divider-shadow: 0 0 6px rgba(157, 173, 178, .028);
+  --continuum-section-space: 36px;
+  --continuum-section-space-mobile: 26px;
 
   /* Homepage About palette — intentionally distinct from Workshop accents. */
   --about-mist-rgb: 104, 150, 171;
@@ -69,6 +71,34 @@ body:not(.workshop-open)::before {
   background:
     linear-gradient(132deg, rgba(255,255,255,.028), transparent 31%, transparent 72%, rgba(255,255,255,.009)),
     radial-gradient(circle at 16% 14%, rgba(var(--accent-rgb), .045), transparent 36%);
+}
+
+
+/* ---------- Homepage section rhythm ---------- */
+.portfolio-panel main > :is(.about, .journey, .projects, .contact, .closing-note) {
+  padding-top: var(--continuum-section-space);
+  padding-bottom: var(--continuum-section-space);
+}
+
+/* The Workshop gateway lives inside Journey, so its divider carries the
+   same 36px + 36px transition rhythm as two adjacent homepage sections. */
+.portfolio-panel .workshop-entry-separator {
+  min-height: calc(var(--continuum-section-space) * 2);
+}
+
+.portfolio-panel .workshop-entry-intro {
+  margin-top: 0;
+}
+
+@media (max-width: 700px) {
+  .portfolio-panel main > :is(.about, .journey, .projects, .contact, .closing-note) {
+    padding-top: var(--continuum-section-space-mobile);
+    padding-bottom: var(--continuum-section-space-mobile);
+  }
+
+  .portfolio-panel .workshop-entry-separator {
+    min-height: calc(var(--continuum-section-space-mobile) * 2);
+  }
 }
 
 
