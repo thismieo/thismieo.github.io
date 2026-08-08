@@ -1,3 +1,13 @@
+# Blue Continuum 4.5.23 — Workshop Chromatic Hierarchy & Editorial Copy
+
+1. Added concise editorial descriptions beneath Practice in progress, Foundation and Applied practice so the Workshop hierarchy reads with the same clarity as the portfolio sections.
+2. Introduced seven newly derived card accents across Foundation and Applied practice, avoiding direct repetition of the existing Journey, Projects, About and Contact palettes.
+3. Strengthened card color through controlled surface tint, border definition and icon/badge accents rather than glow, blur or filter effects.
+4. Preserved the 4.5.22 divider geometry, responsive card layouts, semantic `nth-of-type()` ownership and the clean no-shine interaction baseline.
+5. Revalidated desktop and phone layouts for description wrapping, Knowledge card masks, divider visibility and horizontal overflow.
+
+---
+
 # Blue Continuum 4.5.22 — Applied Practice Dividers & Final Stability Pass
 
 1. Added explicit separators between the three Applied practice cards, matching the Workshop divider language on desktop, tablet and phone.

@@ -1,4 +1,4 @@
-/* Workshop 6.0.6 — consolidated production stylesheet.
+/* Workshop 6.0.7 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -290,7 +290,35 @@ body.workshop-open .workshop-masthead-copy {
   display: none !important;
 }
 
-.python-development-block > .python-section-heading .python-section-copy { display: none !important; }
+.python-development-block > .python-section-heading .python-section-copy {
+  max-width: 680px;
+  margin: 13px auto 0 !important;
+  display: block !important;
+  text-align: center;
+}
+
+.workshop-heading-copy-primary,
+.workshop-heading-copy-secondary {
+  display: block;
+}
+
+.workshop-heading-copy-primary {
+  color: #cbd7db;
+  font-size: clamp(.80rem, .92vw, .90rem);
+  font-weight: 670;
+  line-height: 1.45;
+  letter-spacing: -.012em;
+}
+
+.workshop-heading-copy-secondary {
+  max-width: 700px;
+  margin: 5px auto 0;
+  color: #82969f;
+  font-size: clamp(.69rem, .79vw, .77rem);
+  font-weight: 520;
+  line-height: 1.62;
+  letter-spacing: -.004em;
+}
 
 .python-development-block .current-track-card {
   --accent-rgb: 122, 129, 157;
@@ -1121,6 +1149,12 @@ body.workshop-open .workshop-masthead-copy {
   margin-bottom: 0 !important;
 }
 
+.knowledge-application-merged .workshop-subgroup-copy {
+  max-width: 720px;
+  margin: 12px auto 0;
+  text-align: center;
+}
+
 .knowledge-application-merged .workshop-subgroup .workshop-grid {
   margin-top: 24px !important;
   display: grid;
@@ -1394,6 +1428,33 @@ body.workshop-open .workshop-masthead-copy {
   padding-top: var(--workshop-divider-space) !important;
   display: flex;
   justify-content: center;
+}
+
+
+/* ---------- 4.5.23 chromatic Workshop hierarchy ---------- */
+/* Foundation: Petrol, Eucalyptus, Smoky Amethyst, Copper Clay. */
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --accent-rgb: 91, 166, 171; --main-icon-rgb: 111, 193, 188; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(2) { --accent-rgb: 113, 155, 121; --main-icon-rgb: 130, 181, 137; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(3) { --accent-rgb: 153, 123, 178; --main-icon-rgb: 176, 145, 199; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) { --accent-rgb: 184, 125, 94; --main-icon-rgb: 204, 148, 115; }
+
+/* Applied practice: Mulberry Dust, Cerulean Ash, Moss Bronze. */
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --accent-rgb: 178, 106, 142; --main-icon-rgb: 197, 129, 159; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --accent-rgb: 82, 151, 176; --main-icon-rgb: 108, 177, 198; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --accent-rgb: 165, 145, 88; --main-icon-rgb: 188, 166, 106; }
+
+.knowledge-application-merged .workshop-grid-foundation > .knowledge-card {
+  border-color: rgba(var(--accent-rgb), .27) !important;
+  background:
+    linear-gradient(145deg, rgba(var(--accent-rgb), .105) 0%, rgba(var(--accent-rgb), .030) 34%, rgba(14, 26, 35, .992) 61%, rgba(7, 17, 25, .998) 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.026), 0 13px 29px rgba(0, 5, 10, .10) !important;
+}
+
+.knowledge-application-merged .workshop-grid-featured > .knowledge-card {
+  border-color: rgba(var(--accent-rgb), .25) !important;
+  background:
+    linear-gradient(146deg, rgba(var(--accent-rgb), .090) 0%, rgba(var(--accent-rgb), .024) 36%, rgba(14, 26, 35, .994) 62%, rgba(7, 17, 25, .998) 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.022), 0 11px 25px rgba(0, 5, 10, .085) !important;
 }
 
 /* ---------- Hover capability ---------- */
