@@ -482,35 +482,38 @@
 .practice-milestone:active,
 .practice-milestone:has(.practice-milestone-action:active),
 .current-track-card:active,
-.knowledge-application-merged .knowledge-card:active {
-  transform: translateY(2px) scale(.992);
+.current-track-card.is-pressing,
+.knowledge-application-merged .knowledge-card:active,
+.knowledge-application-merged .knowledge-card.is-pressing {
+  transform: translateY(2px) scale(.992) !important;
 }
 
-/* Featured / Archive use the same 560ms Silk Sweep timing as the shared site press system. */
+/* Featured / Archive share the exact full-width 560ms Silk Sweep geometry used site-wide. */
 .practice-milestone::after {
   content: "";
   position: absolute;
   z-index: 6;
   top: 1px;
   bottom: 1px;
-  left: -44%;
-  width: 42%;
+  left: 0;
+  width: 62%;
   pointer-events: none;
   opacity: 0;
   border-radius: inherit;
   background: linear-gradient(
-    104deg,
+    96deg,
     transparent 0%,
-    rgba(255, 255, 255, .025) 22%,
-    rgba(var(--practice-accent), .10) 43%,
-    rgba(255, 255, 255, .15) 53%,
-    rgba(var(--practice-accent), .055) 65%,
+    rgba(var(--practice-accent), .025) 23%,
+    rgba(var(--practice-accent), .13) 48%,
+    rgba(255, 255, 255, .05) 58%,
+    rgba(var(--practice-accent), .05) 73%,
     transparent 100%
   );
   transform: translate3d(-175%, 0, 0) skewX(-12deg);
   will-change: transform, opacity;
 }
 
+/* Touch keeps the existing immediate sweep. Desktop completes the sweep after mouse release. */
 .practice-milestone:active::after,
 .practice-milestone:has(.practice-milestone-action:active)::after {
   opacity: 1;
@@ -731,6 +734,31 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
   text-align: right;
 }
 
+/* Foundation footer copy stacks only on the four-column desktop layout.
+   The outer card shape and the mobile layout remain unchanged. */
+@media (min-width: 1051px) {
+  .workshop-grid-foundation .knowledge-card-foot {
+    min-height: 66px;
+    padding: 10px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .workshop-grid-foundation .knowledge-card-foot span {
+    font-size: .53rem;
+  }
+
+  .workshop-grid-foundation .knowledge-card-foot strong {
+    width: 100%;
+    font-size: .64rem;
+    line-height: 1.34;
+    text-align: left;
+    text-wrap: balance;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .practice-selector-card:hover { border-color: rgba(var(--practice-accent), .25); }
 
@@ -759,6 +787,28 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
   .knowledge-card:hover {
     border-color: rgba(var(--accent-rgb), .31) !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03), 0 22px 48px rgba(0, 5, 10, .17) !important;
+  }
+
+  /* Hover must never override the tactile down-state. */
+  .practice-milestone:active,
+  .practice-milestone:has(.practice-milestone-action:active),
+  .current-track-card:active,
+  .current-track-card.is-pressing,
+  .knowledge-application-merged .knowledge-card:active,
+  .knowledge-application-merged .knowledge-card.is-pressing {
+    transform: translateY(2px) scale(.992) !important;
+  }
+
+  /* Buttons stay focused after a mouse click, allowing a complete sweep after release.
+     :active temporarily arms the effect so every repeated click restarts cleanly. */
+  .practice-milestone:focus-within::after {
+    opacity: 1;
+    animation: silk-sweep 560ms var(--ease) both;
+  }
+
+  .practice-milestone:has(.practice-milestone-action:active)::after {
+    opacity: 0;
+    animation: none;
   }
 }
 
@@ -1005,10 +1055,14 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
   .current-track-card:hover,
   .knowledge-card:hover,
   .practice-milestone:active,
+  .practice-milestone:has(.practice-milestone-action:active),
   .current-track-card:active,
-  .knowledge-card:active { transform: none !important; }
+  .current-track-card.is-pressing,
+  .knowledge-card:active,
+  .knowledge-card.is-pressing { transform: none !important; }
 
-  .practice-milestone::after { animation: none !important; opacity: 0 !important; }
+  .practice-milestone::after,
+  .practice-milestone:focus-within::after { animation: none !important; opacity: 0 !important; }
 
   body.workshop-open .workshop-hero-merged > .eyebrow,
   body.workshop-open .workshop-hero-merged > #workshop-title,
