@@ -1,11 +1,11 @@
-/* Workshop centered masthead + simplified section rhythm
-   Desktop keeps the primary statement; mobile uses a quieter descriptive composition. */
+/* Workshop masthead and interaction polish.
+   One responsive composition across desktop and mobile. */
 
 .workshop-main {
   padding-top: clamp(18px, 2.4vw, 28px) !important;
 }
 
-/* Workshop masthead */
+/* ---------- Workshop masthead ---------- */
 .workshop-main > .workshop-masthead {
   position: relative;
   isolation: isolate;
@@ -13,7 +13,7 @@
   max-width: 940px !important;
   min-height: 0 !important;
   margin: 0 auto !important;
-  padding: clamp(34px, 4vw, 50px) 12px clamp(31px, 3.8vw, 46px) !important;
+  padding: clamp(40px, 4vw, 50px) 12px 10px !important;
   overflow: visible !important;
   display: flex !important;
   flex-direction: column;
@@ -26,16 +26,17 @@
   text-align: center !important;
 }
 
+/* Quiet atmosphere only; the masthead itself is not a card. */
 .workshop-main > .workshop-masthead::before {
   content: "";
   position: absolute;
   z-index: -1;
   left: 50%;
-  top: 42%;
+  top: 48%;
   width: min(720px, 80vw);
-  height: 190px;
+  height: 180px;
   pointer-events: none;
-  opacity: .46;
+  opacity: .43;
   transform: translate(-50%, -50%);
   background: radial-gradient(
     ellipse at center,
@@ -45,23 +46,43 @@
   );
 }
 
+/* Visual index for the three Workshop content families. */
 .workshop-main > .workshop-masthead::after {
-  content: none !important;
-  display: none !important;
+  content: "PRACTICE  ·  FOUNDATIONS  ·  APPLIED WORK" !important;
+  order: 0;
+  width: 100%;
+  margin: 0 auto clamp(15px, 1.5vw, 18px);
+  display: block !important;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    rgba(182, 148, 124, .92),
+    #9fb1b8 48%,
+    rgba(159, 149, 207, .94)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: .58rem;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: .115em;
+  text-align: center;
+  white-space: nowrap;
 }
 
+/* Keep the document H1 for semantics without using it as visual display copy. */
 #workshop-title.workshop-masthead-title {
-  order: 1;
-  width: auto !important;
-  max-width: 820px !important;
-  margin: 0 auto !important;
-  color: #edf2f3 !important;
-  font-size: clamp(2.35rem, 4vw, 3.55rem) !important;
-  font-weight: 750 !important;
-  line-height: 1.025 !important;
-  letter-spacing: -.052em !important;
-  text-align: center !important;
-  text-wrap: balance;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  max-width: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
 }
 
 #workshop-title.workshop-masthead-title::before,
@@ -70,24 +91,27 @@
   display: none !important;
 }
 
+/* The description is the masthead's primary visible statement. */
 .workshop-masthead-copy {
-  order: 2;
+  order: 1;
+  display: block !important;
   width: 100%;
-  max-width: 650px;
-  margin: clamp(13px, 1.5vw, 17px) auto 0 !important;
-  padding: 0 !important;
-  color: #94a8af !important;
-  font-size: clamp(.82rem, .92vw, .90rem) !important;
-  font-weight: 500 !important;
-  line-height: 1.65 !important;
+  max-width: 46ch !important;
+  margin: 0 auto !important;
+  padding: 0 4px !important;
+  color: #aebdc2 !important;
+  font-size: clamp(.94rem, 1.08vw, 1.04rem) !important;
+  font-weight: 535 !important;
+  line-height: 1.68 !important;
+  letter-spacing: -.009em;
   text-align: center !important;
   text-wrap: pretty;
 }
 
 .workshop-masthead-meta {
-  order: 3;
+  order: 2;
   width: 100%;
-  margin: clamp(17px, 2vw, 22px) 0 0 !important;
+  margin: clamp(18px, 2vw, 22px) 0 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -101,12 +125,12 @@
 .workshop-masthead-updated {
   position: relative;
   margin: 0;
-  padding: 0 0 22px;
-  color: #71858d;
-  font-size: .56rem;
-  font-weight: 780;
+  padding: 0 0 24px;
+  color: #879aa2;
+  font-size: .68rem;
+  font-weight: 790;
   line-height: 1.2;
-  letter-spacing: .105em;
+  letter-spacing: .07em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -117,7 +141,7 @@
   position: absolute;
   left: 50%;
   top: calc(100% - 3px);
-  width: 190px;
+  width: 208px;
   height: 1px;
   pointer-events: none;
   border-radius: 999px;
@@ -125,9 +149,9 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(127, 150, 158, .10) 18%,
-    rgba(164, 137, 118, .22) 48%,
-    rgba(139, 130, 188, .18) 72%,
+    rgba(127, 150, 158, .12) 15%,
+    rgba(164, 137, 118, .25) 45%,
+    rgba(139, 130, 188, .21) 76%,
     transparent
   );
 }
@@ -159,19 +183,32 @@
 @keyframes workshop-date-glint {
   0%, 18% {
     opacity: 0;
-    transform: translateX(-112px);
+    transform: translateX(-121px);
   }
   25% { opacity: .92; }
   55% { opacity: .62; }
   72%, 100% {
     opacity: 0;
-    transform: translateX(78px);
+    transform: translateX(87px);
   }
 }
 
-/* Python Development: eyebrow + one concise title. */
+body.workshop-open .workshop-main > .workshop-masthead::after {
+  animation: workshop-masthead-reveal 480ms cubic-bezier(.22, 1, .36, 1) 90ms both;
+}
+
+body.workshop-open .workshop-masthead-copy {
+  animation: workshop-masthead-reveal 540ms cubic-bezier(.22, 1, .36, 1) 160ms both;
+}
+
+@keyframes workshop-masthead-reveal {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Python Development ---------- */
 .python-development-block {
-  padding-top: clamp(24px, 2.8vw, 34px) !important;
+  padding-top: clamp(22px, 2.5vw, 30px) !important;
 }
 
 .python-development-block > .python-section-heading {
@@ -245,6 +282,7 @@
   padding-top: clamp(34px, 4vw, 46px) !important;
 }
 
+/* ---------- Mobile rhythm ---------- */
 @media (max-width: 700px) {
   .workshop-main {
     padding-top: 26px !important;
@@ -254,75 +292,26 @@
     width: 100% !important;
     max-width: none !important;
     padding: 30px 6px 8px !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: none !important;
-    box-shadow: none !important;
-    text-align: center !important;
   }
 
   .workshop-main > .workshop-masthead::before {
-    top: 46%;
+    top: 48%;
     width: 92vw;
     height: 145px;
     opacity: .38;
   }
 
-  /* Compact visual index for the three Workshop content families. */
   .workshop-main > .workshop-masthead::after {
-    content: "PRACTICE  ·  FOUNDATIONS  ·  APPLIED WORK" !important;
-    order: 0;
-    width: 100%;
-    margin: 0 auto 15px;
-    display: block !important;
-    color: transparent;
-    background: linear-gradient(90deg, rgba(182, 148, 124, .92), #9fb1b8 48%, rgba(159, 149, 207, .94));
-    -webkit-background-clip: text;
-    background-clip: text;
+    margin-bottom: 15px;
     font-size: .53rem;
-    font-weight: 800;
-    line-height: 1.35;
     letter-spacing: .10em;
-    text-align: center;
-    white-space: nowrap;
   }
 
-  /* Keep the real H1 for document semantics without letting a display headline dominate the phone layout. */
-  #workshop-title.workshop-masthead-title {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    max-width: 1px !important;
-    margin: -1px !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    clip-path: inset(50%) !important;
-    border: 0 !important;
-    white-space: nowrap !important;
-  }
-
-  #workshop-title.workshop-masthead-title::before,
-  #workshop-title.workshop-masthead-title::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  /* The supporting copy becomes the mobile hero statement: quiet, readable and naturally 2–3 lines. */
   .workshop-masthead-copy {
-    order: 2;
-    display: block !important;
-    width: 100%;
-    max-width: 32ch !important;
-    margin: 0 auto !important;
-    padding: 0 3px !important;
-    color: #aebdc2 !important;
+    max-width: 31ch !important;
+    padding-inline: 3px !important;
     font-size: .90rem !important;
-    font-weight: 540 !important;
     line-height: 1.66 !important;
-    letter-spacing: -.008em;
-    text-align: center !important;
-    text-wrap: pretty;
   }
 
   .workshop-masthead-meta {
@@ -331,22 +320,12 @@
 
   .workshop-masthead-updated {
     padding-bottom: 22px;
-    color: #879aa2;
     font-size: .64rem;
-    font-weight: 790;
     letter-spacing: .065em;
   }
 
   .workshop-masthead-updated::after {
     width: 172px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(127, 150, 158, .12) 15%,
-      rgba(164, 137, 118, .25) 45%,
-      rgba(139, 130, 188, .21) 76%,
-      transparent
-    );
   }
 
   @keyframes workshop-date-glint {
@@ -370,19 +349,16 @@
   .python-development-block > .python-section-heading {
     max-width: none !important;
     margin-bottom: 19px !important;
-    text-align: center !important;
   }
 
   .python-development-block > .python-section-heading .eyebrow {
     margin-bottom: 7px !important;
-    text-align: center !important;
   }
 
   #current-title.python-section-title {
     max-width: 100% !important;
     font-size: clamp(1.36rem, 6vw, 1.56rem) !important;
     line-height: 1.11 !important;
-    text-align: center !important;
   }
 
   .practice-milestones {
@@ -400,19 +376,6 @@
   .workshop-closing {
     padding-top: 29px !important;
   }
-
-  body.workshop-open .workshop-main > .workshop-masthead::after {
-    animation: workshop-mobile-copy-reveal 480ms cubic-bezier(.22, 1, .36, 1) 90ms both;
-  }
-
-  body.workshop-open .workshop-masthead-copy {
-    animation: workshop-mobile-copy-reveal 540ms cubic-bezier(.22, 1, .36, 1) 160ms both;
-  }
-}
-
-@keyframes workshop-mobile-copy-reveal {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 380px) {
@@ -422,7 +385,7 @@
   }
 
   .workshop-masthead-copy {
-    max-width: 30ch !important;
+    max-width: 29ch !important;
     font-size: .86rem !important;
   }
 
@@ -435,7 +398,8 @@
   }
 }
 
-/* Featured Practice / Learning Archive: one click-confirmed sweep only. */
+/* ---------- Featured Practice / Learning Archive ----------
+   One click-confirmed sweep only; :active and focus never start competing shines. */
 .practice-milestone:active::after,
 .practice-milestone:has(.practice-milestone-action:active)::after,
 .practice-milestone:focus-within::after {
