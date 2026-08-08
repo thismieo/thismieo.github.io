@@ -1,4 +1,4 @@
-/* Workshop 6.0.3 — consolidated production stylesheet.
+/* Workshop 6.0.4 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -61,7 +61,7 @@ body.workshop-open > .skip-link {
 
 .workshop-main {
   --workshop-section-gap: clamp(38px, 3.8vw, 48px);
-  --workshop-divider-space: clamp(24px, 2.4vw, 30px);
+  --workshop-divider-space: var(--continuum-section-space, 36px);
   --workshop-divider-width: min(34vw, 340px);
   position: relative;
   padding-top: clamp(18px, 2.4vw, 28px) !important;
@@ -1129,7 +1129,7 @@ body.workshop-open .workshop-masthead-copy {
 
 .workshop-grid-foundation {
   grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) 1px minmax(0, 1fr) 1px minmax(0, 1fr) !important;
-  column-gap: 10px !important;
+  column-gap: var(--continuum-card-divider-gap, 14px) !important;
   row-gap: 0 !important;
 }
 
@@ -1417,7 +1417,7 @@ body.workshop-open .workshop-masthead-copy {
 @media (max-width: 700px) {
   .workshop-main {
     --workshop-section-gap: 32px;
-    --workshop-divider-space: 22px;
+    --workshop-divider-space: var(--continuum-section-space-mobile, 26px);
     --workshop-divider-width: min(64vw, 240px);
     padding-top: 26px !important;
   }
@@ -1524,7 +1524,7 @@ body.workshop-open .workshop-masthead-copy {
   .knowledge-application-merged { padding-top: var(--workshop-divider-space) !important; }
   .workshop-grid-foundation {
     grid-template-columns: 1fr !important;
-    grid-template-rows: auto 19px auto 19px auto 19px auto !important;
+    grid-template-rows: auto calc(var(--continuum-divider-space-mobile, 22px) * 2) auto calc(var(--continuum-divider-space-mobile, 22px) * 2) auto calc(var(--continuum-divider-space-mobile, 22px) * 2) auto !important;
     gap: 0 !important;
   }
   .workshop-grid-foundation > .knowledge-card:nth-of-type(1) { grid-column: 1; grid-row: 1; }

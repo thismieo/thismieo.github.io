@@ -1,3 +1,15 @@
+# Blue Continuum 4.5.17 — Divider & Spacing Rhythm Audit
+
+1. Restored the Journey → Workshop divider on desktop and gave it the same symmetric section spacing used across the homepage.
+2. Centralized homepage divider geometry and editorial intro-to-card spacing in visual-system.css, removing the legacy divider variables and desktop hide rule that conflicted with the shared system.
+3. Standardized first-card-group spacing to 36px on desktop and 28px on phone for Journey, Workshop entry, Projects and Contact.
+4. Standardized desktop card-to-divider half-gaps to 14px across Journey, Projects and Workshop Foundation layouts.
+5. Standardized phone card separators to the shared 22px-per-side rhythm while Workshop section dividers use the shared 26px-per-side section rhythm.
+6. Removed superseded Project mobile separator geometry from styles.css so one stylesheet owns its spacing and placement.
+7. Preserved all card colors, interaction/sheens, content, responsive card geometry and Workshop behavior.
+
+---
+
 # Blue Continuum 4.5.16 — Universal Mobile Sheen Compatibility
 
 1. Preserved the canonical Workshop-derived sheen on modern browsers while adding a visually matched low-cost rendering path for iOS 16 and older WebKit.
