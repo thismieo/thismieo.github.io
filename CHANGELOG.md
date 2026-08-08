@@ -1,3 +1,12 @@
+# Blue Continuum 4.5.16 — Universal Mobile Sheen Compatibility
+
+1. Preserved the canonical Workshop-derived sheen on modern browsers while adding a visually matched low-cost rendering path for iOS 16 and older WebKit.
+2. Replaced full-card animated background-position repainting on legacy iOS with one transient soft sweep band, keeping the same left-to-right direction, brightness envelope, 520ms timing and fixed card geometry.
+3. Stopped prewarming every card layer on legacy iOS; only the touched card is prepared at pointer/touch start, and its feedback layer is removed after the animation to reduce compositor pressure.
+4. Left all card colors, layouts, Workshop surfaces and modern iPhone behavior unchanged.
+
+---
+
 # Blue Continuum 4.5.15 — Workshop Icon Clarity
 
 1. Replaced the box-heavy Algorithms glyph with a clear circular flow/logic diagram while preserving the existing card icon system.
