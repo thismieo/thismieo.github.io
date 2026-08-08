@@ -513,7 +513,7 @@
   will-change: transform, opacity;
 }
 
-/* Touch keeps the existing immediate sweep. Desktop completes the sweep after mouse release. */
+/* Touch keeps the immediate sweep. Desktop alternates animation names on open/close so every click restarts cleanly. */
 .practice-milestone:active::after,
 .practice-milestone:has(.practice-milestone-action:active)::after {
   opacity: 1;
@@ -799,17 +799,36 @@ body.workshop-open .python-development-heading { animation-delay: 390ms; }
     transform: translateY(2px) scale(.992) !important;
   }
 
-  /* Buttons stay focused after a mouse click, allowing a complete sweep after release.
-     :active temporarily arms the effect so every repeated click restarts cleanly. */
-  .practice-milestone:focus-within::after {
+  /* A focused collection button changes aria-expanded on every click.
+     Different animation names for open/close force a clean full replay each time. */
+  .practice-milestone:focus-within:has(.practice-milestone-action[aria-expanded="true"])::after {
     opacity: 1;
-    animation: silk-sweep 560ms var(--ease) both;
+    animation: practice-desktop-silk-open 560ms var(--ease) both;
+  }
+
+  .practice-milestone:focus-within:has(.practice-milestone-action[aria-expanded="false"])::after {
+    opacity: 1;
+    animation: practice-desktop-silk-close 560ms var(--ease) both;
   }
 
   .practice-milestone:has(.practice-milestone-action:active)::after {
     opacity: 0;
     animation: none;
   }
+}
+
+@keyframes practice-desktop-silk-open {
+  0% { opacity: 0; transform: translate3d(-175%, 0, 0) skewX(-12deg); }
+  12% { opacity: .88; }
+  78% { opacity: .78; }
+  100% { opacity: 0; transform: translate3d(265%, 0, 0) skewX(-12deg); }
+}
+
+@keyframes practice-desktop-silk-close {
+  0% { opacity: 0; transform: translate3d(-175%, 0, 0) skewX(-12deg); }
+  12% { opacity: .88; }
+  78% { opacity: .78; }
+  100% { opacity: 0; transform: translate3d(265%, 0, 0) skewX(-12deg); }
 }
 
 @media (max-width: 1050px) {
