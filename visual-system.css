@@ -1,0 +1,220 @@
+/* Blue Continuum — Shared Visual System 1.0.0
+   Canonical cross-page divider language and ambient-depth normalization. */
+
+:root {
+  --continuum-divider-width: min(34vw, 340px);
+  --continuum-divider-width-mobile: min(64vw, 240px);
+  --continuum-divider-space-mobile: 22px;
+  --continuum-divider-line: linear-gradient(
+    90deg,
+    transparent,
+    rgba(126, 149, 157, .10) 12%,
+    rgba(161, 173, 178, .38) 40%,
+    rgba(170, 151, 139, .30) 58%,
+    rgba(139, 132, 172, .14) 82%,
+    transparent
+  );
+  --continuum-divider-line-vertical: linear-gradient(
+    180deg,
+    transparent,
+    rgba(126, 149, 157, .10) 12%,
+    rgba(161, 173, 178, .38) 40%,
+    rgba(170, 151, 139, .30) 58%,
+    rgba(139, 132, 172, .14) 82%,
+    transparent
+  );
+  --continuum-divider-shadow: 0 0 6px rgba(157, 173, 178, .028);
+}
+
+/* ---------- Homepage ambient depth ---------- */
+body:not(.workshop-open)::before {
+  background:
+    radial-gradient(ellipse 68% 44% at 86% 3%, rgba(105, 136, 154, .044), transparent 74%),
+    radial-gradient(ellipse 54% 37% at 8% 23%, rgba(68, 109, 119, .026), transparent 78%),
+    linear-gradient(180deg, #07111a 0%, #091823 20%, #0b202c 41%, #101b2e 61%, #0b2530 79%, #08151f 100%);
+}
+
+.portfolio-panel::after {
+  background:
+    radial-gradient(ellipse 50% 48% at 6% 46%, rgba(var(--palette-steel), .028), transparent 84%),
+    radial-gradient(ellipse 52% 50% at 94% 44%, rgba(var(--palette-indigo), .030), transparent 85%),
+    radial-gradient(ellipse 38% 40% at 50% 78%, rgba(86, 70, 128, .011), transparent 87%);
+}
+
+.portfolio-panel .hero::before {
+  opacity: .44;
+  background:
+    radial-gradient(ellipse 48% 46% at 84% 28%, rgba(109, 142, 158, .095), transparent 77%),
+    radial-gradient(ellipse 34% 36% at 14% 68%, rgba(65, 105, 116, .040), transparent 81%);
+}
+
+.portfolio-panel .portrait-stage::after {
+  background: radial-gradient(ellipse, rgba(100, 136, 151, .065), transparent 79%);
+}
+
+.portfolio-panel :is(.facts > div, .timeline-item, .project-card, .contact-card) {
+  background:
+    radial-gradient(ellipse 82% 112% at 0% 0%, rgba(var(--accent-rgb), .10), transparent 68%),
+    radial-gradient(ellipse 58% 82% at 100% 100%, rgba(var(--accent-rgb), .024), transparent 75%),
+    linear-gradient(145deg, rgba(21, 35, 46, .95), rgba(8, 17, 25, .98));
+}
+
+.portfolio-panel :is(.facts > div, .timeline-item, .project-card, .contact-card)::before {
+  background:
+    linear-gradient(132deg, rgba(255,255,255,.028), transparent 31%, transparent 72%, rgba(255,255,255,.009)),
+    radial-gradient(circle at 16% 14%, rgba(var(--accent-rgb), .045), transparent 36%);
+}
+
+.portfolio-panel .workshop-entry {
+  background:
+    radial-gradient(ellipse 48% 112% at 52% 50%, rgba(111, 118, 163, .050), transparent 81%),
+    linear-gradient(145deg, rgba(24, 34, 54, .95), rgba(10, 20, 30, .975));
+}
+
+/* ---------- One divider language across the homepage ---------- */
+.portfolio-panel .facts::before,
+.portfolio-panel .workshop-entry-separator-line,
+.portfolio-panel .project-mobile-separator > span {
+  background: var(--continuum-divider-line) !important;
+  box-shadow: var(--continuum-divider-shadow) !important;
+}
+
+.portfolio-panel .timeline-divider-line,
+.portfolio-panel .project-separator {
+  background: var(--continuum-divider-line-vertical) !important;
+  box-shadow: var(--continuum-divider-shadow) !important;
+}
+
+.portfolio-panel .timeline-divider,
+.portfolio-panel .workshop-entry-separator {
+  background: none !important;
+}
+
+.portfolio-panel .facts::before {
+  width: var(--continuum-divider-width) !important;
+}
+
+.portfolio-panel .workshop-entry-shimmer {
+  width: var(--continuum-divider-width);
+  box-shadow: var(--continuum-divider-shadow);
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, .70) 50%, transparent 100%),
+    var(--continuum-divider-line);
+}
+
+/* ---------- Workshop mobile divider rhythm ---------- */
+@media (max-width: 700px) {
+  .workshop-main {
+    --workshop-divider-space: var(--continuum-divider-space-mobile);
+    --workshop-divider-width: var(--continuum-divider-width-mobile);
+  }
+
+  .practice-milestones {
+    margin-top: var(--continuum-divider-space-mobile) !important;
+    padding-top: 0 !important;
+    row-gap: 0 !important;
+  }
+
+  .practice-milestones::before {
+    position: static !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: var(--continuum-divider-width-mobile) !important;
+    margin: 0 auto var(--continuum-divider-space-mobile) !important;
+    transform: none !important;
+    background: var(--continuum-divider-line) !important;
+    box-shadow: var(--continuum-divider-shadow) !important;
+  }
+
+  .practice-milestone-featured { grid-column: 1 !important; grid-row: 2 !important; }
+  .practice-explorer-slot[data-practice-slot="featured"] { grid-column: 1 !important; grid-row: 3 !important; }
+
+  .practice-milestones::after {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+    width: var(--continuum-divider-width-mobile) !important;
+    height: 1px !important;
+    margin: var(--continuum-divider-space-mobile) auto !important;
+    background: var(--continuum-divider-line) !important;
+    box-shadow: var(--continuum-divider-shadow) !important;
+  }
+
+  .practice-milestone-archive { grid-column: 1 !important; grid-row: 5 !important; }
+  .practice-explorer-slot[data-practice-slot="archive"] { grid-column: 1 !important; grid-row: 6 !important; }
+
+  .knowledge-application-merged {
+    padding-top: var(--continuum-divider-space-mobile) !important;
+  }
+
+  .knowledge-application-merged::before,
+  .knowledge-application-merged::after,
+  .knowledge-application-merged .workshop-subgroup-applied::before {
+    width: var(--continuum-divider-width-mobile) !important;
+    background: var(--continuum-divider-line) !important;
+    box-shadow: var(--continuum-divider-shadow) !important;
+  }
+
+  .knowledge-application-merged::before {
+    margin: 0 auto var(--continuum-divider-space-mobile) !important;
+  }
+
+  .knowledge-application-merged .workshop-subgroup-applied {
+    padding-top: var(--continuum-divider-space-mobile) !important;
+  }
+
+  .knowledge-application-merged .workshop-subgroup-applied::before {
+    margin: 0 auto var(--continuum-divider-space-mobile) !important;
+  }
+
+  .knowledge-application-merged::after {
+    margin: var(--continuum-divider-space-mobile) auto 0 !important;
+  }
+
+  .workshop-closing {
+    padding-top: var(--continuum-divider-space-mobile) !important;
+  }
+
+  .workshop-grid-foundation > .knowledge-card:not(:last-child)::after {
+    left: 50% !important;
+    bottom: -9px !important;
+    width: var(--continuum-divider-width-mobile) !important;
+    transform: translateX(-50%) !important;
+    background: var(--continuum-divider-line) !important;
+    box-shadow: var(--continuum-divider-shadow) !important;
+  }
+
+  /* Homepage mobile dividers use the same width and 22px breathing room. */
+  .portfolio-panel .facts {
+    margin-top: var(--continuum-divider-space-mobile) !important;
+    padding-top: var(--continuum-divider-space-mobile) !important;
+  }
+
+  .portfolio-panel .facts::before,
+  .portfolio-panel .timeline-divider-line,
+  .portfolio-panel .workshop-entry-separator-line,
+  .portfolio-panel .workshop-entry-shimmer,
+  .portfolio-panel .project-mobile-separator > span {
+    width: var(--continuum-divider-width-mobile) !important;
+    background: var(--continuum-divider-line) !important;
+    box-shadow: var(--continuum-divider-shadow) !important;
+  }
+
+  .portfolio-panel .timeline-divider,
+  .portfolio-panel .workshop-entry-separator,
+  .portfolio-panel .project-mobile-separator {
+    min-height: calc(var(--continuum-divider-space-mobile) * 2) !important;
+  }
+
+  .portfolio-panel .workshop-entry-shimmer {
+    margin-top: var(--continuum-divider-space-mobile) !important;
+    background-image:
+      linear-gradient(90deg, transparent 0%, rgba(232, 242, 245, .70) 50%, transparent 100%),
+      var(--continuum-divider-line) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-panel .workshop-entry-shimmer {
+    box-shadow: var(--continuum-divider-shadow);
+  }
+}
