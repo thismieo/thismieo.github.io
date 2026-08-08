@@ -1,3 +1,14 @@
+# Blue Continuum 4.5.20 — Clean Interaction Baseline & Contact-Derived About
+
+1. Removed the site-wide click sheen system completely so the production baseline contains no injected sheen layers, press-fx runtime, legacy compatibility branch or click-highlight animation.
+2. Deleted `interactions.css` and `interactions.js` from production and removed both asset references from the document head.
+3. Removed the periodic Open Workshop shine layer, its markup and its keyframes so no automatic shine remains anywhere in the live interface.
+4. Rebuilt About metadata as four independent contact-derived cards with calm chromatic surfaces, larger label badges and clear icon/value hierarchy.
+5. Returned About to a 2×2 desktop composition and a single-column phone composition, with the Education value allowed to wrap safely inside the card.
+6. Added regression checks that reject any runtime `press-fx`, `sheen`, `shine` or `shimmer` token, any injected highlight layer, About edge collisions, lost Project separators, Knowledge icon-mask regressions or horizontal overflow.
+
+---
+
 # Blue Continuum 4.5.19 — Unified Sheen & About Rebuild
 
 1. Replaced the split modern/legacy sheen engines with one transform-and-opacity compositor path for desktop, modern mobile and iOS 16-era devices.

@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.17 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.20 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -716,29 +716,6 @@ main { position: relative; background: transparent; }
   z-index: 2;
 }
 
-.workshop-entry-action-shine {
-  position: absolute;
-  z-index: 1;
-  inset: 1px;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: inherit;
-  opacity: 0;
-  background-image: var(--press-fx-sheen-image);
-  background-repeat: no-repeat;
-  background-size: var(--press-fx-sheen-size);
-  background-position: var(--press-fx-sheen-start);
-  contain: paint;
-  isolation: isolate;
-  animation: workshop-entry-action-sweep 3s var(--press-fx-sheen-ease) infinite;
-}
-
-@keyframes workshop-entry-action-sweep {
-  0%, 54% { opacity: 0; background-position: var(--press-fx-sheen-start); }
-  60% { opacity: .58; }
-  81% { opacity: .18; background-position: var(--press-fx-sheen-end); }
-  82%, 100% { opacity: 0; background-position: var(--press-fx-sheen-end); }
-}
 
 @media (hover: hover) and (pointer: fine) {
   .workshop-entry:hover {
@@ -778,9 +755,6 @@ main { position: relative; background: transparent; }
   .workshop-entry-action { width: 100%; min-width: 0; min-height: 50px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .workshop-entry-action-shine { animation: none; opacity: 0; }
-}
 
 /* Projects */
 .project-grid {

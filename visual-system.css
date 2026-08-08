@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.4.0
+/* Blue Continuum — Shared Visual System 1.5.0
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -116,7 +116,7 @@ body:not(.workshop-open)::before {
 }
 
 
-/* ---------- Homepage About — unified profile panel ---------- */
+/* ---------- Homepage About — four contact-derived profile cards ---------- */
 .portfolio-panel .about {
   background: transparent !important;
   background-image: none !important;
@@ -174,81 +174,94 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .about-summary-line { display: block; }
-.portfolio-panel .about-summary-line:first-child { color: #e2e7ec; font-size: 1.07rem; font-weight: 590; }
+.portfolio-panel .about-summary-line:first-child {
+  color: #e2e7ec;
+  font-size: 1.07rem;
+  font-weight: 590;
+}
 .portfolio-panel .about-summary-line:first-child strong { color: #f3f5f7; font-weight: 760; }
 .portfolio-panel .about-summary-line:nth-child(2) { color: #c5ccd6; }
 .portfolio-panel .about-summary-line:nth-child(3) { color: #adb7c5; }
 .portfolio-panel .about-summary-line:nth-child(4) { color: #9faabc; }
 
-.portfolio-panel .about-facts-panel {
-  position: relative;
-  width: 100%;
-  max-width: 820px;
-  margin: clamp(24px, 2.2vw, 30px) auto 12px;
-  padding: 8px;
-  overflow: hidden;
-  isolation: isolate;
-  border: 1px solid rgba(188, 202, 214, .14);
-  border-radius: 22px;
-  background:
-    radial-gradient(ellipse 70% 90% at 0% 0%, rgba(var(--about-mist-rgb), .070), transparent 68%),
-    radial-gradient(ellipse 62% 86% at 100% 100%, rgba(var(--about-plum-rgb), .050), transparent 72%),
-    linear-gradient(145deg, rgba(18, 30, 43, .975), rgba(8, 16, 27, .995));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.028),
-    0 16px 34px rgba(2, 6, 16, .16);
-}
-
-.portfolio-panel .about-facts-panel::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(132deg, rgba(255,255,255,.020), transparent 31%, transparent 73%, rgba(255,255,255,.006));
-}
-
 .portfolio-panel .facts {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin: 0;
+  width: min(100%, 900px);
+  margin: clamp(24px, 2.2vw, 30px) auto 12px;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: 11px;
 }
 
 .portfolio-panel .facts > div {
   --accent-rgb: var(--about-mist-rgb);
+  --secondary-rgb: 136, 129, 159;
+  --surface-a-rgb: 26, 41, 50;
+  --surface-b-rgb: 12, 27, 35;
+  position: relative;
   min-width: 0;
-  min-height: 102px;
-  padding: 17px 20px;
+  min-height: 90px;
+  padding: 15px 18px 15px 62px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 11px;
-  border: 0;
-  border-radius: 0;
-  background: radial-gradient(circle at 0% 0%, rgba(var(--accent-rgb), .060), transparent 64%);
-  box-shadow: none;
+  gap: 6px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(var(--accent-rgb), .20);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse 76% 126% at -4% -16%, rgba(var(--accent-rgb), .105), transparent 67%),
+    radial-gradient(ellipse 58% 108% at 104% 112%, rgba(var(--secondary-rgb), .045), transparent 73%),
+    linear-gradient(148deg, rgba(var(--surface-a-rgb), .985), rgba(var(--surface-b-rgb), .995));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 29px rgba(0, 6, 12, .12);
+  transition: border-color 220ms ease, box-shadow 240ms ease;
 }
 
-.portfolio-panel .facts > div:nth-child(1) { --accent-rgb: var(--about-mist-rgb); }
-.portfolio-panel .facts > div:nth-child(2) { --accent-rgb: var(--about-iris-rgb); }
-.portfolio-panel .facts > div:nth-child(3) { --accent-rgb: var(--about-periwinkle-rgb); }
-.portfolio-panel .facts > div:nth-child(4) { --accent-rgb: var(--about-plum-rgb); }
+.portfolio-panel .facts > div::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(132deg, rgba(255,255,255,.030), transparent 31%, transparent 74%, rgba(var(--accent-rgb), .016));
+}
 
-.portfolio-panel .facts > div:nth-child(odd) { border-right: 1px solid rgba(188, 202, 214, .085); }
-.portfolio-panel .facts > div:nth-child(-n+2) { border-bottom: 1px solid rgba(188, 202, 214, .085); }
+.portfolio-panel .facts > div:nth-child(1) {
+  --accent-rgb: 104, 150, 171;
+  --secondary-rgb: 138, 131, 160;
+  --surface-a-rgb: 25, 40, 50;
+  --surface-b-rgb: 11, 27, 35;
+}
+.portfolio-panel .facts > div:nth-child(2) {
+  --accent-rgb: 143, 121, 183;
+  --secondary-rgb: 111, 151, 162;
+  --surface-a-rgb: 33, 30, 48;
+  --surface-b-rgb: 16, 22, 35;
+}
+.portfolio-panel .facts > div:nth-child(3) {
+  --accent-rgb: 113, 136, 190;
+  --secondary-rgb: 158, 119, 142;
+  --surface-a-rgb: 27, 33, 50;
+  --surface-b-rgb: 13, 22, 36;
+}
+.portfolio-panel .facts > div:nth-child(4) {
+  --accent-rgb: 171, 124, 158;
+  --secondary-rgb: 112, 155, 148;
+  --surface-a-rgb: 38, 30, 43;
+  --surface-b-rgb: 20, 23, 34;
+}
 
 .portfolio-panel .facts dt {
-  position: relative;
+  position: static;
   width: fit-content;
-  min-height: 28px;
+  min-height: 26px;
   margin: 0;
-  padding: 6px 10px 6px 31px;
+  padding: 5px 9px;
   display: inline-flex;
   align-items: center;
   border: 1px solid rgba(var(--accent-rgb), .18);
@@ -257,7 +270,7 @@ body:not(.workshop-open)::before {
   background: rgba(var(--accent-rgb), .070);
   font-size: .59rem;
   font-weight: 820;
-  letter-spacing: .13em;
+  letter-spacing: .125em;
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -266,12 +279,12 @@ body:not(.workshop-open)::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: 9px;
-  width: 15px;
-  height: 15px;
+  left: 18px;
+  width: 28px;
+  height: 28px;
   background: rgb(var(--accent-rgb));
   transform: translateY(-50%);
-  opacity: .94;
+  opacity: .95;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
   -webkit-mask-size: contain;
@@ -301,21 +314,20 @@ body:not(.workshop-open)::before {
   width: 100%;
   min-width: 0;
   margin: 0;
-  padding-inline: 2px 6px;
   color: #e3e8ed;
-  font-size: .82rem;
-  font-weight: 670;
-  line-height: 1.50;
+  font-size: .80rem;
+  font-weight: 665;
+  line-height: 1.46;
   letter-spacing: -.012em;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 .portfolio-panel .about-education-value {
   color: #cdd1da;
-  font-size: .76rem;
+  font-size: .74rem;
   font-weight: 610;
-  line-height: 1.52;
-  letter-spacing: -.016em;
+  line-height: 1.50;
+  letter-spacing: -.015em;
 }
 
 .portfolio-panel .about-education-value > span {
@@ -329,16 +341,15 @@ body:not(.workshop-open)::before {
     font-size: 1.02rem;
     line-height: 1.68;
   }
-
   .portfolio-panel .about-summary-line { white-space: nowrap; }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .portfolio-panel .about-facts-panel:hover {
-    border-color: rgba(190, 204, 216, .20);
+  .portfolio-panel .facts > div:hover {
+    border-color: rgba(var(--accent-rgb), .31);
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.032),
-      0 18px 38px rgba(2, 6, 16, .18);
+      inset 0 1px 0 rgba(255,255,255,.030),
+      0 13px 31px rgba(0, 6, 12, .14);
   }
 }
 
@@ -618,7 +629,7 @@ body:not(.workshop-open)::before {
     padding-top: var(--continuum-section-space-mobile) !important;
   }
 
-  /* Homepage About — one calm panel, spacious enough for long education copy. */
+  /* Homepage About — four contact-derived cards on phone. */
   .portfolio-panel .about {
     background: transparent !important;
     background-image: none !important;
@@ -649,46 +660,43 @@ body:not(.workshop-open)::before {
     line-height: 1.55;
   }
 
-  .portfolio-panel .about-facts-panel {
-    width: 100%;
-    max-width: 100%;
-    margin: 22px auto 12px;
-    padding: 7px 12px;
-    border-radius: 20px;
-  }
-
   .portfolio-panel .facts {
+    width: 100%;
+    margin: 22px auto 12px;
     grid-template-columns: 1fr;
+    gap: 9px;
   }
 
   .portfolio-panel .facts > div {
-    min-height: 86px;
-    padding: 15px 9px;
-    gap: 9px;
-    border-right: 0 !important;
-    border-bottom: 1px solid rgba(188, 202, 214, .085);
-    background: radial-gradient(circle at 0% 0%, rgba(var(--accent-rgb), .052), transparent 68%);
+    min-height: 82px;
+    padding: 13px 14px 13px 57px;
+    border-radius: 17px;
+    gap: 5px;
   }
 
-  .portfolio-panel .facts > div:last-child { border-bottom: 0; }
-
   .portfolio-panel .facts dt {
-    min-height: 27px;
-    padding: 6px 10px 6px 31px;
-    font-size: .58rem;
+    min-height: 25px;
+    padding: 5px 8px;
+    font-size: .57rem;
+    letter-spacing: .12em;
+  }
+
+  .portfolio-panel .facts dt::before {
+    left: 15px;
+    width: 26px;
+    height: 26px;
   }
 
   .portfolio-panel .facts dd {
-    padding-inline: 2px 8px;
-    font-size: .79rem;
-    line-height: 1.52;
+    padding-right: 2px;
+    font-size: .76rem;
+    line-height: 1.48;
   }
 
   .portfolio-panel .about-education-value {
-    max-width: 100%;
-    padding-right: 10px;
-    font-size: .74rem;
-    line-height: 1.55;
+    padding-right: 2px;
+    font-size: .72rem;
+    line-height: 1.52;
   }
 
   /* Homepage mobile dividers use one geometry. */
@@ -723,9 +731,9 @@ body:not(.workshop-open)::before {
 }
 
 @media (max-width: 380px) {
-  .portfolio-panel .about-facts-panel { padding-inline: 10px; }
-  .portfolio-panel .facts > div { padding-inline: 8px; }
-  .portfolio-panel .facts dt { font-size: .56rem; letter-spacing: .12em; }
-  .portfolio-panel .facts dd { padding-right: 9px; font-size: .77rem; }
-  .portfolio-panel .about-education-value { padding-right: 12px; font-size: .72rem; }
+  .portfolio-panel .facts > div { padding-left: 54px; padding-right: 12px; }
+  .portfolio-panel .facts dt::before { left: 14px; width: 25px; height: 25px; }
+  .portfolio-panel .facts dt { font-size: .55rem; }
+  .portfolio-panel .facts dd { font-size: .74rem; }
+  .portfolio-panel .about-education-value { font-size: .70rem; }
 }
