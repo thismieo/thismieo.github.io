@@ -138,10 +138,8 @@
   const activeIndex = { featured: 0, archive: 0 };
   const selectorState = Object.create(null);
   const copyTimers = new WeakMap();
-  const workshopView = root.closest(".workshop-view");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let openGroupName = "";
-  let workshopBackgroundFrozen = false;
 
   const pad = (value) => String(value).padStart(2, "0");
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -151,14 +149,6 @@
   };
   const rightChevron = "m3.5 3 5 7-5 7";
   const leftChevron = "m8.5 3-5 7 5 7";
-
-  const stabilizeWorkshopBackground = (force = false) => {
-    if (!workshopView || workshopView.hidden) return;
-    if (workshopBackgroundFrozen && !force) return;
-    const stableHeight = Math.ceil(Math.max(workshopView.scrollHeight, window.innerHeight));
-    workshopView.style.setProperty("--workshop-bg-height", `${stableHeight}px`);
-    workshopBackgroundFrozen = true;
-  };
 
   const addToken = (parent, text, className = "") => {
     if (!text) return;
@@ -387,7 +377,6 @@
 
   const toggleGroup = (name) => {
     if (!groups[name]) return;
-    stabilizeWorkshopBackground();
 
     if (openGroupName === name) {
       openGroupName = "";
@@ -465,17 +454,5 @@
     setSlot(name, false);
   });
 
-  let resizeTimer = 0;
-  window.addEventListener("resize", () => {
-    window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(() => {
-      if (!openGroupName) {
-        workshopBackgroundFrozen = false;
-        stabilizeWorkshopBackground(true);
-      }
-    }, 140);
-  }, { passive: true });
-
   syncCollectionState();
-  window.requestAnimationFrame(() => stabilizeWorkshopBackground(true));
 })();
