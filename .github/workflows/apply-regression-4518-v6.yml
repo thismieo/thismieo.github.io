@@ -1,0 +1,80 @@
+name: Apply regression repair 4.5.18 v6
+
+on:
+  push:
+    branches: [fix/regression-audit-4518-v6]
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  audit-and-publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/regression-audit-4518-v6
+          fetch-depth: 0
+
+      - name: Repair, audit, and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASELINE: 0680ffb25e9553d38013c23c5a885e5686d24070
+        run: |
+          set -euo pipefail
+          cp .github/scripts/apply_regression_4518.py /tmp/apply_regression_4518.py
+          cp .github/scripts/audit_regression_4518.mjs /tmp/audit_regression_4518.mjs
+          cp .github/scripts/prepare_audit_4518.py /tmp/prepare_audit_4518.py
+          cp .github/scripts/harden_audit_4518.py /tmp/harden_audit_4518.py
+          cp .github/scripts/static_audit_4518.py /tmp/static_audit_4518.py
+          python3 /tmp/prepare_audit_4518.py
+          python3 /tmp/harden_audit_4518.py
+
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASELINE"
+          git checkout -B regression-work "$BASELINE"
+          python3 /tmp/apply_regression_4518.py
+
+          node --check script.js
+          node --check workshop-integrated.js
+          node --check interactions.js
+          git diff --check
+          python3 /tmp/static_audit_4518.py
+
+          test "$(git hash-object script.js)" = "$(git rev-parse ${BASELINE}:script.js)"
+          test "$(git hash-object workshop-integrated.js)" = "$(git rev-parse ${BASELINE}:workshop-integrated.js)"
+
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/4518-http.log 2>&1 &
+          HTTP_PID=$!
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          "$CHROME" --headless=new --no-sandbox --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 --remote-allow-origins='*' --user-data-dir=/tmp/chrome-4518-v6 about:blank >/tmp/4518-chrome.log 2>&1 &
+          CHROME_PID=$!
+          trap 'kill $CHROME_PID $HTTP_PID 2>/dev/null || true' EXIT
+          node /tmp/audit_regression_4518.mjs
+          kill $CHROME_PID $HTTP_PID 2>/dev/null || true
+          trap - EXIT
+
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' 404.html CHANGELOG.md index.html interactions.js visual-system.css workshop-integrated.css | sort)"
+          test "$changed" = "$expected"
+
+          rm -rf .github
+          git add -A
+          test -z "$(git status --porcelain | grep -E '(^|/)(\.github|regression_4518|regression-audit)' || true)"
+          tree="$(git write-tree)"
+          test -z "$(git ls-tree -r --name-only "$tree" | grep -E '(^|/)(\.github|\.run-|temp|payload)' || true)"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          commit="$(printf '%s\n' 'Repair visual regressions and interaction timing' | git commit-tree "$tree" -p "$BASELINE")"
+          git push origin "${commit}:refs/heads/main" --force-with-lease="refs/heads/main:${BASELINE}"
+
+          curl --fail-with-body -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds"
+
+          echo "FINAL_COMMIT=$commit"
