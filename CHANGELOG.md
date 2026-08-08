@@ -1,3 +1,17 @@
+# Blue Continuum 4.5.3 — Workshop Gateway Polish
+
+1. Rebuilt the homepage Workshop entry as a dedicated gateway card rather than a generic section card.
+2. Introduced a restrained Smoked Garnet / Indigo Slate / Steel Navy surface with layered radial accents and no external glow.
+3. Polished the Workshop copy around a living workspace for Python practice, AI foundations and applied work.
+4. Added four compact semantic signals — Code, Practice, Foundations and Applied work — with distinct muted technical accents.
+5. Preserved the Open Workshop CTA and added a subtle three-second pearl sweep contained entirely inside the button, with reduced-motion handling.
+6. Removed the obsolete animated divider below the Workshop entry from both markup and canonical CSS ownership.
+7. Reduced the dead vertical space between the Workshop gateway and Project Roadmap by tuning Journey bottom spacing and Projects top spacing independently on desktop and mobile.
+8. Removed the shared visual-system Workshop surface override so the gateway card now has one canonical visual owner in `styles.css`.
+9. Refreshed Portfolio CSS to 4.5.3 and the shared visual system to 1.2.5.
+
+---
+
 # Blue Continuum 4.5.2 — Journey Surface Refinement
 
 1. Darkened the five Journey card surfaces by one visual step while preserving distinct Jade, Steel, Cobalt, Amethyst and Copper identities.
