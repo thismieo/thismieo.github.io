@@ -1,7 +1,10 @@
-/* Workshop masthead and interaction polish.
-   One responsive composition across desktop and mobile. */
+/* Workshop masthead, section rhythm and interaction polish.
+   One responsive composition with restrained, purposeful separators. */
 
 .workshop-main {
+  --workshop-section-gap: clamp(36px, 4vw, 44px);
+  --workshop-section-half-gap: clamp(18px, 2vw, 22px);
+  --workshop-divider-width: 148px;
   padding-top: clamp(18px, 2.4vw, 28px) !important;
 }
 
@@ -13,7 +16,7 @@
   max-width: 940px !important;
   min-height: 0 !important;
   margin: 0 auto !important;
-  padding: clamp(40px, 4vw, 50px) 12px 10px !important;
+  padding: clamp(40px, 4vw, 50px) 12px 0 !important;
   overflow: visible !important;
   display: flex !important;
   flex-direction: column;
@@ -135,7 +138,7 @@
   white-space: nowrap;
 }
 
-/* One signature line under the update date. */
+/* Signature transition: the only continuously animated divider. */
 .workshop-masthead-updated::after {
   content: "";
   position: absolute;
@@ -208,7 +211,7 @@ body.workshop-open .workshop-masthead-copy {
 
 /* ---------- Python Development ---------- */
 .python-development-block {
-  padding-top: clamp(22px, 2.5vw, 30px) !important;
+  padding-top: var(--workshop-section-gap) !important;
 }
 
 .python-development-block > .python-section-heading {
@@ -255,12 +258,8 @@ body.workshop-open .workshop-masthead-copy {
   display: none !important;
 }
 
-/* Cards and whitespace do the separating; no decorative line clutter. */
 .practice-milestones::before,
-.practice-milestones::after,
-.knowledge-application-merged::before,
-.knowledge-application-merged::after,
-.knowledge-application-merged .workshop-subgroup-applied::before {
+.practice-milestones::after {
   content: none !important;
   display: none !important;
   animation: none !important;
@@ -270,28 +269,88 @@ body.workshop-open .workshop-masthead-copy {
   margin-top: clamp(24px, 2.8vw, 32px) !important;
 }
 
+/* ---------- Major section transitions ----------
+   Same compact rhythm; color identifies the section being entered. */
 .knowledge-application-merged {
-  padding-top: clamp(54px, 6vw, 72px) !important;
+  padding-top: var(--workshop-section-half-gap) !important;
 }
 
+.knowledge-application-merged::before,
+.knowledge-application-merged::after,
+.knowledge-application-merged .workshop-subgroup-applied::before {
+  content: "" !important;
+  width: var(--workshop-divider-width);
+  height: 1px;
+  display: block !important;
+  border-radius: 999px;
+  pointer-events: none;
+  animation: none !important;
+}
+
+/* Python → Foundation: cool teal. */
+.knowledge-application-merged::before {
+  margin: 0 auto var(--workshop-section-half-gap);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(92, 177, 169, .22) 18%,
+    rgba(105, 199, 188, .72) 50%,
+    rgba(92, 177, 169, .22) 82%,
+    transparent
+  );
+  box-shadow: 0 0 9px rgba(105, 199, 188, .07);
+}
+
+/* Foundation → Applied Practice: restrained warm bronze. */
 .knowledge-application-merged .workshop-subgroup-applied {
-  margin-top: clamp(54px, 6vw, 70px) !important;
+  margin-top: 0 !important;
+  padding-top: var(--workshop-section-half-gap) !important;
+}
+
+.knowledge-application-merged .workshop-subgroup-applied::before {
+  margin: 0 auto var(--workshop-section-half-gap);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(176, 126, 91, .20) 18%,
+    rgba(205, 151, 111, .68) 50%,
+    rgba(176, 126, 91, .20) 82%,
+    transparent
+  );
+  box-shadow: 0 0 9px rgba(205, 151, 111, .065);
+}
+
+/* Applied Practice → closing action: quiet indigo. */
+.knowledge-application-merged::after {
+  margin: var(--workshop-section-half-gap) auto 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(132, 118, 183, .20) 18%,
+    rgba(158, 143, 215, .66) 50%,
+    rgba(132, 118, 183, .20) 82%,
+    transparent
+  );
+  box-shadow: 0 0 9px rgba(158, 143, 215, .06);
 }
 
 .workshop-closing {
-  padding-top: clamp(34px, 4vw, 46px) !important;
+  padding-top: var(--workshop-section-half-gap) !important;
 }
 
 /* ---------- Mobile rhythm ---------- */
 @media (max-width: 700px) {
   .workshop-main {
+    --workshop-section-gap: 34px;
+    --workshop-section-half-gap: 17px;
+    --workshop-divider-width: 124px;
     padding-top: 26px !important;
   }
 
   .workshop-main > .workshop-masthead {
     width: 100% !important;
     max-width: none !important;
-    padding: 30px 6px 8px !important;
+    padding: 30px 6px 0 !important;
   }
 
   .workshop-main > .workshop-masthead::before {
@@ -341,11 +400,6 @@ body.workshop-open .workshop-masthead-copy {
     }
   }
 
-  /* 8px masthead tail + 18px section lead = a deliberate 26px break after the signature line. */
-  .python-development-block {
-    padding-top: 18px !important;
-  }
-
   .python-development-block > .python-section-heading {
     max-width: none !important;
     margin-bottom: 19px !important;
@@ -363,18 +417,6 @@ body.workshop-open .workshop-masthead-copy {
 
   .practice-milestones {
     margin-top: 24px !important;
-  }
-
-  .knowledge-application-merged {
-    padding-top: 46px !important;
-  }
-
-  .knowledge-application-merged .workshop-subgroup-applied {
-    margin-top: 47px !important;
-  }
-
-  .workshop-closing {
-    padding-top: 29px !important;
   }
 }
 
