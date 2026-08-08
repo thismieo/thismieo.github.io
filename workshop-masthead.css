@@ -270,15 +270,44 @@ body.workshop-open .workshop-masthead-copy {
   display: none !important;
 }
 
-.practice-milestones::before,
+/* A longer quiet line separates Python Programming from the two practice collections. */
+.practice-milestones {
+  position: relative;
+  margin-top: clamp(22px, 2.5vw, 28px) !important;
+  padding-top: clamp(25px, 2.8vw, 31px) !important;
+}
+
+.practice-milestones::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  width: min(72%, 620px) !important;
+  height: 1px !important;
+  margin: 0 !important;
+  display: block !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+  pointer-events: none;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  animation: none !important;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(126, 149, 157, .09) 10%,
+    rgba(161, 173, 178, .35) 38%,
+    rgba(170, 151, 139, .30) 58%,
+    rgba(139, 132, 172, .13) 84%,
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(157, 173, 178, .05);
+}
+
 .practice-milestones::after {
   content: none !important;
   display: none !important;
   animation: none !important;
-}
-
-.practice-milestones {
-  margin-top: clamp(24px, 2.8vw, 32px) !important;
 }
 
 /* ---------- Shared section divider ----------
@@ -328,6 +357,71 @@ body.workshop-open .workshop-masthead-copy {
 
 .workshop-closing {
   padding-top: var(--workshop-section-half-gap) !important;
+}
+
+/* ---------- Foundation card separators ----------
+   The divider sits in the grid gap, never on the card border. */
+.workshop-grid-foundation > .knowledge-card {
+  overflow: visible !important;
+}
+
+@media (min-width: 1051px) {
+  .workshop-grid-foundation > .knowledge-card::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .workshop-grid-foundation > .knowledge-card:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 13%;
+    right: -11px;
+    width: 1px;
+    height: 74%;
+    pointer-events: none;
+    border-radius: 999px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(142, 160, 166, .10) 16%,
+      rgba(164, 173, 177, .34) 48%,
+      rgba(151, 143, 166, .16) 78%,
+      transparent
+    );
+    box-shadow: 0 0 8px rgba(157, 173, 178, .045);
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1050px) {
+  .workshop-grid-foundation > .knowledge-card::after,
+  .workshop-grid-foundation > .knowledge-card::before {
+    content: none;
+    display: none;
+  }
+
+  .workshop-grid-foundation > .knowledge-card:nth-child(odd)::after {
+    content: "";
+    position: absolute;
+    top: 13%;
+    right: -11px;
+    width: 1px;
+    height: 74%;
+    display: block;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgba(151, 166, 171, .10), rgba(164, 173, 177, .32), rgba(151, 143, 166, .14), transparent);
+  }
+
+  .workshop-grid-foundation > .knowledge-card:nth-child(n+3)::before {
+    content: "";
+    position: absolute;
+    top: -11px;
+    left: 12%;
+    width: 76%;
+    height: 1px;
+    display: block;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(151, 166, 171, .10), rgba(164, 173, 177, .32), rgba(151, 143, 166, .14), transparent);
+  }
 }
 
 /* ---------- Mobile rhythm ---------- */
@@ -423,7 +517,45 @@ body.workshop-open .workshop-masthead-copy {
   }
 
   .practice-milestones {
-    margin-top: 24px !important;
+    margin-top: 22px !important;
+    padding-top: 25px !important;
+  }
+
+  .practice-milestones::before {
+    width: min(84%, 286px) !important;
+  }
+
+  .workshop-grid-foundation > .knowledge-card::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .workshop-grid-foundation > .knowledge-card::after {
+    content: none;
+    display: none;
+  }
+
+  .workshop-grid-foundation > .knowledge-card:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 14%;
+    right: auto;
+    top: auto;
+    bottom: -9px;
+    width: 72%;
+    height: 1px;
+    display: block;
+    pointer-events: none;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(142, 160, 166, .10) 14%,
+      rgba(164, 173, 177, .34) 48%,
+      rgba(151, 143, 166, .16) 80%,
+      transparent
+    );
+    box-shadow: 0 0 8px rgba(157, 173, 178, .045);
   }
 }
 
