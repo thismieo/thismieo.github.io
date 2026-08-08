@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.1.2
+/* Blue Continuum — Shared Visual System 1.1.3
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -127,33 +127,41 @@ body:not(.workshop-open)::before {
   margin-inline: auto;
 }
 
-.portfolio-panel .about-lead {
-  gap: 6px;
-  color: #dbe3e9;
+.portfolio-panel .about-summary {
+  max-width: 940px;
+  margin: 0 auto;
+  color: #aeb8c7;
+  font-size: .92rem;
+  font-weight: 480;
+  line-height: 1.76;
+  letter-spacing: -.012em;
+  text-align: center;
+  text-wrap: balance;
 }
 
-.portfolio-panel .about-lead-line-intro {
-  color: #dfe5eb;
+.portfolio-panel .about-summary-line {
+  display: block;
 }
 
-.portfolio-panel .about-lead-line-intro strong {
+.portfolio-panel .about-summary-line:first-child {
+  color: #e0e5eb;
+  font-size: 1rem;
+  font-weight: 560;
+}
+
+.portfolio-panel .about-summary-line:first-child strong {
   color: #f2f4f7;
+  font-weight: 760;
 }
 
-.portfolio-panel .about-lead-line-study {
-  color: #c5c8d7;
+.portfolio-panel .about-summary-line:nth-child(2),
+.portfolio-panel .about-summary-line:nth-child(3) {
+  color: #bbc3cf;
 }
 
-.portfolio-panel .about-lead-line-study::first-letter {
-  text-transform: uppercase;
-}
-
-.portfolio-panel .about-lead-line-growth {
-  color: #aab4c4;
-}
-
-.portfolio-panel .about-body {
-  color: #9ca8b8;
+.portfolio-panel .about-summary-line:nth-child(4),
+.portfolio-panel .about-summary-line:nth-child(5) {
+  color: #9faabc;
 }
 
 .portfolio-panel .facts {
@@ -284,64 +292,20 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .about-content {
-    display: grid;
-    grid-template-columns: minmax(0, .86fr) minmax(520px, 1.14fr);
-    grid-template-areas:
-      "lead facts"
-      "body facts";
-    column-gap: clamp(36px, 4vw, 52px);
-    row-gap: 14px;
-    align-items: start;
+    display: block;
   }
 
-  .portfolio-panel .about-lead {
-    grid-area: lead;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    justify-items: start;
-    text-align: left;
-  }
-
-  .portfolio-panel .about-lead-line {
-    width: 100%;
-    max-width: none;
-    margin-inline: 0;
-    text-align: left;
-    text-wrap: pretty;
-  }
-
-  .portfolio-panel .about-lead-line-intro {
-    font-size: 1rem;
-    line-height: 1.58;
-  }
-
-  .portfolio-panel .about-lead-line-study {
+  .portfolio-panel .about-summary {
+    max-width: 940px;
+    margin-inline: auto;
     font-size: .91rem;
-    line-height: 1.62;
-  }
-
-  .portfolio-panel .about-lead-line-growth {
-    margin-top: 3px;
-    font-size: .86rem;
-    line-height: 1.70;
-    white-space: normal;
-    text-wrap: pretty;
-  }
-
-  .portfolio-panel .about-body {
-    grid-area: body;
-    max-width: 50ch;
-    margin: 0;
-    font-size: .88rem;
     line-height: 1.72;
-    text-align: left;
-    text-wrap: pretty;
   }
 
   .portfolio-panel .facts {
-    grid-area: facts;
-    margin: 0;
+    width: 100%;
+    max-width: 560px;
+    margin: clamp(24px, 2.2vw, 30px) auto 0;
     padding: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
@@ -501,48 +465,25 @@ body:not(.workshop-open)::before {
     max-width: 100%;
   }
 
-  .portfolio-panel .about-lead {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    gap: 7px;
+  .portfolio-panel .about-summary {
+    max-width: 35ch;
+    margin: 0 auto;
     padding-inline: 4px;
-    justify-items: start;
-    text-align: left;
-  }
-
-  .portfolio-panel .about-lead-line {
-    width: 100%;
-    max-width: none !important;
-    margin-inline: 0;
-    text-align: left;
-    white-space: normal;
-    text-wrap: pretty;
-  }
-
-  .portfolio-panel .about-lead-line-intro {
-    font-size: clamp(.89rem, 3.70vw, .97rem);
-    line-height: 1.58;
-  }
-
-  .portfolio-panel .about-lead-line-study {
-    font-size: clamp(.82rem, 3.42vw, .90rem);
-    line-height: 1.62;
-  }
-
-  .portfolio-panel .about-lead-line-growth {
-    margin-top: 1px;
-    font-size: clamp(.78rem, 3.24vw, .86rem);
+    font-size: clamp(.78rem, 3.24vw, .85rem);
     line-height: 1.68;
+    text-align: center;
+    text-wrap: pretty;
   }
 
-  .portfolio-panel .about-body {
-    max-width: none;
-    margin: 14px 4px 0;
-    font-size: .83rem;
-    line-height: 1.72;
-    text-align: left;
-    text-wrap: pretty;
+  .portfolio-panel .about-summary-line {
+    display: inline;
+  }
+
+  .portfolio-panel .about-summary-line:first-child {
+    display: block;
+    margin-bottom: 7px;
+    font-size: clamp(.89rem, 3.70vw, .97rem);
+    line-height: 1.56;
   }
 
   .portfolio-panel .facts {
