@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.30 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.31 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -631,11 +631,11 @@ main { position: relative; background: transparent; }
 .workshop-entry-card-note {
   min-width: 0;
   max-width: 48ch;
-  color: #adbac1;
-  font-size: .66rem;
-  font-weight: 650;
-  line-height: 1.52;
-  letter-spacing: .004em;
+  color: #bdc7cc;
+  font-size: .72rem;
+  font-weight: 685;
+  line-height: 1.48;
+  letter-spacing: .002em;
 }
 
 .workshop-entry-card-note > span { display: inline; }
@@ -870,8 +870,10 @@ main { position: relative; background: transparent; }
   .workshop-entry-card-note {
     max-width: 29ch;
     display: block;
-    font-size: .61rem;
-    line-height: 1.46;
+    color: #c2ccd1;
+    font-size: .67rem;
+    font-weight: 690;
+    line-height: 1.44;
   }
 
   .workshop-entry-card-note > span { display: block; }
