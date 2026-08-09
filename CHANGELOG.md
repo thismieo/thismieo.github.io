@@ -1,3 +1,14 @@
+# Blue Continuum 4.5.26 — CTA, Knowledge Badges & Project Rhythm
+
+1. Enlarged and rebalanced the desktop Workshop CTA so the supporting line and Open Workshop control read as one deliberate stack while preserving compact tablet/phone sizing.
+2. Unified all Foundation `Core focus` and Applied Practice `Applied skill` footers into compact derived-color badge pairs and retired the remaining framed Foundation footer ownership.
+3. Removed directional arrows from the Knowledge footer copy, using quiet dot-separated sequences only where a staged phrase benefits from visual separation.
+4. Reduced unnecessary vertical space in Financial Fraud Detection and Multilingual Knowledge Assistant, keeping their badges close to the description and refining the two cards as softer compact rectangles.
+5. Normalized mobile project tag spacing so the same content-to-badge rhythm holds without forced minimum height or bottom-pushed tags.
+6. Revalidated desktop, iPhone 13 and iPhone X geometry, badge containment, CTA sizing and horizontal overflow before publishing.
+
+---
+
 # Blue Continuum 4.5.25 — Practice Navigation & Card Detail Polish
 
 1. Removed the custom vertical-wheel interception from Featured Practice and Learning Archive; desktop now uses a slim native horizontal scrollbar for direct mouse dragging while phone keeps native horizontal swipe.

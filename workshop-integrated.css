@@ -1,4 +1,4 @@
-/* Workshop 6.0.9 — consolidated production stylesheet.
+/* Workshop 6.0.10 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -1362,30 +1362,14 @@ body.workshop-open .workshop-masthead-copy {
 .knowledge-topic-text small { display: block; margin-top: 4px; color: #8ea0a8; font-size: .60rem; font-weight: 560; line-height: 1.42; }
 
 .knowledge-card-foot {
-  min-height: 46px;
-  margin-top: 0;
-  padding: 11px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border: 1px solid rgba(var(--accent-rgb), .13);
-  border-radius: 11px;
-  background: rgba(var(--accent-rgb), .035);
-}
-
-.knowledge-card-foot span { color: #788b93; font-size: .55rem; font-weight: 780; letter-spacing: .085em; line-height: 1.2; text-transform: uppercase; white-space: nowrap; }
-.knowledge-card-foot strong { min-width: 0; color: rgba(var(--accent-rgb), .94); font-size: .62rem; font-weight: 710; line-height: 1.35; text-align: right; }
-
-.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --applied-foot-label-rgb: 184, 126, 157; --applied-foot-flow-rgb: 151, 136, 198; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --applied-foot-label-rgb: 93, 163, 160; --applied-foot-flow-rgb: 105, 153, 198; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --applied-foot-label-rgb: 187, 151, 105; --applied-foot-flow-rgb: 132, 165, 136; }
-
-.workshop-grid-featured .knowledge-card-foot {
+  --knowledge-foot-label-rgb: 124, 151, 174;
+  --knowledge-foot-value-rgb: var(--accent-rgb);
   min-height: 0;
   margin-top: 0;
   padding: 0;
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-start;
   gap: 7px;
   border: 0;
@@ -1393,8 +1377,16 @@ body.workshop-open .workshop-masthead-copy {
   background: transparent;
 }
 
-.workshop-grid-featured .knowledge-card-foot span,
-.workshop-grid-featured .knowledge-card-foot strong {
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --knowledge-foot-label-rgb: 106, 156, 188; --knowledge-foot-value-rgb: 105, 174, 159; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(2) { --knowledge-foot-label-rgb: 184, 149, 113; --knowledge-foot-value-rgb: 105, 154, 195; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(3) { --knowledge-foot-label-rgb: 151, 132, 194; --knowledge-foot-value-rgb: 184, 149, 113; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) { --knowledge-foot-label-rgb: 184, 125, 94; --knowledge-foot-value-rgb: 153, 137, 201; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --knowledge-foot-label-rgb: 184, 126, 157; --knowledge-foot-value-rgb: 151, 136, 198; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --knowledge-foot-label-rgb: 93, 163, 160; --knowledge-foot-value-rgb: 105, 153, 198; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --knowledge-foot-label-rgb: 187, 151, 105; --knowledge-foot-value-rgb: 132, 165, 136; }
+
+.knowledge-card-foot span,
+.knowledge-card-foot strong {
   width: fit-content;
   max-width: 100%;
   min-width: 0;
@@ -1407,25 +1399,29 @@ body.workshop-open .workshop-masthead-copy {
   white-space: nowrap;
 }
 
-.workshop-grid-featured .knowledge-card-foot span {
-  color: rgba(var(--applied-foot-label-rgb), .96);
-  border: 1px solid rgba(var(--applied-foot-label-rgb), .24);
-  background: rgba(var(--applied-foot-label-rgb), .065);
+.knowledge-card-foot span {
+  color: rgba(var(--knowledge-foot-label-rgb), .96);
+  border: 1px solid rgba(var(--knowledge-foot-label-rgb), .24);
+  background: rgba(var(--knowledge-foot-label-rgb), .065);
   font-size: .53rem;
+  font-weight: 780;
   letter-spacing: .075em;
+  text-transform: uppercase;
 }
 
-.workshop-grid-featured .knowledge-card-foot span::before {
+.knowledge-card-foot span::before {
   content: "◆";
   margin-right: 6px;
   font-size: .42rem;
   opacity: .78;
 }
 
-.workshop-grid-featured .knowledge-card-foot strong {
-  color: rgba(var(--applied-foot-flow-rgb), .98);
-  border: 1px solid rgba(var(--applied-foot-flow-rgb), .25);
-  background: rgba(var(--applied-foot-flow-rgb), .072);
+.workshop-grid-foundation .knowledge-card-foot span::before { content: "◇"; }
+
+.knowledge-card-foot strong {
+  color: rgba(var(--knowledge-foot-value-rgb), .98);
+  border: 1px solid rgba(var(--knowledge-foot-value-rgb), .25);
+  background: rgba(var(--knowledge-foot-value-rgb), .072);
   font-size: .61rem;
   font-weight: 720;
 }
@@ -1467,20 +1463,6 @@ body.workshop-open .workshop-masthead-copy {
 .workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 196, 152, 107; --knowledge-topic-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'1.7'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Cpath%20d%3D'M15.5%206A6%206%200%200%200%205.2%204.8L3%207M4.5%2014A6%206%200%200%200%2014.8%2015.2L17%2013'%2F%3E%3Cpath%20d%3D'M3%203v4h4M17%2017v-4h-4'%2F%3E%3Cpath%20d%3D'm8%2010%201.5%201.5L12.5%208'%2F%3E%3C%2Fsvg%3E"); }
 
 /* Foundation separators are independent grid elements, never card pseudos. */
-@media (min-width: 1051px) {
-  .workshop-grid-foundation .knowledge-card-foot {
-    min-height: 66px;
-    padding: 10px 12px;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 5px;
-  }
-
-  .workshop-grid-foundation .knowledge-card-foot span { font-size: .53rem; }
-  .workshop-grid-foundation .knowledge-card-foot strong { width: 100%; font-size: .64rem; line-height: 1.34; text-align: left; text-wrap: balance; }
-}
-
 @media (min-width: 701px) and (max-width: 1050px) {
   .workshop-grid-foundation {
     grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) !important;
@@ -1720,9 +1702,9 @@ body.workshop-open .workshop-masthead-copy {
   .knowledge-topic-icon { width: 35px; height: 35px; }
   .knowledge-topic-text strong { font-size: .74rem; line-height: 1.28; }
   .knowledge-topic-text small { margin-top: 4px; font-size: .64rem; line-height: 1.42; }
-  .knowledge-card-foot { min-height: 48px; padding: 11px 12px; gap: 12px; }
-  .knowledge-card-foot span { font-size: .58rem; }
-  .knowledge-card-foot strong { font-size: .65rem; }
+  .knowledge-card-foot { min-height: 0; padding: 0; gap: 6px; }
+  .knowledge-card-foot span { padding: 6px 8px; font-size: .54rem; }
+  .knowledge-card-foot strong { padding: 6px 8px; font-size: .62rem; }
 
 }
 
