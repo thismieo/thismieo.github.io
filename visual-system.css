@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.10
+/* Blue Continuum — Shared Visual System 1.5.11
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -233,21 +233,20 @@ body:not(.workshop-open)::before {
 
 .portfolio-panel .facts dt {
   position: static;
-  width: fit-content;
-  min-height: 28px;
+  width: auto;
+  min-height: 0;
   margin: 0;
-  padding: 6px 10px;
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid rgba(var(--accent-rgb), .18);
-  border-radius: 999px;
-  color: rgba(var(--accent-rgb), .98);
-  background: rgba(var(--accent-rgb), .070);
-  font-size: .59rem;
-  font-weight: 820;
-  letter-spacing: .125em;
-  line-height: 1.2;
-  text-transform: uppercase;
+  padding: 0;
+  display: block;
+  border: 0;
+  border-radius: 0;
+  color: rgba(var(--accent-rgb), .88);
+  background: transparent;
+  font-size: .60rem;
+  font-weight: 770;
+  letter-spacing: .055em;
+  line-height: 1.25;
+  text-transform: none;
 }
 
 .portfolio-panel .facts dt::before {
@@ -677,10 +676,11 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .facts dt {
-    min-height: 27px;
-    padding: 6px 9px;
+    min-height: 0;
+    padding: 0;
     font-size: .58rem;
-    letter-spacing: .12em;
+    letter-spacing: .048em;
+    line-height: 1.24;
   }
 
   .portfolio-panel .facts dt::before {
