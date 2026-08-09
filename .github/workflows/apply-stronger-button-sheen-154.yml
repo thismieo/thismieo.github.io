@@ -1,0 +1,30 @@
+name: Apply stronger button sheen
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Strengthen shared button sheen
+        run: python tools/strengthen-button-sheen-154.py
+
+      - name: Commit final state
+        run: |
+          rm tools/strengthen-button-sheen-154.py
+          rm .github/workflows/apply-stronger-button-sheen-154.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add visual-system.css index.html tools/strengthen-button-sheen-154.py .github/workflows/apply-stronger-button-sheen-154.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Strengthen signature button sheen"
+          git push origin HEAD:main
