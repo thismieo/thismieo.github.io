@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.31 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.32 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -127,10 +127,6 @@ main { position: relative; background: transparent; }
 .timeline-item h3, .project-card h3, .workshop-card h3, .current-track-card h3, .workshop-entry-title { text-transform: capitalize; }
 .hero h1 { font-size: clamp(4.1rem, 6.6vw, 6.15rem); text-shadow: 0 18px 48px rgba(0, 5, 10, 0.2); }
 .hero-role { margin: 23px 0 0; color: #a9bdc5; font-size: clamp(1rem, 1.5vw, 1.18rem); font-weight: 760; letter-spacing: -0.02em; }
-.hero-education { width: fit-content; margin: 8px 0 0; display: flex; flex-direction: column; align-items: center; color: #91a7b0; font-size: clamp(0.84rem, 1.05vw, 0.95rem); font-weight: 590; line-height: 1.55; text-align: center; }
-.hero-education-college, .hero-education-program { display: block; color: inherit; }
-.hero-education-college { color: #b9c9cf; font-weight: 710; }
-.hero-education-separator { display: none; }
 .hero-tagline { max-width: none; margin: 20px 0 0; color: #e2e9eb; font-size: clamp(1.5rem, 1.9vw, 1.82rem); font-weight: 680; letter-spacing: -0.045em; line-height: 1.22; }
 .hero-tagline span, .hero-intro span { display: inline; }
 .hero-intro { max-width: 580px; margin: 18px 0 0; color: #a4b5bc; font-size: clamp(0.96rem, 1.2vw, 1.08rem); line-height: 1.83; }
@@ -1676,8 +1672,6 @@ body.workshop-open { overflow-x: hidden; }
   .hero .eyebrow { justify-content: center; margin-inline: auto; }
   .hero h1 { font-size: clamp(3.2rem, 15vw, 4.45rem); line-height: 0.96; }
   .hero-role { margin-top: 20px; text-align: center; }
-  .hero-education { width: 100%; max-width: 100%; font-size: 0.8rem; line-height: 1.65; text-align: center; }
-  .hero-education-college { color: #dce7eb; font-weight: 720; }
   .hero-tagline { max-width: 100%; margin-top: 17px; font-size: clamp(1.42rem, 7vw, 1.9rem); line-height: 1.24; text-wrap: balance; }
   .hero-tagline, .hero-intro { text-align: center; }
   .hero-tagline span { display: block; }
