@@ -1,0 +1,30 @@
+name: Apply Workshop hero CTA
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply Workshop hero CTA update
+        run: python tools/apply-workshop-hero-cta-4528.py
+
+      - name: Commit final state
+        run: |
+          rm tools/apply-workshop-hero-cta-4528.py
+          rm .github/workflows/apply-workshop-hero-cta-4528.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html styles.css tools/apply-workshop-hero-cta-4528.py .github/workflows/apply-workshop-hero-cta-4528.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Workshop shortcut to hero actions"
+          git push origin HEAD:main
