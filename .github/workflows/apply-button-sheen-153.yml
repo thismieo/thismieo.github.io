@@ -1,0 +1,30 @@
+name: Apply button sheen effect
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply shared button sheen
+        run: python tools/apply-button-sheen-153.py
+
+      - name: Commit final state
+        run: |
+          rm tools/apply-button-sheen-153.py
+          rm .github/workflows/apply-button-sheen-153.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add visual-system.css index.html tools/apply-button-sheen-153.py .github/workflows/apply-button-sheen-153.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Add signature sheen to primary action buttons"
+          git push origin HEAD:main
