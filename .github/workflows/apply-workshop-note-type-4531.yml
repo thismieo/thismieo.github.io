@@ -1,0 +1,30 @@
+name: Apply Workshop note typography
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply Workshop note typography update
+        run: python tools/apply-workshop-note-type-4531.py
+
+      - name: Commit final state
+        run: |
+          rm tools/apply-workshop-note-type-4531.py
+          rm .github/workflows/apply-workshop-note-type-4531.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add styles.css index.html tools/apply-workshop-note-type-4531.py .github/workflows/apply-workshop-note-type-4531.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Strengthen Workshop entry supporting text"
+          git push origin HEAD:main
