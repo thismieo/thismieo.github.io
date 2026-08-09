@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.2
+/* Blue Continuum — Shared Visual System 1.5.3
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -783,3 +783,81 @@ body:not(.workshop-open)::before {
   .portfolio-panel .facts dd { font-size: .74rem; }
   .portfolio-panel .about-education-value { font-size: .70rem; }
 }
+
+/* ---------- 1.5.3 signature button sheen ---------- */
+/* A short, low-contrast sweep inside a 3s cycle. The long idle phase keeps
+   the effect atmospheric instead of constantly animated. */
+:is(
+  .portfolio-panel .hero-cta,
+  .portfolio-panel .workshop-entry-action,
+  .workshop-view .practice-milestone-action
+) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+:is(
+  .portfolio-panel .hero-cta,
+  .portfolio-panel .workshop-entry-action,
+  .workshop-view .practice-milestone-action
+)::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -42%;
+  left: -52%;
+  width: 34%;
+  height: 184%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,.025) 22%,
+    rgba(255,255,255,.105) 48%,
+    rgba(255,255,255,.035) 72%,
+    transparent 100%
+  );
+  filter: blur(.25px);
+  opacity: 0;
+  transform: translate3d(0,0,0) skewX(-18deg);
+  will-change: transform, opacity;
+  animation: continuum-button-sheen 3s cubic-bezier(.22, 1, .36, 1) infinite;
+}
+
+:is(
+  .portfolio-panel .hero-cta,
+  .portfolio-panel .workshop-entry-action,
+  .workshop-view .practice-milestone-action
+) > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes continuum-button-sheen {
+  0%, 63% {
+    opacity: 0;
+    transform: translate3d(0,0,0) skewX(-18deg);
+  }
+  68% { opacity: .22; }
+  82% {
+    opacity: .72;
+    transform: translate3d(455%,0,0) skewX(-18deg);
+  }
+  88%, 100% {
+    opacity: 0;
+    transform: translate3d(520%,0,0) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .portfolio-panel .hero-cta,
+    .portfolio-panel .workshop-entry-action,
+    .workshop-view .practice-milestone-action
+  )::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
