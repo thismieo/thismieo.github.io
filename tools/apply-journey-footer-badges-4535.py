@@ -98,6 +98,11 @@ styles, count = pattern.subn(new_foot_css, styles, count=1)
 if count != 1:
     raise SystemExit(f'Expected one canonical timeline-foot CSS block, replaced {count}')
 
+legacy_marker = re.compile(r'\n\.timeline-foot span::before \{.*?\n\}\n', re.S)
+styles, marker_count = legacy_marker.subn('\n', styles, count=1)
+if marker_count != 1:
+    raise SystemExit(f'Expected one legacy Journey footer marker rule, removed {marker_count}')
+
 old_mobile = '  .timeline-foot { margin-top: 16px; padding: 0; gap: 6px; }\n  .timeline-foot span { padding: 6px 8px; font-size: .52rem; }\n  .timeline-foot strong { padding: 6px 8px; font-size: .59rem; }'
 new_mobile = '  .timeline-foot { margin-top: 16px; padding: 0; gap: 6px; }\n  .timeline-foot span,\n  .timeline-foot strong { min-height: 27px; padding: 6px 9px; }\n  .timeline-foot span { font-size: .54rem; }\n  .timeline-foot strong { font-size: .59rem; }'
 if old_mobile not in styles:
@@ -105,7 +110,7 @@ if old_mobile not in styles:
 styles = styles.replace(old_mobile, new_mobile, 1)
 
 if 'timeline-foot span::before' in styles:
-    raise SystemExit('Legacy Journey footer marker rule still present after replacement')
+    raise SystemExit('Legacy Journey footer marker rule still present after cleanup')
 
 index_path.write_text(index, encoding='utf-8')
 styles_path.write_text(styles, encoding='utf-8')
