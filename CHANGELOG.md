@@ -1,3 +1,15 @@
+# Blue Continuum 5.0.0 — Approved Stable Release
+
+1. Froze the approved August 2026 portfolio and Workshop design as a clean production baseline.
+2. Unified all production CSS/JS cache keys and visible version labels under `5.0.0`, including the 404 page.
+3. Reduced the mobile Hero role `Artificial Intelligence Engineering Student` to a calmer responsive size while preserving desktop typography.
+4. Preserved the approved About, Journey, Workshop, Projects, Contact and closing layouts without aggressive selector deletion or risky responsive rewrites.
+5. Removed stale README references to previously deleted interaction assets and documented the actual six-file CSS/JS production architecture.
+6. Revalidated local asset references, duplicate IDs, internal anchors, JavaScript syntax, approved root asset inventory and conflict-marker hygiene before publishing.
+7. Created dedicated pre-release and stable release branches so this state can be retained and restored independently of future work.
+
+---
+
 # Blue Continuum 4.5.26 — CTA, Knowledge Badges & Project Rhythm
 
 1. Enlarged and rebalanced the desktop Workshop CTA so the supporting line and Open Workshop control read as one deliberate stack while preserving compact tablet/phone sizing.

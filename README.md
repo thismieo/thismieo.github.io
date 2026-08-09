@@ -1,31 +1,34 @@
-# Mohammed Muayad Portfolio — Blue Continuum 4.4.1
+# Mohammed Muayad Portfolio — Blue Continuum 5.0.0
 
 Production portfolio for Mohammed Muayad, including the main portfolio experience and The Workshop learning archive.
 
-## Current production architecture
+## Production architecture
 
-- `styles.css` — shared portfolio foundation, reusable primitives and responsive homepage layout.
-- `contact-linkedin.css` — contact-card icon refinement.
-- `workshop-integrated.css` — canonical Workshop component layer: Workshop shell, masthead, Python practice, explorer, knowledge cards and responsive behavior.
-- `visual-system.css` — canonical cross-page visual system for divider geometry/colors and shared ambient-depth normalization across the homepage and Workshop mobile layout.
-- `script.js` — portfolio navigation, Workshop transitions, history and copy behavior.
-- `workshop-integrated.js` — Python practice data, selectors, code rendering and collection state without page-scroll or background-height forcing.
-- `interactions.css` / `interactions.js` — one click-confirmed interaction engine for mouse, touch, pen and keyboard; it contains no Workshop layout or visual overrides.
+- `index.html` — canonical document structure for the portfolio and integrated Workshop view.
+- `styles.css` — consolidated homepage foundation, Hero, Journey, Projects and responsive layout.
+- `contact-linkedin.css` — contact-card icon masks and LinkedIn placement refinements.
+- `visual-system.css` — shared homepage visual system, About cards, editorial copy, divider rhythm and signature CTA sheen.
+- `workshop-integrated.css` — consolidated Workshop structure, Python practice, knowledge cards and responsive behavior.
+- `script.js` — portfolio navigation, section scrolling, Workshop transitions, history and copy behavior.
+- `workshop-integrated.js` — Python practice data, selectors, code rendering and collection state.
+- `assets/` — portrait, Manrope variable font and favicon/PWA icon set.
 
-## Release 4.4.1
+There is no separate interaction runtime in production. Click/press behavior is owned by the active component styles and the two canonical JavaScript files above.
 
-- Keeps Journey and other cards geometrically stable when clicked; feedback no longer scales or translates the card itself.
-- Preserves structural `first-child` / `last-child` selectors by inserting the DOM sheen layer without becoming the semantic edge child of multi-element cards.
-- Gives Workshop and portfolio navigation explicit ownership of scroll restoration to avoid browser history races.
-- Reorders the Workshop DOM to match its visual reading order: masthead, Python Development, Foundation, Applied Practice and closing action.
-- Makes the Workshop a real `main` landmark while it is open and removes the hidden-portfolio skip-link mismatch.
-- Removes the obsolete Workshop background-height freezing runtime and lets the background follow dynamic content naturally.
-- Consolidates Workshop component styling in `workshop-integrated.css` and keeps click feedback isolated in the interaction layer.
-- Introduces `visual-system.css` as the single shared source for homepage/Workshop divider language and ambient-depth normalization.
-- Gives mobile dividers one width system (`min(64vw, 240px)`) and balanced 22px breathing room around major Workshop separators.
-- Applies the Workshop steel/bronze/indigo divider palette consistently to homepage About, Journey, Workshop-entry and Project separators.
-- Reduces diffuse homepage background, Hero and card haze while retaining local accent depth.
-- Rebuilds the `Updated · Aug 2026` line animation inside one clipped line so its sweep finishes cleanly at both edges.
-- Corrects the 32px favicon MIME declaration and uses content-specific cache keys for changed production assets.
+## Release 5.0.0
+
+- Freezes the approved homepage and Workshop design after the August 2026 refinement pass.
+- Unifies all production CSS/JS cache keys and visible version labels under `5.0.0`.
+- Keeps About cards in the approved soft contact-derived layout with bare icons and plain label/value hierarchy.
+- Keeps the refined Journey footer tags, Workshop spacing, Hero tagline color identity and responsive editorial copy.
+- Reduces the mobile `Artificial Intelligence Engineering Student` Hero role to a calmer responsive size without changing desktop typography.
+- Synchronizes the 404 page with the current production stylesheet cache and release label.
+- Removes stale documentation references to deleted interaction assets.
+- Uses a conservative cleanup policy: only confirmed temporary/stale artifacts are removed; working responsive and interaction ownership is preserved.
+
+## Deployment
 
 The site is deployed through GitHub Pages from the `main` branch.
+
+Stable release snapshot: `release/5.0.0-stable`.
+Pre-release safety snapshot: `backup/pre-release-5.0.0`.

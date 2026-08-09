@@ -1,3 +1,4 @@
+/* Blue Continuum 5.0.0 — Workshop behavior and practice data */
 (() => {
   "use strict";
 
