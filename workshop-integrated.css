@@ -1,4 +1,4 @@
-/* Workshop 6.0.13 — consolidated production stylesheet.
+/* Workshop 6.0.14 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -1377,13 +1377,13 @@ body.workshop-open .workshop-masthead-copy {
 }
 
 /* Each card gets a distinct two-tone signature derived from its surface palette. */
-.workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --knowledge-foot-label-rgb: 111, 151, 181; --knowledge-foot-value-rgb: 112, 178, 162; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --knowledge-foot-label-rgb: 110, 160, 150; --knowledge-foot-value-rgb: 126, 191, 176; }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(2) { --knowledge-foot-label-rgb: 183, 147, 109; --knowledge-foot-value-rgb: 116, 159, 194; }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(3) { --knowledge-foot-label-rgb: 157, 138, 195; --knowledge-foot-value-rgb: 188, 150, 108; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(4) { --knowledge-foot-label-rgb: 190, 138, 104; --knowledge-foot-value-rgb: 164, 145, 201; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --knowledge-foot-label-rgb: 190, 125, 157; --knowledge-foot-value-rgb: 157, 143, 200; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --knowledge-foot-label-rgb: 93, 167, 165; --knowledge-foot-value-rgb: 112, 160, 198; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --knowledge-foot-label-rgb: 193, 157, 109; --knowledge-foot-value-rgb: 137, 171, 143; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) { --knowledge-foot-label-rgb: 188, 127, 161; --knowledge-foot-value-rgb: 161, 145, 203; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --knowledge-foot-label-rgb: 191, 126, 162; --knowledge-foot-value-rgb: 163, 145, 201; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --knowledge-foot-label-rgb: 98, 169, 178; --knowledge-foot-value-rgb: 117, 165, 203; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --knowledge-foot-label-rgb: 193, 156, 108; --knowledge-foot-value-rgb: 141, 177, 146; }
 
 .knowledge-card-foot span,
 .knowledge-card-foot strong {
@@ -1518,13 +1518,13 @@ body.workshop-open .workshop-masthead-copy {
 }
 
 
-/* ---------- 6.0.11 Project-derived Workshop surfaces ---------- */
+/* ---------- 6.0.14 coordinated Workshop surfaces ---------- */
 /* Foundation: Verdigris Slate, Glacier Steel, Dusty Iris, Amber Clay. */
 .workshop-grid-foundation > .knowledge-card:nth-of-type(1) {
-  --accent-rgb: 112, 164, 153;
-  --main-icon-rgb: 132, 188, 177;
-  --surface-a-rgb: 24, 43, 42;
-  --surface-b-rgb: 9, 27, 32;
+  --accent-rgb: 98, 181, 166;
+  --main-icon-rgb: 129, 205, 189;
+  --surface-a-rgb: 22, 41, 40;
+  --surface-b-rgb: 8, 27, 30;
 }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(2) {
   --accent-rgb: 111, 148, 181;
@@ -1539,30 +1539,30 @@ body.workshop-open .workshop-masthead-copy {
   --surface-b-rgb: 15, 21, 36;
 }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(4) {
-  --accent-rgb: 181, 143, 107;
-  --main-icon-rgb: 202, 162, 122;
-  --surface-a-rgb: 42, 35, 30;
-  --surface-b-rgb: 21, 25, 30;
+  --accent-rgb: 176, 118, 150;
+  --main-icon-rgb: 206, 146, 178;
+  --surface-a-rgb: 39, 28, 39;
+  --surface-b-rgb: 18, 20, 31;
 }
 
 /* Applied practice: Rose Plum, Deep Lagoon, Antique Gold. */
 .workshop-grid-featured > .knowledge-card:nth-of-type(1) {
-  --accent-rgb: 174, 116, 145;
-  --main-icon-rgb: 197, 136, 164;
-  --surface-a-rgb: 40, 29, 40;
-  --surface-b-rgb: 20, 21, 31;
+  --accent-rgb: 174, 112, 148;
+  --main-icon-rgb: 203, 141, 175;
+  --surface-a-rgb: 40, 28, 40;
+  --surface-b-rgb: 19, 18, 30;
 }
 .workshop-grid-featured > .knowledge-card:nth-of-type(2) {
-  --accent-rgb: 86, 154, 168;
-  --main-icon-rgb: 106, 177, 190;
-  --surface-a-rgb: 20, 40, 44;
-  --surface-b-rgb: 8, 26, 33;
+  --accent-rgb: 90, 161, 181;
+  --main-icon-rgb: 114, 191, 210;
+  --surface-a-rgb: 18, 38, 47;
+  --surface-b-rgb: 7, 25, 35;
 }
 .workshop-grid-featured > .knowledge-card:nth-of-type(3) {
-  --accent-rgb: 178, 151, 104;
-  --main-icon-rgb: 200, 173, 123;
-  --surface-a-rgb: 42, 36, 29;
-  --surface-b-rgb: 21, 25, 29;
+  --accent-rgb: 186, 149, 96;
+  --main-icon-rgb: 214, 178, 121;
+  --surface-a-rgb: 42, 34, 27;
+  --surface-b-rgb: 22, 24, 28;
 }
 
 .knowledge-application-merged .knowledge-card {
@@ -1580,12 +1580,12 @@ body.workshop-open .workshop-masthead-copy {
 }
 
 
-/* ---------- 6.0.13 coordinated icon palette ---------- */
+/* ---------- 6.0.14 coordinated icon palette ---------- */
 /* Icon geometry stays unchanged; only chromatic hierarchy is refreshed. */
-.workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --main-icon-rgb: 139, 203, 188; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 108, 185, 190; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 111, 158, 192; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 177, 133, 155; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --main-icon-rgb: 129, 205, 189; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 104, 182, 188; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 111, 158, 195; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 181, 135, 166; }
 
 .workshop-grid-foundation > .knowledge-card:nth-of-type(2) { --main-icon-rgb: 139, 176, 209; }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 121, 170, 202; }
@@ -1597,25 +1597,25 @@ body.workshop-open .workshop-masthead-copy {
 .workshop-grid-foundation > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 120, 156, 195; }
 .workshop-grid-foundation > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 188, 151, 111; }
 
-.workshop-grid-foundation > .knowledge-card:nth-of-type(4) { --main-icon-rgb: 211, 172, 128; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 199, 155, 112; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 160, 146, 196; }
-.workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 184, 132, 145; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) { --main-icon-rgb: 206, 146, 178; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 193, 132, 161; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 161, 146, 201; }
+.workshop-grid-foundation > .knowledge-card:nth-of-type(4) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 188, 152, 113; }
 
-.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --main-icon-rgb: 210, 147, 176; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 194, 132, 160; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 160, 145, 200; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 189, 151, 112; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --main-icon-rgb: 203, 141, 175; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 191, 129, 159; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 160, 145, 199; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 187, 151, 112; }
 
-.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --main-icon-rgb: 115, 191, 197; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 104, 180, 184; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 118, 164, 198; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 133, 176, 160; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --main-icon-rgb: 114, 191, 210; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 106, 185, 188; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 116, 167, 203; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 135, 179, 163; }
 
-.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --main-icon-rgb: 216, 185, 134; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 199, 169, 117; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 140, 178, 145; }
-.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 181, 133, 151; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --main-icon-rgb: 214, 178, 121; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(1) { --topic-icon-rgb: 201, 171, 119; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(2) { --topic-icon-rgb: 140, 180, 148; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) .knowledge-card-topics li:nth-child(3) { --topic-icon-rgb: 184, 134, 152; }
 
 /* ---------- Hover capability ---------- */
 @media (hover: hover) and (pointer: fine) {
