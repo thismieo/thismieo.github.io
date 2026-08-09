@@ -413,19 +413,19 @@ body:not(.workshop-open)::before {
 
 .portfolio-panel .closing-message .closing-message-primary {
   max-width: 760px;
-  color: #c3ccd4;
-  font-size: clamp(.96rem, 1.12vw, 1.03rem);
-  font-weight: 540;
-  line-height: 1.76;
+  color: #c8d0d7;
+  font-size: clamp(.99rem, 1.15vw, 1.06rem);
+  font-weight: 560;
+  line-height: 1.74;
   letter-spacing: -.012em;
 }
 
 .portfolio-panel .closing-message .closing-message-secondary {
   max-width: 800px;
-  color: #98a5b4;
-  font-size: clamp(.88rem, 1.02vw, .95rem);
-  font-weight: 470;
-  line-height: 1.80;
+  color: #a3afbc;
+  font-size: clamp(.91rem, 1.05vw, .98rem);
+  font-weight: 500;
+  line-height: 1.76;
   letter-spacing: -.010em;
 }
 
@@ -508,16 +508,16 @@ body:not(.workshop-open)::before {
   .portfolio-panel .closing-message .closing-message-primary {
     width: calc(100% + 16px);
     max-width: calc(100vw - 20px);
-    font-size: clamp(.74rem, 3.15vw, .86rem);
-    line-height: 1.60;
+    font-size: clamp(.77rem, 3.22vw, .88rem);
+    line-height: 1.58;
     letter-spacing: -.024em;
   }
 
   .portfolio-panel .closing-message .closing-message-secondary {
     width: calc(100% + 16px);
     max-width: calc(100vw - 20px);
-    font-size: clamp(.73rem, 3.08vw, .84rem);
-    line-height: 1.64;
+    font-size: clamp(.76rem, 3.17vw, .86rem);
+    line-height: 1.62;
     letter-spacing: -.022em;
   }
 

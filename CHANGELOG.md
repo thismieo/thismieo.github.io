@@ -1,3 +1,12 @@
+# Blue Continuum 5.0.1 — Closing Copy Readability Patch
+
+1. Increased the two descriptive Thank-you paragraphs by a restrained amount on desktop and phone.
+2. Strengthened text weight and contrast slightly so the closing message reads more comfortably without becoming visually heavy.
+3. Preserved the approved mobile line breaks, widths, signoff treatment and overall closing hierarchy.
+4. Unified production cache keys and visible release labels under 5.0.1 while retaining the 5.0.0 stable snapshot.
+
+---
+
 # Blue Continuum 5.0.0 — Approved Stable Release
 
 1. Froze the approved August 2026 portfolio and Workshop design as a clean production baseline.

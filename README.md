@@ -1,4 +1,4 @@
-# Mohammed Muayad Portfolio — Blue Continuum 5.0.0
+# Mohammed Muayad Portfolio — Blue Continuum 5.0.1
 
 Production portfolio for Mohammed Muayad, including the main portfolio experience and The Workshop learning archive.
 
@@ -14,6 +14,12 @@ Production portfolio for Mohammed Muayad, including the main portfolio experienc
 - `assets/` — portrait, Manrope variable font and favicon/PWA icon set.
 
 There is no separate interaction runtime in production. Click/press behavior is owned by the active component styles and the two canonical JavaScript files above.
+
+## Patch 5.0.1
+
+- Improves readability of the two descriptive paragraphs beneath the closing Thank-you message with a small responsive type and weight increase.
+- Preserves the approved forced line breaks on phone and leaves the closing signoff unchanged.
+- Keeps the `release/5.0.0-stable` snapshot intact as the pre-patch approved baseline.
 
 ## Release 5.0.0
 
