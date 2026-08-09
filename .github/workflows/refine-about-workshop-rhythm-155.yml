@@ -1,0 +1,33 @@
+name: Refine About and Workshop rhythm
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/refine-about-workshop-rhythm-155.py'
+      - '.github/workflows/refine-about-workshop-rhythm-155.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply About and Workshop rhythm refinement
+        run: python tools/refine-about-workshop-rhythm-155.py
+
+      - name: Commit clean final state
+        run: |
+          rm -f tools/refine-about-workshop-rhythm-155.py
+          rm -f .github/workflows/refine-about-workshop-rhythm-155.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Refine mobile About and Workshop rhythm"
+          git push origin main
