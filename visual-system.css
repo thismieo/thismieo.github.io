@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.7
+/* Blue Continuum — Shared Visual System 1.5.8
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -149,6 +149,8 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .about-summary-line { display: block; }
+.portfolio-panel .about-mobile-break { display: none; }
+.portfolio-panel .about-desktop-break { display: block; }
 .portfolio-panel .about-keep-together { white-space: nowrap; }
 .portfolio-panel .about-summary-line:first-child {
   color: #e2e7ec;
@@ -158,7 +160,7 @@ body:not(.workshop-open)::before {
 .portfolio-panel .about-summary-line:first-child strong { color: #f3f5f7; font-weight: 760; }
 .portfolio-panel .about-summary-line:nth-child(2) { color: #c5ccd6; }
 .portfolio-panel .about-summary-line:nth-child(3) { color: #adb7c5; }
-.portfolio-panel .about-summary-line:nth-child(4) { color: #9faabc; }
+.portfolio-panel .about-work-tail { color: #9faabc; }
 
 .portfolio-panel .facts {
   width: min(100%, 900px);
@@ -650,13 +652,17 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .about-summary {
-    max-width: 100%;
+    width: calc(100% + 16px);
+    max-width: calc(100vw - 20px);
     margin: 0 auto;
     padding-inline: 0;
-    font-size: clamp(.90rem, 3.78vw, .98rem);
-    line-height: 1.66;
+    color: #b8c1cd;
+    font-size: clamp(.74rem, 3.15vw, .84rem);
+    font-weight: 505;
+    line-height: 1.50;
+    letter-spacing: -.025em;
     text-align: center;
-    text-wrap: pretty;
+    text-wrap: nowrap;
   }
 
   .portfolio-panel .about-summary-line {
@@ -664,19 +670,33 @@ body:not(.workshop-open)::before {
     max-width: 100%;
     margin-inline: auto;
     display: block;
-    white-space: normal;
-  }
-  .portfolio-panel .about-summary-line + .about-summary-line { margin-top: 5px; }
-  .portfolio-panel .about-summary-line:first-child {
-    max-width: 100%;
-    margin-bottom: 2px;
-    font-size: clamp(.80rem, 4vw, .90rem);
-    line-height: 1.48;
     white-space: nowrap;
   }
-  .portfolio-panel .about-summary-line:nth-child(2) { max-width: 35ch; }
-  .portfolio-panel .about-summary-line:nth-child(3) { max-width: 36ch; }
-  .portfolio-panel .about-summary-line:nth-child(4) { max-width: 33ch; }
+
+  .portfolio-panel .about-summary-line + .about-summary-line { margin-top: 8px; }
+  .portfolio-panel .about-mobile-break { display: block; }
+  .portfolio-panel .about-desktop-break { display: none; }
+  .portfolio-panel .about-work-tail { color: inherit; }
+
+  .portfolio-panel .about-summary-line:first-child {
+    max-width: 100%;
+    margin-bottom: 1px;
+    font-size: inherit;
+    line-height: 1.44;
+    letter-spacing: -.028em;
+  }
+
+  .portfolio-panel .about-summary-line:nth-child(2) {
+    max-width: 100%;
+    color: #c7ced7;
+    line-height: 1.48;
+  }
+
+  .portfolio-panel .about-summary-line:nth-child(3) {
+    max-width: 100%;
+    color: #adb8c6;
+    line-height: 1.50;
+  }
 
   .portfolio-panel .facts {
     width: 100%;
