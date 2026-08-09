@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.33 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.34 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -1677,7 +1677,10 @@ body.workshop-open { overflow-x: hidden; }
   .hero-role { margin-top: 20px; text-align: center; }
   .hero-tagline { max-width: 100%; margin-top: 17px; font-size: clamp(1.42rem, 7vw, 1.9rem); line-height: 1.24; text-wrap: balance; }
   .hero-tagline, .hero-intro { text-align: center; }
-  .hero-tagline span { display: block; }
+  .hero-tagline span { display: inline; }
+  .hero-tagline-future { display: block; }
+  .hero-tagline-code,
+  .hero-tagline-intelligence { display: inline; }
   .hero-intro { max-width: 100%; margin-top: 15px; font-size: clamp(0.78rem, 3.18vw, 0.87rem); line-height: 1.78; letter-spacing: -0.018em; }
   .hero-intro span { display: block; white-space: nowrap; text-align: center; }
   .hero-actions { margin-top: 25px; flex-direction: column; align-items: center; }
