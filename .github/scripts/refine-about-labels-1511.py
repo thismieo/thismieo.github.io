@@ -69,13 +69,16 @@ visual = visual.replace(old_mobile_dt, new_mobile_dt, 1)
 visual = visual.replace('Shared Visual System 1.5.10', 'Shared Visual System 1.5.11', 1)
 index = index.replace('visual-system.css?v=1.5.10', 'visual-system.css?v=1.5.11', 1)
 
-# Guard against reintroducing pill styling for About labels.
-about_start = visual.index('/* ---------- Homepage About — four contact-derived profile cards ---------- */')
-about_end = visual.index('/* ---------- Homepage editorial intros and closing hierarchy ---------- */')
-about_css = visual[about_start:about_end]
-assert 'padding: 6px 10px;' not in about_css
-assert 'text-transform: uppercase;' not in about_css
-assert 'border-radius: 999px;' not in about_css
+# Guard the About label rule itself without matching unrelated separators.
+dt_start = visual.index('.portfolio-panel .facts dt {')
+dt_end = visual.index('.portfolio-panel .facts dt::before {')
+dt_css = visual[dt_start:dt_end]
+assert 'border: 0;' in dt_css
+assert 'border-radius: 0;' in dt_css
+assert 'background: transparent;' in dt_css
+assert 'text-transform: none;' in dt_css
+assert 'padding: 6px 10px;' not in dt_css
+assert 'border-radius: 999px;' not in dt_css
 
 visual_path.write_text(visual, encoding='utf-8')
 index_path.write_text(index, encoding='utf-8')
