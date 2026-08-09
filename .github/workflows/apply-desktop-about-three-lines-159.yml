@@ -1,0 +1,31 @@
+name: Apply desktop About three-line layout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-desktop-about-three-lines-159.yml'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply desktop About layout
+        run: python tools/apply-desktop-about-three-lines-159.py
+      - name: Commit clean final state
+        run: |
+          rm -f tools/apply-desktop-about-three-lines-159.py .github/workflows/apply-desktop-about-three-lines-159.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Restore desktop About three-line layout"
+            git push
+          fi
