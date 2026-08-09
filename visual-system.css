@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.5
+/* Blue Continuum — Shared Visual System 1.5.6
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -71,7 +71,7 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .workshop-entry-intro {
-  margin: 54px 0 0;
+  margin: 44px 0 0;
 }
 
 /* Every homepage editorial intro starts its first card group on one baseline. */
@@ -149,6 +149,7 @@ body:not(.workshop-open)::before {
 }
 
 .portfolio-panel .about-summary-line { display: block; }
+.portfolio-panel .about-keep-together { white-space: nowrap; }
 .portfolio-panel .about-summary-line:first-child {
   color: #e2e7ec;
   font-size: 1.07rem;
@@ -479,7 +480,7 @@ body:not(.workshop-open)::before {
 
 @media (max-width: 700px) {
   .portfolio-panel .section-heading-copy { max-width: 100%; }
-  .portfolio-panel .workshop-entry-intro { margin-top: 40px; }
+  .portfolio-panel .workshop-entry-intro { margin-top: 32px; }
 
   .portfolio-panel .section-intro {
     max-width: 35ch;
@@ -667,10 +668,11 @@ body:not(.workshop-open)::before {
   }
   .portfolio-panel .about-summary-line + .about-summary-line { margin-top: 5px; }
   .portfolio-panel .about-summary-line:first-child {
-    max-width: 31ch;
+    max-width: 100%;
     margin-bottom: 2px;
-    font-size: clamp(.99rem, 4.12vw, 1.07rem);
-    line-height: 1.52;
+    font-size: clamp(.80rem, 4vw, .90rem);
+    line-height: 1.48;
+    white-space: nowrap;
   }
   .portfolio-panel .about-summary-line:nth-child(2) { max-width: 35ch; }
   .portfolio-panel .about-summary-line:nth-child(3) { max-width: 36ch; }

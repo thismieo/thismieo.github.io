@@ -239,9 +239,30 @@
     const target = document.querySelector(hash);
     if (!target) return Promise.resolve(false);
 
-    const top = hash === "#home"
-      ? 0
-      : Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset() - 12);
+    let top;
+    if (hash === "#home") {
+      top = 0;
+    } else if (hash === "#workshop-gateway") {
+      const intro = target.previousElementSibling?.classList.contains("workshop-entry-intro")
+        ? target.previousElementSibling
+        : document.querySelector(".workshop-entry-intro");
+      const headerOffset = getHeaderOffset();
+      const targetRect = target.getBoundingClientRect();
+      const targetTop = targetRect.top + window.scrollY;
+      const targetCenter = targetTop + targetRect.height / 2;
+      const viewportCenter = headerOffset + (window.innerHeight - headerOffset) / 2;
+      const centeredTop = targetCenter - viewportCenter;
+
+      if (intro) {
+        const introTop = intro.getBoundingClientRect().top + window.scrollY;
+        const introVisibleTop = introTop - headerOffset - 14;
+        top = Math.max(0, Math.min(centeredTop, introVisibleTop));
+      } else {
+        top = Math.max(0, centeredTop);
+      }
+    } else {
+      top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - getHeaderOffset() - 12);
+    }
     const navigationToken = ++sectionNavigationToken;
 
     programmaticSectionScroll = true;
