@@ -27,3 +27,5 @@ jobs:
           git add -A
           git commit -m "Polish Journey footer badges"
           git push origin main
+
+# retry after legacy marker cleanup fix
