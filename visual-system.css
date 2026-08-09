@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.11
+/* Blue Continuum — Shared Visual System 1.5.12
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -377,6 +377,9 @@ body:not(.workshop-open)::before {
 .portfolio-panel #projects .section-intro { --intro-start: #b5a792; --intro-end: #a89aba; }
 .portfolio-panel #contact .section-intro { --intro-start: #9db5b5; --intro-end: #a99cba; }
 
+.portfolio-panel .contact-copy-line,
+.portfolio-panel .closing-copy-line { display: inline; }
+
 
 .portfolio-panel .closing-note-copy { max-width: 900px; }
 
@@ -465,6 +468,26 @@ body:not(.workshop-open)::before {
     line-height: 1.65;
   }
 
+  .portfolio-panel #contact .section-intro {
+    width: calc(100% + 16px);
+    max-width: calc(100vw - 20px);
+  }
+
+  .portfolio-panel #contact .contact-intro-primary {
+    max-width: none;
+    font-size: clamp(.74rem, 3.15vw, .86rem);
+    line-height: 1.56;
+    letter-spacing: -.025em;
+  }
+
+  .portfolio-panel .contact-copy-line,
+  .portfolio-panel .closing-copy-line {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    white-space: nowrap;
+  }
 
   .portfolio-panel .closing-note h2 {
     max-width: 100%;
@@ -483,15 +506,19 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .closing-message .closing-message-primary {
-    max-width: 34ch;
-    font-size: clamp(.88rem, 3.65vw, .94rem);
-    line-height: 1.75;
+    width: calc(100% + 16px);
+    max-width: calc(100vw - 20px);
+    font-size: clamp(.74rem, 3.15vw, .86rem);
+    line-height: 1.60;
+    letter-spacing: -.024em;
   }
 
   .portfolio-panel .closing-message .closing-message-secondary {
-    max-width: 35ch;
-    font-size: clamp(.82rem, 3.42vw, .89rem);
-    line-height: 1.78;
+    width: calc(100% + 16px);
+    max-width: calc(100vw - 20px);
+    font-size: clamp(.73rem, 3.08vw, .84rem);
+    line-height: 1.64;
+    letter-spacing: -.022em;
   }
 
   .portfolio-panel .closing-message .closing-signoff {
