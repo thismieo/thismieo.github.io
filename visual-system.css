@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.9
+/* Blue Continuum — Shared Visual System 1.5.10
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -162,7 +162,7 @@ body:not(.workshop-open)::before {
 .portfolio-panel .about-work-tail { color: #9faabc; }
 
 .portfolio-panel .facts {
-  width: min(100%, 900px);
+  width: min(100%, 980px);
   margin: clamp(24px, 2.2vw, 30px) auto 12px;
   padding: 0;
   display: grid;
@@ -177,24 +177,22 @@ body:not(.workshop-open)::before {
   --surface-b-rgb: 12, 27, 35;
   position: relative;
   min-width: 0;
-  min-height: 96px;
-  padding: 16px 18px 16px 82px;
+  min-height: 86px;
+  padding: 14px 18px 14px 64px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   overflow: hidden;
   isolation: isolate;
-  border: 1px solid rgba(var(--accent-rgb), .20);
+  border: 1px solid rgba(var(--accent-rgb), .14);
   border-radius: 18px;
   background:
-    radial-gradient(ellipse 76% 126% at -4% -16%, rgba(var(--accent-rgb), .105), transparent 67%),
-    radial-gradient(ellipse 58% 108% at 104% 112%, rgba(var(--secondary-rgb), .045), transparent 73%),
+    radial-gradient(ellipse 76% 126% at -4% -16%, rgba(var(--accent-rgb), .075), transparent 67%),
+    radial-gradient(ellipse 58% 108% at 104% 112%, rgba(var(--secondary-rgb), .030), transparent 73%),
     linear-gradient(148deg, rgba(var(--surface-a-rgb), .985), rgba(var(--surface-b-rgb), .995));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025),
-    0 12px 29px rgba(0, 6, 12, .12);
+  box-shadow: 0 10px 24px rgba(0, 6, 12, .10);
   transition: border-color 220ms ease, box-shadow 240ms ease;
 }
 
@@ -256,7 +254,7 @@ body:not(.workshop-open)::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: 28px;
+  left: 22px;
   width: 22px;
   height: 22px;
   background: rgb(var(--accent-rgb));
@@ -269,36 +267,6 @@ body:not(.workshop-open)::before {
   mask-position: center;
   mask-size: contain;
   z-index: 2;
-}
-
-.portfolio-panel .facts dt::after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 16px;
-  width: 46px;
-  height: 46px;
-  border: 1px solid rgba(var(--accent-rgb), .20);
-  border-radius: 14px;
-  background: linear-gradient(145deg, rgba(var(--accent-rgb), .135), rgba(var(--accent-rgb), .045));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.028),
-    0 8px 18px rgba(0, 6, 12, .10);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.portfolio-panel .facts > div::after {
-  content: "";
-  position: absolute;
-  top: 18px;
-  bottom: 18px;
-  left: 69px;
-  width: 1px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, transparent, rgba(var(--accent-rgb), .20) 25%, rgba(var(--accent-rgb), .12) 75%, transparent);
-  pointer-events: none;
 }
 
 .portfolio-panel .facts > div:nth-child(1) dt::before {
@@ -354,10 +322,8 @@ body:not(.workshop-open)::before {
 
 @media (hover: hover) and (pointer: fine) {
   .portfolio-panel .facts > div:hover {
-    border-color: rgba(var(--accent-rgb), .31);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.030),
-      0 13px 31px rgba(0, 6, 12, .14);
+    border-color: rgba(var(--accent-rgb), .22);
+    box-shadow: 0 11px 26px rgba(0, 6, 12, .11);
   }
 }
 
@@ -704,10 +670,10 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .facts > div {
-    min-height: 92px;
-    padding: 14px 14px 14px 76px;
+    min-height: 80px;
+    padding: 12px 14px 12px 56px;
     border-radius: 17px;
-    gap: 5px;
+    gap: 4px;
   }
 
   .portfolio-panel .facts dt {
@@ -718,22 +684,9 @@ body:not(.workshop-open)::before {
   }
 
   .portfolio-panel .facts dt::before {
-    left: 25px;
+    left: 19px;
     width: 20px;
     height: 20px;
-  }
-
-  .portfolio-panel .facts dt::after {
-    left: 13px;
-    width: 44px;
-    height: 44px;
-    border-radius: 13px;
-  }
-
-  .portfolio-panel .facts > div::after {
-    top: 17px;
-    bottom: 17px;
-    left: 65px;
   }
 
   .portfolio-panel .facts dd {
@@ -774,10 +727,8 @@ body:not(.workshop-open)::before {
 }
 
 @media (max-width: 380px) {
-  .portfolio-panel .facts > div { padding-left: 72px; padding-right: 12px; }
-  .portfolio-panel .facts dt::before { left: 23px; width: 19px; height: 19px; }
-  .portfolio-panel .facts dt::after { left: 12px; width: 42px; height: 42px; border-radius: 12px; }
-  .portfolio-panel .facts > div::after { left: 61px; }
+  .portfolio-panel .facts > div { padding-left: 54px; padding-right: 12px; }
+  .portfolio-panel .facts dt::before { left: 18px; width: 19px; height: 19px; }
   .portfolio-panel .facts dt { font-size: .55rem; }
   .portfolio-panel .facts dd { font-size: .74rem; }
   .portfolio-panel .about-education-value { font-size: .70rem; }
