@@ -1,0 +1,49 @@
+name: Finalize release 5.0.0
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/finalize-release-500.yml"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply release edits and source audit
+        run: python .github/scripts/finalize-release-500.py
+      - name: Validate JavaScript syntax
+        run: |
+          node --check script.js
+          node --check workshop-integrated.js
+      - name: Validate clean production inventory
+        run: |
+          test ! -e interactions.css
+          test ! -e interactions.js
+          test -f styles.css
+          test -f contact-linkedin.css
+          test -f visual-system.css
+          test -f workshop-integrated.css
+          test -f script.js
+          test -f workshop-integrated.js
+      - name: Commit clean final state
+        run: |
+          rm -f .github/scripts/finalize-release-500.py .github/workflows/finalize-release-500.yml
+          rmdir .github/scripts 2>/dev/null || true
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Release Blue Continuum 5.0.0"
+            git push
+          fi
