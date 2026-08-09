@@ -1,4 +1,4 @@
-/* Workshop 6.0.8 — consolidated production stylesheet.
+/* Workshop 6.0.9 — consolidated production stylesheet.
    One component layer for Workshop structure, visual styling, Python practice,
    knowledge cards, dividers and responsive behavior. */
 
@@ -805,6 +805,32 @@ body.workshop-open .workshop-masthead-copy {
 
 .practice-exercise-list::-webkit-scrollbar { display: none; }
 
+@media (min-width: 701px) {
+  .practice-exercise-list {
+    padding-bottom: 11px !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--practice-accent), .42) rgba(255,255,255,.025);
+    touch-action: auto;
+  }
+
+  .practice-exercise-list::-webkit-scrollbar {
+    display: block;
+    height: 6px;
+  }
+
+  .practice-exercise-list::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: rgba(255,255,255,.025);
+  }
+
+  .practice-exercise-list::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(var(--practice-accent), .28), rgba(var(--practice-accent), .50));
+  }
+
+}
+
 .practice-selector-card {
   position: relative;
   flex: 0 0 176px;
@@ -825,7 +851,7 @@ body.workshop-open .workshop-masthead-copy {
   appearance: none;
   cursor: pointer;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition: border-color 170ms ease, background 170ms ease;
@@ -1209,7 +1235,7 @@ body.workshop-open .workshop-masthead-copy {
 
 .knowledge-application-merged .workshop-grid-foundation > .knowledge-card { min-height: 510px !important; }
 .knowledge-application-merged .workshop-grid-featured > .knowledge-card {
-  min-height: 456px !important;
+  min-height: 438px !important;
   border-color: rgba(var(--accent-rgb), .19) !important;
   background:
     linear-gradient(146deg, rgba(var(--accent-rgb), .032), transparent 43%),
@@ -1350,6 +1376,59 @@ body.workshop-open .workshop-masthead-copy {
 
 .knowledge-card-foot span { color: #788b93; font-size: .55rem; font-weight: 780; letter-spacing: .085em; line-height: 1.2; text-transform: uppercase; white-space: nowrap; }
 .knowledge-card-foot strong { min-width: 0; color: rgba(var(--accent-rgb), .94); font-size: .62rem; font-weight: 710; line-height: 1.35; text-align: right; }
+
+.workshop-grid-featured > .knowledge-card:nth-of-type(1) { --applied-foot-label-rgb: 184, 126, 157; --applied-foot-flow-rgb: 151, 136, 198; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(2) { --applied-foot-label-rgb: 93, 163, 160; --applied-foot-flow-rgb: 105, 153, 198; }
+.workshop-grid-featured > .knowledge-card:nth-of-type(3) { --applied-foot-label-rgb: 187, 151, 105; --applied-foot-flow-rgb: 132, 165, 136; }
+
+.workshop-grid-featured .knowledge-card-foot {
+  min-height: 0;
+  margin-top: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 7px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.workshop-grid-featured .knowledge-card-foot span,
+.workshop-grid-featured .knowledge-card-foot strong {
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 9px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.workshop-grid-featured .knowledge-card-foot span {
+  color: rgba(var(--applied-foot-label-rgb), .96);
+  border: 1px solid rgba(var(--applied-foot-label-rgb), .24);
+  background: rgba(var(--applied-foot-label-rgb), .065);
+  font-size: .53rem;
+  letter-spacing: .075em;
+}
+
+.workshop-grid-featured .knowledge-card-foot span::before {
+  content: "◆";
+  margin-right: 6px;
+  font-size: .42rem;
+  opacity: .78;
+}
+
+.workshop-grid-featured .knowledge-card-foot strong {
+  color: rgba(var(--applied-foot-flow-rgb), .98);
+  border: 1px solid rgba(var(--applied-foot-flow-rgb), .25);
+  background: rgba(var(--applied-foot-flow-rgb), .072);
+  font-size: .61rem;
+  font-weight: 720;
+}
 
 /* Semantic topic masks. */
 .workshop-grid-foundation > .knowledge-card:nth-of-type(1) { --main-icon-rgb: 104, 184, 174; }
@@ -1588,7 +1667,7 @@ body.workshop-open .workshop-masthead-copy {
   .practice-collection-close { min-height: 29px; padding-inline: 8px; font-size: .55rem; }
 
   .practice-exercise-list { --selector-safe-inset: 6px; gap: 7px !important; padding-bottom: 4px !important; }
-  .practice-selector-card { flex-basis: min(70vw, 224px); min-height: 78px; padding: 10px 11px 9px; border-radius: 12px; }
+  .practice-selector-card { flex-basis: min(70vw, 224px); min-height: 78px; padding: 10px 11px 9px; border-radius: 12px; scroll-snap-stop: always; }
   .practice-selector-title { font-size: .70rem; }
 
   .practice-detail { width: 100% !important; padding: 20px 15px 15px !important; border-radius: 18px !important; }

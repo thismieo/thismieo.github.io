@@ -1,3 +1,15 @@
+# Blue Continuum 4.5.25 — Practice Navigation & Card Detail Polish
+
+1. Removed the custom vertical-wheel interception from Featured Practice and Learning Archive; desktop now uses a slim native horizontal scrollbar for direct mouse dragging while phone keeps native horizontal swipe.
+2. Replaced manual leading spaces in all five Featured Practice console headings with Python `.center(width)` calls, preserving centered output without visually awkward spacing in source code.
+3. Reordered The Workshop CTA column so `Living archive` sits above the complete `See how learning becomes practice` line and the Open Workshop button on desktop, with a clean mobile stack.
+4. Widened the desktop Journey row and tightened metadata metrics so `01 · Programming foundation` remains fully visible beside its status badge without changing card shape.
+5. Strengthened the subtle hover-border response for the current Journey card so it behaves consistently with the other interactive card surfaces.
+6. Replaced framed Journey workflow footers and Applied Practice `Applied skill` footers with compact derived-color badge pairs, reducing visual weight and unused footer space.
+7. Kept reset-to-item-01 behavior intact and cleaned superseded wheel/spacing ownership rather than layering new overrides.
+
+---
+
 # Blue Continuum 4.5.24 — Practice Explorer Navigation & Code Alignment
 
 1. Added mouse-wheel and trackpad-friendly horizontal navigation to the Featured Practice and Learning Archive selectors while preserving native phone swipe behavior.

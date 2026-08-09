@@ -1,4 +1,4 @@
-/* Blue Continuum 4.5.20 — Consolidated portfolio stylesheet */
+/* Blue Continuum 4.5.25 — Consolidated portfolio stylesheet */
 @font-face {
   font-family: "Manrope";
   src: url("assets/manrope-latin-variable.woff2") format("woff2");
@@ -183,7 +183,7 @@ main { position: relative; background: transparent; }
 /* Journey — calm layered learning path */
 .timeline {
   position: relative;
-  width: min(100%, 1120px);
+  width: min(100%, 1160px);
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -283,19 +283,19 @@ main { position: relative; background: transparent; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .timeline-index {
   min-width: 0;
   margin: 0;
-  overflow: hidden;
+  overflow: visible;
   color: rgba(var(--accent-rgb), .98);
-  font-size: .61rem;
+  font-size: .59rem;
   font-weight: 800;
   line-height: 1.3;
-  letter-spacing: .12em;
-  text-overflow: ellipsis;
+  letter-spacing: .10em;
+  text-overflow: clip;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -303,16 +303,16 @@ main { position: relative; background: transparent; }
 .timeline-state {
   width: fit-content;
   margin: 0;
-  padding: 6px 9px;
+  padding: 6px 8px;
   border: 1px solid rgba(var(--accent-rgb), .28);
   border-radius: 999px;
   color: rgba(var(--accent-rgb), .98);
   background: rgba(var(--accent-rgb), .095);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.018);
-  font-size: .56rem;
+  font-size: .54rem;
   font-weight: 800;
   line-height: 1.25;
-  letter-spacing: .075em;
+  letter-spacing: .065em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -372,38 +372,67 @@ main { position: relative; background: transparent; }
 .timeline-tags li:nth-child(4) { --tag-rgb: 184, 150, 122; }
 
 .timeline-foot {
+  --foot-label-rgb: 130, 151, 164;
+  --foot-flow-rgb: var(--accent-rgb);
   position: relative;
   z-index: 2;
-  min-height: 46px;
-  margin-top: 18px;
-  padding: 11px 12px;
+  min-height: 0;
+  margin-top: 17px;
+  padding: 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border: 1px solid rgba(var(--accent-rgb), .13);
-  border-radius: 11px;
-  background: rgba(var(--accent-rgb), .035);
+  justify-content: flex-start;
+  gap: 7px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
-.timeline-foot span {
-  color: #788b93;
-  font-size: .55rem;
-  font-weight: 780;
-  line-height: 1.2;
-  letter-spacing: .085em;
-  text-transform: uppercase;
+.timeline-item.journey-stage-01 .timeline-foot { --foot-label-rgb: 112, 151, 184; --foot-flow-rgb: 110, 169, 153; }
+.timeline-item.journey-stage-02 .timeline-foot { --foot-label-rgb: 181, 146, 111; --foot-flow-rgb: 105, 151, 186; }
+.timeline-item.journey-stage-03 .timeline-foot { --foot-label-rgb: 151, 132, 190; --foot-flow-rgb: 184, 146, 119; }
+.timeline-item.journey-stage-04 .timeline-foot { --foot-label-rgb: 181, 124, 151; --foot-flow-rgb: 151, 132, 190; }
+.timeline-item.journey-stage-05 .timeline-foot { --foot-label-rgb: 185, 145, 116; --foot-flow-rgb: 108, 158, 151; }
+
+.timeline-foot span,
+.timeline-foot strong {
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 9px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  line-height: 1.25;
   white-space: nowrap;
 }
 
+.timeline-foot span {
+  color: rgba(var(--foot-label-rgb), .96);
+  border: 1px solid rgba(var(--foot-label-rgb), .24);
+  background: rgba(var(--foot-label-rgb), .065);
+  font-size: .54rem;
+  font-weight: 790;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+
+.timeline-foot span::before {
+  content: "◆";
+  margin-right: 6px;
+  font-size: .43rem;
+  opacity: .78;
+}
+
 .timeline-foot strong {
-  min-width: 0;
-  color: rgba(var(--accent-rgb), .94);
-  font-size: .62rem;
-  font-weight: 710;
-  line-height: 1.35;
-  letter-spacing: -.004em;
-  text-align: right;
+  color: rgba(var(--foot-flow-rgb), .98);
+  border: 1px solid rgba(var(--foot-flow-rgb), .25);
+  background: rgba(var(--foot-flow-rgb), .072);
+  font-size: .61rem;
+  font-weight: 720;
+  letter-spacing: -.002em;
+  text-align: left;
 }
 
 .timeline-item.is-current-stage {
@@ -413,8 +442,13 @@ main { position: relative; background: transparent; }
 
 @media (hover: hover) and (pointer: fine) {
   .timeline-item:hover {
-    border-color: rgba(var(--accent-rgb), .40);
+    border-color: rgba(var(--accent-rgb), .44);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 16px 36px rgba(0, 6, 12, .16);
+  }
+
+  .timeline-item.is-current-stage:hover {
+    border-color: rgba(var(--accent-rgb), .54);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 17px 38px rgba(0, 6, 12, .18), 0 0 0 1px rgba(var(--accent-rgb), .045);
   }
 }
 
@@ -522,8 +556,9 @@ main { position: relative; background: transparent; }
 
   .timeline-tags { margin-top: auto; padding-top: 15px; gap: 6px; }
   .timeline-tags li { padding: 6px 9px; font-size: .59rem; }
-  .timeline-foot { margin-top: 18px; padding: 11px 12px; }
-  .timeline-foot strong { font-size: .64rem; }
+  .timeline-foot { margin-top: 16px; padding: 0; gap: 6px; }
+  .timeline-foot span { padding: 6px 8px; font-size: .52rem; }
+  .timeline-foot strong { padding: 6px 8px; font-size: .59rem; }
 }
 
 /* Workshop entry */
@@ -536,9 +571,9 @@ main { position: relative; background: transparent; }
   margin-top: 0;
   padding: 29px 30px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(210px, .32fr);
+  grid-template-columns: minmax(0, 1fr) minmax(248px, .34fr);
   align-items: stretch;
-  gap: 34px;
+  gap: 30px;
   overflow: hidden;
   isolation: isolate;
   border: 1px solid rgba(147, 157, 181, .20);
@@ -570,10 +605,7 @@ main { position: relative; background: transparent; }
 
 .workshop-entry-topline {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  display: block;
 }
 
 
@@ -676,19 +708,24 @@ main { position: relative; background: transparent; }
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
+}
+
+.workshop-entry-cta .workshop-entry-badge {
+  align-self: center;
+  margin-bottom: 1px;
 }
 
 .workshop-entry-cta-note {
-  max-width: 22ch;
+  max-width: none;
   margin-inline: auto;
   color: #879ba4;
-  font-size: .63rem;
+  font-size: .61rem;
   font-weight: 650;
-  line-height: 1.55;
-  letter-spacing: .015em;
+  line-height: 1.5;
+  letter-spacing: .012em;
   text-align: center;
-  text-wrap: balance;
+  white-space: nowrap;
 }
 
 .workshop-entry-action {
@@ -742,16 +779,17 @@ main { position: relative; background: transparent; }
     border-radius: 19px;
   }
 
-  .workshop-entry-topline { align-items: flex-start; gap: 10px; }
-  .workshop-entry-card-note { max-width: 27ch; font-size: .61rem; line-height: 1.50; }
+  .workshop-entry-topline { display: block; }
+  .workshop-entry-card-note { max-width: 31ch; font-size: .61rem; line-height: 1.50; }
   .workshop-entry-badge { padding: 5px 8px; font-size: .50rem; }
   .workshop-entry-title { margin-top: 15px; font-size: clamp(2.05rem, 10vw, 2.65rem); }
   .workshop-entry-copy { margin-top: 11px; font-size: .80rem; line-height: 1.70; }
   .workshop-entry-signals { margin-top: 17px; gap: 6px; }
   .workshop-entry-signal { min-height: 29px; padding: 6px 9px; font-size: .58rem; }
   .workshop-entry-signal-symbol { font-size: .57rem; }
-  .workshop-entry-cta { gap: 9px; }
-  .workshop-entry-cta-note { max-width: none; margin: 0; text-align: left; }
+  .workshop-entry-cta { gap: 8px; }
+  .workshop-entry-cta .workshop-entry-badge { align-self: flex-start; margin-bottom: 1px; }
+  .workshop-entry-cta-note { max-width: none; margin: 0; text-align: left; white-space: normal; }
   .workshop-entry-action { width: 100%; min-width: 0; min-height: 50px; }
 }
 
