@@ -1,4 +1,4 @@
-/* Blue Continuum — Shared Visual System 1.5.3
+/* Blue Continuum — Shared Visual System 1.5.4
    Canonical cross-page divider language, homepage section identity and ambient-depth normalization. */
 
 :root {
@@ -784,9 +784,9 @@ body:not(.workshop-open)::before {
   .portfolio-panel .about-education-value { font-size: .70rem; }
 }
 
-/* ---------- 1.5.3 signature button sheen ---------- */
-/* A short, low-contrast sweep inside a 3s cycle. The long idle phase keeps
-   the effect atmospheric instead of constantly animated. */
+/* ---------- 1.5.4 signature button sheen ---------- */
+/* A clearly visible but restrained sweep inside a 3s cycle. The long idle phase
+   preserves the calm rhythm while the brighter core reads on light and dark CTAs. */
 :is(
   .portfolio-panel .hero-cta,
   .portfolio-panel .workshop-entry-action,
@@ -805,20 +805,21 @@ body:not(.workshop-open)::before {
   content: "";
   position: absolute;
   z-index: 1;
-  top: -42%;
-  left: -52%;
-  width: 34%;
-  height: 184%;
+  top: -46%;
+  left: -58%;
+  width: 42%;
+  height: 192%;
   pointer-events: none;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255,255,255,.025) 22%,
-    rgba(255,255,255,.105) 48%,
-    rgba(255,255,255,.035) 72%,
+    rgba(226,242,249,.055) 18%,
+    rgba(246,252,255,.255) 48%,
+    rgba(218,238,247,.075) 76%,
     transparent 100%
   );
-  filter: blur(.25px);
+  filter: blur(.16px);
+  box-shadow: 0 0 18px rgba(222, 241, 249, .075);
   opacity: 0;
   transform: translate3d(0,0,0) skewX(-18deg);
   will-change: transform, opacity;
@@ -835,18 +836,18 @@ body:not(.workshop-open)::before {
 }
 
 @keyframes continuum-button-sheen {
-  0%, 63% {
+  0%, 60% {
     opacity: 0;
     transform: translate3d(0,0,0) skewX(-18deg);
   }
-  68% { opacity: .22; }
-  82% {
-    opacity: .72;
-    transform: translate3d(455%,0,0) skewX(-18deg);
+  65% { opacity: .38; }
+  80% {
+    opacity: .96;
+    transform: translate3d(430%,0,0) skewX(-18deg);
   }
-  88%, 100% {
+  89%, 100% {
     opacity: 0;
-    transform: translate3d(520%,0,0) skewX(-18deg);
+    transform: translate3d(505%,0,0) skewX(-18deg);
   }
 }
 
