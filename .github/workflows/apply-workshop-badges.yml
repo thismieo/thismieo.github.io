@@ -1,0 +1,31 @@
+name: Apply Workshop badge redesign
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update Workshop badges
+        run: python .github/scripts/update-workshop-badges.py
+
+      - name: Commit final state
+        shell: bash
+        run: |
+          rm .github/scripts/update-workshop-badges.py
+          rm .github/workflows/apply-workshop-badges.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html workshop-integrated.css .github/scripts/update-workshop-badges.py .github/workflows/apply-workshop-badges.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Redesign Workshop card badges"
+          git push origin HEAD:main
